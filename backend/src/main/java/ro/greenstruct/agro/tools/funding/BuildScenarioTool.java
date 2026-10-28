@@ -96,14 +96,26 @@ public class BuildScenarioTool implements ToolHandler {
         String p = "option_" + option.optionId().toLowerCase() + ".";
 
         boolean seasonal = "SEASONAL".equals(Params.requiredText(input, "scheduleType"));
+        // Module-specific grace (organic: sized by the liquidity gap of the conversion years); 0 for the other modules.
+        int grace = line.path("green").asBoolean(false) ? context.calculator().graceMonths(context, cfg) : 0;
+        if (grace > 0) {
+            context.calc(p + "grace_months", "Perioadă de grație (fără rate)", BigDecimal.valueOf(grace), Unit.MONTHS)
+                    .formula("până la ultima lună cu gol de lichiditate, maximum din config").add();
+        }
         LoanSchedule schedule;
         Calc installment;
-        if (seasonal) {
+        if (!seasonal && grace > 0) {
+            schedule = LoanCalculator.seasonal(option.mainLoanEur(), rate, termMonths, firstMonth,
+                    EnumSet.allOf(Month.class), grace);
+            installment = context.calc(p + "installment", "Rata lunară după grație", schedule.installmentEur(),
+                    Unit.EUR_PER_MONTH).formula("rate egale după perioada de grație; VA la dobânda creditului = principalul")
+                    .add();
+        } else if (seasonal) {
             if (!contains(line.path("repayment"), "SEASONAL")) {
                 throw new IllegalArgumentException("Linia " + option.mainLineId() + " nu permite rate sezoniere");
             }
             Set<Month> months = paymentMonths(input, context);
-            schedule = LoanCalculator.seasonal(option.mainLoanEur(), rate, termMonths, firstMonth, months, 0);
+            schedule = LoanCalculator.seasonal(option.mainLoanEur(), rate, termMonths, firstMonth, months, grace);
             installment = context.calc(p + "installment", "Rata sezonieră", schedule.installmentEur(), Unit.EUR)
                     .formula("rate egale doar în lunile cu încasări; VA la dobânda creditului = principalul").add();
             context.calc(p + "grace", "Luni fără rată până la prima încasare",

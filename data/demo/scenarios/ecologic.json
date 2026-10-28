@@ -1,0 +1,51 @@
+{
+  "id": "ecologic",
+  "cui": "41629307",
+  "moduleId": "ecologic",
+  "parcelIds": [
+    "mu_3101",
+    "mu_3102",
+    "mu_3103"
+  ],
+  "questionnaire": {
+    "crops_main": "grâu 6 t/ha; porumb 8 t/ha; soia 3 t/ha",
+    "conversion_ha": 120,
+    "conversion_start_year": 2027,
+    "nitrogen_kg_ha": 130,
+    "tillage": "MINIMA",
+    "cover_crops": "ROTATIE",
+    "crop_insurance": false,
+    "certifications": [
+      "NICIUNA"
+    ],
+    "offtake_contracts": false,
+    "cashin_months": [
+      "OCT",
+      "NOV",
+      "DEC"
+    ],
+    "old_equipment_fate": "NU_E_CAZUL"
+  },
+  "documents": [
+    {
+      "documentId": "doc_oferta_utilaje_bio",
+      "docType": "OFFER",
+      "file": "docs/oferta-utilaje-bio.pdf"
+    },
+    {
+      "documentId": "doc_contract_certificare",
+      "docType": "CERTIFICATION_CONTRACT",
+      "file": "docs/contract-certificare-bio.pdf"
+    },
+    {
+      "documentId": "doc_plan_conversie",
+      "docType": "BUSINESS_PLAN",
+      "file": "docs/plan-conversie-bio.pdf"
+    },
+    {
+      "documentId": "doc_facturi_azot",
+      "docType": "FERTILIZER_INVOICES",
+      "file": "docs/facturi-ingrasaminte-12-luni.pdf"
+    }
+  ]
+}

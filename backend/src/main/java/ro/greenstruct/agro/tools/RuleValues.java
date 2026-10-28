@@ -34,7 +34,8 @@ public final class RuleValues {
     }
 
     public static BigDecimal thresholdPct(ToolContext context) {
-        return context.module().threshold().value();
+        BigDecimal value = context.module().threshold().value();
+        return value == null ? BigDecimal.ZERO : value;
     }
 
     public static BigDecimal safetyMarginPct(ToolContext context) {

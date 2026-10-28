@@ -38,8 +38,7 @@ public final class ConfigurationMetrics {
         Map<String, BigDecimal> metrics = new HashMap<>(context.calculator().metrics(context, components));
         metrics.put("total_cost", components.stream().map(InvestmentComponent::costEur)
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
-        boolean passes = metrics.get("indicator_pct").compareTo(RuleValues.thresholdPct(context)) >= 0
-                && sizingOk(context, metrics);
+        boolean passes = meetsThreshold(context, metrics.get("indicator_pct")) && sizingOk(context, metrics);
         return new Configuration(configId, baseConfigId, components, metrics, passes);
     }
 
@@ -48,7 +47,21 @@ public final class ConfigurationMetrics {
         return context.calculator().sizingOk(context, metrics);
     }
 
+    /**
+     * MIN_PCT: the indicator reaches the threshold. CERTIFICATION (organic) has no numeric threshold: the module's
+     * indicator_pct is the share of the farm certified or in conversion, 0 without a certificate or contract.
+     */
+    public static boolean meetsThreshold(ToolContext context, BigDecimal indicatorPct) {
+        if ("CERTIFICATION".equals(context.module().threshold().kind())) {
+            return indicatorPct.signum() > 0;
+        }
+        return indicatorPct.compareTo(RuleValues.thresholdPct(context)) >= 0;
+    }
+
     public static boolean meetsSafetyMargin(ToolContext context, Configuration configuration) {
+        if ("CERTIFICATION".equals(context.module().threshold().kind())) {
+            return meetsThreshold(context, configuration.metric("indicator_pct"));
+        }
         return configuration.metric("indicator_pct")
                 .compareTo(RuleValues.thresholdPct(context).add(RuleValues.safetyMarginPct(context))) >= 0;
     }

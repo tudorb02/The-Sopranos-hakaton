@@ -58,6 +58,15 @@ public interface ModuleCalculator {
     /** calculate_impact: impact over the comparison horizon, as calcs. */
     void horizonImpact(ToolContext context, Configuration configuration, BigDecimal years);
 
+    /**
+     * Grace period (months without an installment) of the green loan for this configuration, sized by the module's own
+     * rule (organic: until the liquidity gap of the conversion years closes, at most the module's maximum). Used by
+     * build_scenario for the green option; 0 when the module has no such rule.
+     */
+    default int graceMonths(ToolContext context, Configuration configuration) {
+        return 0;
+    }
+
     /** Whether the configuration is sized sensibly (e.g. power per hectare); true when the module has no such rule. */
     default boolean sizingOk(ToolContext context, Map<String, BigDecimal> metrics) {
         return true;

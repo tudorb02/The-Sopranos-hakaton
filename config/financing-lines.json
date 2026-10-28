@@ -89,6 +89,24 @@
       ],
       "demo": true,
       "maxTermMonths": 24
+    },
+    {
+      "lineId": "rbro.agri.credit_bio",
+      "nameRo": "Credit BIO Raiffeisen pentru agricultură ecologică",
+      "kind": "GREEN_LOAN",
+      "green": true,
+      "annualRatePct": 6.9,
+      "collateral": "ASSET_PLEDGE",
+      "collateralUpfrontEur": 0,
+      "collateralAnnualEur": 0,
+      "repayment": [
+        "EQUAL_MONTHLY",
+        "SEASONAL"
+      ],
+      "requiresRo": "Certificat ecologic UE sau contract de conversie cu un organism de certificare",
+      "sourceRo": "README §3, F3: Credit BIO (Raiffeisen, din 2021) pentru teren certificat ecologic sau în conversie; condițiile (dobânda, durata) sunt de confirmat cu Raiffeisen. Durata de 5 ani și grația de maximum 12 luni: README §13",
+      "demo": true,
+      "maxTermMonths": 60
     }
   ],
   "guarantees": [
