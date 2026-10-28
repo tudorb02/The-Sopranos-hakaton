@@ -10,14 +10,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import ro.greenstruct.agro.config.GreenStructProperties;
 import ro.greenstruct.agro.modules.ModuleDefinition;
 import ro.greenstruct.agro.modules.ModuleRegistry;
 import ro.greenstruct.agro.modules.ReferenceData;
-import ro.greenstruct.agro.orchestration.Agent;
 import ro.greenstruct.agro.orchestration.AgentContext;
 import ro.greenstruct.agro.orchestration.AgentResult;
 import ro.greenstruct.agro.orchestration.AgentSlot;
@@ -36,8 +34,7 @@ import static ro.greenstruct.agro.agents.rules.RuleBasedTechnicalAgent.cut;
  * agent. The grant option is added only when a grant programme is eligible in an open session.
  */
 @Component
-@ConditionalOnProperty(name = "greenstruct.agents.rule-based", havingValue = "true")
-public class RuleBasedFundingAgent implements Agent {
+public class RuleBasedFundingAgent implements RuleAgent {
 
     private static final Map<String, String> SAVINGS_METRICS = Map.of("water_eur", "WATER_COST_SAVED_EUR",
             "energy_eur", "ENERGY_COST_SAVED_EUR", "fuel_eur", "FUEL_COST_SAVED_EUR", "inputs_eur",
@@ -77,11 +74,6 @@ public class RuleBasedFundingAgent implements Agent {
     @Override
     public AgentSlot slot() {
         return AgentSlot.FUNDING_OPTIMIZER;
-    }
-
-    @Override
-    public String modelId() {
-        return "rule-based";
     }
 
     @Override

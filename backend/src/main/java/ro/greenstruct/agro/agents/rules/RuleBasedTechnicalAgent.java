@@ -11,13 +11,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import ro.greenstruct.agro.engine.upgrade.UpgradeSelector;
 import ro.greenstruct.agro.modules.ModuleDefinition;
 import ro.greenstruct.agro.modules.ReferenceData;
-import ro.greenstruct.agro.orchestration.Agent;
 import ro.greenstruct.agro.orchestration.AgentContext;
 import ro.greenstruct.agro.orchestration.AgentFailureException;
 import ro.greenstruct.agro.orchestration.AgentResult;
@@ -42,8 +40,7 @@ import ro.greenstruct.agro.tools.workspace.WorkspaceStore;
  * the same schema as the model's.
  */
 @Component
-@ConditionalOnProperty(name = "greenstruct.agents.rule-based", havingValue = "true")
-public class RuleBasedTechnicalAgent implements Agent {
+public class RuleBasedTechnicalAgent implements RuleAgent {
 
     private static final String INITIAL = "cfg_initial";
     private static final String RECOMMENDED = "cfg_recommended";
@@ -75,11 +72,6 @@ public class RuleBasedTechnicalAgent implements Agent {
     @Override
     public AgentSlot slot() {
         return AgentSlot.TECHNICAL_AUDITOR;
-    }
-
-    @Override
-    public String modelId() {
-        return "rule-based";
     }
 
     @Override

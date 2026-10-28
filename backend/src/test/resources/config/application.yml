@@ -2,5 +2,8 @@
 greenstruct:
   anaf:
     enabled: false
-  agents:
-    rule-based: false
+  # Tests bring their own agents and never call Bedrock, whatever credentials the machine has.
+  agent-runtime:
+    enabled: false
+  bedrock:
+    enabled: false

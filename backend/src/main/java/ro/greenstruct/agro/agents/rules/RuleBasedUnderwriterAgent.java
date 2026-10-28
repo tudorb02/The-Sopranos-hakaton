@@ -10,13 +10,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import ro.greenstruct.agro.engine.greentier.GreenTier;
 import ro.greenstruct.agro.modules.ModuleDefinition;
 import ro.greenstruct.agro.modules.ModuleRegistry;
-import ro.greenstruct.agro.orchestration.Agent;
 import ro.greenstruct.agro.orchestration.AgentContext;
 import ro.greenstruct.agro.orchestration.AgentResult;
 import ro.greenstruct.agro.orchestration.AgentSlot;
@@ -35,8 +33,7 @@ import static ro.greenstruct.agro.agents.rules.RuleBasedTechnicalAgent.cut;
  * and monitoring KPIs (README §3, §5.3, §8). Every missing piece of information becomes a condition, not a rejection.
  */
 @Component
-@ConditionalOnProperty(name = "greenstruct.agents.rule-based", havingValue = "true")
-public class RuleBasedUnderwriterAgent implements Agent {
+public class RuleBasedUnderwriterAgent implements RuleAgent {
 
     private static final List<String> OBJECTIVES = List.of("CLIMATE_MITIGATION", "CLIMATE_ADAPTATION",
             "WATER_MARINE_RESOURCES", "CIRCULAR_ECONOMY", "POLLUTION_PREVENTION", "BIODIVERSITY");
@@ -71,11 +68,6 @@ public class RuleBasedUnderwriterAgent implements Agent {
     @Override
     public AgentSlot slot() {
         return AgentSlot.GREEN_UNDERWRITER;
-    }
-
-    @Override
-    public String modelId() {
-        return "rule-based";
     }
 
     @Override
