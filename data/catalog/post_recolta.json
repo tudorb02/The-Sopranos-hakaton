@@ -1,0 +1,29 @@
+{
+  "module": "post_recolta",
+  "note": "Prețuri estimate, de actualizat cu oferta furnizorului înainte de tragere. role: INDICATOR schimbă consumul specific sau agentul frigorific. Panourile și recuperarea de căldură ating consumul de mai jos doar împreună cu un agent frigorific natural (naturalRefrigerant = 1).",
+  "items": [
+    {
+      "catalogId": "ph.r290.surcharge",
+      "category": "REFRIGERATION_UNIT",
+      "nameRo": "Supliment pentru agregat frigorific cu propan (R290) în locul celui cu R404A",
+      "role": "INDICATOR",
+      "costEur": 9000,
+      "effect": {
+        "naturalRefrigerant": 1,
+        "refrigerantGwp": 3
+      },
+      "sourceRo": "Catalogul demo Product (upgrades.json, PH-R290): preț estimat; GWP propan R290 = 3 (IPCC AR5/AR6)"
+    },
+    {
+      "catalogId": "ph.panels.insulation_hr",
+      "category": "INSULATION_PANELS",
+      "nameRo": "Panouri de izolație noi + recuperare de căldură",
+      "role": "INDICATOR",
+      "costEur": 15000,
+      "effect": {
+        "specificKwhPerUnitWithNaturalRefrigerant": 92
+      },
+      "sourceRo": "Catalogul demo Product (upgrades.json, PH-PANEL): împreună cu agregatul R290, consum specific 92 kWh/t; preț estimat"
+    }
+  ]
+}

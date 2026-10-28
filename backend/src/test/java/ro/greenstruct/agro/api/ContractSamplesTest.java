@@ -114,7 +114,7 @@ class ContractSamplesTest {
         sample("FarmProfile__utilaje", get("/api/farms/38264019"));
         sample("BedrockHealth__not_configured", get("/api/health/bedrock"));
         sample("Error__not_found", get("/api/runs/run_000000000000"));
-        sample("Error__module_not_ready", ApiTest.createForm("45871203", "zootehnie", "{}"));
+        sample("Error__module_not_ready", ApiTest.createForm("45871203", "ecologic", "{}"));
         sample("Error__validation", ApiTest.createForm("45871203", "irigatii", "{nu e json"));
 
         JsonNode created = sample("RunCreated__demo_irigatii", post("/api/runs/demo/irigatii"));

@@ -146,7 +146,7 @@ class RunOrchestratorTest {
 
     @Test
     void configOnlyModuleIsNotReady() {
-        RunRequest request = new RunRequest("45871203", "zootehnie", List.of(), null, List.of(), null);
+        RunRequest request = new RunRequest("45871203", "ecologic", List.of(), null, List.of(), null);
 
         assertThatThrownBy(() -> orchestrator.start(request)).isInstanceOf(RunRejectedException.class)
                 .extracting(e -> ((RunRejectedException) e).reason())

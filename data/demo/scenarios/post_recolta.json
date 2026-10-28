@@ -1,0 +1,41 @@
+{
+  "id": "post_recolta",
+  "cui": "38751946",
+  "moduleId": "post_recolta",
+  "parcelIds": [
+    "ag_3001",
+    "ag_3002"
+  ],
+  "questionnaire": {
+    "activity": "DEPOZIT_FRIGORIFIC",
+    "stored_product": "mere",
+    "quantity": 650,
+    "operating_months": 7,
+    "old_equipment_fate": "CASARE",
+    "offtake_contracts": true,
+    "cashin_months": [
+      "OCT",
+      "NOV",
+      "DEC",
+      "SEP"
+    ],
+    "loan_term": "ANI_5"
+  },
+  "documents": [
+    {
+      "documentId": "doc_oferta_agregat",
+      "docType": "OFFER",
+      "file": "docs/oferta-agregat-frigorific.pdf"
+    },
+    {
+      "documentId": "doc_facturi_energie_depozit",
+      "docType": "ENERGY_INVOICES",
+      "file": "docs/facturi-energie-depozit-12-luni.pdf"
+    },
+    {
+      "documentId": "doc_fisa_echipament_vechi",
+      "docType": "CURRENT_EQUIPMENT",
+      "file": "docs/fisa-echipament-vechi.pdf"
+    }
+  ]
+}

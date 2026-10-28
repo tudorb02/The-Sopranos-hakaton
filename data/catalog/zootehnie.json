@@ -1,0 +1,17 @@
+{
+  "module": "zootehnie",
+  "note": "Prețuri estimate, de actualizat cu oferta furnizorului înainte de tragere. role: INDICATOR schimbă reducerea de metan. Efectele sunt totaluri pentru tot lanțul gunoiului (nu se adună): digestorul din ofertă reduce cu 45%, iar cu bazinul de digestat acoperit totalul ajunge la 85%.",
+  "items": [
+    {
+      "catalogId": "liv.cover.digestate_tank",
+      "category": "DIGESTATE_COVER",
+      "nameRo": "Acoperire etanșă a bazinului de digestat, cu recuperarea gazului",
+      "role": "INDICATOR",
+      "costEur": 26000,
+      "effect": {
+        "methaneReductionPct": 85
+      },
+      "sourceRo": "Catalogul demo Product (data/demo/test-documents/reference/upgrades.json, LIV-COVER): preț estimat, reducere totală 85% împreună cu digestorul"
+    }
+  ]
+}

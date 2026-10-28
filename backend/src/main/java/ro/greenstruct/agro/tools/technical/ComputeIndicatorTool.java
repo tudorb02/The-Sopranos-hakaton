@@ -69,6 +69,9 @@ public class ComputeIndicatorTool implements ToolHandler {
         if (cfg.metrics().containsKey("hp_per_ha") || cfg.metrics().containsKey("export_share_pct")) {
             result.put("sizing", ConfigurationMetrics.sizingOk(context, cfg.metrics()) ? "PASS" : "FAIL");
         }
+        if (cfg.metrics().containsKey("manure_valorised")) {
+            result.put("manureValorised", cfg.metric("manure_valorised").signum() > 0);
+        }
         ArrayNode components = result.putArray("components");
         cfg.components().forEach(c -> components.addObject().put("componentId", c.componentId())
                 .put("category", c.category()).put("nameRo", c.nameRo()));

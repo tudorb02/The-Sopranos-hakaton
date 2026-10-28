@@ -1,0 +1,258 @@
+{
+  "cui": "47209135",
+  "company": {
+    "cui": "47209135",
+    "name": "Ferma de Lapte Valea Demo SRL",
+    "legalForm": "SRL",
+    "caen": "0141",
+    "caenLabelRo": "Creșterea bovinelor de lapte",
+    "county": "Bistrița-Năsăud",
+    "locality": "Valea Demo",
+    "registeredAt": "2016-05-10",
+    "employees": 11,
+    "turnoverEur": 640000,
+    "netProfitEur": 48000,
+    "totalAssetsEur": 980000,
+    "financialYear": 2025,
+    "vatPayer": true,
+    "manager": {
+      "age": 44,
+      "installedAt": "2016-05-10"
+    }
+  },
+  "farm": {
+    "totalHa": 87.5,
+    "standardOutputEur": 180000,
+    "irrigatedNow": false,
+    "currentIrrigation": "NU",
+    "crops": [
+      {
+        "year": 2026,
+        "crop": "pajiște / furaje",
+        "ha": 85,
+        "yieldTPerHa": 6
+      }
+    ],
+    "livestock": [
+      {
+        "species": "BOVINE",
+        "heads": 150
+      }
+    ],
+    "apiaSubsidiesEur": 31000
+  },
+  "parcels": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "id": "bn_2001",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.512,
+                47.148
+              ],
+              [
+                24.5155,
+                47.148
+              ],
+              [
+                24.5155,
+                47.1516
+              ],
+              [
+                24.512,
+                47.1516
+              ],
+              [
+                24.512,
+                47.148
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "parcelId": "bn_2001",
+          "blockId": "BF-2001",
+          "areaHa": 2.5,
+          "crop": "incintă fermă (grajduri, platformă gunoi)",
+          "natura2000": false,
+          "nitrateVulnerable": true,
+          "droughtRisk": "LOW",
+          "hailRisk": "MEDIUM",
+          "floodRisk": "MEDIUM",
+          "waterStress": "LOW"
+        }
+      },
+      {
+        "type": "Feature",
+        "id": "bn_2002",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.531,
+                47.156
+              ],
+              [
+                24.5345,
+                47.156
+              ],
+              [
+                24.5345,
+                47.1596
+              ],
+              [
+                24.531,
+                47.1596
+              ],
+              [
+                24.531,
+                47.156
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "parcelId": "bn_2002",
+          "blockId": "BF-2001",
+          "areaHa": 85,
+          "crop": "pajiște / furaje",
+          "natura2000": false,
+          "nitrateVulnerable": true,
+          "droughtRisk": "LOW",
+          "hailRisk": "MEDIUM",
+          "floodRisk": "MEDIUM",
+          "waterStress": "LOW"
+        }
+      }
+    ]
+  },
+  "cashflow": {
+    "months": [
+      {
+        "month": "2025-10",
+        "inflowEur": 52000,
+        "outflowEur": 48000,
+        "netEur": 4000
+      },
+      {
+        "month": "2025-11",
+        "inflowEur": 51000,
+        "outflowEur": 47000,
+        "netEur": 4000
+      },
+      {
+        "month": "2025-12",
+        "inflowEur": 54000,
+        "outflowEur": 50000,
+        "netEur": 4000
+      },
+      {
+        "month": "2026-01",
+        "inflowEur": 50000,
+        "outflowEur": 47000,
+        "netEur": 3000
+      },
+      {
+        "month": "2026-02",
+        "inflowEur": 49000,
+        "outflowEur": 46000,
+        "netEur": 3000
+      },
+      {
+        "month": "2026-03",
+        "inflowEur": 52000,
+        "outflowEur": 49000,
+        "netEur": 3000
+      },
+      {
+        "month": "2026-04",
+        "inflowEur": 53000,
+        "outflowEur": 49000,
+        "netEur": 4000
+      },
+      {
+        "month": "2026-05",
+        "inflowEur": 55000,
+        "outflowEur": 51000,
+        "netEur": 4000
+      },
+      {
+        "month": "2026-06",
+        "inflowEur": 56000,
+        "outflowEur": 52000,
+        "netEur": 4000
+      },
+      {
+        "month": "2026-07",
+        "inflowEur": 55000,
+        "outflowEur": 51000,
+        "netEur": 4000
+      },
+      {
+        "month": "2026-08",
+        "inflowEur": 54000,
+        "outflowEur": 50000,
+        "netEur": 4000
+      },
+      {
+        "month": "2026-09",
+        "inflowEur": 59000,
+        "outflowEur": 52000,
+        "netEur": 7000
+      }
+    ],
+    "annualNetEur": 48000,
+    "avgMonthlyNetEur": 4000,
+    "peakMonths": [
+      "JUN",
+      "JUL",
+      "AUG",
+      "SEP"
+    ],
+    "source": "OPEN_BANKING",
+    "mode": "MOCK"
+  },
+  "dataSources": [
+    {
+      "source": "ANAF",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:00Z"
+    },
+    {
+      "source": "APIA",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:00Z"
+    },
+    {
+      "source": "ANSVSA",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:00Z"
+    },
+    {
+      "source": "OPEN_BANKING",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:01Z"
+    },
+    {
+      "source": "COPERNICUS",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:01Z"
+    },
+    {
+      "source": "NATURA_2000",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:01Z"
+    },
+    {
+      "source": "NITRATES",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:01Z"
+    }
+  ]
+}

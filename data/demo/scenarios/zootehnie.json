@@ -1,0 +1,40 @@
+{
+  "id": "zootehnie",
+  "cui": "47209135",
+  "moduleId": "zootehnie",
+  "parcelIds": [
+    "bn_2001",
+    "bn_2002"
+  ],
+  "questionnaire": {
+    "livestock_confirmed": true,
+    "manure_storage": "MIXT_DESCOPERIT",
+    "digestate_use": "INGRASAMANT",
+    "fertilisation_plan": true,
+    "old_equipment_fate": "NU_E_CAZUL",
+    "cashin_months": [
+      "JUN",
+      "JUL",
+      "AUG",
+      "SEP"
+    ],
+    "loan_term": "ANI_7"
+  },
+  "documents": [
+    {
+      "documentId": "doc_oferta_digestor",
+      "docType": "OFFER",
+      "file": "docs/oferta-digestor-biogaz.pdf"
+    },
+    {
+      "documentId": "doc_autorizatie_mediu",
+      "docType": "ENVIRONMENTAL_PERMIT",
+      "file": "docs/autorizatie-mediu-am-42-2024.pdf"
+    },
+    {
+      "documentId": "doc_facturi_energie_ferma",
+      "docType": "ENERGY_INVOICES",
+      "file": "docs/facturi-energie-ferma-12-luni.pdf"
+    }
+  ]
+}
