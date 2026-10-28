@@ -124,3 +124,21 @@ apoi modifică faptele și verifică recalcularea și persistența.
 - În mediul agentului, npm registry, socket-ul Docker și bind-ul de porturi sunt
   blocate. Aceleași aserțiuni au un transport offline în proces, cu Express real
   și SQLite real. `npm test` rămâne Vitest + Supertest; CI îl rulează pe PostgreSQL.
+
+## Actualizare: modelul de fapte (v2)
+
+Prima versiune păstra în seed textele ecranelor și stări simulate de procesare.
+Versiunea 2 este descrisă în [ADR 002](decisions/002-demo-fact-model.md) și
+înlocuiește presupunerile de mai sus despre:
+- istoric: acum sunt 12 luni de tranzacții generate, nu agregate lunare;
+- fișiere: nu mai există fișiere fictive, iar CSV-urile sunt citite prin Python;
+- analiză: rulări reale, cu insight-uri salvate;
+- chat: mesaje cu dată, fără răspunsuri inventate.
+
+Rute noi:
+- `POST /personas/:persona/analysis`
+- `POST /personas/:persona/chat/read`
+
+Corpuri schimbate:
+- `POST /imports` primește `{ months }`;
+- `PATCH /calendar` primește `gift_choices_minor`.
