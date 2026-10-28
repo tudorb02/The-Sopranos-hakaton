@@ -1,5 +1,5 @@
 // Details of one payment: rename it, move it to another category, add a note, tags, a rule or the receipt.
-// Every field shows example values only; nothing is saved.
+// Changes are saved through the API when the user taps Salvează.
 
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -23,7 +23,7 @@ export default function TransactionDetail({ id }) {
 function TransactionEditor({ tx, client, categoryNotes, pickerCategories, tagSuggestions }) {
   const api = usePersonaApi();
   const { categories } = usePersona();
-  const [draft, setDraft] = useState({ name: tx.name, category: tx.category, note: tx.note ?? "", tags: tx.tags ?? [], rule: Boolean(tx.rule), excluded: tx.excluded ?? tx.category === "economii" });
+  const [draft, setDraft] = useState({ name: tx.name, category: tx.category, note: tx.note ?? "", tags: tx.tags ?? [], rule: Boolean(tx.rule), excluded: Boolean(tx.excluded) });
   const [newCategory, setNewCategory] = useState(null), [newTag, setNewTag] = useState(null), [splitting, setSplitting] = useState(false);
   const [parts, setParts] = useState([{ category: tx.category, amount: "" }, { category: pickerCategories.find((id) => id !== tx.category), amount: "" }]);
   const change = (key, value) => setDraft((old) => ({ ...old, [key]: value }));
@@ -50,7 +50,7 @@ function TransactionEditor({ tx, client, categoryNotes, pickerCategories, tagSug
           {tx.day.label}, {tx.day.date} · {tx.time}
         </Small>
         <View style={s.heroMeta}>
-          <Status tone={tx.status === "În așteptare" ? undefined : "on"}>{tx.status}</Status>
+          <Status tone={tx.state === "pending" ? undefined : "on"}>{tx.status}</Status>
           <Small muted>{client.card}</Small>
         </View>
       </Card>

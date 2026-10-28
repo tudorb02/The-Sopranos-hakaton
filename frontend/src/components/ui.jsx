@@ -180,7 +180,7 @@ export function Dots({ used, max }) {
   );
 }
 
-// kind: "count", "amount", "paid", "pause" or "protected" (see data/demo.js).
+// kind: "count", "amount", "paid", "pause" or "protected"; amounts and notes come from the API.
 export function BudgetRow({ budget }) {
   const api = usePersonaApi();
   const { name, hint, icon, kind, note, warn } = budget;
@@ -195,7 +195,7 @@ export function BudgetRow({ budget }) {
     );
   }
   if (kind === "protected" || kind === "paid") value = <RowValue>{lei(budget.spent)}</RowValue>;
-  if (kind === "pause") value = <RowValue>0 lei</RowValue>;
+  if (kind === "pause") value = <RowValue>{lei(budget.spent ?? 0)}</RowValue>;
   return (
     <Row style={s.budgetRow}>
       <IconTile icon={icon} tone="sand" />
@@ -298,7 +298,7 @@ export function Agenda({ items }) {
   return (
     <View>
       {items.map((item, i) => (
-        <View key={`${item.day}-${item.month}`} style={[s.agendaItem, i > 0 && s.agendaNext]}>
+        <View key={`${item.day}-${item.month}-${i}`} style={[s.agendaItem, i > 0 && s.agendaNext]}>
           <View style={s.date}>
             <T style={s.dateDay}>{item.day}</T>
             <T style={s.dateMonth}>{item.month}</T>
@@ -354,9 +354,10 @@ export function ChoiceChips({ label, options, scroll = false, onChange, disabled
 export function Chips({ items, onSelect }) {
   return (
     <View style={s.chips}>
-      {items.map((item) => (
-        <Chip key={item} label={item} toggle={false} onPress={onSelect ? () => onSelect(item) : undefined} />
-      ))}
+      {items.map((item) => {
+        const label = typeof item === "string" ? item : item.label;
+        return <Chip key={label} label={label} toggle={false} onPress={onSelect ? () => onSelect(item) : undefined} />;
+      })}
     </View>
   );
 }

@@ -19,8 +19,8 @@ export default function Profile() {
   const { profile, services, legal } = usePersona();
   const api = usePersonaApi(), { navigate } = useRouter();
   const [editing, setEditing] = useState(null), [draft, setDraft] = useState([]), [deactivating, setDeactivating] = useState(false);
-  const edit = (section) => { setEditing(section); setDraft(profile[section].map((item) => ({ label: item.label, value: item.value }))); };
-  const editor = (section) => editing === section ? <View style={{ gap: space.sm }}>{draft.map((item, index) => <Field key={item.label} field={{ label: item.label, value: item.value }} onChange={(value) => setDraft((old) => old.map((row, i) => i === index ? { ...row, value } : row))} />)}
+  const edit = (section) => { setEditing(section); setDraft(profile[section].map((item) => ({ id: item.id, label: item.label, value: item.value }))); };
+  const editor = (section) => editing === section ? <View style={{ gap: space.sm }}>{draft.map((item, index) => <Field key={item.id} field={{ label: item.label, value: item.value }} onChange={(value) => setDraft((old) => old.map((row, i) => i === index ? { ...row, value } : row))} />)}
     <Btn disabled={api.busy} onPress={async () => { if (await api.mutate(`/profile/${section}`, { items: draft })) setEditing(null); }}>Salvează</Btn>
     <Btn variant="text" onPress={() => setEditing(null)}>Anulează</Btn></View> : <Facts items={profile[section]} />;
   const onService = (service, action) => api.mutate(`/services/${service.id}`, { action });

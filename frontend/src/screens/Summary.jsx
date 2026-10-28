@@ -55,7 +55,7 @@ function Essentials({ essentials }) {
         ))}
         <TotalRow label={essentials.rest.label} value={lei(essentials.rest.lei)} />
       </Rows>
-      <NoteCard icon="clock">{essentials.pending}</NoteCard>
+      {essentials.pending ? <NoteCard icon="clock">{essentials.pending}</NoteCard> : null}
     </Section>
   );
 }
@@ -77,7 +77,7 @@ export default function Summary() {
 
       {essentials ? <Essentials essentials={essentials} /> : null}
 
-      <InfoCard icon={lastMessage.icon} meta={lastMessage.meta} title={lastMessage.title} text={lastMessage.text} />
+      {lastMessage ? <InfoCard icon={lastMessage.icon} meta={lastMessage.meta} title={lastMessage.title} text={lastMessage.text} /> : null}
 
       <Section title="Săptămâna aceasta" aside={<Aside>{`${lei(week.spent)} în ${week.daysSoFar} zile`}</Aside>}>
         <Card>
@@ -95,20 +95,24 @@ export default function Summary() {
         </Rows>
       </Section>
 
-      <Section title="Ce am observat">
-        <Card style={s.insight}>
-          <Marker style={s.figure}>{insight.figure}</Marker>
-          <T style={{ flex: 1 }}>
-            {insight.text} <Src kind="obs" />
-          </T>
-        </Card>
-      </Section>
+      {insight ? (
+        <Section title="Ce am observat">
+          <Card style={s.insight}>
+            <Marker style={s.figure}>{insight.figure}</Marker>
+            <T style={{ flex: 1 }}>
+              {insight.text} <Src kind="obs" />
+            </T>
+          </Card>
+        </Section>
+      ) : null}
 
-      <Section title="Ce urmează">
-        <Card>
-          <Agenda items={agenda} />
-        </Card>
-      </Section>
+      {agenda.length ? (
+        <Section title="Ce urmează">
+          <Card>
+            <Agenda items={agenda} />
+          </Card>
+        </Section>
+      ) : null}
     </>
   );
 }

@@ -42,6 +42,7 @@ export function Intro() {
 export function Done() {
   const { findings } = usePersona();
   const { firstStep } = findings;
+  if (!findings.items.length) return <PageIntro title="Ce am găsit"><Small muted>{findings.lead} Parcurge pașii Extrase și Analiză, apoi revino aici.</Small></PageIntro>;
   return (
     <>
       <PageIntro title="Ce am găsit">
@@ -60,11 +61,13 @@ export function Done() {
         ))}
       </Rows>
 
-      <InfoCard icon={firstStep.icon} title={firstStep.title} text={firstStep.text}>
-        <Btn href={firstStep.href} small>
-          {firstStep.action}
-        </Btn>
-      </InfoCard>
+      {firstStep?.text ? (
+        <InfoCard icon={firstStep.icon} title={firstStep.title} text={firstStep.text}>
+          <Btn href={firstStep.href} small>
+            {firstStep.action}
+          </Btn>
+        </InfoCard>
+      ) : null}
     </>
   );
 }

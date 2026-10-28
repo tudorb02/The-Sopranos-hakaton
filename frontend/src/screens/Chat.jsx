@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
 import { Btn, BtnRow, Eyebrow, RowName, T } from "../components/base.jsx";
@@ -8,7 +8,7 @@ import { DisclaimerStrip } from "../components/ui.jsx";
 import { usePersona, usePersonaApi } from "../persona.js";
 import { caps, color, fontFamily, radius, shadowCard, space, text } from "../theme.js";
 
-function Proposal({ item, index }) {
+function Proposal({ item }) {
   const api = usePersonaApi();
   return (
     <View style={s.proposal}>
@@ -26,7 +26,7 @@ function Proposal({ item, index }) {
       ) : (
         <BtnRow>
           {item.actions.map((action, i) => (
-            <Btn key={action} small variant={i === 0 ? "yellow" : "text"} disabled={api.busy} onPress={() => api.mutate(`/chat/${index}/decision`, { action }, "POST")}>
+            <Btn key={action} small variant={i === 0 ? "yellow" : "text"} disabled={api.busy} onPress={() => api.mutate(`/chat/${item.position}/decision`, { action }, "POST")}>
               {action}
             </Btn>
           ))}
@@ -36,7 +36,7 @@ function Proposal({ item, index }) {
   );
 }
 
-function Message({ item, services, index }) {
+function Message({ item, services }) {
   const api = usePersonaApi();
   if (item.type === "divider") return <T style={s.divider}>{item.text}</T>;
   if (item.type === "me") {
@@ -46,7 +46,7 @@ function Message({ item, services, index }) {
       </View>
     );
   }
-  if (item.type === "proposal") return <Proposal item={item} index={index} />;
+  if (item.type === "proposal") return <Proposal item={item} />;
   if (item.type === "service") {
     return (
       <View style={s.service}>
@@ -73,20 +73,26 @@ function Message({ item, services, index }) {
 }
 
 export default function Chat() {
-  const { chat, services, legal } = usePersona();
+  const { chat, chatStatus, services, legal } = usePersona();
+  const api = usePersonaApi();
+  const unread = chatStatus.unread;
+  useEffect(() => { if (unread) api.mutate("/chat/read", {}, "POST"); }, [api, unread]);
+  const waiting = chat.at(-1)?.type === "me" && !chatStatus.coachReplies;
   return (
     <>
       <DisclaimerStrip legal={legal} card />
       <View style={s.thread} accessibilityLabel="Mesaje">
         {chat.map((item, i) => (
-          <Message key={i} item={item} services={services} index={i} />
+          <Message key={i} item={item} services={services} />
         ))}
+        {waiting ? <T style={s.notice} accessibilityLiveRegion="polite">Mesajul e salvat. În acest demo coach-ul nu răspunde încă la mesaje noi.</T> : null}
+        {!chat.length ? <T style={s.notice}>Nu ai încă mesaje. Scrie-i coach-ului ce te preocupă.</T> : null}
       </View>
     </>
   );
 }
 
-// The message box at the bottom of the chat; nothing is sent yet.
+// The message box at the bottom of the chat; messages are saved, the demo coach does not reply.
 export function Composer() {
   const [message, setMessage] = useState("");
   const api = usePersonaApi();
@@ -103,6 +109,7 @@ export function Composer() {
 
 const s = StyleSheet.create({
   thread: { gap: space.sm },
+  notice: { alignSelf: "center", maxWidth: "86%", fontSize: text.sm, textAlign: "center", color: color.ink3 },
   divider: { marginTop: space.sm, fontSize: text.cap, fontWeight: 600, textAlign: "center", color: color.ink3, ...caps(text.cap, 0.08) },
   msg: { maxWidth: "86%", paddingVertical: space.sm, paddingHorizontal: space.md, borderRadius: 18 },
   coach: { alignSelf: "flex-start", backgroundColor: color.surface, borderBottomLeftRadius: 4 },

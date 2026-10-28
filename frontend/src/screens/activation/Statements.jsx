@@ -5,12 +5,14 @@ import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import { Btn, Card, Intro, Row, RowMain, RowName, RowNote, Rows, Small, Stack, Status, T } from "../../components/base.jsx";
-import { Field, Group, GroupHint, IconTile, Meter, NoteCard, RowWithBelow, StateDot } from "../../components/ui.jsx";
+import { Field, Group, GroupHint, IconTile, NoteCard, StateDot } from "../../components/ui.jsx";
 import { usePersona, usePersonaApi } from "../../persona.js";
 import { documentPayload, pickDocument } from "../../lib/files";
 import { color, radius, space, text } from "../../theme.js";
 
 const flush = { paddingVertical: 0, paddingHorizontal: 0 };
+// The file states the server reports after storing or reading a statement.
+const FILE_STATUS = { done: "Citit", failed: "Necitit", stored: "Salvat" };
 
 // Numbered steps in a card, one per row.
 export function Steps({ items }) {
@@ -31,7 +33,8 @@ export function Steps({ items }) {
 export function Statements() {
   const { statements } = usePersona();
   const api = usePersonaApi();
-  const [period, setPeriod] = useState(statements.periods[0]);
+  const [months, setMonths] = useState(statements.periods[0].months);
+  const period = statements.periods.find((item) => item.months === months) ?? statements.periods[0];
   const upload = async () => {
     try { const file = await pickDocument(); if (file) await api.mutate("/statements", await documentPayload(file), "POST"); }
     catch (error) { api.reportError(error); }
@@ -53,15 +56,19 @@ export function Statements() {
               </RowMain>
               <Status tone="on">Selectat</Status>
             </Row>
-            <Field disabled={api.busy} field={{ label: "Perioada", type: "select", value: period, options: statements.periods }} onChange={setPeriod} />
-            <Btn block disabled={api.busy} onPress={() => api.mutate("/imports", { period }, "POST")}>Importă extrasele</Btn>
-            <Row style={flush}>
-              <StateDot state="done" />
-              <RowMain>
-                <RowName>{statements.imported.title}</RowName>
-                <RowNote>{statements.imported.meta}</RowNote>
-              </RowMain>
-            </Row>
+            <Field disabled={api.busy} field={{ label: "Perioada", type: "select", value: period.label, options: statements.periods.map((item) => item.label) }} onChange={(label) => setMonths(statements.periods.find((item) => item.label === label).months)} />
+            <Btn block disabled={api.busy} onPress={() => api.mutate("/imports", { months: period.months }, "POST")}>{statements.imported ? "Actualizează importul" : "Importă extrasele"}</Btn>
+            {statements.imported ? (
+              <Row style={flush}>
+                <StateDot state="done" />
+                <RowMain>
+                  <RowName>{statements.imported.title}</RowName>
+                  <RowNote>{statements.imported.meta}</RowNote>
+                </RowMain>
+              </Row>
+            ) : (
+              <Small muted>Încă nu ai importat extrase din acest cont.</Small>
+            )}
           </Stack>
         </Card>
       </Group>
@@ -76,14 +83,14 @@ export function Statements() {
         {statements.files.length ? (
           <Rows>
             {statements.files.map((file) => (
-              <RowWithBelow key={file.name} indent={40} below={file.state === "reading" ? <Meter value={file.progress} max={100} /> : null}>
+              <Row key={file.id}>
                 <IconTile icon="file" tone="sand" />
                 <RowMain>
                   <RowName style={s.fileName}>{file.name}</RowName>
                   <RowNote>{file.meta}</RowNote>
                 </RowMain>
-                <Status tone={file.state === "done" ? "on" : undefined}>{file.state === "done" ? "Procesat" : "Se procesează"}</Status>
-              </RowWithBelow>
+                <Status tone={file.state === "done" ? "on" : undefined}>{FILE_STATUS[file.state]}</Status>
+              </Row>
             ))}
           </Rows>
         ) : null}

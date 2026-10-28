@@ -1,4 +1,4 @@
-import { Animated, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
+import { Animated, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { usePersona } from "../persona.js";
@@ -109,6 +109,8 @@ export function BareFrame({ children }) {
 
 // The Produse tab of the app: the personal one offers the Coach, the business one shows what is coming.
 export function ProductsFrame({ title = "Produse", subtitle, productsHref = "#/produse", children }) {
+  const persona = usePersona();
+  const unread = persona?.chatStatus?.unread ?? 0;
   return (
     <Stage>
       <Header style={s.appHeader}>
@@ -119,12 +121,16 @@ export function ProductsFrame({ title = "Produse", subtitle, productsHref = "#/p
           {subtitle ? <Small muted>{subtitle}</Small> : null}
         </View>
         <View style={s.headerActions}>
-          <Pressable accessibilityRole="button" accessibilityLabel="Mesaje, 1 necitit" style={s.iconBtn}>
-            <Icon name="mail" color={color.teal} />
-            <View style={s.badge} aria-hidden>
-              <T style={s.badgeText}>1</T>
-            </View>
-          </Pressable>
+          {persona?.chat ? (
+            <Link href="#/chat" accessibilityLabel={unread ? `Mesaje, ${unread} ${unread === 1 ? "necitit" : "necitite"}` : "Mesaje"} style={s.iconBtn} pressedStyle={{ backgroundColor: color.tealWash }}>
+              <Icon name="mail" color={color.teal} />
+              {unread ? (
+                <View style={s.badge} aria-hidden>
+                  <T style={s.badgeText}>{unread}</T>
+                </View>
+              ) : null}
+            </Link>
+          ) : null}
           <Link href="#/login" accessibilityLabel="Ieși din cont" style={s.iconBtn} pressedStyle={{ backgroundColor: color.tealWash }}>
             <Icon name="logout" color={color.teal} />
           </Link>

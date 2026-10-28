@@ -53,8 +53,8 @@ export default function Legal({ legal: provided }) {
 
       <Group label={legal.log.title}>
         <Rows>
-          {legal.log.items.map((item) => (
-            <ValueRow key={item.when} name={item.who} note={item.what} value={<Small muted>{item.when}</Small>} />
+          {(provided ? legal.log.items : persona.accessLog).map((item) => (
+            <ValueRow key={`${item.when}-${item.what}`} name={item.who} note={item.what} value={<Small muted>{item.when}</Small>} />
           ))}
         </Rows>
         {legal.log.note ? <GroupHint>{legal.log.note}</GroupHint> : null}

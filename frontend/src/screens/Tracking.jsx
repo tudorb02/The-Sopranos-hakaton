@@ -29,7 +29,6 @@ export default function Tracking() {
   const error = searching && remote?.key === key ? remote.error : null;
   const packet = searching ? remote?.key === key && remote.data ? remote.data : { ...persona, days: [] } : persona;
   const { days, filters, review, spending } = packet;
-  const filterKeys = ["all", "expenses", "income", "uncategorized", "recurring"];
   return (
     <>
       <HeroCard>
@@ -70,7 +69,7 @@ export default function Tracking() {
             style={s.searchInput}
           />
         </View>
-        <ChoiceChips label="Filtre" options={filters.map((option, index) => ({ ...option, selected: filterKeys[index] === filter }))} onChange={(_option, index) => setFilter(filterKeys[index])} scroll />
+        <ChoiceChips label="Filtre" options={filters.map((option) => ({ ...option, selected: option.id === filter }))} onChange={(option) => setFilter(option.id)} scroll />
       </View>
       {pending ? <Small accessibilityLiveRegion="polite">Caut plățile…</Small> : null}
       {error ? <ApiState error={error} retry={() => retry((value) => value + 1)} /> : null}

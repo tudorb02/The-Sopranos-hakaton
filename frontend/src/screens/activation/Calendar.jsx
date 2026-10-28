@@ -3,6 +3,7 @@ import { View } from "react-native";
 
 import { Btn, Card, Intro, Row, RowMain, RowName, RowNote, Small, Status, T } from "../../components/base.jsx";
 import { Agenda, ChoiceChips, Field, Group, IconTile, NoteCard, Section, Src, Ticks } from "../../components/ui.jsx";
+import { amountMinor } from "../../lib/api.js";
 import { usePersona, usePersonaApi } from "../../persona.js";
 import { useRouter } from "../../router.jsx";
 import { color, space, text } from "../../theme.js";
@@ -49,7 +50,8 @@ export function CalendarConnected() {
   const api = usePersonaApi();
   const [custom, setCustom] = useState(null);
   const [amount, setAmount] = useState("");
-  const choose = (index, value) => api.mutate("/calendar", { gift_choices: gift.groups.map((group, i) => i === index ? value : group.selected) });
+  const choose = (index, amount) => api.mutate("/calendar", { gift_choices_minor: gift.groups.map((group, i) => i === index ? amount : group.selected_minor) });
+  const minorOf = (label) => amountMinor(label.replace(/ lei$/, ""));
   return (
     <>
       <Intro title="Calendarul e conectat" />
@@ -58,7 +60,7 @@ export function CalendarConnected() {
         <Row>
           <IconTile icon="calendar" tone="yellow" />
           <RowMain>
-            <RowName>{api.preferences?.calendar_connected === "phone" ? "Calendarul telefonului" : "Google Calendar"}</RowName>
+            <RowName>{calendar.options.find((item) => item.id === api.preferences?.calendar_connected)?.title ?? calendar.options[0].title}</RowName>
             <RowNote>Doar citire · zilele de naștere și evenimentele marcate</RowNote>
           </RowMain>
           <Status tone="on">Conectat</Status>
@@ -78,9 +80,9 @@ export function CalendarConnected() {
             <T style={{ fontSize: text.sm, fontWeight: 600, color: color.ink2 }}>{group.label}</T>
             <ChoiceChips label={group.label} options={group.options.map((label) => ({ label, selected: label === group.selected || label === "Altă sumă" && !group.options.includes(group.selected) }))} onChange={(option) => {
               if (option.label === "Altă sumă") { setCustom(index); setAmount(""); }
-              else choose(index, option.label);
+              else choose(index, minorOf(option.label));
             }} />
-            {custom === index ? <View style={{ gap: space.sm }}><Field disabled={api.busy} field={{ label: "Altă sumă", value: amount, suffix: "lei", numeric: true }} onChange={setAmount} /><Btn small disabled={api.busy} onPress={async () => { if (await choose(index, `${amount} lei`)) setCustom(null); }}>Salvează suma</Btn></View> : null}
+            {custom === index ? <View style={{ gap: space.sm }}><Field disabled={api.busy} field={{ label: "Altă sumă", value: amount, suffix: "lei", numeric: true }} onChange={setAmount} /><Btn small disabled={api.busy} onPress={async () => { try { if (await choose(index, amountMinor(amount))) setCustom(null); } catch (error) { api.reportError(error); } }}>Salvează suma</Btn></View> : null}
             {!group.options.includes(group.selected) ? <Small muted>{group.selected}</Small> : null}
           </View>
         ))}

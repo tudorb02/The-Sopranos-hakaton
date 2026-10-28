@@ -21,9 +21,9 @@ export default function Budgets() {
       if (await api.mutate("/budgets", { category: draft.category, ...(draft.name.trim() ? { name: draft.name.trim() } : {}), kind: draft.kind, period: draft.period, ...limit }, "POST")) setAdding(false);
     } catch (error) { api.reportError(error); }
   };
+  // Each answer carries its category; "Altceva" has none and opens the payment.
   const classify = async (option) => {
-    const category = { "Cumpărături online": "cumparaturi", "Cadou": "cadouri", "Un joc": "cumparaturi", "Un abonament": "abonamente" }[option];
-    if (category) await api.mutate(`/transactions/${question.txId}`, { category });
+    if (option.category) await api.mutate(`/transactions/${question.txId}`, { category: option.category });
     else navigate(`#/cheltuieli/${question.txId}`);
   };
   return (

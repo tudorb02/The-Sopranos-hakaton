@@ -37,8 +37,8 @@ export default function Ideas() {
         </Disclosure>
         <BtnRow>
           {featured.actions.map((action, i) => (
-            <Btn key={action} small variant={i === 0 ? "ink" : "text"} onYellow={i > 0} disabled={api.busy} onPress={() => api.mutate("/ideas/decision", { decision: i === 0 ? "accepted" : "dismissed" }, "POST")}>
-              {action}
+            <Btn key={action.id} small variant={i === 0 ? "ink" : "text"} onYellow={i > 0} disabled={api.busy} onPress={() => api.mutate("/ideas/decision", { decision: action.id }, "POST")}>
+              {action.label}
             </Btn>
           ))}
         </BtnRow>
