@@ -294,6 +294,8 @@
         "build_scenario",
         "compare_scenarios",
         "check_affordability",
+        "compare_conversion_plans",
+        "compute_liquidity_gap",
         "determine_green_tier",
         "price_loan",
         "compute_dscr",

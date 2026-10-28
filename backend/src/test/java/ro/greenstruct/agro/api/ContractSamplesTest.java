@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -101,23 +102,29 @@ class ContractSamplesTest {
         sample("RunView__esuat", get("/api/runs/" + failing));
         writeEvents("esuat", failing);
 
-        String machinery = mapper.readTree(mvc.perform(post("/api/runs/demo/utilaje")).andReturn().getResponse()
-                .getContentAsString()).path("runId").asText();
-        org.junit.jupiter.api.Assumptions.assumeTrue(await(machinery) == RunStatus.GATA, "utilaje demo not ready yet");
-        sample("Error__validation_variant", post("/api/runs/" + machinery + "/submit").contentType("application/json")
-                .content("{\"variant\": \"B\"}"));
-        mvc.perform(post("/api/runs/" + machinery + "/submit").contentType("application/json")
-                .content("{\"variant\": \"CLASIC\"}"));
-        JsonNode requested = sample("RunView__documents_requested_utilaje", post("/api/runs/" + machinery
-                + "/request-documents").contentType("application/json").content("""
-                {"officerId": "ofiter.demo", "messageRo": "Avem nevoie de certificatul de casare.",
-                 "documents": [{"docType": "SCRAPPING_CERTIFICATE", "labelRo": "Certificat de casare tractoare vechi",
-                                "dueDate": "2026-12-15"}]}
-                """));
-        assertThat(requested.path("state").asText()).isEqualTo("TRIMIS");
-        assertThat(requested.path("submission").path("optionId").asText()).isEqualTo("A");
-        assertThat(requested.path("pendingDocuments")).hasSize(1);
-        writeEvents("utilaje", machinery);
+        for (String scenario : List.of("energie", "utilaje", "zootehnie", "post_recolta", "ecologic")) {
+            String runId = mapper.readTree(mvc.perform(post("/api/runs/demo/" + scenario)).andReturn().getResponse()
+                    .getContentAsString()).path("runId").asText();
+            assertThat(await(runId)).as(scenario).isEqualTo(RunStatus.GATA);
+            JsonNode view = sample("RunView__gata_" + scenario, get("/api/runs/" + runId));
+            sample("FarmProfile__" + scenario, get("/api/farms/" + view.path("cui").asText()));
+            boolean green = view.path("agents").path("fundingRecommendation").path("options").findValues("kind").stream()
+                    .anyMatch(k -> k.asText().startsWith("GREEN"));
+            sample("RunView__sme_" + scenario, post("/api/runs/" + runId + "/submit").contentType("application/json")
+                    .content("{\"variant\": \"" + (green ? "VERDE" : "CLASIC") + "\"}"));
+            sample("RunView__full_trimis_" + scenario, get("/api/runs/" + runId + "?view=full"));
+            if ("utilaje".equals(scenario)) {
+                JsonNode requested = sample("RunView__documents_requested_utilaje", post("/api/runs/" + runId
+                        + "/request-documents").contentType("application/json").content("""
+                        {"officerId": "ofiter.demo", "messageRo": "Avem nevoie de certificatul de casare.",
+                         "documents": [{"docType": "SCRAPPING_CERTIFICATE", "labelRo": "Certificat de casare tractor vechi",
+                                        "dueDate": "2026-12-15"}]}
+                        """));
+                assertThat(requested.path("state").asText()).isEqualTo("TRIMIS");
+                assertThat(requested.path("pendingDocuments")).hasSize(1);
+            }
+            writeEvents(scenario, runId);
+        }
     }
 
     /** A new dossier whose scan has no recorded reading and no Bedrock to read it: the technical agent fails. */

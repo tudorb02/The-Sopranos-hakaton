@@ -541,9 +541,7 @@
           "additionalProperties": false,
           "required": [
             "status",
-            "ratioCalcId",
             "limitCalcId",
-            "dscrCalcId",
             "noteRo"
           ],
           "properties": {
@@ -573,7 +571,8 @@
               "type": "string",
               "maxLength": 300
             }
-          }
+          },
+          "description": "Capacitatea de plată. Fără acordul Open Banking nu există cashflow: ratioCalcId și dscrCalcId lipsesc, iar noteRo spune de ce."
         },
         "greenEligible": {
           "type": "boolean"

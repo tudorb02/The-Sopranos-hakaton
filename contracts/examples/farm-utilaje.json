@@ -1,20 +1,20 @@
 {
-  "summary": "Fermă de cereale, 400 ha, Călărași",
+  "summary": "Profilul fermei demo „utilaje”",
   "value": {
     "cui": "38264019",
     "company": {
       "cui": "38264019",
-      "name": "Agro Câmpia Bărăganului SRL",
+      "name": "Cereale Câmpia Demo SRL",
       "legalForm": "SRL",
       "caen": "0111",
       "caenLabelRo": "Cultivarea cerealelor (exclusiv orez), plantelor leguminoase și a plantelor producătoare de semințe oleaginoase",
-      "county": "Călărași",
-      "locality": "Dragalina",
+      "county": "Ialomița",
+      "locality": "Com. Demo",
       "registeredAt": "2023-02-20",
       "employees": 9,
-      "turnoverEur": 612000,
-      "netProfitEur": 88000,
-      "totalAssetsEur": 2480000,
+      "turnoverEur": 690000,
+      "netProfitEur": 74000,
+      "totalAssetsEur": 1350000,
       "financialYear": 2025,
       "vatPayer": true,
       "smeStatus": "SME",
@@ -24,7 +24,7 @@
       }
     },
     "farm": {
-      "totalHa": 400,
+      "totalHa": 600,
       "standardOutputEur": 236000,
       "irrigatedNow": false,
       "currentIrrigation": "NU",
@@ -32,72 +32,66 @@
         {
           "year": 2026,
           "crop": "grâu",
-          "ha": 100,
-          "yieldTPerHa": 6.1
+          "ha": 250,
+          "yieldTPerHa": 5.8
         },
         {
           "year": 2026,
           "crop": "porumb",
-          "ha": 100,
-          "yieldTPerHa": 7.4
+          "ha": 200,
+          "yieldTPerHa": 7.2
         },
         {
           "year": 2026,
           "crop": "floarea-soarelui",
-          "ha": 100,
-          "yieldTPerHa": 2.8
-        },
-        {
-          "year": 2026,
-          "crop": "rapiță",
-          "ha": 100,
-          "yieldTPerHa": 3.2
+          "ha": 150,
+          "yieldTPerHa": 2.9
         }
       ],
       "livestock": [],
-      "apiaSubsidiesEur": 98000
+      "apiaSubsidiesEur": 120000
     },
     "parcels": {
       "type": "FeatureCollection",
       "features": [
         {
           "type": "Feature",
-          "id": "cl_1001",
+          "id": "il_2001",
           "geometry": {
             "type": "Polygon",
             "coordinates": [
               [
                 [
-                  27.302,
-                  44.301
+                  27.393,
+                  44.607
                 ],
                 [
-                  27.3146,
-                  44.301
+                  27.409,
+                  44.607
                 ],
                 [
-                  27.3146,
-                  44.31
+                  27.409,
+                  44.617
                 ],
                 [
-                  27.302,
-                  44.31
+                  27.393,
+                  44.617
                 ],
                 [
-                  27.302,
-                  44.301
+                  27.393,
+                  44.607
                 ]
               ]
             ]
           },
           "properties": {
-            "parcelId": "cl_1001",
-            "blockId": "BF-1001",
-            "areaHa": 100,
+            "parcelId": "il_2001",
+            "blockId": "BF-2001",
+            "areaHa": 250,
             "crop": "grâu",
             "natura2000": false,
-            "nitrateVulnerable": false,
-            "droughtRisk": "MEDIUM",
+            "nitrateVulnerable": true,
+            "droughtRisk": "HIGH",
             "hailRisk": "MEDIUM",
             "floodRisk": "LOW",
             "waterStress": "MEDIUM"
@@ -105,42 +99,42 @@
         },
         {
           "type": "Feature",
-          "id": "cl_1002",
+          "id": "il_2002",
           "geometry": {
             "type": "Polygon",
             "coordinates": [
               [
                 [
-                  27.3146,
-                  44.301
+                  27.424,
+                  44.593
                 ],
                 [
-                  27.3272,
-                  44.301
+                  27.44,
+                  44.593
                 ],
                 [
-                  27.3272,
-                  44.31
+                  27.44,
+                  44.603
                 ],
                 [
-                  27.3146,
-                  44.31
+                  27.424,
+                  44.603
                 ],
                 [
-                  27.3146,
-                  44.301
+                  27.424,
+                  44.593
                 ]
               ]
             ]
           },
           "properties": {
-            "parcelId": "cl_1002",
-            "blockId": "BF-1002",
-            "areaHa": 100,
+            "parcelId": "il_2002",
+            "blockId": "BF-2002",
+            "areaHa": 200,
             "crop": "porumb",
             "natura2000": false,
-            "nitrateVulnerable": false,
-            "droughtRisk": "MEDIUM",
+            "nitrateVulnerable": true,
+            "droughtRisk": "HIGH",
             "hailRisk": "MEDIUM",
             "floodRisk": "LOW",
             "waterStress": "MEDIUM"
@@ -148,85 +142,42 @@
         },
         {
           "type": "Feature",
-          "id": "cl_1003",
+          "id": "il_2003",
           "geometry": {
             "type": "Polygon",
             "coordinates": [
               [
                 [
-                  27.302,
-                  44.31
+                  27.401,
+                  44.58
                 ],
                 [
-                  27.3146,
-                  44.31
+                  27.417,
+                  44.58
                 ],
                 [
-                  27.3146,
-                  44.319
+                  27.417,
+                  44.59
                 ],
                 [
-                  27.302,
-                  44.319
+                  27.401,
+                  44.59
                 ],
                 [
-                  27.302,
-                  44.31
+                  27.401,
+                  44.58
                 ]
               ]
             ]
           },
           "properties": {
-            "parcelId": "cl_1003",
-            "blockId": "BF-1003",
-            "areaHa": 100,
+            "parcelId": "il_2003",
+            "blockId": "BF-2003",
+            "areaHa": 150,
             "crop": "floarea-soarelui",
             "natura2000": false,
-            "nitrateVulnerable": false,
-            "droughtRisk": "MEDIUM",
-            "hailRisk": "MEDIUM",
-            "floodRisk": "LOW",
-            "waterStress": "MEDIUM"
-          }
-        },
-        {
-          "type": "Feature",
-          "id": "cl_1004",
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  27.3146,
-                  44.31
-                ],
-                [
-                  27.3272,
-                  44.31
-                ],
-                [
-                  27.3272,
-                  44.319
-                ],
-                [
-                  27.3146,
-                  44.319
-                ],
-                [
-                  27.3146,
-                  44.31
-                ]
-              ]
-            ]
-          },
-          "properties": {
-            "parcelId": "cl_1004",
-            "blockId": "BF-1004",
-            "areaHa": 100,
-            "crop": "rapiță",
-            "natura2000": false,
-            "nitrateVulnerable": false,
-            "droughtRisk": "MEDIUM",
+            "nitrateVulnerable": true,
+            "droughtRisk": "HIGH",
             "hailRisk": "MEDIUM",
             "floodRisk": "LOW",
             "waterStress": "MEDIUM"
@@ -238,79 +189,79 @@
       "months": [
         {
           "month": "2025-10",
-          "inflowEur": 61000,
-          "outflowEur": 15000,
-          "netEur": 46000
+          "inflowEur": 148000,
+          "outflowEur": 62000,
+          "netEur": 86000
         },
         {
           "month": "2025-11",
-          "inflowEur": 37000,
-          "outflowEur": 15000,
-          "netEur": 22000
+          "inflowEur": 96000,
+          "outflowEur": 48000,
+          "netEur": 48000
         },
         {
           "month": "2025-12",
-          "inflowEur": 34000,
-          "outflowEur": 15000,
-          "netEur": 19000
-        },
-        {
-          "month": "2026-01",
-          "inflowEur": 15000,
-          "outflowEur": 23000,
-          "netEur": -8000
-        },
-        {
-          "month": "2026-02",
-          "inflowEur": 15000,
-          "outflowEur": 24000,
-          "netEur": -9000
-        },
-        {
-          "month": "2026-03",
-          "inflowEur": 15000,
-          "outflowEur": 29000,
-          "netEur": -14000
-        },
-        {
-          "month": "2026-04",
-          "inflowEur": 15000,
-          "outflowEur": 27000,
-          "netEur": -12000
-        },
-        {
-          "month": "2026-05",
-          "inflowEur": 15000,
-          "outflowEur": 21000,
-          "netEur": -6000
-        },
-        {
-          "month": "2026-06",
-          "inflowEur": 19000,
-          "outflowEur": 15000,
-          "netEur": 4000
-        },
-        {
-          "month": "2026-07",
-          "inflowEur": 93000,
-          "outflowEur": 15000,
-          "netEur": 78000
-        },
-        {
-          "month": "2026-08",
-          "inflowEur": 67000,
-          "outflowEur": 15000,
+          "inflowEur": 82000,
+          "outflowEur": 30000,
           "netEur": 52000
         },
         {
+          "month": "2026-01",
+          "inflowEur": 9000,
+          "outflowEur": 26000,
+          "netEur": -17000
+        },
+        {
+          "month": "2026-02",
+          "inflowEur": 6000,
+          "outflowEur": 52000,
+          "netEur": -46000
+        },
+        {
+          "month": "2026-03",
+          "inflowEur": 8000,
+          "outflowEur": 88000,
+          "netEur": -80000
+        },
+        {
+          "month": "2026-04",
+          "inflowEur": 7000,
+          "outflowEur": 76000,
+          "netEur": -69000
+        },
+        {
+          "month": "2026-05",
+          "inflowEur": 9000,
+          "outflowEur": 44000,
+          "netEur": -35000
+        },
+        {
+          "month": "2026-06",
+          "inflowEur": 15000,
+          "outflowEur": 36000,
+          "netEur": -21000
+        },
+        {
+          "month": "2026-07",
+          "inflowEur": 168000,
+          "outflowEur": 64000,
+          "netEur": 104000
+        },
+        {
+          "month": "2026-08",
+          "inflowEur": 92000,
+          "outflowEur": 58000,
+          "netEur": 34000
+        },
+        {
           "month": "2026-09",
-          "inflowEur": 53000,
-          "outflowEur": 15000,
-          "netEur": 38000
+          "inflowEur": 70000,
+          "outflowEur": 52000,
+          "netEur": 18000
         }
       ],
-      "annualNetEur": 210000,
-      "avgMonthlyNetEur": 17500,
+      "annualNetEur": 74000,
+      "avgMonthlyNetEur": 6167,
       "peakMonths": [
         "JUL",
         "AUG",

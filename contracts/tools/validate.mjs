@@ -104,7 +104,7 @@ function checkOutputs(where, { assessment, funding, report }, completedEvent) {
     }
     const b = funding.recommendationBasis;
     const rec = funding.options.find((o) => o.optionId === funding.recommendedOptionId);
-    if (rec?.kind !== 'STANDARD' && !(b.greenEligible && b.netAdvantagePositive && b.affordabilityPassed)) fail(where, 'green option recommended without all three conditions');
+    if (rec?.kind !== 'STANDARD' && !(b.greenEligible && b.netAdvantagePositive)) fail(where, 'green option recommended without eligibility and a positive net advantage (README §4 step 8)');
   }
   if (report && assessment) {
     const recCfg = assessment.configurations.find((c) => c.configId === assessment.recommendedConfigId);

@@ -1,0 +1,307 @@
+{
+  "summary": "Profilul fermei demo „ecologic”",
+  "value": {
+    "cui": "41629307",
+    "company": {
+      "cui": "41629307",
+      "name": "Ferma Bio Mureș Demo SRL",
+      "legalForm": "SRL",
+      "caen": "0111",
+      "caenLabelRo": "Cultivarea cerealelor (exclusiv orez), plantelor leguminoase și a plantelor producătoare de semințe oleaginoase",
+      "county": "Mureș",
+      "locality": "Comuna Demo",
+      "registeredAt": "2016-05-17",
+      "employees": 5,
+      "turnoverEur": 168000,
+      "netProfitEur": 21000,
+      "totalAssetsEur": 420000,
+      "financialYear": 2025,
+      "vatPayer": true,
+      "smeStatus": "SME",
+      "manager": {
+        "age": 41,
+        "installedAt": "2016-05-17"
+      }
+    },
+    "farm": {
+      "totalHa": 120,
+      "standardOutputEur": 168000,
+      "irrigatedNow": false,
+      "currentIrrigation": "NU",
+      "crops": [
+        {
+          "year": 2026,
+          "crop": "grâu",
+          "ha": 50,
+          "yieldTPerHa": 6
+        },
+        {
+          "year": 2026,
+          "crop": "porumb",
+          "ha": 40,
+          "yieldTPerHa": 8
+        },
+        {
+          "year": 2026,
+          "crop": "soia",
+          "ha": 30,
+          "yieldTPerHa": 3
+        }
+      ],
+      "livestock": [],
+      "apiaSubsidiesEur": 24000
+    },
+    "parcels": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "id": "mu_3101",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  24.402,
+                  46.512
+                ],
+                [
+                  24.4146,
+                  46.512
+                ],
+                [
+                  24.4146,
+                  46.521
+                ],
+                [
+                  24.402,
+                  46.521
+                ],
+                [
+                  24.402,
+                  46.512
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "mu_3101",
+            "blockId": "BF-3101",
+            "areaHa": 50,
+            "crop": "grâu",
+            "natura2000": false,
+            "nitrateVulnerable": false,
+            "droughtRisk": "MEDIUM",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "LOW"
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "mu_3102",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  24.4146,
+                  46.512
+                ],
+                [
+                  24.4272,
+                  46.512
+                ],
+                [
+                  24.4272,
+                  46.521
+                ],
+                [
+                  24.4146,
+                  46.521
+                ],
+                [
+                  24.4146,
+                  46.512
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "mu_3102",
+            "blockId": "BF-3102",
+            "areaHa": 40,
+            "crop": "porumb",
+            "natura2000": false,
+            "nitrateVulnerable": false,
+            "droughtRisk": "MEDIUM",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "LOW"
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "mu_3103",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  24.402,
+                  46.521
+                ],
+                [
+                  24.4146,
+                  46.521
+                ],
+                [
+                  24.4146,
+                  46.53
+                ],
+                [
+                  24.402,
+                  46.53
+                ],
+                [
+                  24.402,
+                  46.521
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "mu_3103",
+            "blockId": "BF-3103",
+            "areaHa": 30,
+            "crop": "soia",
+            "natura2000": false,
+            "nitrateVulnerable": false,
+            "droughtRisk": "MEDIUM",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "LOW"
+          }
+        }
+      ]
+    },
+    "cashflow": {
+      "months": [
+        {
+          "month": "2025-10",
+          "inflowEur": 38000,
+          "outflowEur": 16000,
+          "netEur": 22000
+        },
+        {
+          "month": "2025-11",
+          "inflowEur": 24000,
+          "outflowEur": 12000,
+          "netEur": 12000
+        },
+        {
+          "month": "2025-12",
+          "inflowEur": 30000,
+          "outflowEur": 8000,
+          "netEur": 22000
+        },
+        {
+          "month": "2026-01",
+          "inflowEur": 2000,
+          "outflowEur": 7000,
+          "netEur": -5000
+        },
+        {
+          "month": "2026-02",
+          "inflowEur": 2000,
+          "outflowEur": 12000,
+          "netEur": -10000
+        },
+        {
+          "month": "2026-03",
+          "inflowEur": 3000,
+          "outflowEur": 22000,
+          "netEur": -19000
+        },
+        {
+          "month": "2026-04",
+          "inflowEur": 2000,
+          "outflowEur": 18000,
+          "netEur": -16000
+        },
+        {
+          "month": "2026-05",
+          "inflowEur": 3000,
+          "outflowEur": 10000,
+          "netEur": -7000
+        },
+        {
+          "month": "2026-06",
+          "inflowEur": 6000,
+          "outflowEur": 9000,
+          "netEur": -3000
+        },
+        {
+          "month": "2026-07",
+          "inflowEur": 34000,
+          "outflowEur": 14000,
+          "netEur": 20000
+        },
+        {
+          "month": "2026-08",
+          "inflowEur": 26000,
+          "outflowEur": 13000,
+          "netEur": 13000
+        },
+        {
+          "month": "2026-09",
+          "inflowEur": 22000,
+          "outflowEur": 12000,
+          "netEur": 10000
+        }
+      ],
+      "annualNetEur": 39000,
+      "avgMonthlyNetEur": 3250,
+      "peakMonths": [
+        "OCT",
+        "DEC",
+        "JUL",
+        "AUG"
+      ],
+      "source": "OPEN_BANKING",
+      "mode": "MOCK"
+    },
+    "dataSources": [
+      {
+        "source": "ANAF",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:00Z"
+      },
+      {
+        "source": "APIA",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:00Z"
+      },
+      {
+        "source": "OPEN_BANKING",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:01Z"
+      },
+      {
+        "source": "COPERNICUS",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:01Z"
+      },
+      {
+        "source": "NATURA_2000",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:01Z"
+      },
+      {
+        "source": "NITRATES",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:01Z"
+      }
+    ]
+  }
+}

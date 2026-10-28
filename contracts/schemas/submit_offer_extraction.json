@@ -5,18 +5,45 @@
   "description": "Ce a citit modelul dintr-un singur document (ofertă, fișă tehnică, factură, aviz). Un apel cu unealtă forțată per document. Valorile se copiază exact cum apar în document (rawValue, text); backend-ul le normalizează determinist și le dă calcId. Nu se deduce și nu se calculează nimic.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["documentId", "documentType", "moduleId", "currency", "documentFields", "lineItems", "missingFields", "warnings"],
+  "required": [
+    "documentId",
+    "documentType",
+    "moduleId",
+    "currency",
+    "documentFields",
+    "lineItems",
+    "missingFields",
+    "warnings"
+  ],
   "properties": {
-    "documentId": { "$ref": "#/$defs/documentId" },
-    "documentType": { "$ref": "#/$defs/docType" },
-    "moduleId": { "$ref": "#/$defs/moduleId" },
-    "currency": { "type": "string", "enum": ["EUR", "RON", "UNKNOWN"] },
-    "supplierName": { "type": "string", "maxLength": 160 },
+    "documentId": {
+      "$ref": "#/$defs/documentId"
+    },
+    "documentType": {
+      "$ref": "#/$defs/docType"
+    },
+    "moduleId": {
+      "$ref": "#/$defs/moduleId"
+    },
+    "currency": {
+      "type": "string",
+      "enum": [
+        "EUR",
+        "RON",
+        "UNKNOWN"
+      ]
+    },
+    "supplierName": {
+      "type": "string",
+      "maxLength": 160
+    },
     "documentFields": {
       "description": "Câmpuri la nivel de document (furnizor, total, dată, sistem de irigare etc.).",
       "type": "array",
       "maxItems": 40,
-      "items": { "$ref": "#/$defs/extractedField" }
+      "items": {
+        "$ref": "#/$defs/extractedField"
+      }
     },
     "lineItems": {
       "description": "Pozițiile din ofertă/factură. Gol pentru documente fără poziții (aviz ANAR).",
@@ -25,12 +52,31 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["lineId", "category", "descriptionRo", "fields"],
+        "required": [
+          "lineId",
+          "category",
+          "descriptionRo",
+          "fields"
+        ],
         "properties": {
-          "lineId": { "type": "string", "pattern": "^ln_[0-9]{1,3}$" },
-          "category": { "$ref": "#/$defs/componentCategory" },
-          "descriptionRo": { "type": "string", "maxLength": 200 },
-          "fields": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/extractedField" } }
+          "lineId": {
+            "type": "string",
+            "pattern": "^ln_[0-9]{1,3}$"
+          },
+          "category": {
+            "$ref": "#/$defs/componentCategory"
+          },
+          "descriptionRo": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "fields": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/$defs/extractedField"
+            }
+          }
         }
       }
     },
@@ -41,62 +87,214 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["key", "reasonRo"],
+        "required": [
+          "key",
+          "reasonRo"
+        ],
         "properties": {
-          "key": { "$ref": "#/$defs/fieldKey" },
-          "reasonRo": { "type": "string", "maxLength": 240 }
+          "key": {
+            "$ref": "#/$defs/fieldKey"
+          },
+          "reasonRo": {
+            "type": "string",
+            "maxLength": 240
+          }
         }
       }
     },
     "warnings": {
       "type": "array",
       "maxItems": 10,
-      "items": { "type": "string", "maxLength": 240 }
+      "items": {
+        "type": "string",
+        "maxLength": 240
+      }
     }
   },
   "$defs": {
-    "documentId": { "type": "string", "pattern": "^doc_[a-z0-9_]{3,40}$" },
+    "documentId": {
+      "type": "string",
+      "pattern": "^doc_[a-z0-9_]{3,40}$"
+    },
     "extractedField": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["key", "rawValue", "unit", "page", "confidence"],
+      "required": [
+        "key",
+        "rawValue",
+        "unit",
+        "page",
+        "confidence"
+      ],
       "properties": {
-        "key": { "$ref": "#/$defs/fieldKey" },
-        "rawValue": { "description": "Textul exact din document, fără conversii (ex. \"85.000,00 EUR\").", "type": "string", "maxLength": 160 },
-        "unit": { "type": "string", "enum": ["EUR", "RON", "PCT", "HA", "KW", "HP", "BAR", "M3", "M3_H", "KWH", "L", "KG_N", "G_KWH", "YEAR", "PCS", "DATE", "TEXT", "BOOL"] },
-        "page": { "type": "integer", "minimum": 1, "maximum": 500 },
-        "confidence": { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW"] }
+        "key": {
+          "$ref": "#/$defs/fieldKey"
+        },
+        "rawValue": {
+          "description": "Textul exact din document, fără conversii (ex. \"85.000,00 EUR\").",
+          "type": "string",
+          "maxLength": 160
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "EUR",
+            "RON",
+            "PCT",
+            "HA",
+            "KW",
+            "HP",
+            "BAR",
+            "M3",
+            "M3_H",
+            "KWH",
+            "L",
+            "KG_N",
+            "G_KWH",
+            "YEAR",
+            "PCS",
+            "DATE",
+            "TEXT",
+            "BOOL",
+            "L_PER_HA",
+            "KWH_PER_T",
+            "KWH_PER_M2",
+            "KG"
+          ]
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+          ]
+        }
       }
     },
     "fieldKey": {
       "type": "string",
       "enum": [
-        "SUPPLIER_NAME", "SUPPLIER_CUI", "DOCUMENT_NUMBER", "DOCUMENT_DATE", "VALID_UNTIL", "CURRENCY",
-        "TOTAL_NET", "VAT_AMOUNT", "TOTAL_GROSS", "LINE_PRICE_NET", "QUANTITY", "ITEM_DESCRIPTION",
-        "IRRIGATION_SYSTEM_TYPE", "IRRIGATED_AREA_HA", "APPLICATION_EFFICIENCY_PCT", "PUMP_POWER_KW",
-        "OPERATING_PRESSURE_BAR", "FLOW_RATE_M3_H", "WATER_METER_INCLUDED", "WATER_SOURCE",
-        "PERMIT_NUMBER", "PERMIT_VALID_UNTIL", "PERMITTED_VOLUME_M3", "ENERGY_KWH", "ENERGY_COST", "WATER_M3",
-        "MACHINE_TYPE", "MAKE_MODEL", "ENGINE_POWER_HP", "ENGINE_POWER_KW", "EMISSION_STAGE", "MANUFACTURE_YEAR",
-        "CONDITION", "SPECIFIC_FUEL_CONSUMPTION_G_KWH", "PRECISION_FEATURES",
-        "FUEL_LITRES", "FUEL_COST", "FERTILIZER_KG_N", "PERIOD_FROM", "PERIOD_TO"
+        "SUPPLIER_NAME",
+        "SUPPLIER_CUI",
+        "DOCUMENT_NUMBER",
+        "DOCUMENT_DATE",
+        "VALID_UNTIL",
+        "CURRENCY",
+        "TOTAL_NET",
+        "VAT_AMOUNT",
+        "TOTAL_GROSS",
+        "LINE_PRICE_NET",
+        "QUANTITY",
+        "ITEM_DESCRIPTION",
+        "IRRIGATION_SYSTEM_TYPE",
+        "IRRIGATED_AREA_HA",
+        "APPLICATION_EFFICIENCY_PCT",
+        "PUMP_POWER_KW",
+        "OPERATING_PRESSURE_BAR",
+        "FLOW_RATE_M3_H",
+        "WATER_METER_INCLUDED",
+        "WATER_SOURCE",
+        "PERMIT_NUMBER",
+        "PERMIT_VALID_UNTIL",
+        "PERMITTED_VOLUME_M3",
+        "ENERGY_KWH",
+        "ENERGY_COST",
+        "WATER_M3",
+        "MACHINE_TYPE",
+        "MAKE_MODEL",
+        "ENGINE_POWER_HP",
+        "ENGINE_POWER_KW",
+        "EMISSION_STAGE",
+        "MANUFACTURE_YEAR",
+        "CONDITION",
+        "SPECIFIC_FUEL_CONSUMPTION_G_KWH",
+        "PRECISION_FEATURES",
+        "FUEL_LITRES",
+        "FUEL_COST",
+        "FERTILIZER_KG_N",
+        "PERIOD_FROM",
+        "PERIOD_TO",
+        "DIESEL_L_PER_HA",
+        "PV_POWER_KWP",
+        "METHANE_REDUCTION_PCT",
+        "SPECIFIC_CONSUMPTION_KWH_PER_UNIT",
+        "SPECIFIC_GAS_CONSUMPTION_KWH_PER_UNIT",
+        "REFRIGERANT_TYPE",
+        "REFRIGERANT_GWP"
       ]
     },
-    "moduleId": { "type": "string", "enum": ["irigatii", "energie", "utilaje", "zootehnie", "post_recolta", "ecologic"] },
+    "moduleId": {
+      "type": "string",
+      "enum": [
+        "irigatii",
+        "energie",
+        "utilaje",
+        "zootehnie",
+        "post_recolta",
+        "ecologic"
+      ]
+    },
     "docType": {
       "type": "string",
       "enum": [
-        "OFFER", "TECHNICAL_SHEET", "CURRENT_EQUIPMENT", "WATER_PERMIT_ANAR", "WATER_CONSUMPTION", "ENERGY_INVOICES",
-        "FUEL_INVOICES", "FERTILIZER_INVOICES", "BUSINESS_PLAN", "ENVIRONMENTAL_PERMIT", "CERTIFICATION_CONTRACT",
-        "FINAL_INVOICE", "COMMISSIONING_REPORT", "GEOTAGGED_PHOTOS", "AFIR_APPLICATION", "AFIR_FINANCING_CONTRACT",
-        "GUARANTEE_APPROVAL", "CROP_INSURANCE", "SCRAPPING_CERTIFICATE", "WATER_METER_CERTIFICATE", "OTHER"
+        "OFFER",
+        "TECHNICAL_SHEET",
+        "CURRENT_EQUIPMENT",
+        "WATER_PERMIT_ANAR",
+        "WATER_CONSUMPTION",
+        "ENERGY_INVOICES",
+        "FUEL_INVOICES",
+        "FERTILIZER_INVOICES",
+        "BUSINESS_PLAN",
+        "ENVIRONMENTAL_PERMIT",
+        "CERTIFICATION_CONTRACT",
+        "FINAL_INVOICE",
+        "COMMISSIONING_REPORT",
+        "GEOTAGGED_PHOTOS",
+        "AFIR_APPLICATION",
+        "AFIR_FINANCING_CONTRACT",
+        "GUARANTEE_APPROVAL",
+        "CROP_INSURANCE",
+        "SCRAPPING_CERTIFICATE",
+        "WATER_METER_CERTIFICATE",
+        "OTHER"
       ]
     },
     "componentCategory": {
       "type": "string",
       "enum": [
-        "IRRIGATION_SPRINKLER", "IRRIGATION_DRIP", "SOIL_MOISTURE_SENSORS", "PUMP", "SOLAR_PUMP", "WATER_METER", "PIPES",
-        "PV_SYSTEM", "TRACTOR", "COMBINE", "PRECISION_PACKAGE", "PRECISION_GUIDANCE", "PRECISION_SECTION_CONTROL",
-        "PRECISION_VARIABLE_RATE", "IMPLEMENT", "BUILDING", "INSTALLATION_WORKS", "OTHER"
+        "IRRIGATION_SPRINKLER",
+        "IRRIGATION_DRIP",
+        "SOIL_MOISTURE_SENSORS",
+        "PUMP",
+        "SOLAR_PUMP",
+        "WATER_METER",
+        "PIPES",
+        "PV_SYSTEM",
+        "TRACTOR",
+        "COMBINE",
+        "PRECISION_PACKAGE",
+        "PRECISION_GUIDANCE",
+        "PRECISION_SECTION_CONTROL",
+        "PRECISION_VARIABLE_RATE",
+        "IMPLEMENT",
+        "BUILDING",
+        "INSTALLATION_WORKS",
+        "DIGESTER",
+        "COGENERATION",
+        "DIGESTATE_COVER",
+        "REFRIGERATION_UNIT",
+        "INSULATION_PANELS",
+        "HEAT_RECOVERY",
+        "DRYER",
+        "GREENHOUSE_SCREEN",
+        "OTHER"
       ]
     }
   }

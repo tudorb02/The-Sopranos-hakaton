@@ -30,6 +30,10 @@ public class CalcStore {
 
     public Calc create(String runId, String tool, String key, String labelRo, BigDecimal rawValue, Unit unit,
                        String formula, String sourceRo, List<String> dependsOn, List<Calc.SeriesPoint> series) {
+        key = normalizeKey(key);
+        labelRo = cut(labelRo, 160);
+        formula = formula == null ? null : cut(formula, 300);
+        sourceRo = sourceRo == null ? null : cut(sourceRo, 240);
         BigDecimal value = rawValue.setScale(VALUE_SCALE, RoundingMode.HALF_EVEN).stripTrailingZeros();
         if (value.scale() < 0) {
             value = value.setScale(0);
@@ -39,9 +43,19 @@ public class CalcStore {
                 series == null ? List.of() : List.copyOf(series));
         calcsByRun.computeIfAbsent(runId, id -> new LinkedHashMap<>());
         synchronized (calcsByRun.get(runId)) {
-            calcsByRun.get(runId).put(calc.calcId(), calc);
+            // The same computation always has the same id; the first description stays, so the view and the
+            // events of the dossier never disagree.
+            return calcsByRun.get(runId).computeIfAbsent(calc.calcId(), id -> calc);
         }
-        return calc;
+    }
+
+    /** camelCase → snake_case, as the contract requires for keys (^[a-z][a-z0-9_.]{2,80}$). */
+    static String normalizeKey(String key) {
+        return key.replaceAll("([a-z0-9])([A-Z])", "$1_$2").toLowerCase();
+    }
+
+    private static String cut(String text, int max) {
+        return text.length() <= max ? text : text.substring(0, max - 1) + "…";
     }
 
     public Optional<Calc> find(String runId, String calcId) {
@@ -51,6 +65,7 @@ public class CalcStore {
 
     /** The most recent calc with this key, e.g. option_b.installment. */
     public Optional<Calc> latestByKey(String runId, String key) {
+        key = normalizeKey(key);
         List<Calc> all = all(runId);
         for (int i = all.size() - 1; i >= 0; i--) {
             if (all.get(i).key().equals(key)) {

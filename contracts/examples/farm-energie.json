@@ -1,0 +1,226 @@
+{
+  "summary": "Profilul fermei demo „energie”",
+  "value": {
+    "cui": "41726035",
+    "company": {
+      "cui": "41726035",
+      "name": "Avicola Dealul Verde SRL",
+      "legalForm": "SRL",
+      "caen": "0147",
+      "caenLabelRo": "Creșterea păsărilor",
+      "county": "Prahova",
+      "locality": "Dealul Verde",
+      "registeredAt": "2016-05-17",
+      "employees": 22,
+      "turnoverEur": 1450000,
+      "netProfitEur": 96000,
+      "totalAssetsEur": 1900000,
+      "financialYear": 2025,
+      "vatPayer": true,
+      "smeStatus": "SME",
+      "manager": {
+        "age": 47,
+        "installedAt": "2016-05-17"
+      }
+    },
+    "farm": {
+      "totalHa": 3.2,
+      "standardOutputEur": 1380000,
+      "irrigatedNow": false,
+      "currentIrrigation": "NU",
+      "crops": [
+        {
+          "year": 2026,
+          "crop": "incintă fermă (hale)",
+          "ha": 3.2,
+          "yieldTPerHa": 0
+        },
+        {
+          "year": 2025,
+          "crop": "incintă fermă (hale)",
+          "ha": 3.2,
+          "yieldTPerHa": 0
+        },
+        {
+          "year": 2024,
+          "crop": "incintă fermă (hale)",
+          "ha": 3.2,
+          "yieldTPerHa": 0
+        }
+      ],
+      "livestock": [
+        {
+          "species": "PASARI",
+          "heads": 180000
+        }
+      ],
+      "apiaSubsidiesEur": 0
+    },
+    "parcels": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "id": "ph_0207_01",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  26.116,
+                  44.95
+                ],
+                [
+                  26.12,
+                  44.95
+                ],
+                [
+                  26.12,
+                  44.954
+                ],
+                [
+                  26.116,
+                  44.954
+                ],
+                [
+                  26.116,
+                  44.95
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "ph_0207_01",
+            "blockId": "BF-0207",
+            "areaHa": 3.2,
+            "crop": "incintă fermă (hale)",
+            "natura2000": false,
+            "nitrateVulnerable": false,
+            "droughtRisk": "MEDIUM",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "LOW"
+          }
+        }
+      ]
+    },
+    "cashflow": {
+      "months": [
+        {
+          "month": "2025-10",
+          "inflowEur": 118000,
+          "outflowEur": 110000,
+          "netEur": 8000
+        },
+        {
+          "month": "2025-11",
+          "inflowEur": 121000,
+          "outflowEur": 112000,
+          "netEur": 9000
+        },
+        {
+          "month": "2025-12",
+          "inflowEur": 132000,
+          "outflowEur": 121000,
+          "netEur": 11000
+        },
+        {
+          "month": "2026-01",
+          "inflowEur": 116000,
+          "outflowEur": 109000,
+          "netEur": 7000
+        },
+        {
+          "month": "2026-02",
+          "inflowEur": 114000,
+          "outflowEur": 107000,
+          "netEur": 7000
+        },
+        {
+          "month": "2026-03",
+          "inflowEur": 119000,
+          "outflowEur": 111000,
+          "netEur": 8000
+        },
+        {
+          "month": "2026-04",
+          "inflowEur": 120000,
+          "outflowEur": 112000,
+          "netEur": 8000
+        },
+        {
+          "month": "2026-05",
+          "inflowEur": 122000,
+          "outflowEur": 113000,
+          "netEur": 9000
+        },
+        {
+          "month": "2026-06",
+          "inflowEur": 121000,
+          "outflowEur": 112000,
+          "netEur": 9000
+        },
+        {
+          "month": "2026-07",
+          "inflowEur": 123000,
+          "outflowEur": 115000,
+          "netEur": 8000
+        },
+        {
+          "month": "2026-08",
+          "inflowEur": 122000,
+          "outflowEur": 114000,
+          "netEur": 8000
+        },
+        {
+          "month": "2026-09",
+          "inflowEur": 122000,
+          "outflowEur": 113000,
+          "netEur": 9000
+        }
+      ],
+      "annualNetEur": 101000,
+      "avgMonthlyNetEur": 8416.67,
+      "peakMonths": [
+        "DEC",
+        "JUL",
+        "MAY",
+        "AUG"
+      ],
+      "source": "OPEN_BANKING",
+      "mode": "MOCK"
+    },
+    "dataSources": [
+      {
+        "source": "ANAF",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:00Z"
+      },
+      {
+        "source": "APIA",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:00Z"
+      },
+      {
+        "source": "OPEN_BANKING",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:01Z"
+      },
+      {
+        "source": "COPERNICUS",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:01Z"
+      },
+      {
+        "source": "NATURA_2000",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:01Z"
+      },
+      {
+        "source": "NITRATES",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:01Z"
+      }
+    ]
+  }
+}

@@ -468,6 +468,14 @@
         "IMPLEMENT",
         "BUILDING",
         "INSTALLATION_WORKS",
+        "DIGESTER",
+        "COGENERATION",
+        "DIGESTATE_COVER",
+        "REFRIGERATION_UNIT",
+        "INSULATION_PANELS",
+        "HEAT_RECOVERY",
+        "DRYER",
+        "GREENHOUSE_SCREEN",
         "OTHER"
       ]
     }

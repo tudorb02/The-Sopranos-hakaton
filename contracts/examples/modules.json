@@ -688,29 +688,29 @@
       "nameRo": "Utilaje & precizie",
       "icon": "🚜",
       "status": "DEMO_READY",
-      "descriptionRo": "Tractoare eficiente, GPS, dozare variabilă.",
+      "descriptionRo": "Tractor eficient, pilot automat GPS, dozare variabilă.",
       "examplesRo": [
-        "tractoare eficiente",
-        "ghidaj GPS",
-        "doză variabilă"
+        "tractor eficient Stage V",
+        "pilot automat GPS",
+        "dozare variabilă"
       ],
       "indicator": "FUEL_SAVING_PCT",
       "threshold": {
         "kind": "MIN_PCT",
         "value": 20,
         "unit": "PCT",
-        "sourceRo": "config/modules/utilaje.json (propunere; −20% motorină sau îngrășăminte / ha)",
+        "sourceRo": "README §6, categoria 3: reducere ≥ 20% a motorinei pe hectar SAU a azotului pe hectar (propunere, de validat cu mentorii)",
         "demo": true
       },
       "requiredDocs": [
         {
           "docType": "OFFER",
-          "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+          "labelRo": "Oferta / proforma și fișa tehnică a tractorului (cu consumul în l/ha)",
           "required": true
         },
         {
           "docType": "CURRENT_EQUIPMENT",
-          "labelRo": "Ce se înlocuiește: fișă tehnică, poză cu eticheta sau descriere",
+          "labelRo": "Fișa utilajului înlocuit (an de fabricație, putere) sau talonul",
           "required": false
         },
         {
@@ -720,7 +720,7 @@
         },
         {
           "docType": "FERTILIZER_INVOICES",
-          "labelRo": "Facturile de îngrășăminte pe 12 luni",
+          "labelRo": "Facturile de îngrășăminte cu azot pe 12 luni (obligatorii pentru precizie)",
           "required": false
         }
       ],
@@ -733,16 +733,22 @@
           "required": true
         },
         {
-          "questionId": "nitrogen_kg_ha",
-          "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)?",
+          "questionId": "replaced_machine_year",
+          "labelRo": "Anul de fabricație al utilajului înlocuit",
           "type": "NUMBER",
-          "unit": "KG_N_PER_HA",
+          "prefillFrom": "NONE",
+          "required": true
+        },
+        {
+          "questionId": "replaced_machine_hp",
+          "labelRo": "Puterea utilajului înlocuit (CP)",
+          "type": "NUMBER",
           "prefillFrom": "NONE",
           "required": true
         },
         {
           "questionId": "tillage",
-          "labelRo": "Cum lucrați solul?",
+          "labelRo": "Cum lucrați solul? (arătură, lucrare minimă sau no-till)",
           "type": "SINGLE_CHOICE",
           "options": [
             {
@@ -760,6 +766,14 @@
           ],
           "prefillFrom": "NONE",
           "required": true
+        },
+        {
+          "questionId": "nitrogen_kg_ha",
+          "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)? Se folosește doar dacă lipsesc facturile",
+          "type": "NUMBER",
+          "unit": "KG_N_PER_HA",
+          "prefillFrom": "NONE",
+          "required": false
         },
         {
           "questionId": "cover_crops",
@@ -819,7 +833,7 @@
         },
         {
           "questionId": "old_equipment_fate",
-          "labelRo": "Ce faceți cu utilajul vechi și cu deșeurile (ambalaje, folie)?",
+          "labelRo": "Ce faceți cu utilajul înlocuit (casare, vânzare, rezervă)?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
@@ -848,41 +862,6 @@
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": false
-        },
-        {
-          "questionId": "current_tractors",
-          "labelRo": "Câte tractoare aveți acum în fermă?",
-          "type": "NUMBER",
-          "prefillFrom": "NONE",
-          "required": true
-        },
-        {
-          "questionId": "replaced_tractors",
-          "labelRo": "Câte dintre ele scoateți din fermă după investiție? (0 = doar extindeți flota)",
-          "type": "NUMBER",
-          "prefillFrom": "NONE",
-          "required": true
-        },
-        {
-          "questionId": "replaced_fleet_age",
-          "labelRo": "Ce vechime au tractoarele pe care le scoateți?",
-          "type": "SINGLE_CHOICE",
-          "options": [
-            {
-              "value": "ANI_0_7",
-              "labelRo": "sub 8 ani"
-            },
-            {
-              "value": "ANI_8_15",
-              "labelRo": "8–15 ani"
-            },
-            {
-              "value": "PESTE_15_ANI",
-              "labelRo": "peste 15 ani"
-            }
-          ],
-          "prefillFrom": "NONE",
-          "required": true
         },
         {
           "questionId": "loan_term",
