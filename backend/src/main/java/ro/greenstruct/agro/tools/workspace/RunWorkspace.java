@@ -19,6 +19,7 @@ public class RunWorkspace {
 
     private final Map<String, DocumentFacts> documents = new LinkedHashMap<>();
     private final Map<String, JsonNode> extractions = new LinkedHashMap<>();
+    private final Map<String, String> extractionFailures = new LinkedHashMap<>();
     private final Map<String, Configuration> configurations = new LinkedHashMap<>();
     private final Map<String, FinancingOption> options = new LinkedHashMap<>();
     private final Map<String, JsonNode> programChecks = new LinkedHashMap<>();
@@ -37,6 +38,17 @@ public class RunWorkspace {
 
     public synchronized List<JsonNode> extractions() {
         return List.copyOf(extractions.values());
+    }
+
+    /** A document the extractor could not read; it stays unreadable until a later attempt succeeds. */
+    public synchronized void putExtractionFailure(String documentId, String reasonRo) {
+        extractionFailures.put(documentId, reasonRo);
+    }
+
+    public synchronized Map<String, String> unreadableDocuments() {
+        Map<String, String> unreadable = new LinkedHashMap<>(extractionFailures);
+        unreadable.keySet().removeAll(extractions.keySet());
+        return unreadable;
     }
 
     public synchronized Optional<DocumentFacts> document(String documentId) {

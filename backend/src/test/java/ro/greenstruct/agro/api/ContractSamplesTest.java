@@ -127,11 +127,14 @@ class ContractSamplesTest {
         }
     }
 
-    /** A new dossier whose scan has no recorded reading and no Bedrock to read it: the technical agent fails. */
+    /**
+     * A new dossier whose scan has no recorded reading and no Bedrock to read it: the technical agent fails.
+     * The bytes start like a PDF so the upload check lets them through to the agent.
+     */
     private static RequestBuilder unreadableDocuments() {
         return org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart("/api/runs")
                 .file(new org.springframework.mock.web.MockMultipartFile("documents", "scan-1.pdf", "application/pdf",
-                        new byte[]{1, 2, 3}))
+                        "%PDF-1.4 scan".getBytes(java.nio.charset.StandardCharsets.US_ASCII)))
                 .param("cui", "45871203").param("moduleId", "irigatii")
                 .param("parcelIds", "[\"ct_0412_01\"]").param("questionnaire", "{\"irrigation_current\": \"BRAZDE\"}")
                 .param("documentManifest", "[{\"fileName\": \"oferta.pdf\", \"docType\": \"OFFER\"}]");

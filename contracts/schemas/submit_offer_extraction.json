@@ -182,6 +182,8 @@
       "enum": [
         "SUPPLIER_NAME",
         "SUPPLIER_CUI",
+        "RECIPIENT_NAME",
+        "RECIPIENT_CUI",
         "DOCUMENT_NUMBER",
         "DOCUMENT_DATE",
         "VALID_UNTIL",

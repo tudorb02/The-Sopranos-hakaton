@@ -47,11 +47,13 @@ public class RunOrchestrator {
     private final ExecutorService executor;
     private final Duration agentTimeout;
     private final String mode;
+    private final DocumentConformity conformity;
 
     public RunOrchestrator(RunStore store, RunEventPublisher events, FarmProfileService farmProfiles,
                            ModuleRegistry modules, List<Agent> agentBeans, ExecutorService pipelineExecutor,
-                           GreenStructProperties properties) {
+                           GreenStructProperties properties, DocumentConformity conformity) {
         this.store = store;
+        this.conformity = conformity;
         this.events = events;
         this.farmProfiles = farmProfiles;
         this.modules = modules;
@@ -164,6 +166,9 @@ public class RunOrchestrator {
             for (AgentSlot slot : AgentSlot.values()) {
                 current = slot.status();
                 sources.put(slot, runAgent(runId, slot));
+                if (slot == AgentSlot.TECHNICAL_AUDITOR) {
+                    requireConformDocuments(runId);
+                }
             }
             current = RunStatus.GATA;
             Run done = move(runId, RunStatus.GATA, "Ofertele sunt gata; fermierul alege varianta și trimite cererea",
@@ -179,6 +184,16 @@ public class RunOrchestrator {
         } catch (RuntimeException e) {
             log.error("Run {} failed at {}", runId, current, e);
             return fail(runId, current, "INTERNAL", "Eroare internă la pasul " + current, true);
+        }
+    }
+
+    /** After the documents are read: a nonconforming document stops the dossier before any offer is built. */
+    private void requireConformDocuments(String runId) {
+        Run run = store.find(runId).orElseThrow(() -> new RunNotFoundException(runId));
+        List<String> problems = conformity.problems(run);
+        if (!problems.isEmpty()) {
+            throw new StepFailure("DOCUMENTS_NONCONFORMING", "Documente neconforme: " + String.join("; ", problems)
+                    + ". Încarcă documentele corecte și reia cererea.", false);
         }
     }
 

@@ -89,8 +89,9 @@ public class ExtractDocumentTool implements ToolHandler {
         try {
             extraction = reader.extract(document, documents.read(document), context.module());
         } catch (Exception e) {
-            throw new AgentFailureException("DOCUMENT_UNREADABLE", "Documentul " + document.fileName()
-                    + " nu a putut fi citit", true, e);
+            String reason = "Documentul " + document.fileName() + " nu a putut fi citit";
+            context.workspace().putExtractionFailure(documentId, reason);
+            throw new AgentFailureException("DOCUMENT_UNREADABLE", reason, true, e);
         }
         return ingest(extraction, context);
     }

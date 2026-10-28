@@ -142,9 +142,24 @@ class ApiTest {
                 .andExpect(jsonPath("$.models.length()").value(2));
     }
 
+    @Test
+    void rejectsAFileThatIsNotAPdfOrImage() throws Exception {
+        mvc.perform(multipart("/api/runs")
+                        .file(new MockMultipartFile("documents", "oferta.pdf", "application/pdf",
+                                "doar text, nu un PDF".getBytes(java.nio.charset.StandardCharsets.UTF_8)))
+                        .param("cui", "45871203")
+                        .param("moduleId", "irigatii")
+                        .param("parcelIds", "[\"ct_0412_01\"]")
+                        .param("questionnaire", "{}")
+                        .param("documentManifest", "[{\"fileName\": \"oferta.pdf\", \"docType\": \"OFFER\"}]"))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.error.code").value("UNSUPPORTED_FILE_TYPE"));
+    }
+
     static MockMultipartHttpServletRequestBuilder createForm(String cui, String moduleId, String questionnaire) {
         return (MockMultipartHttpServletRequestBuilder) multipart("/api/runs")
-                .file(new MockMultipartFile("documents", "scan-1.pdf", "application/pdf", new byte[]{1, 2, 3}))
+                .file(new MockMultipartFile("documents", "scan-1.pdf", "application/pdf",
+                        "%PDF-1.4 test".getBytes(java.nio.charset.StandardCharsets.US_ASCII)))
                 .param("cui", cui)
                 .param("moduleId", moduleId)
                 .param("parcelIds", "[\"ct_0412_01\", \"ct_0412_02\"]")

@@ -357,7 +357,7 @@
             "EUR_PER_KWH",
             "EUR_PER_HA",
             "PCT",
-        "PP",
+            "PP",
             "RATIO",
             "M3",
             "M3_PER_YEAR",
@@ -384,14 +384,14 @@
             "YEARS",
             "COUNT",
             "POINTS",
-        "KWH_PER_T",
-        "KWH_PER_M2",
-        "KG_CH4_PER_YEAR",
-        "MWH_PER_YEAR",
-        "T",
-        "M2",
-        "EUR_PER_KG",
-        "EUR_PER_KG_N"
+            "KWH_PER_T",
+            "KWH_PER_M2",
+            "KG_CH4_PER_YEAR",
+            "MWH_PER_YEAR",
+            "T",
+            "M2",
+            "EUR_PER_KG",
+            "EUR_PER_KG_N"
           ]
         },
         "display": {
@@ -938,6 +938,7 @@
           "enum": [
             "FARM_DATA_UNAVAILABLE",
             "DOCUMENT_UNREADABLE",
+            "DOCUMENTS_NONCONFORMING",
             "AGENT_INVALID_OUTPUT",
             "AGENT_MAX_ITERATIONS",
             "BEDROCK_UNAVAILABLE",
@@ -947,7 +948,7 @@
         },
         "messageRo": {
           "type": "string",
-          "maxLength": 300
+          "maxLength": 1000
         },
         "retryable": {
           "type": "boolean"

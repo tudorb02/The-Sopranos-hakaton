@@ -53,6 +53,11 @@ public class ApiExceptionHandler {
         return error(HttpStatus.BAD_REQUEST, "VALIDATION_ERROR", message);
     }
 
+    @ExceptionHandler(UploadedFileType.UnsupportedFileTypeException.class)
+    public ResponseEntity<ApiError> unsupportedFile(UploadedFileType.UnsupportedFileTypeException e) {
+        return error(HttpStatus.UNPROCESSABLE_ENTITY, "UNSUPPORTED_FILE_TYPE", e.getMessage());
+    }
+
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ApiError> conflict(IllegalStateException e) {
         return error(HttpStatus.CONFLICT, "INVALID_STATE", e.getMessage());

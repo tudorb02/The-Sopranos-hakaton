@@ -201,7 +201,12 @@ public class RunController {
     private StoredDocument store(String docType, String manifestName, MultipartFile file) {
         String fileName = manifestName != null && !manifestName.isBlank() ? manifestName : file.getOriginalFilename();
         try {
-            return documents.save(null, docType, fileName, file.getContentType(), file.getBytes());
+            byte[] content = file.getBytes();
+            if (!UploadedFileType.isPdfOrImage(content)) {
+                throw new UploadedFileType.UnsupportedFileTypeException("Fișierul " + fileName
+                        + " nu este un PDF sau o imagine (JPEG, PNG); încarcă documentul original");
+            }
+            return documents.save(null, docType, fileName, file.getContentType(), content);
         } catch (IOException e) {
             throw new UncheckedIOException("Cannot read uploaded file " + fileName, e);
         }

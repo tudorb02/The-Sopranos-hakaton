@@ -22,6 +22,10 @@ public final class ExtractionParser {
 
     private static final Set<String> TEXT_UNITS = Set.of("TEXT", "DATE", "BOOL");
     private static final Pattern NUMBER = Pattern.compile("\\d[\\d.]*(,\\d+)?");
+    private static final Set<String> INVOICE_TYPES = Set.of("ENERGY_INVOICES", "FUEL_INVOICES", "FERTILIZER_INVOICES",
+            "WATER_CONSUMPTION");
+    private static final List<String> INVOICE_TOTALS = List.of("ENERGY_KWH", "ENERGY_COST", "FUEL_LITRES", "FUEL_COST",
+            "FERTILIZER_KG_N", "WATER_M3");
 
     private ExtractionParser() {
     }
@@ -39,8 +43,25 @@ public final class ExtractionParser {
             lines.add(new DocumentFacts.LineFacts(line.path("lineId").asText(), line.path("category").asText(),
                     line.path("descriptionRo").asText(), lineNumbers, lineTexts));
         }
-        return new DocumentFacts(extraction.path("documentId").asText(), extraction.path("documentType").asText(),
-                numbers, texts, lines);
+        String docType = extraction.path("documentType").asText();
+        if (INVOICE_TYPES.contains(docType)) {
+            sumInvoiceLines(lines, numbers);
+        }
+        return new DocumentFacts(extraction.path("documentId").asText(), docType, numbers, texts, lines);
+    }
+
+    /**
+     * A file with several invoices has one line per invoice (prompts/extraction.md): the 12-month total is their
+     * sum, done here and not by the model. A total the model copied from a single page would undercount.
+     */
+    private static void sumInvoiceLines(List<DocumentFacts.LineFacts> lines, Map<String, BigDecimal> numbers) {
+        for (String key : INVOICE_TOTALS) {
+            List<BigDecimal> values = lines.stream().map(line -> line.numbers().get(key))
+                    .filter(java.util.Objects::nonNull).toList();
+            if (values.size() >= 2) {
+                numbers.put(key, values.stream().reduce(BigDecimal.ZERO, BigDecimal::add));
+            }
+        }
     }
 
     /**
