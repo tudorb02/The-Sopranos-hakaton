@@ -41,7 +41,7 @@ Deschide http://localhost:5173. `npm run build` produce versiunea statică în `
 | `#/extrase` | Gestionarea extraselor, deschisă din Profil |
 | `#/chat` | Discuția cu coach-ul, pe tot ecranul |
 
-Pentru demo: deschide aplicația și intră ca persoană fizică, apoi ca persoană juridică. Linkul „Schimbă contul” de deasupra aplicației te duce înapoi la login.
+Pentru demo: deschide aplicația și intră ca persoană fizică, apoi ca persoană juridică. Iconița „Ieși din cont” din antetul Produse te duce înapoi la login. Mențiunea „prototip, date fictive, neafiliat Raiffeisen Bank” apare doar în nota de pe ecranul de login.
 
 Informarea apare:
 - pe scurt, într-o bandă fixă deasupra barei de jos pe toate paginile coach-ului și sus în discuție;

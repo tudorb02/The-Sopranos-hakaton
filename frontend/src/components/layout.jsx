@@ -18,21 +18,10 @@ const APP_TABS = [
   { id: "produse", label: "Produse", icon: "grid" },
 ];
 
-// The phone-width column, with the prototype note above it. `productsHref` is where Produse points.
-function Stage({ children, switchAccount = true }) {
+// The phone-width column; on desktop it sits in a frame.
+function Stage({ children }) {
   return (
     <div className="stage">
-      <p className="stage-note">
-        Concept de extensie pentru Smart Mobile · prototip de hackathon · date fictive · neafiliat Raiffeisen Bank
-        {switchAccount ? (
-          <>
-            {" · "}
-            <a className="link" href="#/login">
-              Schimbă contul
-            </a>
-          </>
-        ) : null}
-      </p>
       <div className="app">{children}</div>
     </div>
   );
@@ -69,7 +58,7 @@ function TabBar({ productsHref }) {
 // The simulated sign-in: no header or tab bar.
 export function BareFrame({ children }) {
   return (
-    <Stage switchAccount={false}>
+    <Stage>
       <main className="bare-main">{children}</main>
     </Stage>
   );
@@ -84,12 +73,17 @@ export function ProductsFrame({ title = "Produse", subtitle, productsHref = "#/p
           <h1 className="app-title">{title}</h1>
           {subtitle ? <p className="small muted">{subtitle}</p> : null}
         </div>
-        <button type="button" className="icon-btn" aria-label="Mesaje, 1 necitit">
-          <Icon name="mail" />
-          <span className="badge" aria-hidden="true">
-            1
-          </span>
-        </button>
+        <div className="header-actions">
+          <button type="button" className="icon-btn" aria-label="Mesaje, 1 necitit">
+            <Icon name="mail" />
+            <span className="badge" aria-hidden="true">
+              1
+            </span>
+          </button>
+          <a className="icon-btn" href="#/login" aria-label="Ieși din cont" title="Ieși din cont">
+            <Icon name="logout" />
+          </a>
+        </div>
       </header>
       <main>{children}</main>
       <TabBar productsHref={productsHref} />

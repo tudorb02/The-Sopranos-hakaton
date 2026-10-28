@@ -4,7 +4,7 @@
 export const login = {
   title: "Bine ai revenit",
   lead: "Alege contul cu care intri în demo.",
-  note: "Prototip: nu se cer date de autentificare. În aplicația reală, intri cu PIN sau biometrie.",
+  note: "Prototip de hackathon cu date fictive, neafiliat Raiffeisen Bank. Nu se cer date de autentificare; în aplicația reală intri cu PIN sau biometrie.",
 };
 
 export const accounts = {
