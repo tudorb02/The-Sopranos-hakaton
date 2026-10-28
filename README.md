@@ -293,7 +293,7 @@ Pentru fiecare categorie:
 - **E. Creditul verde**: fondul și cerința pe care o acoperim
 - **F. Ce câștigă banca**
 
-**Constante comune** (`config/constants.json`, valori de pornire, de confirmat):
+**Constante comune** (`config/factors.json`, valori de pornire, de confirmat):
 
 | Constantă | Valoare | Ce înseamnă |
 |---|---|---|
@@ -646,12 +646,16 @@ The-Sopranos-hakaton/  (branch B2B_Agro)
 │       ├── engine/             # MOTORUL DE CALCUL (BigDecimal, cu teste)
 │       │   ├── finance/        # anuitate, rate sezoniere, comparație clasic vs. verde
 │       │   ├── funding/        # grant, cofinanțare, punte, garanție, de minimis
-│       │   ├── irrigation/  machinery/  impact/  affordability/
+│       │   ├── pricing/  greentier/  affordability/   # dobânda pe componente, nivelurile verzi, DSCR
+│       │   ├── irrigation/  energy/  machinery/  livestock/  postharvest/  organic/   # câte un calculator pe categorie
+│       │   ├── impact/  upgrade/  monitoring/  portfolio/  sme/
+│       ├── agents/rules/       # agenții pe reguli (fără model): ultimul nivel al planului B, rulează tot offline
+│       ├── bedrock/            # agenții Bedrock, bucla de unelte, reluare, cache, rulări înregistrate
 │       ├── modules/            # încărcarea config-ului pe modul (categorie)
 │       ├── external/           # porturi + ANAF live (anaf/) + mock-uri (mock/)
 │       ├── farm/  storage/  demo/  config/
 ├── contracts/                  # openapi.yaml, schemas/, events.md, fixtures/, examples/
-├── config/                     # modules/*.json, financing-lines.json, funding-programs.json, factors.json, prices.json
+├── config/                     # modules/*.json, financing-lines.json, funding-programs.json, funds.json, pricing.json, monitoring.json, factors.json, prices.json
 └── data/
     ├── catalog/                # upgrade-urile pe modul
     └── demo/                   # fermele demo, scenariile, documentele demo
@@ -667,12 +671,14 @@ Definiția completă e în `contracts/openapi.yaml`.
 | `GET /api/farms/{cui}` | profilul firmei: ANAF (live sau mock demo), parcele APIA, cashflow Open Banking |
 | `POST /api/runs` | creează un dosar (multipart: CUI, modul, parcele, chestionar, documente) și întoarce `runId` |
 | `POST /api/runs/demo/{scenario}` | încarcă dosarul demo (`irigatii` / `utilaje`) |
-| `GET /api/runs/{id}` | starea completă a dosarului, cu cifrele rezolvate |
+| `GET /api/runs/{id}` | starea completă a dosarului, cu cifrele rezolvate. `?view=sme` = ce vede IMM-ul (fără fonduri, fără raportul ofițerului) |
 | `GET /api/runs/{id}/events` | evenimentele live (SSE, cu reluare prin `Last-Event-ID`) |
-| `POST /api/runs/{id}/approve` · `/request-documents` | acțiunile ofițerului |
+| `POST /api/runs/{id}/submit` | IMM-ul trimite varianta aleasă (`CLASIC` / `VERDE`): `GATA → TRIMIS` |
+| `POST /api/runs/{id}/approve` · `/request-documents` | acțiunile ofițerului, doar din `TRIMIS` |
+| `GET /api/runs/{id}/report.pdf` | raportul verde în PDF, după aprobare |
+| `POST /api/runs/{id}/simulate-monitoring` | „Simulează 12 luni”: impact real față de estimat și bonusul de impact |
+| `GET /api/portfolio` | credite verzi pe categorii, sume pe fonduri, impact total |
 | `GET /api/health/bedrock` | starea Bedrock înainte de demo |
-
-De adăugat în contract: `POST /api/runs/{id}/submit` (IMM-ul trimite varianta aleasă) și `GET /api/portfolio` (totalurile pentru portofoliu).
 
 **Evenimente live:** `state.transition` · `agent.started` · `agent.thought` · `agent.tool_call` · `agent.tool_result` · `agent.completed` · `agent.degraded` · `run.completed` · `run.failed`
 
@@ -744,7 +750,7 @@ Deciziile luate pentru versiunea de hackathon. Ce nu e scris aici urmează restu
 
 | Decizie | Detaliu |
 |---|---|
-| **Merge complet fără AWS** | agenții rulează din rulările demo înregistrate. Bedrock se activează punând cheile în `.env` |
+| **Merge complet fără AWS** | fără chei, agenții rulează din rulările demo înregistrate (`data/demo/golden/`) sau, dacă nu există, din agenți pe reguli care cheamă aceleași unelte; cifrele se recalculează mereu live. Bedrock se activează punând cheile în `.env` |
 | **ANAF live, restul mock-uri** | ANAF are API public: datele firmei (identitate, CAEN, TVA, stare fiscală, bilanț) vin live, cu cache și cu răspunsul anterior dacă ANAF pică. APIA, ANSVSA, Open Banking și hărțile de risc rămân mock-uri cu interfața serviciului real. `GREENSTRUCT_ANAF_ENABLED=false` oprește ANAF pentru demo-ul offline |
 | **Fără login, fără bază de date** | vezi [§11](#11-arhitectura-tehnică) |
 | **PDF-uri demo generate de un script** | din aceleași date JSON ca mock-urile, ca cifrele să fie mereu identice |
@@ -771,12 +777,12 @@ Deciziile luate pentru versiunea de hackathon. Ce nu e scris aici urmează restu
 
 | Ipoteză | Unde se folosește | Unde se schimbă |
 |---|---|---|
-| Pragurile verzi: 25% apă, 20% motorină / azot / energie, 50% metan | §6, nivelurile verzi | `backend/src/categories/*.json` |
+| Pragurile verzi: 25% apă, 20% motorină / azot / energie, 50% metan | §6, nivelurile verzi | `config/modules/*.json` |
 | Procentul garanției FEI (70% în exemplu) și comisionul ei | dobânda verde | `config/funds.json` |
 | Parametrii dobânzii (PD, LGD, ponderi de risc, cost de finanțare, subvenții) | dobânda verde | `config/pricing.json` |
 | F4 (irigații cu FEI) e încă activ; banca finanțează cofinanțarea AFIR (F6) | fondurile propuse | `config/funds.json` |
 | Încadrarea categoriilor pe categoriile din cadrul obligațiunilor verzi | raportul ofițerului | `config/funds.json` |
-| Factorii de emisie și eficiențele | impactul | `config/constants.json` |
+| Factorii de emisie și eficiențele | impactul | `config/factors.json` și `config/modules/*.json` |
 
 ### Întrebări pentru mentorii Raiffeisen
 
