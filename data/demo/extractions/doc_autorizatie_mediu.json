@@ -1,0 +1,33 @@
+{
+  "documentId": "doc_autorizatie_mediu",
+  "documentType": "ENVIRONMENTAL_PERMIT",
+  "moduleId": "zootehnie",
+  "currency": "EUR",
+  "supplierName": "Agenția pentru Protecția Mediului DEMO",
+  "documentFields": [
+    {
+      "key": "DOCUMENT_NUMBER",
+      "rawValue": "AM-DEMO-42/2024",
+      "unit": "TEXT",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "DOCUMENT_DATE",
+      "rawValue": "17.06.2024",
+      "unit": "DATE",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "PERMIT_NUMBER",
+      "rawValue": "AM-DEMO-42/2024",
+      "unit": "TEXT",
+      "page": 1,
+      "confidence": "HIGH"
+    }
+  ],
+  "lineItems": [],
+  "missingFields": [],
+  "warnings": []
+}

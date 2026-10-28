@@ -1,0 +1,363 @@
+{
+  "documentId": "doc_facturi_energie_avicola",
+  "documentType": "ENERGY_INVOICES",
+  "moduleId": "energie",
+  "currency": "EUR",
+  "supplierName": "Energie Demo Furnizare SA",
+  "documentFields": [
+    {
+      "key": "ENERGY_KWH",
+      "rawValue": "215.000 kWh",
+      "unit": "KWH",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "ENERGY_COST",
+      "rawValue": "40.850 EUR",
+      "unit": "EUR",
+      "page": 1,
+      "confidence": "HIGH"
+    }
+  ],
+  "lineItems": [
+    {
+      "lineId": "ln_1",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-25-10-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.10.2025",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "15.000 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "2.850 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_2",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-25-11-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.11.2025",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "15.500 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "2.945 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_3",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-25-12-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.12.2025",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "18.500 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "3.515 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_4",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-26-01-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.01.2026",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "19.000 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "3.610 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_5",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-26-02-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.02.2026",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "17.000 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "3.230 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_6",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-26-03-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.03.2026",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "16.000 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "3.040 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_7",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-26-04-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.04.2026",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "15.000 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "2.850 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_8",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-26-05-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.05.2026",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "17.000 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "3.230 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_9",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-26-06-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.06.2026",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "20.000 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "3.800 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_10",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-26-07-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.07.2026",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "23.000 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "4.370 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_11",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-26-08-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.08.2026",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "22.000 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "4.180 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_12",
+      "category": "OTHER",
+      "descriptionRo": "Factură energie ED-26-09-2207",
+      "fields": [
+        {
+          "key": "PERIOD_FROM",
+          "rawValue": "01.09.2026",
+          "unit": "DATE",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_KWH",
+          "rawValue": "17.000 kWh",
+          "unit": "KWH",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "ENERGY_COST",
+          "rawValue": "3.230 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    }
+  ],
+  "missingFields": [],
+  "warnings": []
+}

@@ -66,6 +66,9 @@ public class SimulateUpgradePackageTool implements ToolHandler {
         result.put("configId", configId);
         result.put("thresholdResult", cfg.passesThreshold() ? "PASS" : "FAIL");
         result.put("meetsSafetyMargin", ConfigurationMetrics.meetsSafetyMargin(context, cfg));
+        if (cfg.metrics().containsKey("hp_per_ha") || cfg.metrics().containsKey("export_share_pct")) {
+            result.put("sizing", ConfigurationMetrics.sizingOk(context, cfg.metrics()) ? "PASS" : "FAIL");
+        }
         return context.ok(result, "Configurația " + configId + (cfg.passesThreshold() ? " trece" : " nu trece")
                 + " pragul verde");
     }
