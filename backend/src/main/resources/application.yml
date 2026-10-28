@@ -26,6 +26,13 @@ greenstruct:
     region: ${GREENSTRUCT_BEDROCK_REGION:eu-central-1}
     agent-model-id: ${GREENSTRUCT_AGENT_MODEL_ID:}
     extraction-model-id: ${GREENSTRUCT_EXTRACTION_MODEL_ID:}
+    # Second model for the agents when the first keeps failing; empty = the extraction model.
+    fallback-model-id: ${GREENSTRUCT_FALLBACK_MODEL_ID:}
+  # true = after a successful LIVE run of a demo dossier, write data/demo/golden/<scenario>/<agent>.json
+  record-golden: ${GREENSTRUCT_RECORD_GOLDEN:false}
+  agent-runtime:
+    max-iterations: 8        # Converse calls per agent
+    replay-delay: 350ms      # pause between replayed events, so the timeline looks live
   # Real ANAF lookup for any CUI that is not a demo farm; false = everything from data/demo/farms (offline demo).
   anaf:
     enabled: ${GREENSTRUCT_ANAF_ENABLED:true}
@@ -39,7 +46,7 @@ greenstruct:
     data: ../data
     uploads: ${java.io.tmpdir}/greenstruct-agro-uploads
   agents:
-    timeout: 90s
+    timeout: 240s            # one agent = up to 8 Converse calls plus retries
   cors:
     allowed-origins:
       - http://localhost:5173

@@ -26,6 +26,7 @@ import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.bedrockruntime.BedrockRuntimeClient;
+import software.amazon.awssdk.services.bedrockruntime.auth.scheme.BedrockRuntimeAuthSchemeProvider;
 import software.amazon.awssdk.services.bedrockruntime.model.ContentBlock;
 import software.amazon.awssdk.services.bedrockruntime.model.ConversationRole;
 import software.amazon.awssdk.services.bedrockruntime.model.ConverseRequest;
@@ -73,8 +74,12 @@ public class SdkBedrockGateway implements BedrockGateway {
                         // our loop retries and tells the timeline; the SDK must not retry silently
                         .retryStrategy(AwsRetryStrategy.doNotRetry())
                         .apiCallTimeout(callTimeout.plusSeconds(10)));
-        if (apiKey != null && !apiKey.isBlank()) {
-            builder.tokenProvider(StaticTokenProvider.create(new ApiKey(apiKey.strip())));
+        if (apiKey == null || apiKey.isBlank()) {
+            builder.credentialsProvider(BedrockAvailableCondition.credentialsChain());
+        } else {
+            builder.tokenProvider(StaticTokenProvider.create(new ApiKey(apiKey.strip())))
+                    // without this preference the SDK still tries SigV4 first and asks for AWS credentials
+                    .authSchemeProvider(BedrockRuntimeAuthSchemeProvider.defaultProvider(List.of("httpBearerAuth")));
         }
         return new SdkBedrockGateway(builder.build(), mapper);
     }

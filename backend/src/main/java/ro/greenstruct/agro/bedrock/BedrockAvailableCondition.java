@@ -4,7 +4,13 @@ import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
-import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
+import software.amazon.awssdk.auth.credentials.ContainerCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.SystemPropertyCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.WebIdentityTokenFileCredentialsProvider;
 
 /**
  * True when Bedrock can be called: not disabled with greenstruct.bedrock.enabled=false, and either a Bedrock
@@ -30,9 +36,20 @@ public class BedrockAvailableCondition implements Condition {
         return apiKey(environment) != null || defaultCredentialsExist();
     }
 
+    /**
+     * The default chain without the EC2 metadata step, which only adds seconds of timeout on a laptop
+     * without AWS: system properties, environment, web identity, profile (~/.aws), container.
+     */
+    public static AwsCredentialsProvider credentialsChain() {
+        return AwsCredentialsProviderChain.builder().credentialsProviders(
+                SystemPropertyCredentialsProvider.create(), EnvironmentVariableCredentialsProvider.create(),
+                WebIdentityTokenFileCredentialsProvider.create(), ProfileCredentialsProvider.create(),
+                ContainerCredentialsProvider.builder().build()).build();
+    }
+
     private static boolean defaultCredentialsExist() {
-        try (DefaultCredentialsProvider provider = DefaultCredentialsProvider.builder().build()) {
-            return provider.resolveCredentials() != null;
+        try {
+            return credentialsChain().resolveCredentials() != null;
         } catch (RuntimeException e) {
             return false;
         }
