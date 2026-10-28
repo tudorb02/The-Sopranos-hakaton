@@ -58,6 +58,11 @@ public final class LivestockCalculator {
         return requireNonNegative(heads, "heads").multiply(requireNonNegative(kwhPerHead, "kwhPerHead"), MC);
     }
 
+    /** Nitrogen in the digestate that replaces mineral fertiliser = heads × kg N per head. */
+    public static BigDecimal nitrogenKg(BigDecimal heads, BigDecimal kgNPerHead) {
+        return requireNonNegative(heads, "heads").multiply(requireNonNegative(kgNPerHead, "kgNPerHead"), MC);
+    }
+
     /** The farm uses its own electricity first; the rest is sold. */
     public static EnergyUse energyUse(BigDecimal producedKwh, BigDecimal farmConsumptionKwh) {
         requireNonNegative(producedKwh, "producedKwh");

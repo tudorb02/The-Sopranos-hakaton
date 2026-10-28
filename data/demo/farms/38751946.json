@@ -1,0 +1,248 @@
+{
+  "cui": "38751946",
+  "company": {
+    "cui": "38751946",
+    "name": "Livezile Argeș Demo SRL",
+    "legalForm": "SRL",
+    "caen": "0124",
+    "caenLabelRo": "Cultivarea fructelor semințoase și sâmburoase",
+    "county": "Argeș",
+    "locality": "Livezi Demo",
+    "registeredAt": "2012-09-03",
+    "employees": 16,
+    "turnoverEur": 410000,
+    "netProfitEur": 39000,
+    "totalAssetsEur": 760000,
+    "financialYear": 2025,
+    "vatPayer": true,
+    "manager": {
+      "age": 49,
+      "installedAt": "2012-09-03"
+    }
+  },
+  "farm": {
+    "totalHa": 35.8,
+    "standardOutputEur": 150000,
+    "irrigatedNow": false,
+    "currentIrrigation": "NU",
+    "crops": [
+      {
+        "year": 2026,
+        "crop": "meri",
+        "ha": 35,
+        "yieldTPerHa": 22
+      }
+    ],
+    "livestock": [],
+    "apiaSubsidiesEur": 7400
+  },
+  "parcels": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "id": "ag_3001",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.868,
+                44.902
+              ],
+              [
+                24.8715,
+                44.902
+              ],
+              [
+                24.8715,
+                44.9056
+              ],
+              [
+                24.868,
+                44.9056
+              ],
+              [
+                24.868,
+                44.902
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "parcelId": "ag_3001",
+          "blockId": "BF-3001",
+          "areaHa": 35,
+          "crop": "meri",
+          "natura2000": false,
+          "nitrateVulnerable": false,
+          "droughtRisk": "MEDIUM",
+          "hailRisk": "HIGH",
+          "floodRisk": "LOW",
+          "waterStress": "LOW"
+        }
+      },
+      {
+        "type": "Feature",
+        "id": "ag_3002",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.875,
+                44.897
+              ],
+              [
+                24.8785,
+                44.897
+              ],
+              [
+                24.8785,
+                44.9006
+              ],
+              [
+                24.875,
+                44.9006
+              ],
+              [
+                24.875,
+                44.897
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "parcelId": "ag_3002",
+          "blockId": "BF-3001",
+          "areaHa": 0.8,
+          "crop": "incintă depozit",
+          "natura2000": false,
+          "nitrateVulnerable": false,
+          "droughtRisk": "MEDIUM",
+          "hailRisk": "HIGH",
+          "floodRisk": "LOW",
+          "waterStress": "LOW"
+        }
+      }
+    ]
+  },
+  "cashflow": {
+    "months": [
+      {
+        "month": "2025-10",
+        "inflowEur": 52000,
+        "outflowEur": 34000,
+        "netEur": 18000
+      },
+      {
+        "month": "2025-11",
+        "inflowEur": 48000,
+        "outflowEur": 30000,
+        "netEur": 18000
+      },
+      {
+        "month": "2025-12",
+        "inflowEur": 55000,
+        "outflowEur": 28000,
+        "netEur": 27000
+      },
+      {
+        "month": "2026-01",
+        "inflowEur": 46000,
+        "outflowEur": 24000,
+        "netEur": 22000
+      },
+      {
+        "month": "2026-02",
+        "inflowEur": 44000,
+        "outflowEur": 24000,
+        "netEur": 20000
+      },
+      {
+        "month": "2026-03",
+        "inflowEur": 40000,
+        "outflowEur": 30000,
+        "netEur": 10000
+      },
+      {
+        "month": "2026-04",
+        "inflowEur": 12000,
+        "outflowEur": 34000,
+        "netEur": -22000
+      },
+      {
+        "month": "2026-05",
+        "inflowEur": 6000,
+        "outflowEur": 32000,
+        "netEur": -26000
+      },
+      {
+        "month": "2026-06",
+        "inflowEur": 5000,
+        "outflowEur": 30000,
+        "netEur": -25000
+      },
+      {
+        "month": "2026-07",
+        "inflowEur": 8000,
+        "outflowEur": 30000,
+        "netEur": -22000
+      },
+      {
+        "month": "2026-08",
+        "inflowEur": 34000,
+        "outflowEur": 36000,
+        "netEur": -2000
+      },
+      {
+        "month": "2026-09",
+        "inflowEur": 60000,
+        "outflowEur": 40000,
+        "netEur": 20000
+      }
+    ],
+    "annualNetEur": 38000,
+    "avgMonthlyNetEur": 3167,
+    "peakMonths": [
+      "SEP",
+      "OCT",
+      "NOV",
+      "DEC"
+    ],
+    "source": "OPEN_BANKING",
+    "mode": "MOCK"
+  },
+  "dataSources": [
+    {
+      "source": "ANAF",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:00Z"
+    },
+    {
+      "source": "APIA",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:00Z"
+    },
+    {
+      "source": "OPEN_BANKING",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:01Z"
+    },
+    {
+      "source": "COPERNICUS",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:01Z"
+    },
+    {
+      "source": "NATURA_2000",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:01Z"
+    },
+    {
+      "source": "NITRATES",
+      "mode": "MOCK",
+      "fetchedAt": "2026-10-28T10:30:01Z"
+    }
+  ]
+}

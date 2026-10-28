@@ -41,7 +41,8 @@ public class ComputeBaselineTool implements ToolHandler {
     @Override
     public String description() {
         return "Computes today's consumption on the selected parcels (water and energy for irrigation, diesel and "
-                + "nitrogen for machinery) from norms and the extracted invoices. Extract the invoices first.";
+                + "nitrogen for machinery, manure methane for livestock, energy per tonne for post-harvest) from norms, "
+                + "the questionnaire and the extracted invoices. Extract the invoices first.";
     }
 
     @Override

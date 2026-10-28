@@ -62,6 +62,12 @@ class LivestockCalculatorTest {
     }
 
     @Test
+    void nitrogenInDigestateIsHeadsTimesKgNPerHead() {
+        // 150 × 40 = 6,000 kg N
+        assertThat(LivestockCalculator.nitrogenKg(bd("150"), bd("40"))).isEqualByComparingTo("6000");
+    }
+
+    @Test
     void farmUsesItsOwnEnergyFirstAndSellsTheRest() {
         EnergyUse use = LivestockCalculator.energyUse(bd("225000"), bd("120000"));
 

@@ -2,7 +2,7 @@
   "moduleId": "zootehnie",
   "nameRo": "Zootehnie & biogaz",
   "icon": "🐄",
-  "status": "CONFIG_ONLY",
+  "status": "DEMO_READY",
   "descriptionRo": "Digestor, stocarea gunoiului de grajd.",
   "examplesRo": [
     "digestor",
@@ -11,9 +11,9 @@
   "indicator": "EMISSION_REDUCTION_PCT",
   "threshold": {
     "kind": "MIN_PCT",
-    "value": 20,
+    "value": 50,
     "unit": "PCT",
-    "sourceRo": "reducere emisii + valorificare deșeuri (demo)",
+    "sourceRo": "README §6, categoria 4: reducere de metan ≥ 50% pe gestionarea gunoiului de grajd și gunoi valorificat (energie sau îngrășământ); prag demo, de confirmat cu Raiffeisen",
     "demo": true
   },
   "requiredDocs": [
@@ -23,149 +23,72 @@
       "required": true
     },
     {
-      "docType": "CURRENT_EQUIPMENT",
-      "labelRo": "Ce se înlocuiește: fișă tehnică, poză cu eticheta sau descriere",
-      "required": false
-    },
-    {
-      "docType": "CURRENT_EQUIPMENT",
-      "labelRo": "Sistemul actual de stocare a gunoiului de grajd",
-      "required": true
-    },
-    {
       "docType": "ENVIRONMENTAL_PERMIT",
-      "labelRo": "Autorizația de mediu",
+      "labelRo": "Autorizația de mediu (sau cererea depusă)",
       "required": true
+    },
+    {
+      "docType": "ENERGY_INVOICES",
+      "labelRo": "Facturile de energie pe 12 luni (dacă biogazul produce energie pentru fermă)",
+      "required": false
     }
   ],
   "questionnaire": [
     {
-      "questionId": "crops_main",
-      "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
-      "type": "TEXT",
-      "prefillFrom": "APIA",
-      "required": true
-    },
-    {
-      "questionId": "nitrogen_kg_ha",
-      "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)?",
-      "type": "NUMBER",
-      "unit": "KG_N_PER_HA",
-      "prefillFrom": "NONE",
-      "required": true
-    },
-    {
-      "questionId": "tillage",
-      "labelRo": "Cum lucrați solul?",
-      "type": "SINGLE_CHOICE",
-      "options": [
-        {
-          "value": "ARATURA",
-          "labelRo": "arătură"
-        },
-        {
-          "value": "MINIMA",
-          "labelRo": "lucrare minimă"
-        },
-        {
-          "value": "NO_TILL",
-          "labelRo": "no-till"
-        }
-      ],
-      "prefillFrom": "NONE",
-      "required": true
-    },
-    {
-      "questionId": "cover_crops",
-      "labelRo": "Folosiți culturi de acoperire sau rotație?",
-      "type": "SINGLE_CHOICE",
-      "options": [
-        {
-          "value": "DA",
-          "labelRo": "da"
-        },
-        {
-          "value": "ROTATIE",
-          "labelRo": "doar rotație"
-        },
-        {
-          "value": "NU",
-          "labelRo": "nu"
-        }
-      ],
-      "prefillFrom": "APIA",
-      "required": false
-    },
-    {
-      "questionId": "irrigation_current",
-      "labelRo": "Irigați acum? Cu ce sistem?",
-      "type": "SINGLE_CHOICE",
-      "options": [
-        {
-          "value": "NU",
-          "labelRo": "nu irig"
-        },
-        {
-          "value": "ASPERSIE_VECHE",
-          "labelRo": "aspersie veche"
-        },
-        {
-          "value": "ASPERSIE",
-          "labelRo": "aspersie"
-        },
-        {
-          "value": "PICURARE",
-          "labelRo": "picurare"
-        },
-        {
-          "value": "BRAZDE",
-          "labelRo": "pe brazde"
-        }
-      ],
-      "prefillFrom": "APIA",
-      "required": true
-    },
-    {
-      "questionId": "crop_insurance",
-      "labelRo": "Aveți asigurare pentru culturi?",
+      "questionId": "livestock_confirmed",
+      "labelRo": "Confirmați numărul și specia animalelor din registrul ANSVSA?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": true
     },
     {
-      "questionId": "certifications",
-      "labelRo": "Aveți certificări?",
-      "type": "MULTI_CHOICE",
+      "questionId": "manure_storage",
+      "labelRo": "Cum stocați acum gunoiul de grajd?",
+      "type": "SINGLE_CHOICE",
       "options": [
         {
-          "value": "ECOLOGIC",
-          "labelRo": "ecologic"
+          "value": "PLATFORMA_DESCOPERITA",
+          "labelRo": "platformă descoperită (gunoi solid)"
         },
         {
-          "value": "GLOBALGAP",
-          "labelRo": "GlobalGAP"
+          "value": "BAZIN_DESCOPERIT",
+          "labelRo": "bazin descoperit (dejecții lichide)"
         },
         {
-          "value": "NICIUNA",
-          "labelRo": "niciuna"
+          "value": "MIXT_DESCOPERIT",
+          "labelRo": "platformă descoperită pentru gunoiul solid și bazin descoperit pentru dejecțiile lichide"
         }
       ],
       "prefillFrom": "NONE",
-      "required": false
+      "required": true
     },
     {
-      "questionId": "offtake_contracts",
-      "labelRo": "Aveți contracte de vânzare cu procesatori sau retaileri?",
+      "questionId": "digestate_use",
+      "labelRo": "Ce faceți cu digestatul?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "INGRASAMANT",
+          "labelRo": "îngrășământ pe terenurile proprii"
+        },
+        {
+          "value": "VANZARE",
+          "labelRo": "îl vând ca îngrășământ"
+        },
+        {
+          "value": "NEVALORIFICAT",
+          "labelRo": "nu îl valorific"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "fertilisation_plan",
+      "labelRo": "Aveți plan de fertilizare pentru aplicarea digestatului pe teren?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": false
-    },
-    {
-      "questionId": "cashin_months",
-      "labelRo": "În ce luni încasați cel mai mult?",
-      "type": "MONTHS",
-      "prefillFrom": "OPEN_BANKING",
-      "required": true
     },
     {
       "questionId": "old_equipment_fate",
@@ -191,7 +114,134 @@
       ],
       "prefillFrom": "NONE",
       "required": true
+    },
+    {
+      "questionId": "cashin_months",
+      "labelRo": "În ce luni încasați cel mai mult?",
+      "type": "MONTHS",
+      "prefillFrom": "OPEN_BANKING",
+      "required": true
+    },
+    {
+      "questionId": "loan_term",
+      "labelRo": "Pe câți ani vreți creditul?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "ANI_5",
+          "labelRo": "5 ani"
+        },
+        {
+          "value": "ANI_7",
+          "labelRo": "7 ani"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": false
     }
   ],
-  "calculator": null
+  "calculator": "livestock",
+  "catalog": "catalog/zootehnie.json",
+  "dnsh": [
+    {
+      "objective": "CLIMATE_ADAPTATION",
+      "checkRo": "Amplasamentul fermei nu e expus la inundații care ar spăla bazinele de dejecții.",
+      "evidence": "PARCEL_RISK"
+    },
+    {
+      "objective": "WATER_MARINE_RESOURCES",
+      "checkRo": "Digestatul se aplică pe teren conform planului de fertilizare în zonele vulnerabile la nitrați.",
+      "evidence": "NITRATE_PARCELS"
+    },
+    {
+      "objective": "CIRCULAR_ECONOMY",
+      "checkRo": "Gunoiul de grajd și digestatul sunt valorificate (energie sau îngrășământ), iar echipamentul vechi e predat unui colector autorizat.",
+      "evidence": "DIGESTATE_USE"
+    },
+    {
+      "objective": "POLLUTION_PREVENTION",
+      "checkRo": "Există autorizație de mediu valabilă, iar digestatul se stochează în bazin impermeabil și acoperit.",
+      "evidence": "ENVIRONMENTAL_PERMIT"
+    },
+    {
+      "objective": "BIODIVERSITY",
+      "checkRo": "Amplasamentul nu e în arii Natura 2000 sau există aviz de mediu.",
+      "evidence": "NATURA_2000_PARCELS"
+    }
+  ],
+  "fundingPrograms": [
+    "INVESTEU_FEI",
+    "FGCR"
+  ],
+  "labels": {
+    "DIGESTER": {
+      "label": "MARKET_GREEN",
+      "when": "CONFIG_PASSES"
+    },
+    "COGENERATION": {
+      "label": "TAXONOMY_ALIGNED",
+      "taxonomyActivity": "4.20",
+      "when": "CONFIG_PASSES"
+    },
+    "DIGESTATE_COVER": {
+      "label": "MARKET_GREEN",
+      "when": "CONFIG_PASSES"
+    }
+  },
+  "parameters": {
+    "ch4KgPerHeadYear": {
+      "value": {
+        "BOVINE": {
+          "MIXT_DESCOPERIT": 22,
+          "BAZIN_DESCOPERIT": 27,
+          "PLATFORMA_DESCOPERITA": 3
+        }
+      },
+      "sourceRo": "IPCC 2006, vol. 4, cap. 10 (Tier 1, Europa de Est, climat rece): EF = VS × B0 × 0,67 × MCF; bovine de lapte, 985 kg VS/an, B0 0,24 m³/kg VS, MCF 17% lichid / 2% solid. Valoarea mixtă (22) e cea din demo-ul Product (DEMO-0004). Estimare echipă, de validat cu mentorii"
+    },
+    "biogasKwhPerHead": {
+      "value": {
+        "BOVINE": 1500
+      },
+      "sourceRo": "Energie electrică pe cap și an: fișa ofertei demo DEMO-0004 (225.000 kWh/an la 150 de capete). Se folosește doar când oferta nu dă energia produsă. Estimare echipă, de validat"
+    },
+    "nitrogenKgPerHeadYear": {
+      "value": {
+        "BOVINE": 40
+      },
+      "sourceRo": "Azot din digestat disponibil plantelor, care înlocuiește azotul mineral (aprox. jumătate din azotul excretat de o vacă de lapte, ordin de mărime IPCC 2006 vol. 4 cap. 10). Estimare echipă, de validat cu mentorii"
+    },
+    "electricitySellEurPerKwh": {
+      "value": 0.06,
+      "sourceRo": "Prețul de vânzare a energiei în rețea: constante demo Product (data/demo/test-documents/reference/constants.json). Estimare echipă, de validat"
+    },
+    "nitrogenEurPerKg": {
+      "value": 1.0,
+      "sourceRo": "Prețul azotului mineral înlocuit: constante demo Product (data/demo/test-documents/reference/constants.json). Estimare echipă, de validat"
+    },
+    "fertiliserDigestateUses": {
+      "value": [
+        "INGRASAMANT"
+      ],
+      "sourceRo": "Folosirea digestatului pe terenul propriu înlocuiește azot mineral (README §6, categoria 4, calculul 6)"
+    },
+    "valorisingDigestateUses": {
+      "value": [
+        "INGRASAMANT",
+        "VANZARE"
+      ],
+      "sourceRo": "README §6, categoria 4, pragul verde: gunoiul e valorificat ca energie sau ca îngrășământ"
+    },
+    "safetyMarginPct": {
+      "value": 2,
+      "sourceRo": "Marja peste prag cerută de echipă"
+    }
+  },
+  "substantialContribution": "CLIMATE_MITIGATION",
+  "financing": {
+    "termMonths": 84,
+    "horizonYears": 7,
+    "standardLine": "rbro.invest.standard",
+    "greenLine": "rbro.agri.green_investeu"
+  }
 }

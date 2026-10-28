@@ -2,7 +2,7 @@
   "moduleId": "post_recolta",
   "nameRo": "Post-recoltă",
   "icon": "❄️",
-  "status": "CONFIG_ONLY",
+  "status": "DEMO_READY",
   "descriptionRo": "Depozite frigorifice, uscătoare, sere.",
   "examplesRo": [
     "depozit frigorific",
@@ -14,7 +14,7 @@
     "kind": "MIN_PCT",
     "value": 20,
     "unit": "PCT",
-    "sourceRo": "economie de energie ≥ 20% (demo)",
+    "sourceRo": "README §6, categoria 5: economie de energie ≥ 20% și agent frigorific cu potențial redus de încălzire globală; prag demo, de confirmat cu Raiffeisen",
     "demo": true
   },
   "requiredDocs": [
@@ -24,153 +24,74 @@
       "required": true
     },
     {
-      "docType": "CURRENT_EQUIPMENT",
-      "labelRo": "Ce se înlocuiește: fișă tehnică, poză cu eticheta sau descriere",
-      "required": false
+      "docType": "ENERGY_INVOICES",
+      "labelRo": "Facturile de energie (curent și/sau gaz) pe ultimele 12 luni",
+      "required": true
     },
     {
-      "docType": "ENERGY_INVOICES",
-      "labelRo": "Facturile de energie pe 12 luni și capacitatea de stocare",
-      "required": true
+      "docType": "CURRENT_EQUIPMENT",
+      "labelRo": "Fișa echipamentului vechi (pentru o precizie mai bună decât din facturi)",
+      "required": false
     }
   ],
   "questionnaire": [
     {
-      "questionId": "crops_main",
-      "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
+      "questionId": "activity",
+      "labelRo": "Ce faceți în spațiul vizat de investiție?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "DEPOZIT_FRIGORIFIC",
+          "labelRo": "depozit frigorific"
+        },
+        {
+          "value": "USCATOR",
+          "labelRo": "uscător"
+        },
+        {
+          "value": "SERA",
+          "labelRo": "seră"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "stored_product",
+      "labelRo": "Ce depozitați, uscați sau cultivați?",
       "type": "TEXT",
       "prefillFrom": "APIA",
       "required": true
     },
     {
-      "questionId": "nitrogen_kg_ha",
-      "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)?",
+      "questionId": "quantity",
+      "labelRo": "Cât: tone pe an (depozit, uscător) sau m² de seră?",
       "type": "NUMBER",
-      "unit": "KG_N_PER_HA",
       "prefillFrom": "NONE",
       "required": true
     },
     {
-      "questionId": "tillage",
-      "labelRo": "Cum lucrați solul?",
-      "type": "SINGLE_CHOICE",
-      "options": [
-        {
-          "value": "ARATURA",
-          "labelRo": "arătură"
-        },
-        {
-          "value": "MINIMA",
-          "labelRo": "lucrare minimă"
-        },
-        {
-          "value": "NO_TILL",
-          "labelRo": "no-till"
-        }
-      ],
+      "questionId": "operating_months",
+      "labelRo": "Câte luni pe an funcționează?",
+      "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": true
     },
     {
-      "questionId": "cover_crops",
-      "labelRo": "Folosiți culturi de acoperire sau rotație?",
-      "type": "SINGLE_CHOICE",
-      "options": [
-        {
-          "value": "DA",
-          "labelRo": "da"
-        },
-        {
-          "value": "ROTATIE",
-          "labelRo": "doar rotație"
-        },
-        {
-          "value": "NU",
-          "labelRo": "nu"
-        }
-      ],
-      "prefillFrom": "APIA",
-      "required": false
-    },
-    {
-      "questionId": "irrigation_current",
-      "labelRo": "Irigați acum? Cu ce sistem?",
-      "type": "SINGLE_CHOICE",
-      "options": [
-        {
-          "value": "NU",
-          "labelRo": "nu irig"
-        },
-        {
-          "value": "ASPERSIE_VECHE",
-          "labelRo": "aspersie veche"
-        },
-        {
-          "value": "ASPERSIE",
-          "labelRo": "aspersie"
-        },
-        {
-          "value": "PICURARE",
-          "labelRo": "picurare"
-        },
-        {
-          "value": "BRAZDE",
-          "labelRo": "pe brazde"
-        }
-      ],
-      "prefillFrom": "APIA",
-      "required": true
-    },
-    {
-      "questionId": "crop_insurance",
-      "labelRo": "Aveți asigurare pentru culturi?",
-      "type": "BOOLEAN",
-      "prefillFrom": "NONE",
-      "required": true
-    },
-    {
-      "questionId": "certifications",
-      "labelRo": "Aveți certificări?",
-      "type": "MULTI_CHOICE",
-      "options": [
-        {
-          "value": "ECOLOGIC",
-          "labelRo": "ecologic"
-        },
-        {
-          "value": "GLOBALGAP",
-          "labelRo": "GlobalGAP"
-        },
-        {
-          "value": "NICIUNA",
-          "labelRo": "niciuna"
-        }
-      ],
+      "questionId": "gas_kwh_year",
+      "labelRo": "Câți kWh de gaz consumați pe an în acest spațiu (dacă folosiți gaz)?",
+      "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": false
-    },
-    {
-      "questionId": "offtake_contracts",
-      "labelRo": "Aveți contracte de vânzare cu procesatori sau retaileri?",
-      "type": "BOOLEAN",
-      "prefillFrom": "NONE",
-      "required": false
-    },
-    {
-      "questionId": "cashin_months",
-      "labelRo": "În ce luni încasați cel mai mult?",
-      "type": "MONTHS",
-      "prefillFrom": "OPEN_BANKING",
-      "required": true
     },
     {
       "questionId": "old_equipment_fate",
-      "labelRo": "Ce faceți cu utilajul vechi și cu deșeurile (ambalaje, folie)?",
+      "labelRo": "Ce faceți cu utilajul vechi și cu agentul frigorific?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "CASARE",
-          "labelRo": "casare"
+          "labelRo": "casare, cu recuperarea agentului frigorific"
         },
         {
           "value": "VANZARE",
@@ -187,7 +108,125 @@
       ],
       "prefillFrom": "NONE",
       "required": true
+    },
+    {
+      "questionId": "offtake_contracts",
+      "labelRo": "Aveți contracte de vânzare cu procesatori sau retaileri?",
+      "type": "BOOLEAN",
+      "prefillFrom": "NONE",
+      "required": false
+    },
+    {
+      "questionId": "cashin_months",
+      "labelRo": "În ce luni încasați cel mai mult?",
+      "type": "MONTHS",
+      "prefillFrom": "OPEN_BANKING",
+      "required": true
+    },
+    {
+      "questionId": "loan_term",
+      "labelRo": "Pe câți ani vreți creditul?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "ANI_3",
+          "labelRo": "3 ani"
+        },
+        {
+          "value": "ANI_5",
+          "labelRo": "5 ani"
+        },
+        {
+          "value": "ANI_7",
+          "labelRo": "7 ani"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": false
     }
   ],
-  "calculator": null
+  "calculator": "postharvest",
+  "catalog": "catalog/post_recolta.json",
+  "dnsh": [
+    {
+      "objective": "CLIMATE_ADAPTATION",
+      "checkRo": "Amplasamentul depozitului nu e expus la inundații sau secetă severă.",
+      "evidence": "PARCEL_RISK"
+    },
+    {
+      "objective": "WATER_MARINE_RESOURCES",
+      "checkRo": "Investiția nu adaugă consum de apă și nu e pe parcele vulnerabile la nitrați.",
+      "evidence": "NITRATE_PARCELS"
+    },
+    {
+      "objective": "CIRCULAR_ECONOMY",
+      "checkRo": "Agregatul vechi se predă la reciclare autorizată, cu recuperarea agentului frigorific.",
+      "evidence": "OLD_EQUIPMENT_FATE"
+    },
+    {
+      "objective": "POLLUTION_PREVENTION",
+      "checkRo": "Agentul frigorific are potențial de încălzire globală (GWP) redus, sub limita din config.",
+      "evidence": "REFRIGERANT_GWP"
+    },
+    {
+      "objective": "BIODIVERSITY",
+      "checkRo": "Amplasamentul nu e în arii Natura 2000 sau există aviz de mediu.",
+      "evidence": "NATURA_2000_PARCELS"
+    }
+  ],
+  "fundingPrograms": [
+    "INVESTEU_FEI",
+    "FGCR"
+  ],
+  "labels": {
+    "REFRIGERATION_UNIT": {
+      "label": "MARKET_GREEN",
+      "when": "CONFIG_PASSES"
+    },
+    "INSULATION_PANELS": {
+      "label": "MARKET_GREEN",
+      "when": "CONFIG_PASSES"
+    },
+    "HEAT_RECOVERY": {
+      "label": "MARKET_GREEN",
+      "when": "CONFIG_PASSES"
+    },
+    "DRYER": {
+      "label": "MARKET_GREEN",
+      "when": "CONFIG_PASSES"
+    },
+    "GREENHOUSE_SCREEN": {
+      "label": "MARKET_GREEN",
+      "when": "CONFIG_PASSES"
+    }
+  },
+  "parameters": {
+    "unitByActivity": {
+      "value": {
+        "DEPOZIT_FRIGORIFIC": "T",
+        "USCATOR": "T",
+        "SERA": "M2"
+      },
+      "sourceRo": "README §6, categoria 5, calculul 1: consumul pe unitate = kWh pe an / tone (sau / m² de seră)"
+    },
+    "maxRefrigerantGwp": {
+      "value": 675,
+      "sourceRo": "Criteriul DNSH (prevenirea poluării) pentru echipamente de răcire în Taxonomia UE, Reg. (UE) 2021/2139: GWP al agentului frigorific ≤ 675. Valoare de validat cu banca"
+    },
+    "gasEurPerKwh": {
+      "value": 0.05,
+      "sourceRo": "Prețul gazului pentru IMM-uri; estimare echipă, de validat cu mentorii"
+    },
+    "safetyMarginPct": {
+      "value": 2,
+      "sourceRo": "Marja peste prag cerută de echipă"
+    }
+  },
+  "substantialContribution": "CLIMATE_MITIGATION",
+  "financing": {
+    "termMonths": 60,
+    "horizonYears": 5,
+    "standardLine": "rbro.invest.standard",
+    "greenLine": "rbro.agri.green_investeu"
+  }
 }
