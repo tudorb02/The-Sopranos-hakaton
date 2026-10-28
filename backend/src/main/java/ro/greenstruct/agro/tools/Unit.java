@@ -36,6 +36,13 @@ public enum Unit {
     MONTHS(1, " luni"),
     YEARS(0, " ani"),
     COUNT(0, ""),
+    KWH_PER_T(2, " kWh/t"),
+    KWH_PER_M2(2, " kWh/m²"),
+    KG_CH4_PER_YEAR(0, " kg CH₄/an"),
+    MWH_PER_YEAR(1, " MWh/an"),
+    T(0, " t"),
+    M2(0, " m²"),
+    EUR_PER_KG_N(2, " EUR/kg N"),
     POINTS(0, " puncte");
 
     private final int displayDecimals;
