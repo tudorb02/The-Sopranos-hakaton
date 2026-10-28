@@ -570,7 +570,7 @@
         "iteration": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 8
+          "maximum": 30
         }
       }
     },
@@ -593,7 +593,7 @@
         "iteration": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 8
+          "maximum": 30
         },
         "input": {
           "description": "Input-ul cerut de model. Referă id-uri (config, catalog, calcId), nu cifre.",
@@ -741,7 +741,7 @@
         "iterations": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 8
+          "maximum": 30
         },
         "durationMs": {
           "type": "integer",

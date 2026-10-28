@@ -852,6 +852,12 @@ components:
               $ref: '#/components/schemas/RiskLevel'
             waterStress:
               $ref: '#/components/schemas/RiskLevel'
+            et0SeasonMm:
+              type: number
+              description: Evapotranspirația de referință ET₀ pe sezonul de irigare, în mm (date climatice; mock în demo).
+            effectiveRainSeasonMm:
+              type: number
+              description: Ploaia efectivă pe sezonul de irigare, în mm (date climatice; mock în demo).
     RiskLevel:
       type: string
       enum: [LOW, MEDIUM, HIGH]

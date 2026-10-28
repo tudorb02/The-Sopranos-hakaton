@@ -16,14 +16,18 @@ import ro.greenstruct.agro.config.GreenStructProperties;
 @RestController
 public class HealthController {
 
-    private static final List<String> DEMO_SCENARIOS = List.of("irigatii", "utilaje");
+    private static final List<String> DEMO_SCENARIOS = List.of("irigatii", "energie", "utilaje", "zootehnie",
+            "post_recolta", "ecologic");
 
     private final GreenStructProperties properties;
     private final ObjectProvider<BedrockHealthProbe> probe;
+    private final ObjectProvider<ro.greenstruct.agro.bedrock.AgentRuntime> runtime;
 
-    public HealthController(GreenStructProperties properties, ObjectProvider<BedrockHealthProbe> probe) {
+    public HealthController(GreenStructProperties properties, ObjectProvider<BedrockHealthProbe> probe,
+                            ObjectProvider<ro.greenstruct.agro.bedrock.AgentRuntime> runtime) {
         this.properties = properties;
         this.probe = probe;
+        this.runtime = runtime;
     }
 
     public record BedrockHealth(String status, String region, String mode, Instant checkedAt, List<Model> models,
@@ -42,21 +46,24 @@ public class HealthController {
                 .toList();
         long up = models.stream().filter(m -> "UP".equals(m.status())).count();
         String status = up == models.size() && !models.isEmpty() ? "UP" : up > 0 ? "DEGRADED" : "DOWN";
-        return new BedrockHealth(status, properties.bedrock().region(), properties.mode(), Instant.now(), models,
-                goldenRuns());
+        var agentRuntime = runtime.getIfAvailable();
+        String mode = agentRuntime == null ? properties.mode() : agentRuntime.mode().name();
+        return new BedrockHealth(status, properties.bedrock().region(), mode, Instant.now(), models, goldenRuns());
     }
 
     private List<Model> notConfigured() {
         var bedrock = properties.bedrock();
         return List.of(
-                new Model("AGENT", orUnset(bedrock.agentModelId()), "DOWN", null, "Agenții Bedrock nu sunt încă integrați"),
+                new Model("AGENT", orUnset(bedrock.agentModelId()), "DOWN", null, "Bedrock nu este configurat: agenții rulează pe reguli, offline"),
                 new Model("EXTRACTION", orUnset(bedrock.extractionModelId()), "DOWN", null,
-                        "Citirea documentelor prin Bedrock nu e încă integrată"));
+                        "Bedrock nu este configurat: documentele demo se citesc din citirile înregistrate"));
     }
 
     private List<String> goldenRuns() {
         Path golden = properties.paths().dataDir().resolve("demo").resolve("golden");
-        return DEMO_SCENARIOS.stream().filter(s -> Files.isRegularFile(golden.resolve(s + ".json"))).toList();
+        return DEMO_SCENARIOS.stream().filter(s -> Files.isDirectory(golden.resolve(s))
+                && List.of("TECHNICAL_AUDITOR", "FUNDING_OPTIMIZER", "GREEN_UNDERWRITER").stream()
+                .allMatch(slot -> Files.isRegularFile(golden.resolve(s).resolve(slot + ".json")))).toList();
     }
 
     private static String orUnset(String modelId) {

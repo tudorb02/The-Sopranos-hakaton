@@ -59,7 +59,7 @@ final class ToolFlow {
     /** Like call, but returns the failed output so the caller can try something else. */
     ToolOutput tryCall(String tool, ObjectNode input, String messageRo) {
         iteration++;
-        String toolUseId = "toolu_rule_" + iteration;
+        String toolUseId = "tooluse_rule_" + iteration;
         context.toolCall(toolUseId, tool, iteration, input, messageRo);
         long started = System.nanoTime();
         ToolOutput out = tools.execute(run.id(), tool, input);

@@ -5,7 +5,7 @@
   "description": "Contracts between frontend, backend and Bedrock tool schemas (OpenAPI, JSON Schema, SSE events, fixtures)",
   "type": "module",
   "scripts": {
-    "gen": "node tools/gen-fixtures.mjs",
+    "gen": "node tools/export-from-samples.mjs",
     "validate": "node tools/validate.mjs",
     "lint": "redocly lint openapi.yaml",
     "check": "npm run lint && npm run validate",

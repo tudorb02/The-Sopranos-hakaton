@@ -56,7 +56,7 @@
         },
         {
           "value": "MIXT_DESCOPERIT",
-          "labelRo": "platformă descoperită pentru gunoiul solid și bazin descoperit pentru dejecțiile lichide"
+          "labelRo": "platformă descoperită (solid) și bazin descoperit (lichid)"
         }
       ],
       "prefillFrom": "NONE",

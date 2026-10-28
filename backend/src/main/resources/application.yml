@@ -31,7 +31,7 @@ greenstruct:
   # true = after a successful LIVE run of a demo dossier, write data/demo/golden/<scenario>/<agent>.json
   record-golden: ${GREENSTRUCT_RECORD_GOLDEN:false}
   agent-runtime:
-    max-iterations: 8        # Converse calls per agent
+    max-iterations: 12       # Converse calls per agent (the technical auditor needs about 10 sequential steps)
     replay-delay: 350ms      # pause between replayed events, so the timeline looks live
   # Real ANAF lookup for any CUI that is not a demo farm; false = everything from data/demo/farms (offline demo).
   anaf:

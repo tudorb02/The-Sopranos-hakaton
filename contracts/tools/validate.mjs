@@ -231,7 +231,8 @@ for (const { where, file, schemaRef } of exampleChecks) {
   if (!validate(value)) fail(where, ajvOas.errorsText(validate.errors, { dataVar: file }));
 }
 // RunView examples must match their fixture
-for (const [file, fixture] of [['examples/run-irigatii.json', 'irigatii.ndjson'], ['examples/run-utilaje.json', 'utilaje.ndjson']]) {
+for (const [file, fixture] of readdirSync(join(ROOT, 'examples')).filter((f) => /^run-.*\.json$/.test(f))
+  .map((f) => [`examples/${f}`, `${f.slice(4, -5)}.ndjson`])) {
   const { value } = readJson(file);
   const stats = fixtureStats[fixture];
   if (!stats) { fail(file, `fixture ${fixture} missing`); continue; }
