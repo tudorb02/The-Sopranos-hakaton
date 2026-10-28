@@ -37,6 +37,8 @@ services:
       NODE_ADMIN_DATABASE_URL: postgresql://nexxt:${POSTGRES_PASSWORD}@db:5432/nexxt
       DEMO_TODAY: ${DEMO_TODAY:-2026-11-12}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8081,http://127.0.0.1:8081}
+      # CSV statements are parsed by the Python API; without it, uploads are saved and marked as not read.
+      PYTHON_API_URL: ${PYTHON_API_URL:-http://api:8000}
     ports:
       - "${NODE_API_BIND:-127.0.0.1}:${NODE_API_PORT:-3001}:3001"
     depends_on:

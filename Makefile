@@ -1,9 +1,9 @@
 .DEFAULT_GOAL := setup
 .PHONY: setup up run migrate test seed openapi lint local-install local-test local-run
-.PHONY: node-up node-test node-seed node-openapi
+.PHONY: node-up node-test node-seed node-openapi demo-users
 
 node-up:
-	docker compose up --build -d db server frontend
+	docker compose up --build -d db api server frontend
 
 node-test:
 	docker compose exec server sh -c 'NODE_TEST_DATABASE_URL="$$NODE_DATABASE_URL" npm test'
@@ -13,6 +13,10 @@ node-seed:
 
 node-openapi:
 	npm --prefix server run openapi
+
+# Python users that own the demo's uploaded CSV statements (after `make migrate`).
+demo-users:
+	docker compose exec api uv run python backend/scripts/create_demo_users.py
 
 setup:
 	@python3 -c 'import os, pathlib, secrets; p=pathlib.Path(".env"); fd=os.open(p, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600) if not p.exists() else None; fd is not None and os.write(fd, ("POSTGRES_PASSWORD=" + secrets.token_hex(24) + "\n").encode()); fd is not None and os.close(fd)'
