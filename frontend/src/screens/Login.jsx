@@ -1,10 +1,9 @@
-// Simulated sign-in for the demo: pick the personal or the business account. Nothing is typed or checked.
+// Simulated sign-in for the demo: pick a personal or the business account. Nothing is typed or checked.
 
 import { IconTile, NoteCard } from "../components/ui.jsx";
 import { accounts, login } from "../data/accounts.js";
 
 export default function Login({ type }) {
-  const account = accounts[type];
   return (
     <>
       <section className="card card--yellow hero-card welcome" aria-labelledby="login-title">
@@ -24,22 +23,24 @@ export default function Login({ type }) {
         </a>
       </nav>
 
-      <section className="card account-card" aria-label={`Cont demo: ${account.name}`}>
-        <div className="row row--flush">
-          <span className="tile tile--yellow avatar-tile" aria-hidden="true">
-            {account.initial}
-          </span>
-          <div className="row-main">
-            <span className="row-name">{account.name}</span>
-            <span className="row-note">
-              {account.type} · {account.detail}
+      {accounts[type].map((account) => (
+        <section key={account.id} className="card account-card" aria-label={`Cont demo: ${account.name}`}>
+          <div className="row row--flush">
+            <span className="tile tile--yellow avatar-tile" aria-hidden="true">
+              {account.initial}
             </span>
+            <div className="row-main">
+              <span className="row-name">{account.name}</span>
+              <span className="row-note">
+                {account.profile} · {account.detail}
+              </span>
+            </div>
           </div>
-        </div>
-        <a className="btn btn--block" href={account.href}>
-          Intră în cont
-        </a>
-      </section>
+          <a className="btn btn--block" href={account.href}>
+            Intră în cont
+          </a>
+        </section>
+      ))}
 
       <NoteCard icon="lock">{login.note}</NoteCard>
     </>

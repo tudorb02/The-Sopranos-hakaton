@@ -15,6 +15,9 @@ export const categories = {
   cadouri: { label: "Cadouri", icon: "gift", tone: "cat-fixed" },
   abonamente: { label: "Abonamente", icon: "repeat", tone: "cat-fixed" },
   locuinta: { label: "Locuință", icon: "home", tone: "cat-fixed" },
+  transport: { label: "Transport", icon: "bus", tone: "cat-fixed" },
+  studii: { label: "Studii", icon: "book", tone: "cat-fixed" },
+  telefon: { label: "Telefon și internet", icon: "phone", tone: "cat-fixed" },
   economii: { label: "Economii", icon: "wallet", tone: "cat-fixed" },
   venit: { label: "Venit", icon: "arrow", tone: "cat-income" },
 };
@@ -24,8 +27,10 @@ export const pickerCategories = ["alimente", "cafenele", "livrari", "iesiri", "t
 
 export const spending = {
   period: "5 – 12 noiembrie",
+  title: "Cheltuieli variabile din 5 noiembrie",
   total: 739,
   fixed: 2455,
+  fixedNote: "chiria și abonamentele",
   compare: "Cu 210 lei mai puțin față de aceeași perioadă din octombrie",
   parts: [
     { id: "alimente", lei: 154 },

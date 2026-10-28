@@ -1,18 +1,19 @@
-// Spending tracker: what was spent this cycle by category, what needs a look, and every payment by day.
+// Spending tracker: what was spent this budget period by category, what needs a look, and every payment by day.
 
 import { Icon } from "../components/icons.jsx";
 import { CategoryLegend, ShareBar, TxRow } from "../components/tracking.jsx";
 import { Amount, ChoiceChips, IconTile, Src } from "../components/ui.jsx";
-import { days, filters, review, spending } from "../data/tracking.js";
 import { lei } from "../lib/format.js";
+import { usePersona } from "../persona.js";
 
 export default function Tracking() {
+  const { days, filters, review, spending } = usePersona();
   return (
     <>
       <section className="card hero-card" aria-labelledby="tracking-title">
         <p className="eyebrow">Cheltuieli · {spending.period}</p>
         <h1 id="tracking-title" className="hero-label">
-          Cheltuieli variabile din 5 noiembrie
+          {spending.title}
         </h1>
         <Amount value={spending.total} size="xl" />
         <p className="hero-sub">
@@ -21,7 +22,7 @@ export default function Tracking() {
         <div className="split">
           <ShareBar parts={spending.parts} total={spending.total} />
           <CategoryLegend parts={spending.parts} total={spending.total} />
-          <p className="small muted">Plus {lei(spending.fixed)} cheltuieli fixe: chiria și abonamentele.</p>
+          <p className="small muted">Plus {lei(spending.fixed)} cheltuieli fixe: {spending.fixedNote}.</p>
         </div>
       </section>
 

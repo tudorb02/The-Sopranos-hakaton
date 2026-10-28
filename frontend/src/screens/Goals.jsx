@@ -1,30 +1,34 @@
 import { PlanChart } from "../components/charts.jsx";
+import { ServiceCard } from "../components/services.jsx";
 import { Amount, IconTile, Meter, Section, Src, ValueRow } from "../components/ui.jsx";
-import { goal, pots } from "../data/demo.js";
 import { lei } from "../lib/format.js";
+import { usePersona } from "../persona.js";
 
 export default function Goals() {
+  const { goal, nextGoals, pots, reserve, services } = usePersona();
+  const serviceById = (id) => services.items.find((item) => item.id === id);
+  const suggestion = goal.suggestion ? serviceById(goal.suggestion) : null;
   return (
     <>
       <section className="card hero-card" aria-labelledby="goal-title">
         <div className="goal-head">
-          <IconTile icon="target" tone="yellow" />
+          <IconTile icon={goal.icon} tone="yellow" />
           <div>
             <h1 id="goal-title" className="card-title">
               {goal.name}
             </h1>
-            <p className="small muted">Din economii, fără rate</p>
+            <p className="small muted">{goal.note}</p>
           </div>
           <Src kind="agreed" />
         </div>
         <p className="hero-label">Economisit până acum</p>
         <p className="amount-line">
-          <Amount value={0} size="lg" />
+          <Amount value={goal.saved} size="lg" />
           <span className="muted"> din {lei(goal.amount)}</span>
         </p>
-        <Meter value={0} max={goal.amount} />
+        <Meter value={goal.saved} max={goal.amount} />
         <p className="hero-sub">
-          Obiectiv atins pe <b>{goal.readyOn}</b> · prima depunere pe {goal.firstDeposit}
+          {goal.due.label} <b>{goal.due.date}</b> · {goal.due.note}
         </p>
       </section>
 
@@ -35,7 +39,7 @@ export default function Goals() {
         </div>
       </Section>
 
-      <Section title="Din ce economisești" aside={<Src kind="est" label="estimat, ian.–mar." />}>
+      <Section title="Din ce economisești" aside={<Src kind="est" label={goal.fundingLabel} />}>
         <ul className="card rows">
           {goal.funding.map((item) => (
             <ValueRow key={item.name} name={item.name} value={`aprox. ${lei(item.lei)}`} />
@@ -43,50 +47,58 @@ export default function Goals() {
         </ul>
       </Section>
 
-      <Section title="Unde păstrezi banii">
-        <div className="card stack">
-          <div className="service-head">
-            <p className="row-name">Cont de economii Super Acces Plus</p>
-            <Src kind="agreed" />
-          </div>
-          <p className="small">
-            Prin FixPay se transferă automat 700 lei pe 5 ianuarie și pe 5 februarie, apoi 600 lei pe 5 martie. Poți retrage banii oricând.
-          </p>
-          <dl className="terms">
-            <div>
-              <dt>Cost FixPay</dt>
-              <dd>0 lei în pachetul ZERO Simplu</dd>
+      {nextGoals.length ? (
+        <Section title="Următorul obiectiv">
+          {nextGoals.map((item) => (
+            <div key={item.name} className="card stack">
+              <div className="goal-head goal-head--flush">
+                <IconTile icon={item.icon} tone="sand" />
+                <div>
+                  <p className="row-name">{item.name}</p>
+                  <p className="small muted">{item.when}</p>
+                </div>
+                <span className="row-value">{lei(item.amount)}</span>
+              </div>
+              <p className="small">{item.text}</p>
+              <a className="link" href={item.href}>
+                {item.action}
+              </a>
             </div>
-            <div>
-              <dt>Dobândă</dt>
-              <dd>2,00% pe an, variabilă; impozit pe dobândă 10%</dd>
-            </div>
-          </dl>
-          <details className="why">
-            <summary>De ce îți propun asta</summary>
-            <p>Pe 28 octombrie ai spus că vrei să pui bani deoparte la început de lună. Fără FixPay, poți muta banii și tu, pe 5.</p>
-          </details>
-          <p className="small muted">Surse: raiffeisen.ro, tarife (01.09.2026) și cont de economii (30.06.2026)</p>
-        </div>
-      </Section>
-
-      <Section title="Bani puși deoparte">
-        <ul className="card rows">
-          {pots.map((pot) => (
-            <ValueRow key={pot.name} icon={pot.icon} name={pot.name} note={pot.note} value={lei(pot.lei)} />
           ))}
-        </ul>
+        </Section>
+      ) : null}
+
+      <Section title="Unde păstrezi banii">
+        <ServiceCard service={serviceById(goal.storage)} />
       </Section>
 
-      <section className="card empty" aria-labelledby="reserve-title">
-        <h2 id="reserve-title" className="card-title">
-          Fond pentru urgențe
-        </h2>
-        <p className="small muted">Nu am vorbit încă despre asta. Un fond pentru urgențe te ajută când apare o cheltuială neprevăzută.</p>
-        <a className="btn btn--outline" href="#/chat">
-          Hai să vorbim
-        </a>
-      </section>
+      {suggestion ? (
+        <Section title="Sugestie din serviciile băncii" aside={<span className="small muted">cel mult una pe săptămână</span>}>
+          <ServiceCard service={suggestion} />
+        </Section>
+      ) : null}
+
+      {pots.length ? (
+        <Section title="Bani puși deoparte">
+          <ul className="card rows">
+            {pots.map((pot) => (
+              <ValueRow key={pot.name} icon={pot.icon} name={pot.name} note={pot.note} value={lei(pot.lei)} />
+            ))}
+          </ul>
+        </Section>
+      ) : null}
+
+      {reserve ? (
+        <section className="card empty" aria-labelledby="reserve-title">
+          <h2 id="reserve-title" className="card-title">
+            {reserve.title}
+          </h2>
+          <p className="small muted">{reserve.text}</p>
+          <a className="btn btn--outline" href={reserve.href}>
+            {reserve.action}
+          </a>
+        </section>
+      ) : null}
     </>
   );
 }

@@ -1,7 +1,8 @@
 import { Agenda, ChoiceChips, Group, IconTile, NoteCard, Section, Src, Ticks } from "../../components/ui.jsx";
-import { calendar } from "../../data/activation.js";
+import { usePersona } from "../../persona.js";
 
 export function Calendar() {
+  const { calendar } = usePersona();
   return (
     <>
       <header className="intro">

@@ -1,5 +1,6 @@
 // Demo accounts for the simulated sign-in. No credentials are asked for or stored.
-// The personal account opens the Coach; the business one shows that its features differ (coming later).
+// Each personal account opens the same Coach with its own data (#/intra/<id>, see data/personas.js);
+// the business one shows that its features differ (coming later).
 
 export const login = {
   title: "Bine ai revenit",
@@ -8,20 +9,11 @@ export const login = {
 };
 
 export const accounts = {
-  pf: {
-    type: "Persoană fizică",
-    name: "Daria Ionescu",
-    initial: "D",
-    detail: "Cont curent RON · RO12 RZBR •••• 1234",
-    href: "#/produse",
-  },
-  pj: {
-    type: "Persoană juridică",
-    name: "ALFA SERV SRL",
-    initial: "A",
-    detail: "Cont curent RON · CUI 4•••••7",
-    href: "#/firma",
-  },
+  pf: [
+    { id: "pf", profile: "Salariat", name: "Daria Ionescu", initial: "D", detail: "Cont curent RON · RO12 RZBR •••• 1234", href: "#/intra/pf" },
+    { id: "student", profile: "Student", name: "Matei Popescu", initial: "M", detail: "Cont curent RON · RO45 RZBR •••• 5678", href: "#/intra/student" },
+  ],
+  pj: [{ id: "pj", profile: "Persoană juridică", name: "ALFA SERV SRL", initial: "A", detail: "Cont curent RON · CUI 4•••••7", href: "#/firma" }],
 };
 
 export const business = {

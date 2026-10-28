@@ -1,7 +1,8 @@
+import { ServiceCard } from "../components/services.jsx";
 import { Disclaimer, Facts, Group, Meter, Src, Switch, ValueRow } from "../components/ui.jsx";
-import { profile } from "../data/demo.js";
 import { legal } from "../data/legal.js";
 import { lei } from "../lib/format.js";
+import { usePersona } from "../persona.js";
 
 const CORRECT = (
   <button type="button" className="btn btn--text btn--small">
@@ -10,6 +11,7 @@ const CORRECT = (
 );
 
 export default function Profile() {
+  const { profile, services } = usePersona();
   const top = Math.max(...profile.spending.map((item) => item.lei));
   return (
     <>
@@ -102,19 +104,13 @@ export default function Profile() {
 
       <Group label="Servicii care te-ar ajuta">
         <div className="card switches">
-          <Switch label="Sugestii din serviciile băncii" hint={profile.services.hint} defaultChecked={profile.services.on} />
+          <Switch label="Sugestii din serviciile băncii" hint={services.hint} defaultChecked={services.on} />
         </div>
-        <ul className="card rows">
-          {profile.services.items.map((service) => (
-            <li key={service.name} className="row">
-              <div className="row-main">
-                <span className="row-name">{service.name}</span>
-                <span className="row-note">{service.text}</span>
-                <span className={service.active ? "status is-on" : "status"}>{service.status}</span>
-              </div>
-            </li>
+        <div className="service-list">
+          {services.items.map((service) => (
+            <ServiceCard key={service.id} service={service} compact />
           ))}
-        </ul>
+        </div>
       </Group>
 
       <Group label="Ce nu știu încă">

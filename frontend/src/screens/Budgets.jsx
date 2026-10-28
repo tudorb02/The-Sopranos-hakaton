@@ -1,9 +1,10 @@
 import { Allocation, Legend } from "../components/charts.jsx";
 import { Amount, BudgetRow, InfoCard, Section, Src, ValueRow } from "../components/ui.jsx";
-import { allocation, budgets, cycle, question, unbudgeted } from "../data/demo.js";
 import { lei } from "../lib/format.js";
+import { usePersona } from "../persona.js";
 
 export default function Budgets() {
+  const { allocation, budgetGroups, budgets, cycle, question, unbudgeted } = usePersona();
   return (
     <>
       <section className="card hero-card" aria-labelledby="budgets-title">
@@ -16,18 +17,27 @@ export default function Budgets() {
           din {lei(cycle.spendable)} · ai folosit {lei(cycle.spent)}
         </p>
         <div className="split">
-          <Allocation parts={allocation} total={cycle.salary} />
+          <Allocation parts={allocation} total={cycle.total} />
           <Legend parts={allocation} />
+          <p className="small muted">{cycle.totalNote}</p>
         </div>
       </section>
 
-      <Section title="Pe categorii" aside={<Src kind="agreed" label="stabilite de tine" />}>
-        <ul className="card rows">
-          {budgets.map((budget) => (
-            <BudgetRow key={budget.id} budget={budget} />
-          ))}
-        </ul>
-      </Section>
+      {budgetGroups.map((group) => (
+        <Section
+          key={group.title}
+          title={group.title}
+          aside={group.src ? <Src kind={group.src} label={group.note} /> : <span className="small muted num">{group.note}</span>}
+        >
+          <ul className="card rows">
+            {budgets
+              .filter((budget) => !group.id || budget.group === group.id)
+              .map((budget) => (
+                <BudgetRow key={budget.id} budget={budget} />
+              ))}
+          </ul>
+        </Section>
+      ))}
 
       <Section title="Fără buget" aside={<span className="small muted num">{lei(unbudgeted.total)}</span>}>
         <ul className="card rows">
@@ -49,7 +59,7 @@ export default function Budgets() {
             </button>
           ))}
         </div>
-        <a className="link" href="#/cheltuieli/t14">
+        <a className="link" href={`#/cheltuieli/${question.txId}`}>
           Deschide plata
         </a>
       </InfoCard>

@@ -4,12 +4,12 @@
 import { Icon } from "../components/icons.jsx";
 import { CategoryPicker, CategoryTile, TxAmount } from "../components/tracking.jsx";
 import { ChoiceChips, Field, Group, NoteCard, Switch } from "../components/ui.jsx";
-import { categoryNotes, days, pickerCategories, tagSuggestions } from "../data/tracking.js";
-
-const BY_ID = Object.fromEntries(days.flatMap((day) => day.items.map((tx) => [tx.id, { ...tx, day }])));
+import { usePersona } from "../persona.js";
 
 export default function TransactionDetail({ id }) {
-  const tx = BY_ID[id];
+  const { categoryNotes, client, days, pickerCategories, tagSuggestions } = usePersona();
+  const day = days.find((item) => item.items.some((payment) => payment.id === id));
+  const tx = day ? { ...day.items.find((payment) => payment.id === id), day } : null;
   if (!tx) return <p className="small muted">Plata nu există în datele demo.</p>;
 
   const tags = [...new Set([...(tx.tags ?? []), ...tagSuggestions])].map((tag) => ({ label: `#${tag}`, selected: Boolean(tx.tags?.includes(tag)) }));
@@ -27,7 +27,7 @@ export default function TransactionDetail({ id }) {
         </p>
         <p className="tx-hero-meta">
           <span className={tx.status === "În așteptare" ? "status" : "status is-on"}>{tx.status}</span>
-          <span className="small muted">Card Visa •••• 1234</span>
+          <span className="small muted">{client.card}</span>
         </p>
       </section>
 

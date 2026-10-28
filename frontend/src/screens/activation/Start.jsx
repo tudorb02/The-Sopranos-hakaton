@@ -1,9 +1,10 @@
 import { Icon } from "../../components/icons.jsx";
 import { Disclaimer, IconTile, InfoCard, Section, Src, Ticks } from "../../components/ui.jsx";
-import { findings, intro } from "../../data/activation.js";
 import { legal } from "../../data/legal.js";
+import { usePersona } from "../../persona.js";
 
 export function Intro() {
+  const { intro } = usePersona();
   return (
     <>
       <section className="card card--yellow hero-card welcome" aria-labelledby="intro-title">
@@ -28,6 +29,7 @@ export function Intro() {
 }
 
 export function Done() {
+  const { findings } = usePersona();
   const { firstStep } = findings;
   return (
     <>
@@ -50,7 +52,7 @@ export function Done() {
         ))}
       </ul>
 
-      <InfoCard icon="gift" title={firstStep.title} text={firstStep.text}>
+      <InfoCard icon={firstStep.icon} title={firstStep.title} text={firstStep.text}>
         <a className="btn btn--small" href={firstStep.href}>
           {firstStep.action}
         </a>

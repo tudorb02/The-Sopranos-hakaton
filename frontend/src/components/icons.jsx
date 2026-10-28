@@ -226,6 +226,29 @@ const PATHS = {
       <path d="m13 6 6 6-6 6" />
     </>
   ),
+  external: (
+    <>
+      <path d="M14 4.5h5.5V10" />
+      <path d="M19.5 4.5 11 13" />
+      <path d="M18 14v4.5a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1H10" />
+    </>
+  ),
+  book: (
+    <>
+      <path d="M12 6.5C10.5 5.3 8.3 4.5 4.5 4.5v13c3.8 0 6 .8 7.5 2 1.5-1.2 3.7-2 7.5-2v-13c-3.8 0-6 .8-7.5 2z" />
+      <path d="M12 6.5v13" />
+    </>
+  ),
+  bus: (
+    <>
+      <rect x="5" y="3.5" width="14" height="14" rx="2.5" />
+      <path d="M5 11h14" />
+      <path d="M8.5 14.5h.01" />
+      <path d="M15.5 14.5h.01" />
+      <path d="M7.5 17.5V20" />
+      <path d="M16.5 17.5V20" />
+    </>
+  ),
 };
 
 export function Icon({ name, className }) {

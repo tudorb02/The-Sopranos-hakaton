@@ -1,7 +1,8 @@
 import { Icon } from "../components/icons.jsx";
+import { ServiceCard } from "../components/services.jsx";
 import { DisclaimerStrip } from "../components/ui.jsx";
-import { chat } from "../data/demo.js";
 import { legal } from "../data/legal.js";
+import { usePersona } from "../persona.js";
 
 function Proposal({ item }) {
   return (
@@ -28,10 +29,17 @@ function Proposal({ item }) {
   );
 }
 
-function Message({ item }) {
+function Message({ item, services }) {
   if (item.type === "divider") return <p className="day-divider">{item.text}</p>;
   if (item.type === "me") return <p className="msg msg--me">{item.text}</p>;
   if (item.type === "proposal") return <Proposal item={item} />;
+  if (item.type === "service") {
+    return (
+      <div className="msg-service">
+        <ServiceCard service={services.items.find((service) => service.id === item.id)} compact />
+      </div>
+    );
+  }
   return (
     <div className="msg msg--coach">
       <p>{item.text}</p>
@@ -48,12 +56,13 @@ function Message({ item }) {
 }
 
 export default function Chat() {
+  const { chat, services } = usePersona();
   return (
     <>
       <DisclaimerStrip legal={legal} className="disclaimer-strip--card" />
       <div className="thread" role="log" aria-label="Mesaje">
         {chat.map((item, i) => (
-          <Message key={i} item={item} />
+          <Message key={i} item={item} services={services} />
         ))}
       </div>
       <div className="composer">

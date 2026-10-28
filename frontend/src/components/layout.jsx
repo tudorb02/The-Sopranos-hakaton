@@ -7,6 +7,7 @@ const COACH_PAGES = [
   { id: "cheltuieli", label: "Cheltuieli" },
   { id: "bugete", label: "Bugete" },
   { id: "obiective", label: "Obiective" },
+  { id: "idei", label: "Idei" },
   { id: "profil", label: "Profil" },
 ];
 
@@ -92,7 +93,8 @@ export function ProductsFrame({ title = "Produse", subtitle, productsHref = "#/p
 }
 
 // A page of the Coach, opened from Produse: back link, the coach's own pages, the notice, the app's tab bar.
-export function SectionFrame({ current, client, children }) {
+// `pages` lists the ids this client sees (Idei only for a client without a stable income).
+export function SectionFrame({ current, client, pages, children }) {
   return (
     <Stage>
       <header className="app-header coach-header">
@@ -110,7 +112,7 @@ export function SectionFrame({ current, client, children }) {
 
       <nav className="subnav" aria-label="Coach">
         <ul>
-          {COACH_PAGES.map((page) => (
+          {COACH_PAGES.filter((page) => pages.includes(page.id)).map((page) => (
             <li key={page.id}>
               <a href={`#/${page.id}`} aria-current={page.id === current ? "page" : undefined}>
                 {page.label}

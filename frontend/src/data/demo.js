@@ -1,10 +1,12 @@
-// Fictional demo data for the static screens. The person, merchants and amounts are invented.
+// Fictional demo data for Daria, an employee paid on the 5th. The person, merchants and amounts are invented.
 // The screens read everything from here, so this file can later be replaced by API calls.
 // State shown: Thursday 12 November 2026, day 8 of the pay cycle 5 Nov – 4 Dec.
 
+import { bankServices } from "./bank.js";
+
 export const today = { label: "Joi, 12 noiembrie" };
 
-export const client = { firstName: "Daria", initial: "D" };
+export const client = { firstName: "Daria", name: "Daria Ionescu", initial: "D", segment: "persoană fizică", card: "Card Visa •••• 1234" };
 
 // The budget period follows the client's profile: the day before the salary for an employee
 // (Daria: paid on the 5th), the day before the pension for a pensioner, or a date the client
@@ -13,7 +15,8 @@ export const cycle = {
   label: "5 nov. – 4 dec.",
   endsOn: "4 decembrie",
   basis: "Salariul intră pe 5 decembrie.",
-  salary: 6200,
+  total: 6200,
+  totalNote: "Din salariul de 6.200 lei, intrat pe 5 noiembrie.",
   fixed: 3020,
   setAside: 1200,
   spendable: 1980,
@@ -57,7 +60,11 @@ export const insight = {
   text: "din bugetul perioadei l-ai cheltuit în primele 4 zile după salariu. În octombrie, procentul a fost de 41%.",
 };
 
-// kind: "count" (number of payments), "amount" (lei), "pause" or "protected" (no limit, client's choice).
+// Budgets are listed by group (see budgetGroups); Daria has one group, so no budget names one.
+export const budgetGroups = [{ title: "Pe categorii", src: "agreed", note: "stabilite de tine" }];
+
+// kind: "count" (number of payments), "amount" (lei), "paid" (a fixed cost already paid),
+// "pause" or "protected" (no limit, client's choice).
 export const budgets = [
   { id: "cafenele", name: "Cafenele", icon: "cup", kind: "count", used: 3, max: 3, note: "3 din 3 săptămâna aceasta · următoarea, de luni", onHome: true },
   { id: "cadouri", name: "Cadouri", icon: "gift", kind: "amount", spent: 380, limit: 1200, note: "3 din 10 ocazii, din banii puși deoparte", onHome: true },
@@ -80,6 +87,7 @@ export const question = {
   merchant: "ONLINE*ABC SRL",
   date: "6 noiembrie",
   options: ["Cumpărături online", "Cadou", "Altceva"],
+  txId: "t14",
 };
 
 export const agenda = [
@@ -90,9 +98,11 @@ export const agenda = [
 
 export const goal = {
   name: "Laptop",
+  icon: "target",
+  note: "Din economii, fără rate",
+  saved: 0,
   amount: 2000,
-  readyOn: "5 martie 2027",
-  firstDeposit: "5 ianuarie",
+  due: { label: "Obiectiv atins pe", date: "5 martie 2027", note: "prima depunere pe 5 ianuarie" },
   plan: [
     { month: "nov.", add: 0, total: 0 },
     { month: "dec.", add: 0, total: 0 },
@@ -101,12 +111,14 @@ export const goal = {
     { month: "mar.", add: 600, total: 2000 },
   ],
   reason: "Noiembrie și decembrie au cadouri și Crăciunul, așa că începem din ianuarie.",
+  fundingLabel: "estimat, ian.–mar.",
   funding: [
     { name: "Fără abonamentul FitZone", lei: 220 },
     { name: "Cafenele: 3 pe săptămână", lei: 210 },
     { name: "Mai puține cadouri în ian.–mar.", lei: 200 },
     { name: "Mai puține restaurante și haine", lei: 130 },
   ],
+  storage: "fixpay",
 };
 
 export const pots = [
@@ -114,7 +126,17 @@ export const pots = [
   { name: "Crăciun", icon: "wallet", lei: 1200, note: "Se pun deoparte pe 5 decembrie, după salariu" },
 ];
 
-// type: "divider", "coach", "me" or "proposal".
+export const nextGoals = [];
+
+// A topic not discussed yet, offered as an empty state on Obiective.
+export const reserve = {
+  title: "Fond pentru urgențe",
+  text: "Nu am vorbit încă despre asta. Un fond pentru urgențe te ajută când apare o cheltuială neprevăzută.",
+  action: "Hai să vorbim",
+  href: "#/chat",
+};
+
+// type: "divider", "coach", "me", "proposal" or "service" (a card from `services`, by id).
 export const chat = [
   { type: "divider", text: "28 octombrie" },
   {
@@ -141,6 +163,7 @@ export const chat = [
     ],
     after: "O intrare costă 40 lei, deci abonamentul merită doar dacă mergi de cel puțin 6 ori pe lună.",
   },
+  { type: "service", id: "recurring-payments" },
   {
     type: "proposal",
     title: "Memento: cererea la FitZone",
@@ -212,14 +235,46 @@ export const profile = {
     { id: "contacts", label: "Contacte", hint: "Doar prenume, procesate pe telefon", on: true },
     { id: "health", label: "Health", hint: "Nu e folosit", on: false },
   ],
-  services: {
-    on: true,
-    hint: "Cel mult una pe săptămână, doar pentru nevoi pe care le-ai spus sau confirmat",
-    items: [
-      { name: "FixPay → Super Acces Plus", status: "Activ", active: true, text: "Banii pentru cadouri și laptop se transferă automat pe 5, după salariu. 0 lei în pachetul tău." },
-      { name: "Administrează plățile recurente", status: "După cererea la sală", text: "Blochezi plata FitZone după ce ceri anularea. Blocarea singură nu anulează contractul." },
-      { name: "SavingBox", status: "Mai târziu", text: "Recomandat după 3 luni în care ajungi la salariu cu bani în cont." },
-    ],
-  },
   unknown: ["Fond pentru urgențe", "Bonus de sărbători", "Datorii la prieteni sau familie"],
+};
+
+// Service cards (components/services.jsx): facts from data/bank.js plus why each one appears for Daria.
+// state: "active", "proposed", "later" or "howto" (a feature she already has).
+export const services = {
+  on: true,
+  hint: "Cel mult una pe săptămână, doar pentru nevoi pe care le-ai spus sau confirmat",
+  items: [
+    {
+      ...bankServices.fixpay,
+      id: "fixpay",
+      state: "active",
+      status: "Activ",
+      helps:
+        "Pe 5, după salariu, banii pentru cadouri pleacă singuri în contul de economii, iar din ianuarie și cei pentru laptop: 700 lei pe 5 ianuarie și pe 5 februarie, apoi 600 lei pe 5 martie. Vezi de la început cât îți rămâne de cheltuit.",
+      why: "Pe 28 octombrie ai spus că vrei să pui bani deoparte la început de lună.",
+      without: "Fără FixPay, muți tu banii pe 5, din aplicație.",
+    },
+    {
+      ...bankServices.recurringPayments,
+      id: "recurring-payments",
+      state: "howto",
+      status: "După anulare",
+      helps: "După ce ceri anularea la FitZone, blochezi plata de 220 lei pe lună, ca să nu mai fie retrasă de pe card.",
+      whyLabel: "De ce îți arăt asta",
+      why: "Pe 28 octombrie ai spus că nu mai mergi la sală și vrei să renunți la abonament.",
+      without: "Cererea de anulare la sală rămâne necesară: contractul poate avea o perioadă de preaviz.",
+      actions: ["Arată-mi pașii"],
+    },
+    {
+      ...bankServices.savingbox,
+      id: "savingbox",
+      state: "later",
+      status: "Mai târziu",
+      helps:
+        "Te-ar ajuta să economisești fără să te gândești, dar acum ar lua bani la fiecare plată, exact când îți lipsesc la final de lună. Ți-l propun după 3 luni în care ajungi la salariu cu bani în cont.",
+      whyLabel: "De ce mai târziu",
+      why: "În 5 din ultimele 6 luni ai avut sub 100 lei în cont între 27 și 5 ale lunii.",
+      without: "Până atunci, FixPay pune deoparte sumele stabilite, pe 5, după salariu.",
+    },
+  ],
 };

@@ -1,18 +1,20 @@
 // Static screens only: the hash (#/bugete) picks the screen. No data loading or business logic yet.
-// The demo starts at a simulated sign-in; the personal account offers the optional Coach in Produse,
-// the business account shows that its features differ.
+// The demo starts at a simulated sign-in. Each personal account opens the same optional Coach in Produse
+// with its own client's data (Daria, salary; Matei, student); the business account shows that its features differ.
 
 import { useEffect, useState } from "react";
 
 import { BareFrame, FlowActions, FlowFrame, ProductsFrame, SectionFrame } from "./components/layout.jsx";
-import { accounts, business } from "./data/accounts.js";
-import { client } from "./data/demo.js";
-import { ACTIVATION, ACTIVATION_STEPS } from "./screens/activation/routes.js";
+import { business } from "./data/accounts.js";
+import { personas } from "./data/personas.js";
+import { PersonaContext, storePersonaId, storedPersonaId, usePersona } from "./persona.js";
+import { ACTIVATION_STEPS, activationRoutes } from "./screens/activation/routes.js";
 import { Statements } from "./screens/activation/Statements.jsx";
 import Budgets from "./screens/Budgets.jsx";
 import Business from "./screens/Business.jsx";
 import Chat from "./screens/Chat.jsx";
 import Goals from "./screens/Goals.jsx";
+import Ideas from "./screens/Ideas.jsx";
 import Legal from "./screens/Legal.jsx";
 import Login from "./screens/Login.jsx";
 import Products from "./screens/Products.jsx";
@@ -21,28 +23,58 @@ import Summary from "./screens/Summary.jsx";
 import Tracking from "./screens/Tracking.jsx";
 import TransactionDetail from "./screens/TransactionDetail.jsx";
 
-// Pages of the Coach. The chat, a payment's details, the statements and the notice open full screen.
-const SECTION_SCREENS = { rezumat: Summary, cheltuieli: Tracking, bugete: Budgets, obiective: Goals, profil: Profile };
+// Pages of the Coach; each client sees the ones in its `pages`. The chat, a payment's details,
+// the statements and the notice open full screen.
+const SECTION_SCREENS = { rezumat: Summary, cheltuieli: Tracking, bugete: Budgets, obiective: Goals, idei: Ideas, profil: Profile };
 const OTHER_ROUTES = ["login", "login/pj", "produse", "firma", "chat", "extrase", "informare"];
 const PAYMENT_PREFIX = "cheltuieli/";
+const ACTIVATION_PREFIX = "activare";
+// #/intra/<id> signs in as that demo client, then opens Produse.
+const ENTRY_PREFIX = "intra/";
+
+function hashKey() {
+  return window.location.hash.replace(/^#\/?/, "");
+}
 
 function routeFromHash() {
-  const key = window.location.hash.replace(/^#\/?/, "");
-  if (OTHER_ROUTES.includes(key) || key in SECTION_SCREENS || key in ACTIVATION || key.startsWith(PAYMENT_PREFIX)) return key;
+  const key = hashKey();
+  if (OTHER_ROUTES.includes(key) || key in SECTION_SCREENS || key.startsWith(ACTIVATION_PREFIX) || key.startsWith(PAYMENT_PREFIX)) return key;
   return "login";
 }
 
 export default function App() {
   const [route, setRoute] = useState(routeFromHash);
+  const [personaId, setPersonaId] = useState(storedPersonaId);
 
   useEffect(() => {
     const onHashChange = () => {
+      const key = hashKey();
+      if (key.startsWith(ENTRY_PREFIX)) {
+        const id = key.slice(ENTRY_PREFIX.length);
+        if (id in personas) {
+          setPersonaId(id);
+          storePersonaId(id);
+        }
+        window.location.replace("#/produse");
+        return;
+      }
       setRoute(routeFromHash());
       window.scrollTo(0, 0);
     };
+    onHashChange();
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
+
+  return (
+    <PersonaContext.Provider value={personas[personaId]}>
+      <Screens route={route} />
+    </PersonaContext.Provider>
+  );
+}
+
+function Screens({ route }) {
+  const persona = usePersona();
 
   if (route === "login" || route === "login/pj") {
     return (
@@ -54,7 +86,7 @@ export default function App() {
 
   if (route === "produse") {
     return (
-      <ProductsFrame subtitle={`${accounts.pf.name} · persoană fizică`}>
+      <ProductsFrame subtitle={`${persona.client.name} · ${persona.client.segment}`}>
         <Products />
       </ProductsFrame>
     );
@@ -107,11 +139,13 @@ export default function App() {
     );
   }
 
-  if (route in ACTIVATION) {
-    const { Screen, props, back, step, note, footer } = ACTIVATION[route];
+  if (route.startsWith(ACTIVATION_PREFIX)) {
+    const activation = activationRoutes(persona.questions);
+    const key = route in activation ? route : ACTIVATION_PREFIX;
+    const { Screen, props, back, step, note, footer } = activation[key];
     return (
       <FlowFrame
-        key={route}
+        key={key}
         title="Coach financiar"
         titleAs="p"
         closeHref="#/produse"
@@ -124,9 +158,10 @@ export default function App() {
     );
   }
 
-  const Screen = SECTION_SCREENS[route];
+  const section = persona.pages.includes(route) ? route : "rezumat";
+  const Screen = SECTION_SCREENS[section];
   return (
-    <SectionFrame current={route} client={client}>
+    <SectionFrame current={section} client={persona.client} pages={persona.pages}>
       <Screen />
     </SectionFrame>
   );

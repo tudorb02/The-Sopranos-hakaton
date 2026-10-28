@@ -1,8 +1,9 @@
 import { Icon } from "../../components/icons.jsx";
 import { Meter, NoteCard } from "../../components/ui.jsx";
-import { analysis } from "../../data/activation.js";
+import { usePersona } from "../../persona.js";
 
 export function Analysis() {
+  const { analysis } = usePersona();
   return (
     <>
       <header className="intro">

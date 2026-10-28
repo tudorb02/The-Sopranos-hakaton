@@ -179,6 +179,7 @@ export const findings = {
     { text: "În noiembrie ai 10 zile de naștere.", src: "obs", label: "din calendar" },
   ],
   firstStep: {
+    icon: "gift",
     title: "Primul pas pe care ți-l propun",
     text: "Pe 5 noiembrie, după salariu, pune deoparte cei 1.200 lei pentru cadouri. Așa vezi de la început cât îți rămâne pentru restul lunii.",
     action: "Vezi propunerea",

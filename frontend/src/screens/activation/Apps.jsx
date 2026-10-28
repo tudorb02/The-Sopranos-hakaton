@@ -1,8 +1,9 @@
 import { Group, Switch, Ticks } from "../../components/ui.jsx";
-import { apps } from "../../data/activation.js";
 import { lei } from "../../lib/format.js";
+import { usePersona } from "../../persona.js";
 
 export function Apps() {
+  const { apps } = usePersona();
   return (
     <>
       <header className="intro">

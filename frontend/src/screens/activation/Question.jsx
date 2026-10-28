@@ -1,7 +1,8 @@
 import { ChoiceChips, Field, IconTile } from "../../components/ui.jsx";
-import { questions } from "../../data/activation.js";
+import { usePersona } from "../../persona.js";
 
 export function Question({ index }) {
+  const { questions } = usePersona();
   const question = questions[index];
   return (
     <>

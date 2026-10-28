@@ -3,9 +3,10 @@
 
 import { Icon } from "../../components/icons.jsx";
 import { Field, Group, IconTile, Meter, NoteCard } from "../../components/ui.jsx";
-import { statements } from "../../data/activation.js";
+import { usePersona } from "../../persona.js";
 
 export function Statements() {
+  const { statements } = usePersona();
   return (
     <>
       <header className="intro">
@@ -47,19 +48,21 @@ export function Statements() {
           <span className="small muted">{statements.formats}</span>
           <input type="file" className="sr-only" accept=".pdf,.xls,.xlsx,.csv" multiple />
         </label>
-        <ul className="card rows">
-          {statements.files.map((file) => (
-            <li key={file.name} className="row">
-              <IconTile icon="file" tone="sand" />
-              <div className="row-main">
-                <span className="row-name file-name">{file.name}</span>
-                <span className="row-note">{file.meta}</span>
-              </div>
-              <span className={file.state === "done" ? "status is-on" : "status"}>{file.state === "done" ? "Procesat" : "Se procesează"}</span>
-              {file.state === "reading" ? <Meter value={file.progress} max={100} /> : null}
-            </li>
-          ))}
-        </ul>
+        {statements.files.length ? (
+          <ul className="card rows">
+            {statements.files.map((file) => (
+              <li key={file.name} className="row">
+                <IconTile icon="file" tone="sand" />
+                <div className="row-main">
+                  <span className="row-name file-name">{file.name}</span>
+                  <span className="row-note">{file.meta}</span>
+                </div>
+                <span className={file.state === "done" ? "status is-on" : "status"}>{file.state === "done" ? "Procesat" : "Se procesează"}</span>
+                {file.state === "reading" ? <Meter value={file.progress} max={100} /> : null}
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </Group>
 
       <Group label="Cum exporți un extras de la altă bancă">

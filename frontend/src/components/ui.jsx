@@ -94,7 +94,7 @@ export function Dots({ used, max }) {
   );
 }
 
-// kind: "count", "amount", "pause" or "protected" (see data/demo.js).
+// kind: "count", "amount", "paid", "pause" or "protected" (see data/demo.js).
 export function BudgetRow({ budget }) {
   const { name, hint, icon, kind, note, warn } = budget;
   return (
@@ -112,7 +112,7 @@ export function BudgetRow({ budget }) {
           <span className="of"> / {lei(budget.limit)}</span>
         </span>
       ) : null}
-      {kind === "protected" ? <span className="row-value">{lei(budget.spent)}</span> : null}
+      {kind === "protected" || kind === "paid" ? <span className="row-value">{lei(budget.spent)}</span> : null}
       {kind === "pause" ? <span className="row-value">0 lei</span> : null}
       {kind === "amount" ? <Meter value={budget.spent} max={budget.limit} tone={warn ? "warn" : undefined} /> : null}
     </li>
