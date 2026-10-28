@@ -293,7 +293,7 @@ Pentru fiecare categorie:
 - **E. Creditul verde**: fondul și cerința pe care o acoperim
 - **F. Ce câștigă banca**
 
-**Constante comune** (`config/constants.json`, valori de pornire, de confirmat):
+**Constante comune** (`config/factors.json`, valori de pornire, de confirmat):
 
 | Constantă | Valoare | Ce înseamnă |
 |---|---|---|
@@ -771,12 +771,12 @@ Deciziile luate pentru versiunea de hackathon. Ce nu e scris aici urmează restu
 
 | Ipoteză | Unde se folosește | Unde se schimbă |
 |---|---|---|
-| Pragurile verzi: 25% apă, 20% motorină / azot / energie, 50% metan | §6, nivelurile verzi | `backend/src/categories/*.json` |
+| Pragurile verzi: 25% apă, 20% motorină / azot / energie, 50% metan | §6, nivelurile verzi | `config/modules/*.json` |
 | Procentul garanției FEI (70% în exemplu) și comisionul ei | dobânda verde | `config/funds.json` |
 | Parametrii dobânzii (PD, LGD, ponderi de risc, cost de finanțare, subvenții) | dobânda verde | `config/pricing.json` |
 | F4 (irigații cu FEI) e încă activ; banca finanțează cofinanțarea AFIR (F6) | fondurile propuse | `config/funds.json` |
 | Încadrarea categoriilor pe categoriile din cadrul obligațiunilor verzi | raportul ofițerului | `config/funds.json` |
-| Factorii de emisie și eficiențele | impactul | `config/constants.json` |
+| Factorii de emisie și eficiențele | impactul | `config/factors.json` și `config/modules/*.json` |
 
 ### Întrebări pentru mentorii Raiffeisen
 
