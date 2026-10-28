@@ -24,6 +24,9 @@ la integrare; nu blocăm implementarea pe un PR intermediar.
 - Soldul este contabil după fiecare rând; ordinea intraday a extrasului este
   păstrată. Istoricul cashflow este contabil; analizele orei folosesc data plății.
 - Pragurile implicite și excepțiile §8.1 se centralizează în `analytics/config.py`.
+  rapidfuzz este implementarea normală a potrivirii; pentru medii offline fără
+  dependență există o cale lentă cu aceeași similaritate Indel normalizată și
+  același prag. Nu se trimite nimic către un serviciu extern.
   Baseline orar: ore active 07–24, proporțional cu durata ferestrei; corecție
   Bonferroni pentru ferestrele testate. Niciun baseline de populație.
 - Abonamentele comerciale exclud chiria/facturile. Fără sursă explicit conectată

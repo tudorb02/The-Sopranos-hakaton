@@ -19,6 +19,7 @@ seed:
 
 openapi:
 	docker compose exec api uv run python backend/scripts/export_openapi.py
+	docker compose cp api:/app/api/openapi.yaml api/openapi.yaml
 
 lint:
 	docker compose exec api uv run ruff check backend/app backend/tests backend/scripts backend/migrations
