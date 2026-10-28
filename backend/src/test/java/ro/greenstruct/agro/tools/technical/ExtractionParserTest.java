@@ -42,6 +42,33 @@ class ExtractionParserTest {
     }
 
     @Test
+    void offerLinesLeftAsOtherGetTheirCategoryFromTheDescription() {
+        ObjectNode extraction = MAPPER.createObjectNode().put("documentId", "doc_biogas_01").put("documentType", "OFFER");
+        var lines = extraction.putArray("lineItems");
+        lines.addObject().put("lineId", "ln_1").put("category", "OTHER")
+                .put("descriptionRo", "Digestor anaerob din beton, cu agitatoare").putArray("fields");
+        lines.addObject().put("lineId", "ln_2").put("category", "OTHER")
+                .put("descriptionRo", "Unitate de cogenerare 30 kWe / 45 kWt").putArray("fields");
+        lines.addObject().put("lineId", "ln_3").put("category", "PV_SYSTEM")
+                .put("descriptionRo", "Structură de montaj pe acoperiș").putArray("fields");
+        lines.addObject().put("lineId", "ln_4").put("category", "OTHER")
+                .put("descriptionRo", "Pompe, conducte, automatizare, racordare").putArray("fields");
+        extraction.putArray("documentFields");
+
+        assertThat(ExtractionParser.parse(extraction).lines()).extracting(DocumentFacts.LineFacts::category)
+                .containsExactly("DIGESTER", "COGENERATION", "PV_SYSTEM", "OTHER");
+    }
+
+    @Test
+    void invoiceLinesKeepTheirCategory() {
+        ObjectNode extraction = invoices("ENERGY_INVOICES", "4.300");
+        ((ObjectNode) extraction.withArray("lineItems").get(0)).put("descriptionRo", "Stație de pompare, mai 2026");
+        extraction.putArray("documentFields");
+
+        assertThat(ExtractionParser.parse(extraction).lines().getFirst().category()).isEqualTo("OTHER");
+    }
+
+    @Test
     void anOfferKeepsItsOwnTotals() {
         ObjectNode extraction = invoices("OFFER", "10", "20");
         extraction.putArray("documentFields");

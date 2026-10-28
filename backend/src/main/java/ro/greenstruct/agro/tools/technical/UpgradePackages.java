@@ -32,7 +32,12 @@ public final class UpgradePackages {
             if (!removed) {
                 throw new IllegalArgumentException("Componenta " + componentId + " nu există în " + base.configId());
             }
-            components.add(CatalogItems.toComponent(CatalogItems.item(context, catalogId), tractors));
+            JsonNode item = CatalogItems.item(context, catalogId);
+            // a complete system (the 100 kWp PV at 72,000 EUR) also replaces the rest of the offered system:
+            // swapping only the panels line would keep the 300 kWp inverters, structure and works
+            item.path("replacesCategories").forEach(category ->
+                    components.removeIf(c -> category.asText().equals(c.category())));
+            components.add(CatalogItems.toComponent(item, tractors));
         });
         for (String catalogId : add) {
             if (components.stream().anyMatch(c -> catalogId.equals(c.catalogId()))) {

@@ -22,6 +22,7 @@ public final class ExtractionParser {
 
     private static final Set<String> TEXT_UNITS = Set.of("TEXT", "DATE", "BOOL");
     private static final Pattern NUMBER = Pattern.compile("\\d[\\d.]*(,\\d+)?");
+    private static final Set<String> OFFER_TYPES = Set.of("OFFER", "TECHNICAL_SHEET");
     private static final Set<String> INVOICE_TYPES = Set.of("ENERGY_INVOICES", "FUEL_INVOICES", "FERTILIZER_INVOICES",
             "WATER_CONSUMPTION");
     private static final List<String> INVOICE_TOTALS = List.of("ENERGY_KWH", "ENERGY_COST", "FUEL_LITRES", "FUEL_COST",
@@ -35,15 +36,19 @@ public final class ExtractionParser {
         Map<String, String> texts = new HashMap<>();
         readFields(extraction.path("documentFields"), numbers, texts);
 
+        String docType = extraction.path("documentType").asText();
+        boolean offer = OFFER_TYPES.contains(docType);
         List<DocumentFacts.LineFacts> lines = new ArrayList<>();
         for (JsonNode line : extraction.path("lineItems")) {
             Map<String, BigDecimal> lineNumbers = new HashMap<>();
             Map<String, String> lineTexts = new HashMap<>();
             readFields(line.path("fields"), lineNumbers, lineTexts);
-            lines.add(new DocumentFacts.LineFacts(line.path("lineId").asText(), line.path("category").asText(),
-                    line.path("descriptionRo").asText(), lineNumbers, lineTexts));
+            String description = line.path("descriptionRo").asText();
+            String category = offer ? OfferLineCategories.of(line.path("category").asText(), description)
+                    : line.path("category").asText();
+            lines.add(new DocumentFacts.LineFacts(line.path("lineId").asText(), category, description, lineNumbers,
+                    lineTexts));
         }
-        String docType = extraction.path("documentType").asText();
         if (INVOICE_TYPES.contains(docType)) {
             sumInvoiceLines(lines, numbers);
         }
