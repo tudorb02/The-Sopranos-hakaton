@@ -1,6 +1,23 @@
 import { Disclaimer, Group, IconTile, NoteCard, Ticks, ValueRow } from "../components/ui.jsx";
 import { legal as coachLegal } from "../data/legal.js";
 
+// Icon, title and text, for who sees the data, how it is protected and what to do if something happens.
+function InfoRows({ items }) {
+  return (
+    <ul className="card rows">
+      {items.map((item) => (
+        <li key={item.title} className="row">
+          <IconTile icon={item.icon} tone="sand" />
+          <div className="row-main">
+            <span className="row-name">{item.title}</span>
+            <span className="row-note">{item.text}</span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 // The coach's notice by default; the green credit passes its own (data/green/legal.js).
 export default function Legal({ legal = coachLegal }) {
   return (
@@ -8,17 +25,15 @@ export default function Legal({ legal = coachLegal }) {
       <Disclaimer legal={legal} />
 
       <Group label={legal.access.title}>
-        <ul className="card rows">
-          {legal.access.items.map((item) => (
-            <li key={item.who} className="row">
-              <IconTile icon={item.icon} tone="sand" />
-              <div className="row-main">
-                <span className="row-name">{item.who}</span>
-                <span className="row-note">{item.text}</span>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <InfoRows items={legal.access.items} />
+      </Group>
+
+      <Group label={legal.security.title}>
+        <InfoRows items={legal.security.items} />
+      </Group>
+
+      <Group label={legal.privacy.title}>
+        <Ticks yes={legal.privacy.items} />
       </Group>
 
       <Group label={legal.never.title}>
@@ -40,6 +55,10 @@ export default function Legal({ legal = coachLegal }) {
           ))}
         </ul>
         {legal.log.note ? <p className="small muted group-hint">{legal.log.note}</p> : null}
+      </Group>
+
+      <Group label={legal.incident.title}>
+        <InfoRows items={legal.incident.items} />
       </Group>
 
       <Group label="Cum îți ștergi datele">

@@ -2831,6 +2831,43 @@ a.row--link:hover {
   margin-bottom: var(--space-2xs);
 }
 
+.privacy {
+  display: grid;
+  gap: var(--space-sm);
+  background: var(--yellow-soft);
+  box-shadow: none;
+}
+
+.privacy-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.privacy-head h2 {
+  font-size: var(--text-md);
+}
+
+.privacy-list {
+  display: grid;
+  gap: var(--space-xs);
+  font-size: var(--text-sm);
+}
+
+.privacy-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: var(--space-xs);
+}
+
+.privacy-list .icon {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  stroke-width: 2.2;
+}
+
 /* ---------- motion ---------- */
 
 @media (prefers-reduced-motion: no-preference) {

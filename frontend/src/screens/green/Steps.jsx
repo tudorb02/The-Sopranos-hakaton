@@ -4,7 +4,7 @@
 import { DocumentRow, From, ModuleCard, OfferCompare, PaymentsChart, StatusSteps } from "../../components/green.jsx";
 import { Icon } from "../../components/icons.jsx";
 import { ServiceCard } from "../../components/services.jsx";
-import { Amount, ChoiceChips, Disclaimer, Field, Group, IconTile, Meter, NoteCard, Section, Src, Switch, Ticks, ValueRow } from "../../components/ui.jsx";
+import { Amount, ChoiceChips, Disclaimer, Field, Group, IconTile, Meter, NoteCard, PrivacyPromise, Section, Src, Switch, Ticks, ValueRow } from "../../components/ui.jsx";
 import { greenLegal } from "../../data/green/legal.js";
 import { eur } from "../../lib/format.js";
 import { Parcels } from "./agro/Parcels.jsx";
@@ -95,12 +95,7 @@ export function Company({ pack }) {
         <p className="small muted group-hint">Fără Open Banking, poți atașa extrasele de cont ale firmei.</p>
       </Group>
 
-      <NoteCard icon="lock">
-        {greenLegal.summary}{" "}
-        <a className="link" href="#/verde/informare">
-          Cine vede dosarul
-        </a>
-      </NoteCard>
+      <PrivacyPromise legal={greenLegal} href="#/verde/informare" />
 
       <Group label="Ce am găsit" action={CORRECT}>
         <ul className="card facts">
@@ -173,7 +168,7 @@ export function Documents({ pack }) {
         </ul>
       </Group>
 
-      <NoteCard icon="lock">Documentele sunt criptate și folosite doar pentru acest dosar. Agenții citesc din ele doar datele tehnice.</NoteCard>
+      <NoteCard icon="lock">Documentele sunt criptate, nu devin publice și sunt folosite doar pentru acest dosar. Agenții citesc din ele doar datele tehnice.</NoteCard>
     </>
   );
 }

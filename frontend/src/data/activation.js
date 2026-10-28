@@ -46,7 +46,7 @@ export const statements = {
     "Salvează fișierul și atașează-l aici",
   ],
   privacy:
-    "Din extrase citesc data, suma, comerciantul și descrierea. Transferurile către persoane apar doar ca „transfer către o persoană”. Poți șterge oricând un extras.",
+    "Fișierele sunt criptate, nu devin publice și le vede doar coach-ul. Din extrase citesc data, suma, comerciantul și descrierea; transferurile către persoane apar doar ca „transfer către o persoană”. Poți șterge oricând un extras.",
 };
 
 export const calendar = {

@@ -12,14 +12,13 @@ export const greenLegal = {
   ],
   strip: "Date criptate · Decizia de credit aparține băncii",
   // Who can see the dossier. A proposal for the legal team: every line must hold in the real implementation.
-  summary: "Analiza o vezi doar tu. Ofițerul de credit primește dosarul abia după ce îl trimiți, iar ANAF și APIA nu primesc nimic de la noi.",
   access: {
     title: "Cine vede dosarul",
     items: [
-      { icon: "lock", who: "Tu", text: "Vezi tot dosarul și fiecare cifră din el, cu sursa ei." },
-      { icon: "compass", who: "Agenții AI", text: "Citesc documentele și datele firmei doar pentru acest dosar. Modelul nu învață din ele." },
-      { icon: "bank", who: "Ofițerul de credit", text: "Primește dosarul doar după ce apeși „Trimite cererea la bancă”. Până atunci, analiza o vezi doar tu." },
-      { icon: "shield", who: "Fondul European de Investiții", text: "Dacă alegi creditul verde cu garanție, primește doar datele cerute pentru garanție: firma, creditul și investiția." },
+      { icon: "lock", title: "Tu", text: "Vezi tot dosarul și fiecare cifră din el, cu sursa ei." },
+      { icon: "compass", title: "Agenții AI", text: "Citesc documentele și datele firmei doar pentru acest dosar. Modelul nu învață din ele." },
+      { icon: "bank", title: "Ofițerul de credit", text: "Primește dosarul doar după ce apeși „Trimite cererea la bancă”. Până atunci, analiza o vezi doar tu." },
+      { icon: "shield", title: "Fondul European de Investiții", text: "Dacă alegi creditul verde cu garanție, primește doar datele cerute pentru garanție: firma, creditul și investiția." },
     ],
   },
   never: {
@@ -38,6 +37,35 @@ export const greenLegal = {
       { who: "Agenții AI", what: "Au citit oferta și facturile de energie", when: "12 nov., 10:21" },
       { who: "Tu", what: "Ai încărcat documentele", when: "12 nov., 10:15" },
     ],
+  },
+  security: {
+    title: "Cum protejăm datele firmei",
+    items: [
+      { icon: "lock", title: "Criptate peste tot", text: "Documentele și datele firmei sunt criptate la transmitere și la stocare. Fără cheile de criptare ale băncii, un fișier copiat nu poate fi citit." },
+      { icon: "shield", title: "Doar din contul firmei", text: "Dosarul se deschide doar din aplicație, de utilizatorii firmei, după autentificare." },
+      { icon: "compass", title: "Agenții primesc doar ce le trebuie", text: "Oferta, fișele tehnice și cifrele fermei, fără date personale ale asociaților. Datele rămân în UE." },
+    ],
+  },
+  privacy: {
+    title: "Dosarul rămâne privat",
+    items: [
+      "Dosarul nu devine public. Doar datele din ANAF erau publice și înainte",
+      "Nu dăm dosarul altor firme, furnizorilor din ofertă sau altor bănci",
+      "În rapoartele pentru investitorii în obligațiuni verzi apar doar totaluri pe categorii, fără numele firmei",
+    ],
+  },
+  incident: {
+    title: "Dacă se întâmplă ceva",
+    items: [
+      { icon: "bell", title: "Un incident de securitate", text: "Dacă ar exista vreodată un incident care afectează datele firmei, te anunțăm direct și anunțăm autoritățile, cum cere legea." },
+      { icon: "help", title: "O bănuială", text: "Verifică ultimele accesări de mai sus și scrie-ne din Chat 1:1 sau la *2000." },
+    ],
+  },
+  // The short version, shown at the step where the company gives its consents.
+  promise: {
+    title: "Dosarul rămâne privat",
+    items: ["Criptat, la transmitere și la stocare", "Nu devine public și nu ajunge la alte firme", "Ofițerul de credit îl vede doar după ce îl trimiți"],
+    link: "Cine vede dosarul și cum îl protejăm",
   },
   dataTitle: "Ce date folosim",
   data: [

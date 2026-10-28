@@ -75,15 +75,19 @@ Data din primul card („Disponibil până pe …”) vine din profil:
 
 Veniturile estimate, cum e bursa, intră în calcul doar după ce ajung în cont. Vezi `cycle` în `src/data/demo.js` și `src/data/student.js`.
 
-## Cine vede datele
+## Cine vede datele și cum le protejăm
 
-Ca nimeni să nu creadă că oricine îi poate vedea finanțele, informarea spune explicit cine vede ce:
-- **coach-ul:** tu și coach-ul; un consultant doar dacă îi arăți tu profilul, în Chat 1:1; altor firme, niciodată;
-- **creditul verde:** analiza o vede doar firma; ofițerul de credit primește dosarul abia după „Trimite cererea la bancă”; Fondul European de Investiții primește doar datele cerute pentru garanție;
+Ca nimeni să nu creadă că oricine îi poate vedea finanțele, că i se pot fura datele sau că finanțele lui devin publice, informarea (`#/informare` pentru coach, `#/verde/informare` pentru firme) are:
+- **cine vede datele:** la coach, tu și coach-ul; un consultant doar dacă îi arăți tu profilul, în Chat 1:1; altor firme, niciodată. La creditul verde, analiza o vede doar firma; ofițerul de credit primește dosarul abia după „Trimite cererea la bancă”; Fondul European de Investiții primește doar datele cerute pentru garanție;
+- **cum le protejăm:** criptare la transmitere și la stocare, acces doar din aplicație (PIN, amprentă, Face ID), un cod în loc de nume și IBAN pentru modelul AI, fără date de card;
+- **ce rămâne privat:** nimic nu devine public (fără profiluri publice, clasamente sau comparații cu alți clienți); în rapoartele pentru obligațiunile verzi apar doar totaluri, fără numele firmei;
 - **ce nu facem niciodată:** nu cerem parole, PIN-uri sau coduri; nu mutăm bani fără aprobare; nu trimitem date în afara UE;
-- **ultimele accesări:** cine a citit datele și când.
+- **ultimele accesări:** cine a citit datele și când;
+- **dacă se întâmplă ceva:** telefon pierdut (*2000), incident de securitate (anunțăm clientul și autoritatea, cum cere legea), o bănuială.
 
-O variantă scurtă apare acolo unde se dau datele: la activarea coach-ului, în Profil și la pasul „Firma ta”. Textele sunt propuneri pentru echipa juridică. Implementarea reală trebuie să le respecte: procesare doar în UE, un model care nu învață din datele clienților, jurnal de acces.
+Unde se dau datele apare un card scurt, „Datele tale rămân private” sau „Dosarul rămâne privat”: la activarea coach-ului și la pasul „Firma ta”. Profilul are linkul „Cine îți vede datele” și două setări, „Ascunde sumele pe ecran” și „Fără sume în notificări”. Banda de jos a coach-ului spune „Date criptate și private”.
+
+Textele sunt propuneri pentru echipa juridică. Devin promisiuni de produs, așa că implementarea reală trebuie să le respecte: procesare doar în UE, un model care nu învață din datele clienților, pseudonimizare înainte de model, un jurnal de acces real, notificarea incidentelor.
 
 ## Sugestii de servicii
 

@@ -99,6 +99,14 @@ export default function Profile() {
         <Facts items={profile.talk} />
       </Group>
 
+      <Group label="Confidențialitate">
+        <div className="card switches">
+          {legal.screenPrivacy.map((item) => (
+            <Switch key={item.id} label={item.label} hint={item.hint} defaultChecked={item.on} />
+          ))}
+        </div>
+      </Group>
+
       <Group label="Permisiuni">
         <div className="card switches">
           {profile.permissions.map((item) => (

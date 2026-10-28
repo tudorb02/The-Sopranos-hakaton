@@ -262,6 +262,32 @@ export function DisclaimerStrip({ legal, className, href = "#/informare" }) {
   );
 }
 
+// The short privacy promise, shown where people share data; the full notice is one tap away.
+export function PrivacyPromise({ legal, href = "#/informare" }) {
+  const id = useId();
+  return (
+    <section className="card privacy" aria-labelledby={id}>
+      <div className="privacy-head">
+        <IconTile icon="lock" tone="yellow" />
+        <h2 id={id} className="row-name">
+          {legal.promise.title}
+        </h2>
+      </div>
+      <ul className="privacy-list">
+        {legal.promise.items.map((text) => (
+          <li key={text}>
+            <Icon name="check" />
+            <span>{text}</span>
+          </li>
+        ))}
+      </ul>
+      <a className="link" href={href}>
+        {legal.promise.link}
+      </a>
+    </section>
+  );
+}
+
 export function NoteCard({ icon, children }) {
   return (
     <div className="card note-card">
