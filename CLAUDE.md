@@ -60,7 +60,7 @@ Integrări cu ANAF, ONRC, portal.just.ro; conectare live la mai multe bănci.
 
 ### 3.1 Principii
 1. **Contract-first.** Fișierul `api/openapi.yaml` este contractul dintre frontend și backend. Orice endpoint nou sau modificat se adaugă **întâi** în `openapi.yaml`, prin PR, aprobat de Frontend + Backend. Abia apoi se implementează.
-2. **Nimeni nu se blochează.** Frontend-ul lucrează pe un mock server generat din `openapi.yaml` (ex. Prism) până când endpointul real e gata. Backend-ul și AI lucrează pe **date seed** (persona fictive, vezi §8) până există date reale.
+2. **Nimeni nu se blochează.** Frontend-ul lucrează pe un mock server generat din `openapi.yaml` (ex. Prism) până când endpointul real e gata. Backend-ul și AI lucrează pe **date seed** (persona fictive, vezi §9) până există date reale.
 3. **Deciziile se scriu.** Deciziile de arhitectură se notează scurt în `docs/decisions/NNN-titlu.md` (context, decizie, consecințe). Deciziile majore se reflectă și aici.
 4. **Business definește „gata”.** Fiecare funcționalitate are criterii de acceptanță scrise de Business în issue (format: *Dat fiind… Când… Atunci…*).
 
