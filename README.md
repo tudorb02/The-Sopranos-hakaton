@@ -1,5 +1,12 @@
 # The-Sopranos-hakaton
 
+## Structura repository-ului
+
+- `frontend/`: Busola, ecranele coach-ului financiar pentru persoane fizice, gândit ca extensie a aplicației Smart Mobile (React Native / Expo, date fictive). Detalii în [frontend/README.md](frontend/README.md).
+- `backend/`: API-ul coach-ului financiar (FastAPI): import extrase, detectarea tiparelor de cheltuieli, insight-uri, plus generatorul de date mock. Detalii în [backend/README.md](backend/README.md) și [docs/pattern-recognition.md](docs/pattern-recognition.md).
+- `CLAUDE.md`: arhitectura și regulile comune pentru echipă și agenții AI.
+
+---
 
 🌱 GreenStruct Agro
 Agenți AI care transformă investițiile fermelor în credite verzi Raiffeisen.

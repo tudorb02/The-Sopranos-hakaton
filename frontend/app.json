@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "Busola",
+    "slug": "busola-coach",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#F1EDE6",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "ro.busola.coach"
+    },
+    "android": {
+      "package": "ro.busola.coach",
+      "adaptiveIcon": {
+        "backgroundColor": "#F1EDE6",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "name": "Busola · coach financiar",
+      "themeColor": "#F8F6F2",
+      "lang": "ro"
+    },
+    "plugins": [
+      "expo-font"
+    ]
+  }
+}

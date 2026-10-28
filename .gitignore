@@ -1,10 +1,19 @@
+# Python
 __pycache__/
 *.py[cod]
 .pytest_cache/
 *.egg-info/
 .venv/
 build/
-dist/
-.env
-*.db
 .ruff_cache/
+*.db
+
+# Node
+node_modules/
+dist/
+*.log
+
+# Env & OS
+.env
+.env.*
+.DS_Store
