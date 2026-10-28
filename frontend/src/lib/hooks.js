@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { ApiError, getRun } from "./api.js";
+import { ApiError, getFarm, getModules, getRun } from "./api.js";
 import { subscribeRun } from "./sse.js";
 
 // Runs `fn(signal)` when `key` changes. Returns { data, error, loading, reload }.
@@ -27,6 +27,29 @@ export function useAsync(fn, key) {
 
   const reload = useCallback(() => setTick((t) => t + 1), []);
   return { ...state, reload };
+}
+
+// Categories and farms rarely change during a session: keep the answers in memory.
+const cache = new Map();
+function cached(key, load) {
+  if (!cache.has(key)) {
+    cache.set(
+      key,
+      load().catch((e) => {
+        cache.delete(key);
+        throw e;
+      }),
+    );
+  }
+  return cache.get(key);
+}
+
+export const useModules = () => useAsync(() => cached("modules", () => getModules()), "modules");
+
+// The farm of a CUI; idle (data null, no error) while the CUI is empty.
+export function useFarm(cui) {
+  const state = useAsync(() => (cui ? cached(`farm:${cui}`, () => getFarm(cui)) : Promise.resolve(null)), cui || "");
+  return { ...state, idle: !cui };
 }
 
 // The dossier as one of the two views. pollMs > 0 refreshes it while the screen is open (the officer may act meanwhile).

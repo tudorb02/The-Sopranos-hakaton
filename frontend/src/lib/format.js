@@ -13,5 +13,9 @@ export const eur = (x) => `${integer.format(x)} EUR`;
 // 8.5 -> "8,5 ha"
 export const ha = (x) => `${decimal.format(x)} ha`;
 
+// 4.90002 -> "4,9" (portfolio totals come as plain numbers from the API, without a display text)
+const decimal2 = new Intl.NumberFormat("ro-RO", { maximumFractionDigits: 2 });
+export const dec = (x) => decimal2.format(x);
+
 // Share of a whole as a CSS percentage, clamped to 0–100%.
 export const pct = (value, whole) => `${Math.max(0, Math.min(100, (value / whole) * 100))}%`;
