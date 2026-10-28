@@ -60,7 +60,9 @@ final class FundsConfig {
             }
         }
         for (JsonNode fund : funds) {
-            boolean cofinancing = option.mainLineId().equals(fund.path("cofinancingLineId").asText());
+            // F3 Credit BIO is a loan product of its own: the fund is the line the option borrows on (loanLineId)
+            boolean cofinancing = option.mainLineId().equals(fund.path("cofinancingLineId").asText())
+                    || option.mainLineId().equals(fund.path("loanLineId").asText());
             boolean grant = false;
             for (JsonNode code : fund.path("programCodes")) {
                 grant |= code.asText().equals(option.grantProgram());

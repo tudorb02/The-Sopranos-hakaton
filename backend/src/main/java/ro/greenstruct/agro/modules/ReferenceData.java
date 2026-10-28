@@ -107,6 +107,9 @@ public class ReferenceData {
             if (fund.hasNonNull("cofinancingLineId") && !lineIds.contains(fund.path("cofinancingLineId").asText())) {
                 throw invalid(fundId + " refers to an unknown financing line " + fund.path("cofinancingLineId").asText());
             }
+            if (fund.hasNonNull("loanLineId") && !lineIds.contains(fund.path("loanLineId").asText())) {
+                throw invalid(fundId + " refers to an unknown financing line " + fund.path("loanLineId").asText());
+            }
         }
 
         funds.path("modules").fields().forEachRemaining(entry -> {

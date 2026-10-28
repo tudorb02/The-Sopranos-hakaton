@@ -65,6 +65,7 @@
       "descriptionRo": "Produs Raiffeisen (din 2021) pentru teren certificat ecologic sau în conversie; banca l-a prezentat ca primul ei produs de creditare pentru IMM-uri care încurajează agricultura sustenabilă.",
       "bankRequirementRo": "Certificare ecologică sau contract de conversie.",
       "clientBenefitRo": "Condiții dedicate fermierilor bio.",
+      "loanLineId": "rbro.agri.credit_bio",
       "requirements": {
         "SME_STATUS": "NOT_APPLICABLE",
         "ELIGIBLE_CATEGORY": "REQUIRED",

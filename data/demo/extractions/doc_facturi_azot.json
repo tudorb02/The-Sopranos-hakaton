@@ -1,0 +1,28 @@
+{
+  "documentId": "doc_facturi_azot",
+  "documentType": "FERTILIZER_INVOICES",
+  "moduleId": "ecologic",
+  "currency": "EUR",
+  "supplierName": "Agro Inputuri Demo SRL",
+  "documentFields": [],
+  "lineItems": [
+    {
+      "lineId": "ln_1",
+      "category": "OTHER",
+      "descriptionRo": "Azotat de amoniu 34% N, factura AI-26-0277 (martie 2026)",
+      "fields": [
+        {"key": "QUANTITY", "rawValue": "26.000 kg", "unit": "PCS", "page": 1, "confidence": "HIGH"}
+      ]
+    },
+    {
+      "lineId": "ln_2",
+      "category": "OTHER",
+      "descriptionRo": "Azotat de amoniu 34% N, factura AI-26-0451 (aprilie 2026)",
+      "fields": [
+        {"key": "QUANTITY", "rawValue": "20.000 kg", "unit": "PCS", "page": 2, "confidence": "HIGH"}
+      ]
+    }
+  ],
+  "missingFields": [],
+  "warnings": []
+}

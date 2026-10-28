@@ -1,0 +1,14 @@
+{
+  "documentId": "doc_plan_conversie",
+  "documentType": "BUSINESS_PLAN",
+  "moduleId": "ecologic",
+  "currency": "UNKNOWN",
+  "supplierName": "Ferma Bio Mureș Demo SRL",
+  "documentFields": [
+    {"key": "DOCUMENT_NUMBER", "rawValue": "PC-2026-01", "unit": "TEXT", "page": 1, "confidence": "HIGH"},
+    {"key": "DOCUMENT_DATE", "rawValue": "01.10.2026", "unit": "DATE", "page": 1, "confidence": "HIGH"}
+  ],
+  "lineItems": [],
+  "missingFields": [],
+  "warnings": []
+}

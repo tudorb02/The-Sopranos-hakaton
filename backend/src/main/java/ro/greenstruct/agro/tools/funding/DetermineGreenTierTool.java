@@ -67,6 +67,9 @@ public class DetermineGreenTierTool implements ToolHandler {
         GreenTierResult tier = switch (kind) {
             case "MIN_PCT" -> byThreshold(context, requested, financed, dnsh);
             case "BY_NATURE" -> GreenTierCalculator.byNature(dnsh);
+            // organic: an EU organic certificate or a conversion contract with a certification body
+            case "CERTIFICATION" -> GreenTierCalculator.byCertification(context.run().request().documents().stream()
+                    .anyMatch(doc -> "CERTIFICATION_CONTRACT".equals(doc.docType())), dnsh);
             default -> throw new IllegalArgumentException("Nivelul verde pentru criteriul " + kind
                     + " nu e încă disponibil");
         };

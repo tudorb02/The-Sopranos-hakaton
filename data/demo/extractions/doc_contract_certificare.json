@@ -1,0 +1,15 @@
+{
+  "documentId": "doc_contract_certificare",
+  "documentType": "CERTIFICATION_CONTRACT",
+  "moduleId": "ecologic",
+  "currency": "UNKNOWN",
+  "supplierName": "Organism de Certificare Bio DEMO",
+  "documentFields": [
+    {"key": "DOCUMENT_NUMBER", "rawValue": "OC-DEMO-2026-0917", "unit": "TEXT", "page": 1, "confidence": "HIGH"},
+    {"key": "DOCUMENT_DATE", "rawValue": "17.09.2026", "unit": "DATE", "page": 1, "confidence": "HIGH"},
+    {"key": "PERIOD_FROM", "rawValue": "01.01.2027", "unit": "DATE", "page": 1, "confidence": "HIGH"}
+  ],
+  "lineItems": [],
+  "missingFields": [],
+  "warnings": []
+}
