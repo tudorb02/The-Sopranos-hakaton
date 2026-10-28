@@ -1,0 +1,28 @@
+{
+  "merchant_rules": {
+    "CAFENEA": "coffee", "CAFE": "coffee", "STARBUCKS": "coffee", "5 TO GO": "coffee",
+    "18GYM": "gym", "WORLD CLASS": "gym", "NETFLIX": "subscription",
+    "SPOTIFY": "subscription", "HBO MAX": "subscription",
+    "MEGA IMAGE": "groceries", "LIDL": "groceries", "KAUFLAND": "groceries",
+    "CARREFOUR": "groceries", "PROFI": "groceries",
+    "BOLT": "transport", "UBER": "transport", "STB": "transport",
+    "OMV": "transport", "PETROM": "transport", "LUKOIL": "transport",
+    "CATENA": "pharmacy", "DR MAX": "pharmacy", "FARMACIA": "pharmacy",
+    "TAZZ": "delivery", "GLOVO": "delivery", "WOLT": "delivery",
+    "RESTAURANT": "restaurants", "BAR": "entertainment",
+    "CHIRIE": "rent", "HIDROELECTRICA": "utilities", "ENERGIE": "utilities",
+    "ENGIE": "utilities", "ENEL": "utilities", "ELECTRICA": "utilities",
+    "DIGI": "utilities", "ORANGE": "utilities", "VODAFONE": "utilities",
+    "SALARIU": "salary", "SALARY": "salary", "CADOU": "gifts",
+    "FLORARIA": "gifts", "DECATHLON": "shopping", "ZARA": "shopping",
+    "H&M": "shopping", "HM": "shopping", "EMAG": "shopping",
+    "CARTURESTI": "shopping", "LIBRARIA": "shopping", "CINEMA": "entertainment"
+  },
+  "spending_types": {
+    "salary": "essential", "rent": "fixed", "utilities": "fixed", "loan": "fixed",
+    "gym": "fixed", "subscription": "fixed", "groceries": "essential",
+    "transport": "essential", "pharmacy": "essential", "uncategorized": "essential",
+    "coffee": "discretionary", "restaurants": "discretionary", "delivery": "discretionary",
+    "shopping": "discretionary", "entertainment": "discretionary", "gifts": "discretionary"
+  }
+}
