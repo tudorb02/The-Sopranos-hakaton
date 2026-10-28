@@ -1,5 +1,7 @@
 import { Icon } from "../components/icons.jsx";
+import { DisclaimerStrip } from "../components/ui.jsx";
 import { chat } from "../data/demo.js";
+import { legal } from "../data/legal.js";
 
 function Proposal({ item }) {
   return (
@@ -48,7 +50,7 @@ function Message({ item }) {
 export default function Chat() {
   return (
     <>
-      <p className="flow-intro">Îți răspund din datele tale. Nu fac nicio operațiune fără acordul tău.</p>
+      <DisclaimerStrip legal={legal} className="disclaimer-strip--card" />
       <div className="thread" role="log" aria-label="Mesaje">
         {chat.map((item, i) => (
           <Message key={i} item={item} />

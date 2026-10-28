@@ -20,7 +20,10 @@ Deschide http://localhost:5173. `npm run build` produce versiunea statică în `
 
 | Rută | Ecran |
 |---|---|
-| `#/produse` | Tabul Produse din aplicație, cu cardul „Coach financiar · Nou” (pornire implicită) |
+| `#/login`, `#/login/pj` | Login simulat (pornire implicită): alegi contul demo de persoană fizică sau juridică. Nu se cer date de autentificare |
+| `#/produse` | Persoană fizică: tabul Produse, cu cardul „Coach financiar · Nou” |
+| `#/firma` | Persoană juridică: produsele firmei și „Coach pentru firme · În curând” (funcționalitatea vine ulterior) |
+| `#/informare` | Informarea oficială: sfaturi orientative, deciziile îți aparțin, date criptate, ce date se folosesc, cum le ștergi |
 | `#/activare` | Activarea coach-ului: ce face și ce nu face |
 | `#/activare/extrase` | Pasul 1: importul extraselor din contul curent (perioada aleasă) și atașarea extraselor anterioare (PDF, XLS, CSV) |
 | `#/activare/calendar` | Pasul 2, opțional: Google Calendar sau calendarul telefonului; ce citește și ce nu |
@@ -36,6 +39,14 @@ Deschide http://localhost:5173. `npm run build` produce versiunea statică în `
 | `#/extrase` | Gestionarea extraselor, deschisă din Profil |
 | `#/chat` | Discuția cu coach-ul, pe tot ecranul |
 
+Pentru demo: deschide aplicația și intră ca persoană fizică, apoi ca persoană juridică. Linkul „Schimbă contul” de deasupra aplicației te duce înapoi la login.
+
+Informarea apare:
+- pe scurt, într-o bandă fixă deasupra barei de jos pe toate paginile coach-ului și sus în discuție;
+- complet, la activare, în Profil și pe `#/informare`.
+
+Textul ei e o propunere și trebuie validat de echipa juridică a băncii. Afirmația „criptate” trebuie să fie adevărată în implementarea reală, atât la transmitere, cât și la stocare.
+
 Data din primul card („Până pe …”) vine din profil. Pentru un salariat e ziua dinaintea salariului, pentru un pensionar ziua dinaintea pensiei, iar pentru venituri neregulate o dată aleasă de utilizator. Vezi `cycle` în `src/data/demo.js`.
 
 ## Structură
@@ -44,6 +55,8 @@ Data din primul card („Până pe …”) vine din profil. Pentru un salariat e
 src/
   data/demo.js          datele fictive ale coach-ului; de înlocuit cu apeluri API
   data/activation.js    conținutul cardului din Produse și al pașilor de activare
+  data/accounts.js      conturile demo din login și produsele firmei
+  data/legal.js         textul informării
   components/           layout (Produse, coach, fluxuri), ui, grafice, iconițe
   screens/              ecranele coach-ului și tabul Produse
   screens/activation/   pașii de activare și rutele lor (routes.js)

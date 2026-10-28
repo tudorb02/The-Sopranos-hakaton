@@ -1926,6 +1926,135 @@ main {
   text-align: center;
 }
 
+/* ---------- notice (informare) ---------- */
+
+.disclaimer {
+  display: grid;
+  gap: var(--space-md);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+
+.disclaimer-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.disclaimer-list {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.disclaimer-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+
+.disclaimer-list .icon {
+  width: 26px;
+  height: 26px;
+  padding: 4px;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+.disclaimer-strip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--yellow-soft);
+  border-top: 1px solid var(--yellow-deep);
+  font-size: var(--text-cap);
+  font-weight: 600;
+}
+
+.disclaimer-strip .icon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+}
+
+.disclaimer-strip span {
+  flex: 1;
+}
+
+.disclaimer-strip .link {
+  font-size: var(--text-cap);
+}
+
+.disclaimer-strip--card {
+  border-top: 0;
+  border-radius: var(--radius-tile);
+}
+
+.app-bottom {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+}
+
+.app-bottom .tabbar {
+  position: static;
+}
+
+/* ---------- simulated sign-in ---------- */
+
+.stage-note .link {
+  font-size: inherit;
+}
+
+.bare-main {
+  padding-top: var(--space-lg);
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.segmented a {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.segmented a:hover {
+  color: var(--ink);
+}
+
+.segmented a[aria-current="page"] {
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+.account-card {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.avatar-tile {
+  border-radius: 50%;
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
 /* ---------- motion ---------- */
 
 @media (prefers-reduced-motion: no-preference) {

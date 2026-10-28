@@ -1,6 +1,7 @@
 import { Icon } from "../../components/icons.jsx";
-import { IconTile, InfoCard, Section, Src, Ticks } from "../../components/ui.jsx";
+import { Disclaimer, IconTile, InfoCard, Section, Src, Ticks } from "../../components/ui.jsx";
 import { findings, intro } from "../../data/activation.js";
+import { legal } from "../../data/legal.js";
 
 export function Intro() {
   return (
@@ -21,9 +22,7 @@ export function Intro() {
         <Ticks yes={intro.does} />
       </Section>
 
-      <Section title="Ce nu fac">
-        <Ticks no={intro.doesNot} />
-      </Section>
+      <Disclaimer legal={legal} />
     </>
   );
 }

@@ -218,6 +218,50 @@ export function Ticks({ yes = [], no = [] }) {
   );
 }
 
+// The official notice on advice and data (see data/legal.js), as a full card.
+export function Disclaimer({ legal, link = false }) {
+  const id = useId();
+  return (
+    <section className="card disclaimer" aria-labelledby={id}>
+      <div className="disclaimer-head">
+        <IconTile icon="shield" tone="ink" />
+        <div>
+          <p className="eyebrow">{legal.eyebrow}</p>
+          <h2 id={id} className="card-title">
+            {legal.title}
+          </h2>
+        </div>
+      </div>
+      <ul className="disclaimer-list">
+        {legal.items.map((item) => (
+          <li key={item.text}>
+            <Icon name={item.icon} />
+            <span>{item.text}</span>
+          </li>
+        ))}
+      </ul>
+      {link ? (
+        <a className="link" href="#/informare">
+          Citește informarea completă
+        </a>
+      ) : null}
+    </section>
+  );
+}
+
+// The same notice in one line, kept in view on every coach page.
+export function DisclaimerStrip({ legal, className }) {
+  return (
+    <p className={className ? `disclaimer-strip ${className}` : "disclaimer-strip"}>
+      <Icon name="lock" />
+      <span>{legal.strip}</span>
+      <a className="link" href="#/informare">
+        Detalii
+      </a>
+    </p>
+  );
+}
+
 export function NoteCard({ icon, children }) {
   return (
     <div className="card note-card">

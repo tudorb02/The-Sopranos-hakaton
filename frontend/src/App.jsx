@@ -1,27 +1,32 @@
 // Static screens only: the hash (#/bugete) picks the screen. No data loading or business logic yet.
-// The Coach is an optional feature: it is offered in Produse and activated in its own flow.
+// The demo starts at a simulated sign-in; the personal account offers the optional Coach in Produse,
+// the business account shows that its features differ.
 
 import { useEffect, useState } from "react";
 
-import { FlowActions, FlowFrame, ProductsFrame, SectionFrame } from "./components/layout.jsx";
+import { BareFrame, FlowActions, FlowFrame, ProductsFrame, SectionFrame } from "./components/layout.jsx";
+import { accounts, business } from "./data/accounts.js";
 import { client } from "./data/demo.js";
 import { ACTIVATION, ACTIVATION_STEPS } from "./screens/activation/routes.js";
 import { Statements } from "./screens/activation/Statements.jsx";
 import Budgets from "./screens/Budgets.jsx";
+import Business from "./screens/Business.jsx";
 import Chat from "./screens/Chat.jsx";
 import Goals from "./screens/Goals.jsx";
+import Legal from "./screens/Legal.jsx";
+import Login from "./screens/Login.jsx";
 import Products from "./screens/Products.jsx";
 import Profile from "./screens/Profile.jsx";
 import Summary from "./screens/Summary.jsx";
 
-// Pages of the Coach. The chat and the statements open full screen, like a payment flow in the app.
+// Pages of the Coach. The chat, the statements and the notice open full screen, like a payment flow.
 const SECTION_SCREENS = { rezumat: Summary, bugete: Budgets, obiective: Goals, profil: Profile };
-const OTHER_ROUTES = ["produse", "chat", "extrase"];
+const OTHER_ROUTES = ["login", "login/pj", "produse", "firma", "chat", "extrase", "informare"];
 
 function routeFromHash() {
   const key = window.location.hash.replace(/^#\/?/, "");
   if (OTHER_ROUTES.includes(key) || key in SECTION_SCREENS || key in ACTIVATION) return key;
-  return "produse";
+  return "login";
 }
 
 export default function App() {
@@ -36,10 +41,26 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
+  if (route === "login" || route === "login/pj") {
+    return (
+      <BareFrame key={route}>
+        <Login type={route === "login" ? "pf" : "pj"} />
+      </BareFrame>
+    );
+  }
+
   if (route === "produse") {
     return (
-      <ProductsFrame>
+      <ProductsFrame subtitle={`${accounts.pf.name} · persoană fizică`}>
         <Products />
+      </ProductsFrame>
+    );
+  }
+
+  if (route === "firma") {
+    return (
+      <ProductsFrame subtitle={business.subtitle} productsHref="#/firma">
+        <Business />
       </ProductsFrame>
     );
   }
@@ -56,6 +77,14 @@ export default function App() {
     return (
       <FlowFrame title="Extrase de cont" titleAs="p" closeHref="#/profil" footer={<FlowActions next="#/profil" nextLabel="Gata" />}>
         <Statements />
+      </FlowFrame>
+    );
+  }
+
+  if (route === "informare") {
+    return (
+      <FlowFrame title="Informare" closeHref="#/rezumat">
+        <Legal />
       </FlowFrame>
     );
   }

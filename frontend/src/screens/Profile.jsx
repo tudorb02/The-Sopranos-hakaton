@@ -1,5 +1,6 @@
-import { Facts, Group, Meter, Src, Switch, ValueRow } from "../components/ui.jsx";
+import { Disclaimer, Facts, Group, Meter, Src, Switch, ValueRow } from "../components/ui.jsx";
 import { profile } from "../data/demo.js";
+import { legal } from "../data/legal.js";
 import { lei } from "../lib/format.js";
 
 const CORRECT = (
@@ -128,6 +129,8 @@ export default function Profile() {
           <p className="small muted">Te întreb doar dacă vrei. Alege un subiect și vorbim.</p>
         </div>
       </Group>
+
+      <Disclaimer legal={legal} link />
 
       <div className="deactivate">
         <button type="button" className="btn btn--text btn--danger">

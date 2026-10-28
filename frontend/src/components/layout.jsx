@@ -1,4 +1,6 @@
+import { legal } from "../data/legal.js";
 import { Icon } from "./icons.jsx";
+import { DisclaimerStrip } from "./ui.jsx";
 
 const COACH_PAGES = [
   { id: "rezumat", label: "Rezumat" },
@@ -12,26 +14,37 @@ const APP_TABS = [
   { id: "acasa", label: "Acasă", icon: "home" },
   { id: "plati", label: "Plăți", icon: "transfer" },
   { id: "carduri", label: "Carduri", icon: "card" },
-  { id: "produse", label: "Produse", icon: "grid", href: "#/produse" },
+  { id: "produse", label: "Produse", icon: "grid" },
 ];
 
-function Stage({ children }) {
+// The phone-width column, with the prototype note above it. `productsHref` is where Produse points.
+function Stage({ children, switchAccount = true }) {
   return (
     <div className="stage">
-      <p className="stage-note">Concept de extensie pentru Smart Mobile · prototip de hackathon · date fictive · neafiliat Raiffeisen Bank</p>
+      <p className="stage-note">
+        Concept de extensie pentru Smart Mobile · prototip de hackathon · date fictive · neafiliat Raiffeisen Bank
+        {switchAccount ? (
+          <>
+            {" · "}
+            <a className="link" href="#/login">
+              Schimbă contul
+            </a>
+          </>
+        ) : null}
+      </p>
       <div className="app">{children}</div>
     </div>
   );
 }
 
-function TabBar() {
+function TabBar({ productsHref }) {
   return (
     <nav className="tabbar" aria-label="Aplicație">
       <ul>
         {APP_TABS.map((tab) => (
           <li key={tab.id}>
-            {tab.href ? (
-              <a href={tab.href} aria-current="page">
+            {tab.id === "produse" ? (
+              <a href={productsHref} aria-current="page">
                 <span className="tab-icon">
                   <Icon name={tab.icon} />
                 </span>
@@ -52,12 +65,24 @@ function TabBar() {
   );
 }
 
-// The Produse tab of the app, where the Coach is offered.
-export function ProductsFrame({ children }) {
+// The simulated sign-in: no header or tab bar.
+export function BareFrame({ children }) {
+  return (
+    <Stage switchAccount={false}>
+      <main className="bare-main">{children}</main>
+    </Stage>
+  );
+}
+
+// The Produse tab of the app: the personal one offers the Coach, the business one shows what is coming.
+export function ProductsFrame({ title = "Produse", subtitle, productsHref = "#/produse", children }) {
   return (
     <Stage>
       <header className="app-header">
-        <h1 className="app-title">Produse</h1>
+        <div>
+          <h1 className="app-title">{title}</h1>
+          {subtitle ? <p className="small muted">{subtitle}</p> : null}
+        </div>
         <button type="button" className="icon-btn" aria-label="Mesaje, 1 necitit">
           <Icon name="mail" />
           <span className="badge" aria-hidden="true">
@@ -66,12 +91,12 @@ export function ProductsFrame({ children }) {
         </button>
       </header>
       <main>{children}</main>
-      <TabBar />
+      <TabBar productsHref={productsHref} />
     </Stage>
   );
 }
 
-// A page of the Coach, opened from Produse: back link, the coach's own pages, the app's tab bar.
+// A page of the Coach, opened from Produse: back link, the coach's own pages, the notice, the app's tab bar.
 export function SectionFrame({ current, client, children }) {
   return (
     <Stage>
@@ -101,7 +126,10 @@ export function SectionFrame({ current, client, children }) {
       </nav>
 
       <main key={current}>{children}</main>
-      <TabBar />
+      <div className="app-bottom">
+        <DisclaimerStrip legal={legal} />
+        <TabBar productsHref="#/produse" />
+      </div>
     </Stage>
   );
 }
@@ -143,7 +171,7 @@ export function FlowActions({ next, nextLabel, skip, skipLabel }) {
   );
 }
 
-// A full-screen flow (activation, chat, statements): centred title, "Înapoi" and "Închide",
+// A full-screen flow (activation, chat, statements, notice): centred title, "Înapoi" and "Închide",
 // like the app's payment flow. When the screen has its own h1, pass titleAs="p".
 export function FlowFrame({ title, titleAs: TitleTag = "h1", closeHref, backHref, progress, footer, children }) {
   return (

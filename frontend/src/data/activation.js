@@ -26,11 +26,6 @@ export const intro = {
     "Te întreb doar ce nu pot vedea din tranzacții",
     "Îți scriu când te apropii de o limită stabilită de tine",
   ],
-  doesNot: [
-    "Nu fac nicio plată sau operațiune fără acordul tău",
-    "Nu folosesc datele pentru credit sau reclame",
-    "Mă poți dezactiva oricând, iar datele importate se șterg",
-  ],
 };
 
 export const statements = {
