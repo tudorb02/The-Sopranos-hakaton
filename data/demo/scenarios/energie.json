@@ -1,0 +1,34 @@
+{
+  "id": "energie",
+  "cui": "41726035",
+  "moduleId": "energie",
+  "parcelIds": [
+    "ph_0207_01"
+  ],
+  "questionnaire": {
+    "mounting": "ACOPERIS",
+    "available_area_m2": 2600,
+    "daytime_share_pct": 55,
+    "diesel_pump_litres_year": 0,
+    "has_grid_notice": false,
+    "cashin_months": [
+      "JAN",
+      "MAY",
+      "JUL",
+      "AUG"
+    ],
+    "old_equipment_fate": "NU_E_CAZUL"
+  },
+  "documents": [
+    {
+      "documentId": "doc_oferta_fotovoltaice",
+      "docType": "OFFER",
+      "file": "docs/oferta-fotovoltaice-300kwp.pdf"
+    },
+    {
+      "documentId": "doc_facturi_energie_avicola",
+      "docType": "ENERGY_INVOICES",
+      "file": "docs/facturi-energie-avicola-12-luni.pdf"
+    }
+  ]
+}
