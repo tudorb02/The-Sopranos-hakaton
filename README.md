@@ -363,6 +363,7 @@ Alte upgrade-uri din catalog: programare automată · pompă cu variator de tura
 | ✅ | **Facturile de energie pe ultimele 12 luni** | document | consumul lunar, prețul plătit |
 | ✅ | Locul montajului (acoperiș / teren) și suprafața disponibilă | întrebare | dimensionarea, DNSH |
 | ✅ | Pompă solară: câți litri de motorină consumă pompa actuală pe an | întrebare | economia la diesel |
+| ✅ | Ce parte din consum e ziua (aproximativ, ex. 55%) | întrebare | energia consumată direct din panouri |
 | ⚪ | Avizul de racordare | document | dacă se vinde energie în rețea |
 
 **B. Ce calculăm**
@@ -370,7 +371,7 @@ Alte upgrade-uri din catalog: programare automată · pompă cu variator de tura
 | # | Calcul | Formula |
 |---|---|---|
 | 1 | Producția anuală (kWh) | `E = kWp × producția specifică a zonei` (kWh/kWp/an, din config pe regiune) |
-| 2 | Energia consumată direct | `E_auto = Σ_lună min(E_lună, consum_lună)` (din profilul lunar de producție și facturile lunare) |
+| 2 | Energia consumată direct | `E_auto = Σ_lună min(E_lună, consum_lună × pondere_zi)` (profilul lunar de producție, facturile lunare și ponderea consumului de zi, pentru că panourile produc doar ziua) |
 | 3 | Energia vândută | `E_vândut = E − E_auto` |
 | 4 | **Indicatorul verde** | `MWh regenerabili / an = E / 1000` și **gradul de acoperire** `E_auto / consum_anual` |
 | 5 | Economie în EUR / an | `E_auto × preț_cumpărare + E_vândut × preț_vânzare` |
@@ -520,7 +521,7 @@ Aici **nu există economie de energie**. Riscul principal e **lichiditatea în a
 
 **C. Pragul verde:** **certificare ecologică UE** sau contract de conversie cu un organism de certificare.
 
-**D. Cum îl îndrumăm:** conversie etapizată (parcelă cu parcelă) ca să micșoreze golul de lichiditate · culturi cu primă bio mare · contracte de vânzare cu procesatori bio.
+**D. Cum îl îndrumăm:** compară conversia integrală cu cea etapizată (parcelă cu parcelă): etapizarea micșorează golul din primul an, dar amână câștigul, așa că aplicația o recomandă doar dacă golul nu poate fi acoperit prin grație și prefinanțarea APIA · culturi cu primă bio mare · contracte de vânzare cu procesatori bio.
 
 **E. Creditul verde:** **F3 (Credit BIO)**, cu grație pe anii de conversie, plus **F5** pentru golurile de lichiditate. Eligibil în *Agriculture and forestry* (**F2**).
 
@@ -726,7 +727,7 @@ Deciziile luate pentru versiunea de hackathon. Ce nu e scris aici urmează restu
 | **Toate cele 6 categorii merg complet** | fiecare are fermă demo, documente, calcule, ofertă și raport |
 | **6 ferme demo fictive** | legume (irigații) · fermă cu facturi mari la energie (fotovoltaice) · cereale (utilaje) · vaci (biogaz) · fructe (depozit frigorific) · fermă în conversie la bio. Fiecare are un buton „Dosar demo” pe cardul categoriei. Detaliile lor sunt în `data/demo/README.md` |
 | **Date evident fictive** | nume fictive și CUI-uri numerice fictive (formatul cerut de ANAF), verificate că nu există la ANAF. Fermele demo din `data/demo/farms/` nu ajung niciodată la ANAF; orice alt CUI se caută live |
-| **Momentul de îndrumare** | categoriile 1, 3, 4, 5 pornesc **sub prag** și arată upgrade-ul · categoria 2 (eligibilă direct) arată **redimensionarea** instalației · categoria 6 arată **conversia etapizată** și golul de lichiditate |
+| **Momentul de îndrumare** | categoriile 1, 3, 4, 5 pornesc **sub prag** și arată upgrade-ul · categoria 2 (eligibilă direct) arată **redimensionarea** instalației · categoria 6 compară **conversia integrală cu cea etapizată** și arată golul de lichiditate din anii de conversie |
 | **Zona IMM e self-service** | o folosește reprezentantul firmei, singur |
 | **IMM-ul nu vede fondurile** | vede „Credit verde Raiffeisen” și beneficiul „fără ipotecă, datorită unei garanții europene”. Fondul și cerințele lui apar doar în zona ofițerului |
 | **Două carduri: Clasic și Verde** | dacă investiția cerută e sub prag, alegerea cardului Verde înseamnă acceptarea upgrade-ului. Nu există „verde fără upgrade” |
