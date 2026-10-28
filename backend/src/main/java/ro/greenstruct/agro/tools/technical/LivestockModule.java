@@ -122,7 +122,10 @@ public class LivestockModule implements ModuleCalculator {
         boolean digester = components.stream().anyMatch(c -> "DIGESTER".equals(c.category()));
         BigDecimal offered = components.stream().map(c -> c.attribute("energyKwh")).filter(v -> v != null)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal energy = offered.signum() > 0 ? offered : digester ? baseline.get("energy_norm_kwh") : BigDecimal.ZERO;
+        // Biogas becomes electricity only with a cogeneration unit: its data sheet gives the energy, else the norm.
+        boolean cogeneration = components.stream().anyMatch(c -> "COGENERATION".equals(c.category()));
+        BigDecimal energy = offered.signum() > 0 ? offered : cogeneration ? baseline.get("energy_norm_kwh")
+                : BigDecimal.ZERO;
         EnergyUse use = LivestockCalculator.energyUse(energy, baseline.get("farm_energy_kwh"));
 
         String digestateUse = context.questionnaire().path("digestate_use").asText("");
