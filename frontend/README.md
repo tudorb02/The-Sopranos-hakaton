@@ -8,7 +8,7 @@ Demo-ul are doi clienți persoană fizică, cu același coach și date diferite:
 - Daria, salariată, cu salariul pe 5;
 - Matei, student fără venit stabil: bani de la familie, o bursă nesigură și meditații. Coach-ul pune accent pe cheltuielile necesare, pe economisire și pe idei de dezvoltare (vezi `design/coach-students.md`).
 
-Contul de persoană juridică, Legume Bărăgan SRL (o fermă de legume), deschide **creditul verde pentru investiții**. Agricultura e primul domeniu al platformei; celelalte domenii apar ca „În curând” (vezi `design/pj-greenstruct.md`).
+Contul de persoană juridică, Legume Bărăgan SRL (o fermă de legume), deschide **consultantul pentru credit verde**: un agent care te ajută să pregătești cererea de credit, cu cele mai bune șanse de aprobare și cele mai bune clauze. Agricultura e primul domeniu al platformei; celelalte domenii apar ca „În curând”. Fluxul urmează README-ul GreenStruct (branch-ul `B2B_Agro`, 28.10.2026) și `design/pj-greenstruct.md`.
 
 ## Pornire
 
@@ -29,17 +29,19 @@ Deschide http://localhost:5173. `npm run build` produce versiunea statică în `
 | `#/login`, `#/login/pj` | Login simulat (pornire implicită): alegi unul dintre cele două conturi demo de persoană fizică (Daria sau Matei) ori contul de persoană juridică (Legume Bărăgan SRL). Nu se cer date de autentificare |
 | `#/intra/pf`, `#/intra/student` | Intrarea în contul ales: coach-ul arată de acum datele acelui client, apoi se deschide Produse |
 | `#/produse` | Persoană fizică: tabul Produse, cu cardul „Coach financiar · Nou” |
-| `#/firma` | Persoană juridică: tabul Produse, cu cardul „Credit verde pentru investiții · Nou”, cererea trimisă și produsele firmei |
+| `#/firma` | Persoană juridică: tabul Produse, cu cardul „Consultant pentru credit verde · Nou”, cererea trimisă și produsele firmei |
 | `#/verde` | Alegerea domeniului: Agricultură e disponibilă; Industria alimentară, Silvicultură, Pescuit și acvacultură apar „În curând”, fără acțiune |
-| `#/verde/agro` | Ce urmează: cum decurge, ce să ai la îndemână, informarea |
-| `#/verde/agro/firma` | Pasul 1: firma, din contul firmei; acordurile pentru APIA, ANSVSA și Open Banking; datele găsite, fiecare cu sursa lui |
-| `#/verde/agro/investitie` | Pasul 2: cele 6 tipuri de investiții și criteriul verde al celei alese |
-| `#/verde/agro/unde` | Pasul 3: parcelele din APIA, pe o hartă SVG (merge și fără internet), și ce s-a văzut pe hartă |
-| `#/verde/agro/documente` | Pasul 4: documentele pentru orice investiție și cele pentru irigații; ce lipsește devine condiție, nu respingere |
-| `#/verde/agro/intrebari` | Pasul 5: cele 10 întrebări despre fermă, pe un ecran, completate din APIA și din conturi |
+| `#/verde/agro` | Ce urmează: cum decurge, ce face consultantul și ce nu, ce să ai la îndemână, informarea |
+| `#/verde/agro/firma` | Pasul 1: firma, din contul firmei; acordurile pentru APIA și Open Banking; datele găsite, fiecare cu sursa lui (inclusiv statutul de IMM) |
+| `#/verde/agro/categorie` | Pasul 2: „Ce vrei să faci?”: cele 6 categorii și criteriul verde al celei alese |
+| `#/verde/agro/unde` | Pasul 3: parcelele din APIA, pe o hartă SVG (merge și fără internet), și ce s-a văzut pe hartă: secetă, stres hidric, Natura 2000, nitrați |
+| `#/verde/agro/documente` | Pasul 4: doar documentele esențiale ale categoriei; cele opționale îmbunătățesc estimarea |
+| `#/verde/agro/intrebari` | Pasul 5: întrebările esențiale ale categoriei și cea despre echipamentul vechi, completate din APIA |
 | `#/verde/agro/analiza` | Pasul 6: cei 3 agenți, cu nume pe înțelesul fermierului, și mesajele lor |
-| `#/verde/agro/oferta` | Pasul 7: creditul standard și cel verde, câștigul pe 5 ani, ratele după recoltă, obligațiile, garanția FEI |
-| `#/verde/agro/dosar` | Dosarul trimis: statusul, ce lipsește înainte de tragere, ce trimiți după aprobare |
+| `#/verde/agro/oferte` | Pasul 7: creditul clasic și cel verde, nivelul Verde Plus, câștigul pe 5 ani, de ce e mai mică dobânda, ratele după recoltă, garanția FEI |
+| `#/verde/agro/schimbari` | Pasul 8: ce să schimbi la investiție, cât costă în plus și în cât timp se recuperează |
+| `#/verde/agro/cerere` | Pasul 9: varianta aleasă și verificarea consultantului: cât de pregătit e dosarul, ce mai poți îmbunătăți, clauzele de cerut, obligațiile |
+| `#/verde/agro/dosar` | Dosarul trimis: statusul, impactul estimat, ce trimiți după aprobare |
 | `#/verde/informare` | Informarea pentru firme: cine vede dosarul, ce nu facem niciodată, ce date folosim, ultimele accesări |
 | `#/informare` | Informarea oficială: recomandări cu caracter informativ, deciziile îți aparțin, date criptate, cine îți vede datele, ce nu facem niciodată, ce date se folosesc, ultimele accesări, cum le ștergi |
 | `#/activare` | Activarea coach-ului: ce face și ce nu face |

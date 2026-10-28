@@ -1,9 +1,10 @@
 // The green-credit flow of one area: one entry per hash route (#/verde/<area>/...), like the coach activation.
-// back: the "Înapoi" link; step: position in the progress bar; footer: the actions at the bottom.
+// The steps follow the GreenStruct README §7. back: the "Înapoi" link; step: position in the progress bar;
+// footer: the actions at the bottom.
 
-import { Analysis, Company, Documents, Dossier, Intro, Investment, Location, Offer, Questions } from "./Steps.jsx";
+import { Analysis, Category, Changes, Company, Documents, Dossier, Intro, Location, Offers, Questions, Request } from "./Steps.jsx";
 
-export const GREEN_STEPS = ["Firma", "Investiția", "Locul", "Documente", "Întrebări", "Analiza", "Oferta"];
+export const GREEN_STEPS = ["Firma", "Categoria", "Locul", "Documente", "Întrebări", "Analiza", "Ofertele", "Ce schimbi", "Cererea"];
 
 export function greenRoutes(sector) {
   const base = `#/verde/${sector}`;
@@ -14,16 +15,18 @@ export function greenRoutes(sector) {
       back: "#/verde",
       footer: { next: `${base}/firma`, nextLabel: "Începe", skip: "#/firma", skipLabel: "Nu acum" },
     },
-    [key("firma")]: { Screen: Company, back: base, step: 1, footer: { next: `${base}/investitie`, nextLabel: "Confirm datele" } },
-    [key("investitie")]: { Screen: Investment, back: `${base}/firma`, step: 2, footer: { next: `${base}/unde`, nextLabel: "Continuă" } },
-    [key("unde")]: { Screen: Location, back: `${base}/investitie`, step: 3, footer: { next: `${base}/documente`, nextLabel: "Continuă" } },
+    [key("firma")]: { Screen: Company, back: base, step: 1, footer: { next: `${base}/categorie`, nextLabel: "Confirm datele" } },
+    [key("categorie")]: { Screen: Category, back: `${base}/firma`, step: 2, footer: { next: `${base}/unde`, nextLabel: "Continuă" } },
+    [key("unde")]: { Screen: Location, back: `${base}/categorie`, step: 3, footer: { next: `${base}/documente`, nextLabel: "Continuă" } },
     [key("documente")]: { Screen: Documents, back: `${base}/unde`, step: 4, footer: { next: `${base}/intrebari`, nextLabel: "Continuă" } },
     [key("intrebari")]: { Screen: Questions, back: `${base}/documente`, step: 5, footer: { next: `${base}/analiza`, nextLabel: "Trimite la analiză" } },
-    [key("analiza")]: { Screen: Analysis, back: `${base}/intrebari`, step: 6, footer: { next: `${base}/oferta`, nextLabel: "Vezi oferta" } },
-    [key("oferta")]: {
-      Screen: Offer,
-      back: `${base}/analiza`,
-      step: 7,
+    [key("analiza")]: { Screen: Analysis, back: `${base}/intrebari`, step: 6, footer: { next: `${base}/oferte`, nextLabel: "Vezi ofertele" } },
+    [key("oferte")]: { Screen: Offers, back: `${base}/analiza`, step: 7, footer: { next: `${base}/schimbari`, nextLabel: "Vezi ce să schimbi" } },
+    [key("schimbari")]: { Screen: Changes, back: `${base}/oferte`, step: 8, footer: { next: `${base}/cerere`, nextLabel: "Pregătește cererea" } },
+    [key("cerere")]: {
+      Screen: Request,
+      back: `${base}/schimbari`,
+      step: 9,
       footer: { next: `${base}/dosar`, nextLabel: "Trimite cererea la bancă", skip: "#/firma", skipLabel: "Salvez și revin mai târziu" },
     },
     [key("dosar")]: { Screen: Dossier, back: "#/firma", title: "Dosarul tău", footer: { next: "#/firma", nextLabel: "Înapoi la Produse" } },

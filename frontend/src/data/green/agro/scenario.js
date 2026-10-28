@@ -1,17 +1,18 @@
-// The demo dossier of Legume Bărăgan SRL (fictional): vegetables in the south-east, the irrigation module.
-// Amounts in EUR. The figures are what the financial engine would return (README §8); the arithmetic is below,
-// so the backend tests can start from the same values.
+// The demo dossier of Legume Bărăgan SRL (fictional): vegetables in the south-east, 40 ha irrigated by furrows,
+// asking for classic sprinklers (GreenStruct README §12). Amounts in EUR. The figures are what the calculation
+// engine would return with the README formulas (§4, §6 category 1); the inputs are below, for the backend tests.
 //
-// A, standard: 85.000 EUR, 15% advance 12.750, loan 72.250 at 7,2% over 60 months → 1.437/month, 86.248 paid;
-//   mortgage costs: valuation 600 + notary 1.200 + insurance 300 × 5 = 3.300.
-// B, green: 96.500 EUR (85.000 + upgrade 11.500), advance 14.475, loan 82.025 at 5,4% over 60 months →
-//   93.778 paid, in 20 seasonal payments of 4.689 (July–October: same total, only in the income months).
-// Savings: water and pumping cost 14.000 EUR/year; A saves 15% = 2.100/year, B 32% = 4.480 + solar pump 3.220
-//   = 7.700/year; over 5 years 10.500 vs 38.500.
-// Net advantage = (38.500 − 14.475 − 93.778 − 0) − (10.500 − 12.750 − 86.248 − 3.300) = 22.045.
-// Upgrade payback = 11.500 / ((7.700 − 2.100) / 12) ≈ 25 months.
-// Water: 40 ha × 3.500 m³ = 140.000 m³/year; A saves 21.000, B 44.800.
-// CO₂ at 0,26 kg/kWh and 0,3 kWh/m³: A 21.000 × 0,3 = 6.300 kWh → 1,6 t; B 13.440 + 20.000 solar kWh → 8,7 t.
+// Water: net need 140.000 m³/year; furrows η 0,60 → 233.333 m³; sprinklers η 0,75 → 186.667 (−20%, under the
+//   25% threshold); drip η 0,90 + soil sensors 10% → 140.000 (−40%, Verde Plus: at least 37,5%).
+// Pumping (well, 18 m): 36.000 kWh/year now, 33.000 with sprinklers, 22.000 with drip. Prices: water 0,03 EUR/m³
+//   (ANAR), energy 0,18 EUR/kWh. Savings: classic 46.667 × 0,03 + 3.000 × 0,18 = 1.940; green 93.333 × 0,03 +
+//   14.000 × 0,18 = 5.320 EUR/year. CO₂ at 0,26 t/MWh: 0,8 and 3,6 t/year.
+// Classic: 85.000, advance 15% = 12.750, loan 72.250 at 8,9% over 60 months → 1.496/month, 89.777 paid;
+//   mortgage: valuation 600 + notary 1.200 + registration 200 + insurance 300 × 5 = 3.500.
+// Green: 93.000 (upgrade + 8.000), advance 13.950, loan 79.050 at 6,3%: interest only until the first harvest
+//   (6 × 415), then 20 payments of 4.523 in July–October, same present value as the annuity → 92.948 paid.
+// Net advantage over 5 years = (26.600 − 13.950 − 92.948) − (9.700 − 12.750 − 89.777 − 3.500) = 16.030.
+// Upgrade payback = 8.000 / ((5.320 − 1.940) / 12) ≈ 28 months. DSCR = (95.000 + 5.320) / (4 × 4.523) ≈ 5,5.
 
 import { bankServices } from "../../bank.js";
 
@@ -23,27 +24,25 @@ export const company = {
   account: "CUI 4•••••7 · din contul firmei",
   facts: [
     { label: "Activitate", value: "CAEN 0113 · Cultivarea legumelor și a pepenilor", src: "ANAF" },
-    { label: "Angajați", value: "9", src: "ANAF" },
-    { label: "Cifra de afaceri 2025", value: "2,1 mil. lei", src: "ANAF" },
+    { label: "Statut", value: "IMM: 9 angajați, cifră de afaceri de 2,1 mil. lei în 2025", src: "ANAF" },
     { label: "Suprafață", value: "44 ha, în 6 parcele", src: "APIA" },
     { label: "Culturi 2024–2026", value: "Roșii, ardei, ceapă și varză, în rotație", src: "APIA" },
     { label: "Subvenții 2025", value: "Circa 9.500 EUR", src: "APIA" },
-    { label: "Încasări", value: "Cele mai mari în iulie–octombrie", src: "Open Banking" },
+    { label: "Încasări nete din activitate", value: "Circa 95.000 EUR pe an, cele mai mari în iulie–octombrie", src: "Open Banking" },
   ],
 };
 
-// fixed: public data, no consent needed.
+// fixed: public data, no consent needed. The README asks for two consents (§2, step 1).
 export const consents = [
   { id: "anaf", label: "ANAF și ONRC", hint: "Date publice despre firmă", on: true, fixed: true },
   { id: "apia", label: "APIA", hint: "Parcelele, culturile pe 3 ani și subvențiile", on: true },
-  { id: "ansvsa", label: "ANSVSA", hint: "Animalele din exploatație, doar dacă ai", on: false },
   { id: "open-banking", label: "Open Banking", hint: "Încasările și plățile pe 12–24 de luni, ca ratele să vină în lunile în care încasezi", on: true },
 ];
 
 // variant: which "where" step the area uses (parcels for agriculture). Points are in a 320 × 170 view.
 export const location = {
   variant: "parcels",
-  title: "Pe ce parcele?",
+  title: "Unde?",
   lead: "Parcelele vin din APIA. Bifează-le pe cele pe care faci investiția.",
   canal: "M4 20 C 90 12, 210 24, 316 14",
   parcels: [
@@ -56,125 +55,183 @@ export const location = {
   ],
   layers: [
     { label: "Risc de secetă", value: "Ridicat", src: "Copernicus" },
+    { label: "Stres hidric", value: "Moderat, nu sever", src: "hărți publice" },
     { label: "Zonă Natura 2000", value: "Nu", src: "Natura 2000" },
     { label: "Zonă vulnerabilă la nitrați", value: "Nu", src: "lista oficială" },
   ],
 };
 
-// state: "done", "ready" or "missing"; `file` is what was uploaded.
+// state: "done", "ready" or "missing"; `file` is what was uploaded or why it helps.
 export const documents = {
   oferta: { state: "done", file: "oferta_aspersie_agroirig.pdf · 4 pagini" },
-  actual: { state: "done", file: "Descriere: aspersie mobilă cu tambur, din 2014" },
   loc: { state: "ready", file: "5 parcele, 40 ha" },
-  anar: { state: "missing", file: "O poți trimite și după aprobare" },
-  consum: { state: "done", file: "facturi_energie_pompare_2025.pdf · 12 luni" },
+  anar: { state: "done", file: "autorizatie_gospodarire_ape_2025.pdf" },
+  consum: { state: "missing", file: "Opțional: face estimarea mai precisă" },
 };
 
-// Answers by question id; `src` marks what was filled in from APIA or Open Banking.
+// Answers by question id; `src` marks what was filled in from APIA.
 export const answers = {
-  culturi: { value: "Roșii 45 t/ha, ardei 28 t/ha, ceapă 35 t/ha", src: "APIA" },
-  azot: { value: "120" },
-  sol: { selected: ["Arătură"] },
-  rotatie: { selected: ["Rotație"], src: "APIA" },
-  irigare: { selected: ["Da, prin aspersie"] },
-  asigurare: { selected: ["Da"] },
-  certificari: { selected: ["GlobalGAP"] },
-  contracte: { selected: ["Da"] },
-  incasari: { selected: ["Iul.", "Aug.", "Sep.", "Oct."], src: "Open Banking" },
-  deseuri: { selected: ["Vând utilajul", "Predau ambalajele și folia unui colector autorizat"] },
+  "sistem-actual": { selected: ["Prin brazde"] },
+  "sursa-apei": { selected: ["Puț"] },
+  pompare: { value: "18" },
+  "culturi-irigate": { value: "Roșii 16 ha, ardei 8,5 ha, ceapă 9,5 ha, varză 6 ha", src: "APIA" },
+  "echipament-vechi": { selected: ["Îl predau la reciclare autorizată"] },
 };
 
 // The three agents, named for the farmer (design/pj-greenstruct.md §4). tone: "warn" or "ok" highlights a message.
 export const analysis = {
   title: "Analizăm investiția",
-  lead: "Durează câteva minute. Poți închide aplicația: îți scriem când oferta e gata.",
+  lead: "Durează câteva minute. Poți închide aplicația: îți scriem când ofertele sunt gata.",
   phases: [
-    { label: "Verificăm investiția", state: "done", note: "Oferta, documentele și criteriul verde" },
-    { label: "Comparăm creditele", state: "done", note: "Creditul standard și cel verde, pe 5 ani" },
+    { label: "Verificăm investiția", state: "done", note: "Indicatorul verde, pragul și verificările de mediu" },
+    { label: "Construim creditele", state: "done", note: "Creditul clasic și cel verde, cu fondul potrivit" },
     { label: "Pregătim dosarul pentru bancă", state: "running", note: "Raportul pentru ofițerul de credit", progress: 80 },
   ],
   messages: [
     { phase: "Verificăm investiția", text: "Am citit oferta: aspersie clasică pentru 40 ha, 85.000 EUR." },
-    { phase: "Verificăm investiția", text: "Sistemul ales economisește 15% apă. Pentru creditul verde e nevoie de 25%.", tone: "warn" },
-    {
-      phase: "Verificăm investiția",
-      text: "Am găsit o soluție: picurare, senzori de umiditate și o pompă solară. Economia ajunge la 32%, cu 11.500 EUR în plus.",
-      tone: "ok",
-    },
-    { phase: "Verificăm investiția", text: "Investiția nu atinge zone Natura 2000 și nu crește consumul de îngrășăminte." },
-    { phase: "Comparăm creditele", text: "Cu creditul verde, ratele vin după recoltă, în iulie–octombrie." },
-    { phase: "Comparăm creditele", text: "Ratele încap în încasările firmei din ultimele 24 de luni." },
-    { phase: "Pregătim dosarul pentru bancă", text: "Mai lipsește autorizația de gospodărire a apelor: o poți trimite și după aprobare." },
+    { phase: "Verificăm investiția", text: "Acum irigi prin brazde. Aspersia economisește 20% apă, iar pentru creditul verde e nevoie de 25%.", tone: "warn" },
+    { phase: "Verificăm investiția", text: "Cu picurare și senzori de umiditate ajungi la 40%, cu 8.000 EUR în plus: nivelul Verde Plus.", tone: "ok" },
+    { phase: "Verificăm investiția", text: "Ai autorizația ANAR, parcelele nu sunt în zone Natura 2000, iar zona nu are stres hidric sever." },
+    { phase: "Construim creditele", text: "Fondul potrivit: garanția FEI InvestEU de sustenabilitate, pentru investiții verzi." },
+    { phase: "Construim creditele", text: "Dobânda scade de la 8,9% la 6,3%, iar ratele vin după recoltă, în iulie–octombrie." },
+    { phase: "Construim creditele", text: "Banii din activitate acoperă de 5,5 ori ratele anuale." },
+    { phase: "Pregătim dosarul pentru bancă", text: "Documentele esențiale sunt complete. Poți adăuga facturile de energie pentru o estimare mai precisă." },
   ],
-  note: "Cifrele sunt calculate de bancă, după reguli fixe, nu de AI.",
+  note: "Cifrele sunt calculate de bancă, după formule fixe, nu de AI.",
 };
 
 const MONTHS = ["I", "F", "M", "A", "M", "I", "I", "A", "S", "O", "N", "D"];
 const NAMES = ["ianuarie", "februarie", "martie", "aprilie", "mai", "iunie", "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie"];
-const GREEN_MONTHS = [6, 7, 8, 9];
+const HARVEST = [6, 7, 8, 9];
 
+// The two offers (README §4, step 5). level: the green level of README §4, step 8.
 export const offer = {
-  eyebrow: "Oferta ta · Irigații, 40 ha",
-  headline: { label: "Câștigi în 5 ani cu creditul verde", eur: 22045 },
-  sub: "Economii mai mari la apă și energie, fără costuri cu ipoteca și rate după recoltă.",
-  recommended: "Recomandat: investiția optimizată e eligibilă pentru creditul verde, iar avantajul net e pozitiv.",
-  change: {
-    from: { name: "Aspersie clasică", note: "Economie de apă: 15%", eur: 85000 },
-    to: { name: "Picurare, senzori de umiditate și pompă solară", note: "Economie de apă: 32%", eur: 96500 },
-    payback: "Costul în plus, de 11.500 EUR, se recuperează din economii în circa 25 de luni.",
-  },
-  columns: ["Credit standard", "Credit verde"],
+  eyebrow: "Ofertele tale · Irigații, 40 ha",
+  headline: { label: "Câștigi în 5 ani alegând creditul verde", eur: 16030 },
+  level: { name: "Verde Plus", text: "Economia de apă, 40%, trece pragul de 25% cu mult: primești reducerea maximă de dobândă." },
+  recommended: "Recomandat: investiția verde e eligibilă, iar avantajul net e pozitiv.",
+  columns: ["Credit clasic", "Credit verde"],
   rows: [
-    { label: "Investiția", a: "85.000 EUR", b: "96.500 EUR" },
-    { label: "Avans, 15%", a: "12.750 EUR", b: "14.475 EUR" },
-    { label: "Dobânda, orientativ", a: "7,2% pe an", b: "5,4% pe an" },
-    { label: "Garanția", a: "Ipotecă pe teren", b: "Garanție FEI, prin InvestEU" },
-    { label: "Costuri cu ipoteca, în 5 ani", a: "3.300 EUR", b: "0 EUR" },
-    { label: "Ratele", a: "1.437 EUR în fiecare lună", b: "4.689 EUR în iulie–octombrie" },
-    { label: "Economii la apă și energie", a: "2.100 EUR pe an", b: "7.700 EUR pe an" },
-    { label: "Apă economisită", a: "21.000 m³ pe an", b: "44.800 m³ pe an" },
-    { label: "CO₂ evitat", a: "1,6 t pe an", b: "8,7 t pe an" },
-    { label: "Ce te obligi să faci", a: "–", b: "Dovezi după instalare și monitorizare" },
+    { label: "Investiția", a: "Aspersie clasică, 85.000 EUR", b: "Picurare și senzori, 93.000 EUR" },
+    { label: "De unde vin banii", a: "Resursele obișnuite ale băncii", b: "Fondurile verzi: garanția FEI InvestEU și obligațiunile verzi" },
+    { label: "Avans, 15%", a: "12.750 EUR", b: "13.950 EUR" },
+    { label: "Dobânda", a: "8,9% pe an", b: "6,3% pe an" },
+    { label: "Garanția", a: "Ipotecă pe teren", b: "Garanție FEI, în locul ipotecii" },
+    { label: "Costuri cu ipoteca, în 5 ani", a: "3.500 EUR", b: "0 EUR" },
+    { label: "Ratele", a: "1.496 EUR în fiecare lună", b: "Doar dobânda până la prima recoltă, apoi 4.523 EUR în iulie–octombrie" },
+    { label: "Economii la apă și energie", a: "1.940 EUR pe an", b: "5.320 EUR pe an" },
+    { label: "Apă economisită", a: "46.700 m³ pe an", b: "93.300 m³ pe an" },
+    { label: "CO₂ evitat", a: "0,8 t pe an", b: "3,6 t pe an" },
   ],
   difference:
-    "Cei 22.045 EUR vin din economii mai mari (+28.000 EUR) și din lipsa costurilor cu ipoteca (+3.300 EUR), minus plățile mai mari pentru investiția optimizată (−9.255 EUR).",
-  payments: {
-    standard: 1437,
-    green: 4689,
-    scaleMax: 5000,
-    months: MONTHS.map((short, i) => ({ short, name: NAMES[i], eur: GREEN_MONTHS.includes(i) ? 4689 : 0 })),
+    "Cei 16.030 EUR vin din economii mai mari (+16.900 EUR) și din lipsa costurilor cu ipoteca (+3.500 EUR), minus plățile mai mari pentru investiția verde (−4.370 EUR).",
+  // Why the green rate is lower (README §4, step 6). The parameters are illustrative; the bank sets the real ones.
+  rate: {
+    title: "De ce e mai mică dobânda verde",
+    parts: [
+      { label: "Garanția FEI: banca pierde mai puțin dacă un credit nu se plătește", pp: "−1,01 pp" },
+      { label: "Partea garantată cere mai puțin capital: FEI are risc zero pentru bancă", pp: "−0,76 pp" },
+      { label: "Bani din obligațiunile verzi ale băncii, cumpărate și de BERD și IFC", pp: "−0,30 pp" },
+      { label: "Analiza tehnică e automată, nu manuală", pp: "−0,15 pp" },
+      { label: "Comision redus pe programul de garanție", pp: "−0,40 pp" },
+    ],
+    total: { label: "De la 8,9% la 6,3%", pp: "−2,6 pp" },
+    note: "Parametrii sunt orientativi. Banca își pune valorile reale.",
   },
-  obligations: [
-    { when: "La tragere", what: "Factura finală", note: "Trebuie să corespundă configurației aprobate" },
-    { when: "După instalare", what: "Procesul-verbal de punere în funcțiune", note: "Cu poze geolocalizate" },
-    { when: "Automat", what: "Verificări prin satelit", note: "Parcelele sunt cultivate, vegetația e sănătoasă" },
-    { when: "La 12 luni", what: "Consumul real de apă și energie", note: "Comparat cu estimarea din dosar" },
-  ],
+  payments: {
+    standard: 1496,
+    green: 4523,
+    scaleMax: 5000,
+    months: MONTHS.map((short, i) => ({ short, name: NAMES[i], eur: HARVEST.includes(i) ? 4523 : 0 })),
+  },
   guarantee: {
-    ...bankServices.eifCompetitivitate,
+    ...bankServices.eifSustainability,
     id: "eif",
     state: "active",
     status: "În oferta verde",
     helps:
-      "Garanția acoperă 70% din creditul de 82.025 EUR. În oferta orientativă, ține locul ipotecii pe teren: economisești circa 3.300 EUR cu evaluarea, notarul și asigurarea.",
+      "Garanția acoperă 70% din creditul de 79.050 EUR. În oferta orientativă, ține locul ipotecii pe teren: economisești circa 3.500 EUR cu evaluarea, notarul, înscrierea și asigurarea.",
     whyLabel: "De ce se aplică",
-    why: "Investiția optimizată trece criteriul verde pentru irigații: 32% economie de apă, peste pragul de 25%.",
-    without: "Fără garanție, banca ar cere ipotecă pe teren, ca la creditul standard.",
+    why: "Irigațiile cu picurare și senzori sunt o investiție verde documentată: 40% economie de apă, cu impactul calculat.",
+    without: "Fără garanție, banca ar cere ipotecă pe teren, ca la creditul clasic.",
   },
-  notice: "Oferta e orientativă. Când trimiți cererea, dosarul ajunge la un ofițer de credit Raiffeisen, care stabilește dobânda finală și aprobarea.",
+  notice: "Ofertele sunt orientative. Când trimiți cererea, dosarul ajunge la un ofițer de credit Raiffeisen, care stabilește dobânda finală și aprobarea.",
+};
+
+// What to change so the investment becomes green (README §4, step 4).
+export const changes = {
+  title: "Ce să schimbi",
+  lead: "Investiția cerută nu trece pragul verde. Aceasta e cea mai ieftină schimbare care îl trece.",
+  from: { name: "Aspersie clasică", note: "Economie de apă: 20%, sub pragul de 25%", eur: 85000 },
+  to: { name: "Picurare și senzori de umiditate", note: "Economie de apă: 40%, nivelul Verde Plus", eur: 93000 },
+  facts: [
+    { label: "Cost în plus", value: "8.000 EUR" },
+    { label: "Economie în plus", value: "3.380 EUR pe an" },
+    { label: "Se recuperează în", value: "Circa 28 de luni" },
+    { label: "Apă economisită", value: "De la 46.700 la 93.300 m³ pe an" },
+  ],
+  more: ["Programare automată a udării", "Pompă cu variator de turație", "Pompă solară, la categoria Energie la fermă"],
+};
+
+// The request, checked by the consultant before it goes to the bank. The readiness counts the bank's criteria the
+// dossier meets; it is not a probability of approval, which only the bank's assessment gives.
+export const advice = {
+  title: "Trimite cererea",
+  lead: "Alege varianta, apoi vezi ce mai poți îmbunătăți și ce clauze să ceri. Nu e o promisiune de aprobare: decizia o ia un ofițer de credit.",
+  variants: [
+    { id: "verde", name: "Credit verde", note: "Picurare și senzori · 6,3% · rate după recoltă", selected: true, badge: "Recomandat" },
+    { id: "clasic", name: "Credit clasic", note: "Aspersie clasică · 8,9% · rate lunare egale" },
+  ],
+  readiness: {
+    title: "Cât de pregătit e dosarul",
+    met: 5,
+    total: 5,
+    summary: "Toate cele 5 criterii ale băncii sunt îndeplinite. Nu e o probabilitate de aprobare: arată doar ce mai poți îmbunătăți.",
+    items: [
+      { state: "done", label: "Investiția e verde", note: "Nivelul Verde Plus: 40% economie de apă, față de pragul de 25%" },
+      { state: "done", label: "Banii acoperă ratele", note: "Încasările din activitate și economiile acoperă de 5,5 ori ratele anuale" },
+      { state: "done", label: "Garanția acoperă creditul", note: "Garanția FEI acoperă 70%, fără ipotecă pe teren" },
+      { state: "done", label: "Plăți la timp", note: "Nicio întârziere la credite sau la furnizori în ultimii 2 ani, din conturile firmei" },
+      { state: "done", label: "Documentele esențiale", note: "Oferta, parcelele și autorizația ANAR" },
+    ],
+  },
+  actions: [
+    { icon: "upload", title: "Adaugă facturile de energie pentru pompare", text: "Sunt opționale, dar fac estimarea economiilor mai precisă, iar ofițerul are mai puține întrebări.", button: "Încarcă" },
+    { icon: "file", title: "Atașează contractele de vânzare pentru 2027", text: "Arată de unde vin banii pentru rate și întăresc analiza capacității de plată.", button: "Atașează" },
+  ],
+  // status: "offer" (already in the green offer), "ask" (to request from the officer) or "proposal" (a new idea
+  // of the GreenStruct team, not an existing Raiffeisen product: README §4, step 6).
+  clauses: [
+    { title: "Grație până la prima recoltă, apoi rate după recoltă", text: "Până în iulie 2027 plătești doar dobânda, apoi ratele vin în iulie–octombrie.", status: "offer" },
+    { title: "Garanție FEI în locul ipotecii", text: "Terenul rămâne liber pentru alte finanțări, iar costurile cu ipoteca, de circa 3.500 EUR, dispar.", status: "offer" },
+    { title: "Impactul se raportează o dată, la 12 luni", text: "Trimiți consumul real de apă o singură dată, după un an.", status: "offer" },
+    { title: "Bonus de impact", text: "Dobânda mai scade cu 0,25 pp dacă, la 12 luni, economia reală confirmă estimarea.", status: "proposal" },
+    { title: "Avans mai mic sau durată mai lungă", text: "Potrivit FEI, garanția le poate permite. Întreabă dacă se aplică dosarului tău.", status: "ask" },
+    { title: "Rambursare anticipată după o recoltă bună", text: "Întreabă dacă poți plăti mai devreme și ce comision se aplică.", status: "ask" },
+  ],
+  obligations: [
+    { when: "La tragere", what: "Factura finală", note: "Pentru investiția aprobată, cu picurare și senzori" },
+    { when: "După instalare", what: "Procesul-verbal de punere în funcțiune", note: "Cu poze geolocalizate" },
+    { when: "La 12 luni", what: "Consumul real de apă", note: "Comparat cu estimarea din dosar" },
+  ],
+  note: "Consultantul e un serviciu al băncii și îți spune deschis ce îți crește șansele. Nu înfrumusețează datele: tot ce trimiți trebuie să fie corect. Clauzele de cerut și propunerile depind de decizia băncii.",
 };
 
 export const dossier = {
   href: "#/verde/agro/dosar",
   row: { title: "Irigații · 40 ha", note: "Agricultură · trimisă pe 12 noiembrie", status: "În analiză" },
-  eyebrow: "Agricultură · Irigații · 40 ha",
+  eyebrow: "Agricultură · Irigații · 40 ha · Verde Plus",
   title: "Cerere trimisă, în analiză",
-  text: "Ai trimis cererea pe 12 noiembrie. Un ofițer de credit verifică dosarul și îți scrie aici dacă are nevoie de ceva.",
+  text: "Ai trimis cererea pentru creditul verde pe 12 noiembrie. Un ofițer de credit verifică dosarul și îți scrie aici dacă are nevoie de ceva.",
   steps: [
     { label: "Trimisă", note: "12 noiembrie", state: "done" },
     { label: "În analiză", note: "La ofițerul de credit", state: "running" },
     { label: "Aprobată", note: "Urmează", state: "waiting" },
     { label: "Monitorizare", note: "După instalare", state: "waiting" },
   ],
-  conditions: ["anar"],
+  impact: [
+    { label: "Apă economisită", value: "93.300 m³ pe an" },
+    { label: "Energie de pompare", value: "14.000 kWh mai puțin pe an" },
+    { label: "CO₂ evitat", value: "3,6 t pe an" },
+  ],
 };

@@ -46,11 +46,14 @@ const DOC_STATES = {
   done: { label: "Încărcat", className: "status is-on" },
   ready: { label: "Gata", className: "status is-on" },
   missing: { label: "Lipsește", className: "status status--warn" },
+  optional: { label: "Opțional", className: "status" },
 };
 
-// One document of the checklist; a missing one gets an upload button.
+// One document of the checklist; a missing one gets an upload button. A missing optional document
+// (required: false) is not a gap: it only makes the estimate more precise.
 export function DocumentRow({ doc, state }) {
-  const status = DOC_STATES[state?.state ?? "missing"];
+  const missing = (state?.state ?? "missing") === "missing";
+  const status = missing && doc.required === false ? DOC_STATES.optional : DOC_STATES[state?.state ?? "missing"];
   return (
     <li className="row doc-row">
       <IconTile icon="file" tone="sand" />
@@ -59,7 +62,7 @@ export function DocumentRow({ doc, state }) {
         {state?.file ? <span className="row-note">{state.file}</span> : null}
         <span className={status.className}>{status.label}</span>
       </div>
-      {state?.state === "missing" ? (
+      {missing ? (
         <button type="button" className="btn btn--outline btn--small">
           Încarcă
         </button>

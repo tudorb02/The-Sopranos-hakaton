@@ -27,7 +27,7 @@ export default function Business() {
           <a className="btn btn--ink btn--small" href="#/verde">
             Începe
           </a>
-          <a className="btn btn--text btn--small btn--on-yellow" href="#/verde/agro/oferta">
+          <a className="btn btn--text btn--small btn--on-yellow" href="#/verde/agro/oferte">
             Vezi un exemplu
           </a>
         </div>
