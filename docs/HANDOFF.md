@@ -115,11 +115,11 @@ Pachetul de bază: `backend/src/main/java/ro/greenstruct/agro/`.
   - pompă solară;
   - contor de apă cerut de DNSH.
 - **Utilaje:**
-  - economia de motorină din vechimea tractoarelor, cu consumul specific pe benzi de vechime: 246 / 252 / 265 / 280 g/kWh;
-  - ponderea flotei înlocuite (o extindere fără înlocuire = economie 0);
-  - pachetul de precizie;
-  - alternativa „tractoare noi Stage V”;
-  - verificarea puterii totale pe hectar.
+  - motorina pe hectar de acum din facturile de motorină / hectarele lucrate, cea de după din fișa tehnică a tractorului (`DIESEL_L_PER_HA`) sau din catalog, înmulțită cu reducerile upgrade-urilor de precizie;
+  - indicator = maximul dintre reducerea de motorină și cea de azot (azotul din facturile de îngrășăminte); economia în EUR și CO₂e după README §6;
+  - pachetul de precizie (GPS RTK, dozare variabilă) din catalog;
+  - alternativa „tractoare noi Stage V”, doar în locul celor second-hand;
+  - verificarea puterii pe hectar și a normei Stage V.
 - **Second-hand:**
   - DR-12 refuză utilajele second-hand;
   - utilajul trebuie să aibă cel mult 12 ani la ultima rată;
@@ -225,9 +225,9 @@ Rezultatul fazei: cele două scenarii demo dau exact cifrele și pașii din READ
   - energia de pompare = `V × (H_ridicare + H_presiune) × 0,002725 / η_pompă`;
   - CO₂ din kWh × 0,26 / 1000.
   - Înlocuiește necesarul fix de 3.800 m³/ha și kWh/m³ fix.
-- Utilaje:
-  - `l/ha` de acum, din facturile de motorină / hectarele lucrate. Benzile pe vechime rămân estimarea când lipsesc facturile;
-  - reducerea de azot = `kgN/ha × reducerea dozării`;
+- Utilaje (făcut):
+  - `l/ha` de acum, din facturile de motorină / hectarele lucrate; fără facturi, norma din config;
+  - reducerea de azot = suma reducerilor din catalog, aplicată la kg N din facturi;
   - CO₂e = `(Δl × 2,68 + ΔkgN × 4,29) / 1000`.
 - Statutul de IMM:
   - în `external/anaf/AnafCompanyMapper`, activele totale din bilanț = active imobilizate + circulante + cheltuieli în avans;

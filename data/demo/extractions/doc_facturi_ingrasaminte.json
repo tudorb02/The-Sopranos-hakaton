@@ -1,0 +1,42 @@
+{
+  "documentId": "doc_facturi_ingrasaminte",
+  "documentType": "FERTILIZER_INVOICES",
+  "moduleId": "utilaje",
+  "currency": "EUR",
+  "supplierName": "Agro Inputuri Demo SRL",
+  "documentFields": [
+    {
+      "key": "SUPPLIER_NAME",
+      "rawValue": "Agro Inputuri Demo SRL",
+      "unit": "TEXT",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "PERIOD_FROM",
+      "rawValue": "februarie 2026",
+      "unit": "DATE",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "PERIOD_TO",
+      "rawValue": "aprilie 2026",
+      "unit": "DATE",
+      "page": 3,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "FERTILIZER_KG_N",
+      "rawValue": "84.020 kg N",
+      "unit": "KG_N",
+      "page": 3,
+      "confidence": "MEDIUM"
+    }
+  ],
+  "lineItems": [],
+  "missingFields": [],
+  "warnings": [
+    "Azotul e calculat din 3 facturi: 2 × 62.000 kg azotat de amoniu 34% N (2 × 21.080 kg N) și 91.000 kg uree 46% N (41.860 kg N)."
+  ]
+}

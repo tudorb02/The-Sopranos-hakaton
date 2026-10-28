@@ -3,42 +3,51 @@
   "cui": "38264019",
   "moduleId": "utilaje",
   "parcelIds": [
-    "cl_1001",
-    "cl_1002",
-    "cl_1003",
-    "cl_1004"
+    "il_2001",
+    "il_2002",
+    "il_2003"
   ],
   "questionnaire": {
-    "crops_main": "grâu 6,1 t/ha; porumb 7,4 t/ha; floarea-soarelui 2,8 t/ha; rapiță 3,2 t/ha",
-    "nitrogen_kg_ha": 150,
+    "crops_main": "grâu 5,8 t/ha; porumb 7,2 t/ha; floarea-soarelui 2,9 t/ha",
+    "replaced_machine_year": 2004,
+    "replaced_machine_hp": 240,
     "tillage": "ARATURA",
+    "nitrogen_kg_ha": 140,
     "cover_crops": "ROTATIE",
-    "irrigation_current": "NU",
     "crop_insurance": true,
     "certifications": [
       "NICIUNA"
     ],
-    "offtake_contracts": true,
     "cashin_months": [
       "JUL",
       "AUG",
       "SEP",
       "OCT"
     ],
-    "old_equipment_fate": "CASARE",
-    "hours_per_year": 650,
-    "manager_competences": false
+    "old_equipment_fate": "VANZARE",
+    "manager_competences": false,
+    "loan_term": "ANI_5"
   },
   "documents": [
     {
-      "documentId": "doc_oferta_tractoare",
+      "documentId": "doc_oferta_tractor",
       "docType": "OFFER",
-      "file": "docs/oferta-agrotrac-tractoare.pdf"
+      "file": "docs/oferta-tractor-300cp-stage-v.pdf"
     },
     {
       "documentId": "doc_facturi_motorina",
       "docType": "FUEL_INVOICES",
       "file": "docs/facturi-motorina-12-luni.pdf"
+    },
+    {
+      "documentId": "doc_facturi_ingrasaminte",
+      "docType": "FERTILIZER_INVOICES",
+      "file": "docs/facturi-ingrasaminte-cereale-12-luni.pdf"
+    },
+    {
+      "documentId": "doc_fisa_tractor_vechi",
+      "docType": "CURRENT_EQUIPMENT",
+      "file": "docs/fisa-tractor-vechi-2004.pdf"
     }
   ]
 }

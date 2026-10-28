@@ -40,7 +40,13 @@ public final class UpgradePackages {
             }
             JsonNode item = CatalogItems.item(context, catalogId);
             if (item.has("mirrorsCategory")) {
+                boolean anyUsed = components.stream().anyMatch(c -> c.category().equals(item.path("mirrorsCategory")
+                        .asText()) && EquipmentAge.isUsed(c));
+                if (!anyUsed) {
+                    throw new IllegalArgumentException(item.path("nameRo").asText() + " înlocuiește doar utilaje second-hand");
+                }
                 components.replaceAll(c -> c.category().equals(item.path("mirrorsCategory").asText())
+                        && EquipmentAge.isUsed(c)
                         ? CatalogItems.newEquivalent(item, c, context.today().getYear()) : c);
                 continue;
             }

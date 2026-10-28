@@ -7,10 +7,10 @@ Aici pun cei de la Product PDF-urile la care trimit scenariile din `../scenarios
 | `oferta-aspersie.pdf` | irigații | ofertă de aspersie clasică pentru 40 ha, 85.000 EUR fără TVA |
 | `fisa-tehnica-aspersie.pdf` | irigații | eficiența declarată, debit, presiune |
 | `sistem-actual-tun.pdf` | irigații | descrierea sistemului actual (tun de irigat) |
-| `oferta-tractoare.pdf` | utilaje | 4 tractoare Stage V, 110.000 EUR/buc. fără TVA |
-| `fise-tehnice-tractoare.pdf` | utilaje | putere, normă de emisii, consum specific |
-| `flota-actuala.pdf` | utilaje | tractoarele înlocuite (an de fabricație, putere) |
-| `facturi-motorina-12-luni.pdf` | utilaje | consumul de motorină pe ultimele 12 luni |
+| `oferta-tractor-300cp-stage-v.pdf` | utilaje | tractor 300 CP Stage V, 185.000 EUR fără TVA, 68 l/ha (copie din `test-documents/pdf/DEMO-0003`) |
+| `facturi-motorina-12-luni.pdf` | utilaje | 12 facturi lunare, 46.800 l pe an (78 l/ha pe 600 ha) |
+| `facturi-ingrasaminte-cereale-12-luni.pdf` | utilaje | 3 facturi, 84.020 kg N pe an |
+| `fisa-tractor-vechi-2004.pdf` | utilaje | tractorul înlocuit: 2004, 240 CP, Stage II |
 | `oferta-digestor-biogaz.pdf` | zootehnie | digestor 30 kWe cu cogenerare, 270.000 EUR fără TVA (copie din `test-documents/pdf/DEMO-0004`) |
 | `autorizatie-mediu-am-42-2024.pdf` | zootehnie | autorizația de mediu a fermei de vaci |
 | `facturi-energie-ferma-12-luni.pdf` | zootehnie | 120.000 kWh pe an la fermă |

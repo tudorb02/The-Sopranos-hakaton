@@ -49,6 +49,8 @@ public final class CatalogItems {
         attributes.put("hp", hp);
         attributes.put(EquipmentAge.MANUFACTURE_YEAR, BigDecimal.valueOf(currentYear));
         attributes.put(EquipmentAge.USED, BigDecimal.ZERO);
+        attributes.put("stageV", BigDecimal.ONE);   // catalog machines are new Stage V machines
+        item.path("effect").fields().forEachRemaining(e -> attributes.put(e.getKey(), e.getValue().decimalValue()));
         BigDecimal cost = item.path("costEurPerHp").decimalValue().multiply(hp, MC).multiply(offered.quantity(), MC);
         return new InvestmentComponent(offered.componentId().replace("cmp_offer_", "cmp_new_"), offered.category(),
                 item.path("nameRo").asText() + " (" + hp.toPlainString() + " CP)", "CATALOG",

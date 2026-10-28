@@ -50,13 +50,7 @@ public class ComputeBaselineTool implements ToolHandler {
         return Schemas.parse("""
                 {"type": "object", "additionalProperties": false, "properties": {
                   "currentSystem": {"type": "string", "enum": ["ASPERSIE_VECHE", "ASPERSIE", "PICURARE", "BRAZDE"],
-                    "description": "Irrigation only; defaults to the questionnaire answer irrigation_current."},
-                  "currentFleet": {"type": "object", "additionalProperties": false,
-                    "description": "Machinery only; defaults to the questionnaire (current_tractors, replaced_tractors, replaced_fleet_age).",
-                    "properties": {
-                      "totalCount": {"type": "integer", "minimum": 0},
-                      "replacedCount": {"type": "integer", "minimum": 0},
-                      "averageAgeYears": {"type": "integer", "minimum": 0}}}}}
+                    "description": "Irrigation only; defaults to the questionnaire answer irrigation_current."}}}
                 """);
     }
 
