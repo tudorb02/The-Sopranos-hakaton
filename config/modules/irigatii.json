@@ -13,7 +13,7 @@
     "kind": "MIN_PCT",
     "value": 25,
     "unit": "PCT",
-    "sourceRo": "config/modules/irigatii.json (propunere, de confirmat cu Raiffeisen)",
+    "sourceRo": "README §6, categoria 1: economie de apă ≥ 25% față de sistemul actual (propunere, de confirmat cu Raiffeisen)",
     "demo": true
   },
   "requiredDocs": [
@@ -216,6 +216,14 @@
       ],
       "prefillFrom": "NONE",
       "required": true
+    },
+    {
+      "questionId": "pump_lift_m",
+      "labelRo": "De la ce adâncime sau înălțime pompați apa (metri)?",
+      "type": "NUMBER",
+      "unit": "M",
+      "prefillFrom": "NONE",
+      "required": true
     }
   ],
   "calculator": "irrigation",
@@ -282,22 +290,14 @@
     }
   },
   "parameters": {
-    "netNeedM3PerHa": {
-      "value": 3800,
-      "sourceRo": "Necesar net legume în câmp, sud-est; Estimare echipă, de validat cu mentorii"
-    },
     "currentEfficiencyPct": {
       "value": {
-        "ASPERSIE_VECHE": 65,
+        "ASPERSIE_VECHE": 60,
         "ASPERSIE": 75,
-        "PICURARE": 88,
-        "BRAZDE": 50
+        "PICURARE": 90,
+        "BRAZDE": 60
       },
-      "sourceRo": "Eficiențe tipice de aplicare (FAO); Estimare echipă, de validat cu mentorii"
-    },
-    "pumpingKwhPerM3Fallback": {
-      "value": 0.45,
-      "sourceRo": "Folosit doar fără facturi de energie; Estimare echipă, de validat cu mentorii"
+      "sourceRo": "README §6, categoria 1: brazde η = 0,60 · aspersie η = 0,75 · picurare η = 0,90 (valori de pornire, de confirmat)"
     },
     "waterPriceEurPerM3": {
       "value": 0.12,
@@ -310,6 +310,38 @@
     "safetyMarginPct": {
       "value": 2,
       "sourceRo": "Marja peste prag cerută de echipă"
+    },
+    "kcByCrop": {
+      "value": {
+        "tomate": 0.85,
+        "ardei": 0.8,
+        "varză": 0.75,
+        "castraveți": 0.9,
+        "ceapă": 0.7
+      },
+      "sourceRo": "FAO-56, coeficienți de cultură pentru mijlocul sezonului, rotunjiți; de validat cu mentorii"
+    },
+    "pumpEfficiencyPct": {
+      "value": 65,
+      "sourceRo": "Randament tipic al unei electropompe de suprafață; ilustrativ, de validat cu mentorii",
+      "demo": true
+    },
+    "pressureHeadM": {
+      "value": {
+        "BRAZDE": 0,
+        "ASPERSIE_VECHE": 35,
+        "ASPERSIE": 35,
+        "PICURARE": 15
+      },
+      "sourceRo": "README §6, categoria 1: H_presiune depinde de sistem (brazde 0 m, aspersie ≈ 35 m = 3,5 bar, picurare ≈ 15 m); ilustrativ"
+    },
+    "sensorDemandReductionPct": {
+      "value": 10,
+      "sourceRo": "README §6, categoria 1: senzori de umiditate, s = 10%"
+    },
+    "newIrrigationMinEfficiencyPct": {
+      "value": 85,
+      "sourceRo": "README §6, categoria 1: ferme care încep să irige, η ≥ 0,85, autorizație ANAR și fără stres hidric sever"
     }
   },
   "substantialContribution": "WATER_MARINE_RESOURCES",

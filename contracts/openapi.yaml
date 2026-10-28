@@ -644,7 +644,7 @@ components:
           enum: [TEXT, NUMBER, BOOLEAN, SINGLE_CHOICE, MULTI_CHOICE, MONTHS]
         unit:
           type: string
-          enum: [KG_N_PER_HA, T_PER_HA, HA, HOURS, EUR]
+          enum: [KG_N_PER_HA, T_PER_HA, HA, HOURS, EUR, M]
         options:
           type: array
           items:

@@ -3,60 +3,46 @@
   "documentType": "OFFER",
   "moduleId": "irigatii",
   "currency": "EUR",
-  "supplierName": "AquaFlux Irigații SRL",
+  "supplierName": "Irigații Câmpia Demo SRL",
   "documentFields": [
     {
       "key": "SUPPLIER_NAME",
-      "rawValue": "AquaFlux Irigații SRL",
+      "rawValue": "Irigații Câmpia Demo SRL",
       "unit": "TEXT",
       "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "DOCUMENT_NUMBER",
-      "rawValue": "OF-2026-1147",
+      "rawValue": "OF-2026-0412",
       "unit": "TEXT",
       "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "DOCUMENT_DATE",
-      "rawValue": "14.10.2026",
+      "rawValue": "12.10.2026",
       "unit": "DATE",
       "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "VALID_UNTIL",
-      "rawValue": "30 de zile de la emitere",
+      "rawValue": "60 de zile",
       "unit": "TEXT",
-      "page": 2,
-      "confidence": "MEDIUM"
+      "page": 1,
+      "confidence": "HIGH"
     },
     {
       "key": "TOTAL_NET",
-      "rawValue": "85.000,00 EUR",
+      "rawValue": "52.000,00 EUR",
       "unit": "EUR",
-      "page": 2,
-      "confidence": "HIGH"
-    },
-    {
-      "key": "VAT_AMOUNT",
-      "rawValue": "17.850,00 EUR",
-      "unit": "EUR",
-      "page": 2,
-      "confidence": "HIGH"
-    },
-    {
-      "key": "TOTAL_GROSS",
-      "rawValue": "102.850,00 EUR",
-      "unit": "EUR",
-      "page": 2,
+      "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "IRRIGATION_SYSTEM_TYPE",
-      "rawValue": "aspersie cu tambur (instalație tip rulou), 2 buc.",
+      "rawValue": "aspersie cu tambur",
       "unit": "TEXT",
       "page": 1,
       "confidence": "HIGH"
@@ -70,44 +56,37 @@
     },
     {
       "key": "APPLICATION_EFFICIENCY_PCT",
-      "rawValue": "76,5%",
+      "rawValue": "75%",
       "unit": "PCT",
-      "page": 3,
+      "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "OPERATING_PRESSURE_BAR",
-      "rawValue": "6-8 bar",
+      "rawValue": "3,5 bar",
       "unit": "BAR",
-      "page": 3,
-      "confidence": "HIGH"
-    },
-    {
-      "key": "WATER_SOURCE",
-      "rawValue": "hidrant ANIF, stația de punere sub presiune SPP 4",
-      "unit": "TEXT",
       "page": 1,
-      "confidence": "MEDIUM"
+      "confidence": "HIGH"
     }
   ],
   "lineItems": [
     {
       "lineId": "ln_1",
       "category": "IRRIGATION_SPRINKLER",
-      "descriptionRo": "Instalație de irigat cu tambur 110/400, 2 buc.",
+      "descriptionRo": "Mașină de irigat cu tambur, furtun 110 mm x 400 m",
       "fields": [
         {
           "key": "QUANTITY",
-          "rawValue": "2 buc.",
+          "rawValue": "3 buc.",
           "unit": "PCS",
-          "page": 2,
+          "page": 1,
           "confidence": "HIGH"
         },
         {
           "key": "LINE_PRICE_NET",
-          "rawValue": "49.000,00 EUR",
+          "rawValue": "33.000,00 EUR",
           "unit": "EUR",
-          "page": 2,
+          "page": 1,
           "confidence": "HIGH"
         }
       ]
@@ -115,27 +94,20 @@
     {
       "lineId": "ln_2",
       "category": "PUMP",
-      "descriptionRo": "Electropompă de suprafață 55 kW",
+      "descriptionRo": "Electropompă 55 kW, cu tablou de comandă",
       "fields": [
         {
           "key": "PUMP_POWER_KW",
           "rawValue": "55 kW",
           "unit": "KW",
-          "page": 2,
-          "confidence": "HIGH"
-        },
-        {
-          "key": "FLOW_RATE_M3_H",
-          "rawValue": "180 m³/h",
-          "unit": "M3_H",
-          "page": 3,
+          "page": 1,
           "confidence": "HIGH"
         },
         {
           "key": "LINE_PRICE_NET",
-          "rawValue": "14.500,00 EUR",
+          "rawValue": "11.500,00 EUR",
           "unit": "EUR",
-          "page": 2,
+          "page": 1,
           "confidence": "HIGH"
         }
       ]
@@ -143,27 +115,13 @@
     {
       "lineId": "ln_3",
       "category": "PIPES",
-      "descriptionRo": "Conducte PEHD îngropate și hidranți",
+      "descriptionRo": "Conductă de aducțiune PEHD 160 mm și hidranți",
       "fields": [
         {
           "key": "LINE_PRICE_NET",
-          "rawValue": "15.800,00 EUR",
+          "rawValue": "7.500,00 EUR",
           "unit": "EUR",
-          "page": 2,
-          "confidence": "HIGH"
-        }
-      ]
-    },
-    {
-      "lineId": "ln_4",
-      "category": "INSTALLATION_WORKS",
-      "descriptionRo": "Montaj și punere în funcțiune",
-      "fields": [
-        {
-          "key": "LINE_PRICE_NET",
-          "rawValue": "5.700,00 EUR",
-          "unit": "EUR",
-          "page": 2,
+          "page": 1,
           "confidence": "HIGH"
         }
       ]
@@ -176,6 +134,6 @@
     }
   ],
   "warnings": [
-    "Valabilitatea ofertei expiră pe 13.11.2026."
+    "Valabilitatea ofertei: 60 de zile de la 12.10.2026."
   ]
 }

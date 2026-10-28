@@ -112,7 +112,8 @@ public class RuleBasedFundingAgent implements RuleAgent {
         }
         flow.call("build_funding_stack", stackInput, "Construiesc structura de finanțare pe variante");
 
-        flow.call("determine_green_tier", flow.input().put("acceptUpgrade", true), "Stabilesc nivelul verde");
+        flow.call("determine_green_tier", flow.input().put("requestedConfigId", initialId)
+                .put("financedConfigId", recommendedId), "Stabilesc nivelul verde");
         flow.call("price_loan", flow.input(), "Calculez dobânda clasică și pe cea verde, pe componente");
 
         Map<String, ObjectNode> schedules = new LinkedHashMap<>();
@@ -193,6 +194,7 @@ public class RuleBasedFundingAgent implements RuleAgent {
             out.put("recommendedOptionId", "B");
         }
 
+        out.set("greenTier", greenTier(flow, worstDnsh(flow.run())));
         out.set("programChecks", programChecks(programs));
         out.set("grantOutlook", grantOutlook(programs, grant));
         out.set("comparison", comparison(flow, green));
@@ -208,7 +210,6 @@ public class RuleBasedFundingAgent implements RuleAgent {
         boolean classic = "A".equals(plan.optionId());
         ObjectNode node = mapper.createObjectNode();
         node.put("optionId", plan.optionId());
-        node.put("variant", plan.variant());
         node.put("kind", plan.kind());
         node.put("configId", plan.configId());
         node.put("titleRo", plan.title());
@@ -291,15 +292,25 @@ public class RuleBasedFundingAgent implements RuleAgent {
         afford.put("noteRo", "FAIL".equals(affordabilityVerdict) ? "Ratele depășesc limita din cashflow"
                 : "PASS_WITH_WARNING".equals(affordabilityVerdict) ? "Ratele depășesc cashflow-ul în unele luni"
                 : "Ratele încap în cashflow-ul net");
+        afford.put("dscrCalcId", flow.id(p + "dscr"));
+        flow.idIfPresent(p + "debt_service_year").ifPresent(id -> afford.put("debtServiceCalcId", id));
         node.put("greenEligible", !classic);
-        node.put("greenTier", classic ? "CLASIC" : greenTier(flow));
         node.set("rateBreakdown", rateBreakdown(flow, classic));
-        node.put("dscrCalcId", flow.id(p + "dscr"));
         return node;
     }
 
-    private String greenTier(ToolFlow flow) {
-        return workspaces.forRun(flow.run().id()).greenTier().tier().name();
+    private ObjectNode greenTier(ToolFlow flow, String dnshStatus) {
+        var tier = workspaces.forRun(flow.run().id()).greenTier();
+        ObjectNode node = mapper.createObjectNode();
+        node.put("tier", tier.tier().name());
+        node.put("thresholdMet", tier.thresholdMet());
+        node.put("upgradeNeeded", tier.upgradeNeeded());
+        node.put("dnshStatus", dnshStatus);
+        flow.idIfPresent("green_tier.threshold").ifPresent(id -> node.put("thresholdCalcId", id));
+        flow.idIfPresent("green_tier.requested_indicator").ifPresent(id -> node.put("requestedIndicatorCalcId", id));
+        flow.idIfPresent("green_tier.financed_indicator").ifPresent(id -> node.put("financedIndicatorCalcId", id));
+        flow.idIfPresent("green_tier.verde_plus_min").ifPresent(id -> node.put("verdePlusMinCalcId", id));
+        return node;
     }
 
     private ObjectNode rateBreakdown(ToolFlow flow, boolean classic) {
@@ -422,6 +433,13 @@ public class RuleBasedFundingAgent implements RuleAgent {
         }
         node.put("rateDifferenceCalcId", flow.id("pricing.diff.total"));
         return node;
+    }
+
+    private static String worstDnsh(Run run) {
+        List<ro.greenstruct.agro.engine.greentier.DnshStatus> statuses = new ArrayList<>();
+        run.agentOutputs().get(AgentSlot.TECHNICAL_AUDITOR).path("dnshChecks")
+                .forEach(c -> statuses.add(ro.greenstruct.agro.engine.greentier.DnshStatus.valueOf(c.path("status").asText())));
+        return ro.greenstruct.agro.engine.greentier.DnshStatus.overall(statuses).name();
     }
 
     private String farmerExplanation(ToolFlow flow, boolean green, boolean netPositive) {

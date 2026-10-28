@@ -83,13 +83,15 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
         ToolOutput labels = flow.call("get_labeling_rules", flow.input().put("configId", configId),
                 "Etichetez componentele configurației");
         flow.call("get_dnsh_criteria", flow.input(), "Încarc criteriile DNSH");
-        ToolOutput fund = flow.call("select_fund", flow.input(), "Aleg fondul care finanțează creditul");
-        String fundCode = fund.result().path("fundCode").asText();
-        ToolOutput requirements = flow.call("check_fund_requirements", flow.input().put("fundCode", fundCode),
-                "Bifez cerințele fondului " + fundCode);
+        String optionId = hasGreenOption ? "B" : funding.path("recommendedOptionId").asText("A");
+        ToolOutput fund = flow.call("select_fund", flow.input().put("optionId", optionId),
+                "Aleg fondul care finanțează creditul");
+        String fundCode = fund.result().path("fundId").asText();
+        ToolOutput requirements = flow.call("check_fund_requirements",
+                flow.input().put("fundId", fundCode).put("optionId", optionId), "Bifez cerințele fondului " + fundCode);
         flow.call("calculate_impact", flow.input().put("configId", configId), "Calculez impactul de mediu");
         ToolOutput bond = hasGreenOption
-                ? flow.call("get_bond_category", flow.input().put("optionId", "B"), "Aleg categoria din obligațiunile verzi")
+                ? flow.call("get_bond_category", flow.input(), "Aleg categoria din obligațiunile verzi")
                 : null;
 
         Configuration cfg = workspaces.forRun(run.id()).configuration(configId);
@@ -98,7 +100,6 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
         ArrayNode dnsh = dnsh(module, technical, conditions);
         out.put("moduleId", module.moduleId());
         out.put("recommendedOptionId", funding.path("recommendedOptionId").asText());
-        out.put("greenTier", tier.name());
         out.set("criterion", criterion(flow, module, technical, cfg, configId));
         out.set("componentLabels", componentLabels(flow, labels.result(), configId));
         ObjectNode share = out.putObject("greenShare");
@@ -176,34 +177,39 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
             node.put("noteRo", "Fără credit verde, nu există alocare în obligațiunile verzi");
             return node;
         }
-        node.put("category", bond.result().path("category").asText("NONE"));
-        node.put("status", bond.result().path("status").asText("TO_CONFIRM"));
-        node.put("eligibleAmountCalcId", flow.id("bond.eligible_amount"));
-        node.put("noteRo", cut(bond.result().path("noteRo").asText(), 400));
+        node.put("category", bond.result().path("proposed").asText("NONE"));
+        node.put("status", "TO_CONFIRM");
+        node.put("noteRo", "Încadrare propusă de aplicație după denumirile din cadrul public al băncii; "
+                + "încadrarea finală o face banca.");
         return node;
     }
 
     private ObjectNode fund(ToolFlow flow, JsonNode selected, JsonNode requirements, List<ObjectNode> conditions) {
         ObjectNode node = mapper.createObjectNode();
-        node.put("fundCode", selected.path("fundCode").asText());
-        ArrayNode alternatives = node.putArray("alternativeFundCodes");
-        selected.path("alternatives").forEach(a -> alternatives.add(a.path("fundCode").asText()));
+        node.put("fundId", selected.path("fundId").asText());
+        node.put("role", selected.path("role").asText("PRIMARY"));
         ArrayNode rows = node.putArray("requirements");
         for (JsonNode requirement : requirements.path("requirements")) {
             ObjectNode row = rows.addObject();
-            row.put("requirement", requirement.path("requirement").asText());
-            row.put("status", requirement.path("status").asText());
-            if (requirement.has("calcId")) {
-                row.put("calcId", requirement.path("calcId").asText());
+            String id = requirement.path("requirementId").asText();
+            String status = requirement.path("status").asText();
+            row.put("requirementId", id);
+            row.put("level", requirement.path("level").asText());
+            row.put("status", status);
+            if ("TO_CONFIRM".equals(status)) {
+                String conditionId = "cp_" + id.toLowerCase();
+                row.put("conditionId", conditionId);
+                conditions.add(condition(conditionId, "OTHER", "OTHER", "Cerință a fondului de confirmat cu banca ("
+                        + id + "): " + requirement.path("reasonRo").asText(), "BEFORE_SIGNING", false));
             }
-            if (requirement.has("conditionId")) {
-                row.put("conditionId", requirement.path("conditionId").asText());
-                conditions.add(condition(requirement.path("conditionId").asText(), "OTHER", "OTHER",
-                        cut(requirement.path("noteRo").asText(), 400), "BEFORE_SIGNING", false));
-            }
-            row.put("noteRo", cut(requirement.path("noteRo").asText(), 300));
+            row.put("noteRo", cut(requirement.path("reasonRo").asText(), 300));
         }
-        node.put("noteRo", cut(selected.path("fundNameRo").asText() + ": cerințele fondului sunt bifate mai sus.", 400));
+        ArrayNode alternatives = node.putArray("alternatives");
+        for (JsonNode alternative : selected.path("alternatives")) {
+            alternatives.addObject().put("fundId", alternative.path("fundId").asText())
+                    .put("status", alternative.path("status").asText("TO_CONFIRM"))
+                    .put("noteRo", cut(alternative.path("nameRo").asText(), 300));
+        }
         return node;
     }
 
@@ -359,7 +365,7 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
     private String summary(ToolFlow flow, GreenTier tier, String fundCode, JsonNode fund, String decision, int conditions) {
         Calc rate = flow.calc("pricing.green.rate").orElse(null);
         return "Decizie: " + decision + ". Nivel verde: " + tier + ". Fond propus: " + fundCode + " ("
-                + fund.path("fundNameRo").asText() + "). "
+                + fund.path("nameRo").asText() + "). "
                 + (rate == null ? "" : "Dobânda verde: " + rate.display() + " (parametri demo). ")
                 + conditions + " condiții înainte de tragere.";
     }

@@ -20,6 +20,7 @@ import ro.greenstruct.agro.tools.ToolHandler;
 import ro.greenstruct.agro.tools.ToolOutput;
 import ro.greenstruct.agro.tools.Unit;
 import ro.greenstruct.agro.tools.workspace.Configuration;
+import ro.greenstruct.agro.tools.workspace.InvestmentComponent;
 
 /**
  * Tries every combination of the catalog's indicator upgrades and alternatives (e.g. new tractors instead of
@@ -88,7 +89,12 @@ public class SearchUpgradesTool implements ToolHandler {
             }
             String packageId = "pkg_" + String.join("_", ids.stream().map(UpgradePackages::shortName).toList());
             ids.addAll(compliance);
-            var components = UpgradePackages.apply(context, base, ids, Map.of());
+            List<InvestmentComponent> components;
+            try {
+                components = UpgradePackages.apply(context, base, ids, Map.of());
+            } catch (IllegalArgumentException notCombinable) {
+                continue;   // e.g. an item that needs another item the package does not contain
+            }
             candidates.add(new Candidate(packageId, ids,
                     ConfigurationMetrics.build(context, "cfg_candidate", base.configId(), components)));
         }

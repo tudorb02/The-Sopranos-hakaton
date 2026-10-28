@@ -7,12 +7,11 @@
       "category": "IRRIGATION_DRIP",
       "nameRo": "Irigare prin picurare la suprafață pentru legume (cu conducte și montaj)",
       "role": "INDICATOR",
-      "costEur": 90800,
+      "costEur": 68000,
       "effect": {
-        "efficiencyPct": 88,
-        "pumpingKwhPerM3": 0.25
+        "efficiencyPct": 90
       },
-      "sourceRo": "Eficiență FAO ~88–90%; preț estimativ echipă",
+      "sourceRo": "Eficiență η = 0,90 (README §6); 1.700 EUR/ha × 40 ha, estimare echipă (lista de upgrade-uri a Product)",
       "replacesCategories": [
         "IRRIGATION_SPRINKLER",
         "PIPES",
@@ -26,9 +25,12 @@
       "role": "INDICATOR",
       "costEur": 6500,
       "effect": {
-        "demandReductionPct": 8
+        "demandReductionPct": 10
       },
-      "sourceRo": "Estimare echipă, de validat"
+      "sourceRo": "s = 10% (README §6); preț estimat de echipă. Programarea automată pe senzori se montează pe picurare (README §12: picurare + senzori)",
+      "requiresCategories": [
+        "IRRIGATION_DRIP"
+      ]
     },
     {
       "catalogId": "irg.meter.electromagnetic",

@@ -6,30 +6,30 @@
   "documentFields": [
     {
       "key": "PERMIT_NUMBER",
-      "rawValue": "Aviz de gospodărire a apelor nr. 312/2024",
+      "rawValue": "Autorizație de gospodărire a apelor AGA-DEMO-118/2025",
       "unit": "TEXT",
       "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "PERMIT_VALID_UNTIL",
-      "rawValue": "31.12.2028",
+      "rawValue": "03.03.2030",
       "unit": "DATE",
       "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "PERMITTED_VOLUME_M3",
-      "rawValue": "240.000 m³/an",
+      "rawValue": "280.000 m³/an",
       "unit": "M3",
-      "page": 2,
+      "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "WATER_SOURCE",
-      "rawValue": "rețeaua ANIF, SPP 4",
+      "rawValue": "puț forat, adâncime 60 m, nivel dinamic 35 m",
       "unit": "TEXT",
-      "page": 2,
+      "page": 1,
       "confidence": "HIGH"
     }
   ],

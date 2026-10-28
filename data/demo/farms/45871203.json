@@ -2,17 +2,17 @@
   "cui": "45871203",
   "company": {
     "cui": "45871203",
-    "name": "Legume Dobrogea Verde SRL",
+    "name": "Legume Bărăgan Demo SRL",
     "legalForm": "SRL",
     "caen": "0113",
     "caenLabelRo": "Cultivarea legumelor, a pepenilor, a rădăcinoaselor și tuberculilor",
-    "county": "Constanța",
-    "locality": "Valu lui Traian",
+    "county": "Călărași",
+    "locality": "Com. Demo",
     "registeredAt": "2014-03-12",
     "employees": 14,
-    "turnoverEur": 486000,
-    "netProfitEur": 61000,
-    "totalAssetsEur": 1320000,
+    "turnoverEur": 520000,
+    "netProfitEur": 58000,
+    "totalAssetsEur": 610000,
     "financialYear": 2025,
     "vatPayer": true,
     "manager": {
@@ -24,7 +24,7 @@
     "totalHa": 40,
     "standardOutputEur": 412000,
     "irrigatedNow": true,
-    "currentIrrigation": "ASPERSIE_VECHE",
+    "currentIrrigation": "BRAZDE",
     "crops": [
       {
         "year": 2026,
@@ -46,7 +46,7 @@
       }
     ],
     "livestock": [],
-    "apiaSubsidiesEur": 9800
+    "apiaSubsidiesEur": 9600
   },
   "parcels": {
     "type": "FeatureCollection",
@@ -84,14 +84,16 @@
         "properties": {
           "parcelId": "ct_0412_01",
           "blockId": "BF-0412",
-          "areaHa": 8,
+          "areaHa": 16,
           "crop": "tomate",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "HIGH",
           "hailRisk": "MEDIUM",
           "floodRisk": "LOW",
-          "waterStress": "HIGH"
+          "waterStress": "MEDIUM",
+          "et0SeasonMm": 700,
+          "effectiveRainSeasonMm": 200
         }
       },
       {
@@ -127,14 +129,16 @@
         "properties": {
           "parcelId": "ct_0412_02",
           "blockId": "BF-0412",
-          "areaHa": 8,
+          "areaHa": 14,
           "crop": "ardei",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "HIGH",
           "hailRisk": "MEDIUM",
           "floodRisk": "LOW",
-          "waterStress": "HIGH"
+          "waterStress": "MEDIUM",
+          "et0SeasonMm": 700,
+          "effectiveRainSeasonMm": 200
         }
       },
       {
@@ -170,100 +174,16 @@
         "properties": {
           "parcelId": "ct_0412_03",
           "blockId": "BF-0412",
-          "areaHa": 8,
-          "crop": "castraveți",
+          "areaHa": 10,
+          "crop": "varză",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "HIGH",
           "hailRisk": "MEDIUM",
           "floodRisk": "LOW",
-          "waterStress": "HIGH"
-        }
-      },
-      {
-        "type": "Feature",
-        "id": "ct_0415_01",
-        "geometry": {
-          "type": "Polygon",
-          "coordinates": [
-            [
-              [
-                28.452,
-                44.1725
-              ],
-              [
-                28.4555,
-                44.1725
-              ],
-              [
-                28.4555,
-                44.1761
-              ],
-              [
-                28.452,
-                44.1761
-              ],
-              [
-                28.452,
-                44.1725
-              ]
-            ]
-          ]
-        },
-        "properties": {
-          "parcelId": "ct_0415_01",
-          "blockId": "BF-0415",
-          "areaHa": 8,
-          "crop": "varză",
-          "natura2000": false,
-          "nitrateVulnerable": true,
-          "droughtRisk": "HIGH",
-          "hailRisk": "MEDIUM",
-          "floodRisk": "LOW",
-          "waterStress": "HIGH"
-        }
-      },
-      {
-        "type": "Feature",
-        "id": "ct_0415_02",
-        "geometry": {
-          "type": "Polygon",
-          "coordinates": [
-            [
-              [
-                28.4555,
-                44.1725
-              ],
-              [
-                28.459,
-                44.1725
-              ],
-              [
-                28.459,
-                44.1761
-              ],
-              [
-                28.4555,
-                44.1761
-              ],
-              [
-                28.4555,
-                44.1725
-              ]
-            ]
-          ]
-        },
-        "properties": {
-          "parcelId": "ct_0415_02",
-          "blockId": "BF-0415",
-          "areaHa": 8,
-          "crop": "ceapă",
-          "natura2000": false,
-          "nitrateVulnerable": true,
-          "droughtRisk": "HIGH",
-          "hailRisk": "MEDIUM",
-          "floodRisk": "LOW",
-          "waterStress": "HIGH"
+          "waterStress": "MEDIUM",
+          "et0SeasonMm": 700,
+          "effectiveRainSeasonMm": 200
         }
       }
     ]
@@ -272,80 +192,81 @@
     "months": [
       {
         "month": "2025-10",
-        "inflowEur": 24000,
-        "outflowEur": 6000,
-        "netEur": 18000
+        "inflowEur": 78000,
+        "outflowEur": 42000,
+        "netEur": 36000
       },
       {
         "month": "2025-11",
-        "inflowEur": 15000,
-        "outflowEur": 6000,
-        "netEur": 9000
+        "inflowEur": 22000,
+        "outflowEur": 30000,
+        "netEur": -8000
       },
       {
         "month": "2025-12",
-        "inflowEur": 16900,
-        "outflowEur": 6000,
-        "netEur": 10900
+        "inflowEur": 17600,
+        "outflowEur": 25000,
+        "netEur": -7400
       },
       {
         "month": "2026-01",
-        "inflowEur": 6000,
-        "outflowEur": 10000,
-        "netEur": -4000
+        "inflowEur": 4000,
+        "outflowEur": 22000,
+        "netEur": -18000
       },
       {
         "month": "2026-02",
-        "inflowEur": 6000,
-        "outflowEur": 11500,
-        "netEur": -5500
+        "inflowEur": 5000,
+        "outflowEur": 28000,
+        "netEur": -23000
       },
       {
         "month": "2026-03",
         "inflowEur": 6000,
-        "outflowEur": 13000,
-        "netEur": -7000
+        "outflowEur": 45000,
+        "netEur": -39000
       },
       {
         "month": "2026-04",
-        "inflowEur": 6000,
-        "outflowEur": 12000,
-        "netEur": -6000
+        "inflowEur": 12000,
+        "outflowEur": 52000,
+        "netEur": -40000
       },
       {
         "month": "2026-05",
-        "inflowEur": 8000,
-        "outflowEur": 6000,
-        "netEur": 2000
+        "inflowEur": 30000,
+        "outflowEur": 48000,
+        "netEur": -18000
       },
       {
         "month": "2026-06",
-        "inflowEur": 15000,
-        "outflowEur": 6000,
-        "netEur": 9000
+        "inflowEur": 72000,
+        "outflowEur": 40000,
+        "netEur": 32000
       },
       {
         "month": "2026-07",
-        "inflowEur": 28000,
-        "outflowEur": 6000,
-        "netEur": 22000
+        "inflowEur": 98000,
+        "outflowEur": 42000,
+        "netEur": 56000
       },
       {
         "month": "2026-08",
-        "inflowEur": 32000,
-        "outflowEur": 6000,
-        "netEur": 26000
+        "inflowEur": 105000,
+        "outflowEur": 44000,
+        "netEur": 61000
       },
       {
         "month": "2026-09",
-        "inflowEur": 30000,
-        "outflowEur": 6000,
-        "netEur": 24000
+        "inflowEur": 80000,
+        "outflowEur": 40000,
+        "netEur": 40000
       }
     ],
-    "annualNetEur": 98400,
-    "avgMonthlyNetEur": 8200,
+    "annualNetEur": 71600,
+    "avgMonthlyNetEur": 5967,
     "peakMonths": [
+      "JUN",
       "JUL",
       "AUG",
       "SEP",

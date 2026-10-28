@@ -48,7 +48,24 @@ public final class UpgradePackages {
                     components.removeIf(c -> category.asText().equals(c.category())));
             components.add(CatalogItems.toComponent(item, tractors));
         }
+        for (String catalogId : add) {
+            requireCompanions(CatalogItems.item(context, catalogId), components);
+        }
         return components;
+    }
+
+    /** An item may need a component of one of the categories in requiresCategories (e.g. sensors need drip). */
+    private static void requireCompanions(JsonNode item, List<InvestmentComponent> components) {
+        JsonNode required = item.path("requiresCategories");
+        if (!required.isArray() || required.isEmpty()) {
+            return;
+        }
+        for (JsonNode category : required) {
+            if (components.stream().anyMatch(c -> category.asText().equals(c.category()))) {
+                return;
+            }
+        }
+        throw new IllegalArgumentException(item.path("nameRo").asText() + " se montează doar împreună cu: " + required);
     }
 
     /** The configuration chain ends at the configuration built from the offer (no base). */

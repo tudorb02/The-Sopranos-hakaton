@@ -19,7 +19,6 @@ import ro.greenstruct.agro.orchestration.RunStore;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(properties = {"greenstruct.agent-runtime.enabled=true", "greenstruct.analysis-date=2026-10-28"})
-@org.junit.jupiter.api.Disabled("needs the README demo data (documents, extractions) first")
 class RuleBasedPipelineTest {
 
     @Autowired

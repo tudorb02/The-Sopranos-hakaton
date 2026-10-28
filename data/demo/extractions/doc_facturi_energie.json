@@ -2,41 +2,41 @@
   "documentId": "doc_facturi_energie",
   "documentType": "ENERGY_INVOICES",
   "moduleId": "irigatii",
-  "currency": "RON",
-  "supplierName": "Furnizor energie (demo)",
+  "currency": "EUR",
+  "supplierName": "Energie Demo Furnizare SA",
   "documentFields": [
     {
       "key": "PERIOD_FROM",
-      "rawValue": "01.10.2025",
+      "rawValue": "05.05.2026",
       "unit": "DATE",
       "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "PERIOD_TO",
-      "rawValue": "30.09.2026",
+      "rawValue": "05.10.2026",
       "unit": "DATE",
-      "page": 12,
+      "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "ENERGY_KWH",
-      "rawValue": "105.230 kWh",
+      "rawValue": "35.729 kWh",
       "unit": "KWH",
-      "page": 13,
+      "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "ENERGY_COST",
-      "rawValue": "104.598,62 lei",
-      "unit": "RON",
-      "page": 13,
-      "confidence": "MEDIUM"
+      "rawValue": "6.788,51 EUR",
+      "unit": "EUR",
+      "page": 1,
+      "confidence": "HIGH"
     }
   ],
   "lineItems": [],
   "missingFields": [],
   "warnings": [
-    "Facturile acoperă tot locul de consum, nu doar pompa. Abaterea se verifică la monitorizare."
+    "Facturile acoperă 5 luni, sezonul de irigare."
   ]
 }

@@ -44,4 +44,41 @@ public final class IrrigationCalculator {
         requireNonNegative(yieldKwhPerKwp, "yieldKwhPerKwp");
         return requireNonNegative(demandKwh, "demandKwh").min(pvKwp.multiply(yieldKwhPerKwp, MC));
     }
+
+    /** 1 mm of water on 1 ha is 10 m³. */
+    private static final BigDecimal M3_PER_MM_HA = BigDecimal.TEN;
+
+    /** Net irrigation need NIR = Σ max(0, Kc × ET0 − P_eff) × 10 × ha, in m³ per season. */
+    public static BigDecimal netNeedM3(List<CropNeed> crops) {
+        BigDecimal total = BigDecimal.ZERO;
+        for (CropNeed crop : crops) {
+            BigDecimal deficitMm = crop.kc().multiply(crop.et0Mm(), MC).subtract(crop.effectiveRainMm()).max(BigDecimal.ZERO);
+            total = total.add(deficitMm.multiply(M3_PER_MM_HA, MC).multiply(crop.hectares(), MC), MC);
+        }
+        return total;
+    }
+
+    /** Water taken from the source: NIR × (1 − demand reduction) / efficiency. */
+    public static BigDecimal grossWaterM3(BigDecimal netNeedM3, IrrigationSystem system) {
+        return requireNonNegative(netNeedM3, "netNeedM3")
+                .multiply(BigDecimal.ONE.subtract(fraction(system.demandReductionPct())), MC)
+                .divide(fraction(system.efficiencyPct()), MC);
+    }
+
+    /**
+     * Pumping energy kWh = V × (lift + system pressure head) × k / pump efficiency, with k = 0.002725 kWh per m³ per
+     * metre (ρ × g / 3,600,000, from config/factors.json).
+     */
+    public static BigDecimal pumpingKwhByHead(BigDecimal volumeM3, BigDecimal liftM, BigDecimal pressureHeadM,
+                                              BigDecimal kwhPerM3PerM, BigDecimal pumpEfficiencyPct) {
+        requireNonNegative(volumeM3, "volumeM3");
+        requireNonNegative(liftM, "liftM");
+        requireNonNegative(pressureHeadM, "pressureHeadM");
+        requireNonNegative(kwhPerM3PerM, "kwhPerM3PerM");
+        if (pumpEfficiencyPct == null || pumpEfficiencyPct.signum() <= 0) {
+            throw new IllegalArgumentException("pumpEfficiencyPct must be > 0, was " + pumpEfficiencyPct);
+        }
+        return volumeM3.multiply(liftM.add(pressureHeadM), MC).multiply(kwhPerM3PerM, MC)
+                .divide(fraction(pumpEfficiencyPct), MC);
+    }
 }
