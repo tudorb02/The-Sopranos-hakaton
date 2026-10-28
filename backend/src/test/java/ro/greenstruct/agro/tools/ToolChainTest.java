@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
 import ro.greenstruct.agro.farm.FarmProfileService;
+import ro.greenstruct.agro.modules.ReferenceData;
 import ro.greenstruct.agro.orchestration.Run;
 import ro.greenstruct.agro.orchestration.RunRequest;
 import ro.greenstruct.agro.orchestration.RunStatus;
@@ -80,6 +81,8 @@ class ToolChainTest {
     private DocumentStore documents;
     @Autowired
     private CalcStore calcs;
+    @Autowired
+    private ReferenceData reference;
     @Autowired
     private ObjectMapper mapper;
 
@@ -181,6 +184,30 @@ class ToolChainTest {
         assertValue(run, "impact.water_horizon", "374685.31");
         // 25.3507 t × 5 years = 126.7535 t
         assertValue(run, "impact.co2_horizon", "126.75");
+
+        // B is secured by the FEI InvestEU guarantee: F1, the primary fund for irrigation (config/funds.json).
+        JsonNode fund = call(run, "select_fund", "{\"optionId\": \"B\"}");
+        assertThat(fund.path("fundId").asText()).isEqualTo("F1");
+        assertThat(fund.path("role").asText()).isEqualTo("PRIMARY");
+        // F6 has programmes checked above, none both eligible and open (DR_12 not eligible, DR_16/DR_26 not open).
+        assertThat(fund.path("alternatives")).extracting(a -> a.path("fundId").asText() + "/" + a.path("status").asText())
+                .containsExactly("F4/TO_CONFIRM", "F6/NOT_AVAILABLE");
+        assertValue(run, "fund.coverage", "70");
+        assertThat(tools.execute(run, "select_fund", mapper.createObjectNode().put("optionId", "A")).ok()).isFalse();
+
+        assertThat(tools.execute(run, "check_fund_requirements",
+                mapper.createObjectNode().put("fundId", "F1").put("optionId", "B")).messageRo())
+                .contains("Lipsește statusul DNSH");
+        JsonNode requirements = call(run, "check_fund_requirements",
+                "{\"fundId\": \"F1\", \"optionId\": \"B\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
+        assertThat(requirements.path("requirements"))
+                .extracting(r -> r.path("requirementId").asText() + "/" + r.path("status").asText())
+                .containsExactly("SME_STATUS/MET", "ELIGIBLE_CATEGORY/MET", "TECHNICAL_THRESHOLD/MET", "DNSH/TO_CONFIRM",
+                        "IMPACT_QUANTIFIED/MET", "CLIENT_BENEFIT/MET", "PERIODIC_REPORTING/MET");
+        assertThat(requirements.path("allMet").asBoolean()).isFalse();
+
+        JsonNode bond = call(run, "get_bond_category", "{}");
+        assertThat(bond.path("proposed").asText()).isEqualTo("AGRICULTURE_FORESTRY");
     }
 
     @Test
@@ -261,6 +288,34 @@ class ToolChainTest {
         assertValue(run, "impact.fuel_horizon", "52740");
         // 52,740.03 l over 7 years × 2.68 kg/l / 1,000 = 141.3433 t
         assertValue(run, "impact.co2_horizon", "141.34");
+
+        // B uses the DR-12 grant and the AFIR co-financing line: F6, an alternative for machinery with no own
+        // green requirements in config/funds.json; F1 stays available.
+        JsonNode fund = call(run, "select_fund", "{\"optionId\": \"B\"}");
+        assertThat(fund.path("fundId").asText()).isEqualTo("F6");
+        assertThat(fund.path("role").asText()).isEqualTo("ALTERNATIVE");
+        assertThat(fund.path("alternatives")).extracting(a -> a.path("fundId").asText() + "/" + a.path("status").asText())
+                .containsExactly("F1/AVAILABLE");
+        JsonNode requirements = call(run, "check_fund_requirements",
+                "{\"fundId\": \"F6\", \"optionId\": \"B\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
+        assertThat(requirements.path("requirements")).isEmpty();
+
+        JsonNode bond = call(run, "get_bond_category", "{}");
+        assertThat(bond.path("categories")).extracting(c -> c.path("categoryId").asText())
+                .containsExactly("AGRICULTURE_FORESTRY", "ENERGY_EFFICIENCY");
+    }
+
+    @Test
+    void bondCategoriesOfTheConfigAreTheReportSchemaCategories() throws Exception {
+        JsonNode schema = mapper.readTree(Path.of("../contracts/schemas/submit_underwriting_report.json").toFile());
+        List<String> inSchema = new ArrayList<>();
+        schema.path("properties").path("greenBond").path("properties").path("category").path("enum")
+                .forEach(category -> inSchema.add(category.asText()));
+        List<String> inConfig = new ArrayList<>();
+        reference.funds().path("bondCategories").forEach(category -> inConfig.add(category.path("categoryId").asText()));
+        inConfig.add("NONE");
+
+        assertThat(inSchema).containsExactlyInAnyOrderElementsOf(inConfig);
     }
 
     @Test

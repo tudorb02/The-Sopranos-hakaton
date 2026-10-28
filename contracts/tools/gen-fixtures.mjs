@@ -576,6 +576,32 @@ function buildIrigatii() {
   const co2H = R.calc('calculate_impact', 'impact.co2_horizon', 'CO₂ evitat pe 5 ani', (((P.invoiceKwh - gridLeft) * P.gridFactor) / 1000) * P.horizonYears, 'T_CO2', { dependsOn: [recCo2, horizon] });
   R.tool(A3, 'calculate_impact', 2, { configId: 'cfg_recommended', horizon: 'FROM_CONFIG' }, '🔧 Calculez impactul de mediu', `🔧 ${recSaved.display} apă, ${recGridSaved.display} din rețea, ${recCo2.display} evitate`, () => [greenAmt, transAmt, greenPct, waterH, co2H], {});
 
+  const fundCov = R.calc('select_fund', 'fund.coverage', 'Acoperirea garanției F1', P.feiCoverage, 'PCT', { sourceRo: 'config/funds.json: F1, acordul FEI cu Raiffeisen din 2023 (procentul pentru 2026, de confirmat)' });
+  R.tool(A3, 'select_fund', 3, { optionId: 'B' }, '🔧 Aleg fondul care susține creditul verde', '🔧 F1, garanția FEI InvestEU de sustenabilitate: fondul principal pentru irigații', () => [fundCov], {
+    fundId: 'F1', nameRo: 'Garanția FEI InvestEU de sustenabilitate', kind: 'GUARANTEE', role: 'PRIMARY',
+    alternatives: [
+      { fundId: 'F4', nameRo: 'Finanțare pentru irigații cu FEI (cu RWA Raiffeisen Agro)', status: 'TO_CONFIRM' },
+      { fundId: 'F6', nameRo: 'Granturi AFIR / PNS', status: 'NOT_AVAILABLE' },
+    ],
+  });
+  R.tool(A3, 'check_fund_requirements', 3, { fundId: 'F1', optionId: 'B' }, '🔧 Bifez cerințele fondului F1', '🔧 F1: 6 din 7 cerințe îndeplinite; DNSH are condiții înainte de tragere', null, {
+    fundId: 'F1',
+    requirements: [
+      { requirementId: 'SME_STATUS', level: 'REQUIRED', status: 'MET', reasonRo: 'Firma e IMM după bilanțul de la ANAF (angajați, cifră de afaceri, active).' },
+      { requirementId: 'ELIGIBLE_CATEGORY', level: 'REQUIRED', status: 'MET', reasonRo: 'Categoria Irigații e legată de fond (README §3.3).' },
+      { requirementId: 'TECHNICAL_THRESHOLD', level: 'REQUIRED', status: 'MET', reasonRo: 'Configurația finanțată trece pragul verde, calculat de motor din documente.' },
+      { requirementId: 'DNSH', level: 'PROBABLE', status: 'TO_CONFIRM', reasonRo: 'DNSH trecut cu condiții înainte de tragere.' },
+      { requirementId: 'IMPACT_QUANTIFIED', level: 'REQUIRED', status: 'MET', reasonRo: 'Impactul e calculat de motor pe acest credit.' },
+      { requirementId: 'CLIENT_BENEFIT', level: 'REQUIRED', status: 'MET', reasonRo: 'Dobândă mai mică decât la creditul clasic și fără ipotecă.' },
+      { requirementId: 'PERIODIC_REPORTING', level: 'REQUIRED', status: 'MET', reasonRo: 'Dosarul are indicatori de monitorizare la 12 luni, din contoare și facturi.' },
+    ],
+    allMet: false,
+  });
+  R.tool(A3, 'get_bond_category', 3, {}, '🔧 Caut categoria din cadrul obligațiunilor verzi', '🔧 Categoria propusă: Agriculture and forestry', null, {
+    categories: [{ categoryId: 'AGRICULTURE_FORESTRY', nameEn: 'Agriculture and forestry', nameRo: 'Agricultură și silvicultură' }],
+    proposed: 'AGRICULTURE_FORESTRY', sourceRo: 'README §3.1: categoriile cadrului de obligațiuni verzi și sustenabile Raiffeisen (Sustainalytics, Second Party Opinion 2024)',
+  });
+
   const report = {
     decision: 'ELIGIBLE_WITH_CONDITIONS',
     moduleId: 'irigatii',
@@ -589,6 +615,22 @@ function buildIrigatii() {
     ],
     greenShare: { greenAmountCalcId: greenAmt.calcId, transitionAmountCalcId: transAmt.calcId, greenSharePctCalcId: greenPct.calcId },
     greenBond: { category: 'AGRICULTURE_FORESTRY', status: 'TO_CONFIRM', eligibleAmountCalcId: greenAmt.calcId, noteRo: 'Categoria „Agriculture and forestry” exista în cadrul RBRO 2022; cadrul RBI 2025 nu o mai are. De confirmat cu echipa Green Bonds. Pompa solară se poate încadra separat la energie regenerabilă.' },
+    fund: {
+      fundId: 'F1', role: 'PRIMARY',
+      requirements: [
+        { requirementId: 'SME_STATUS', level: 'REQUIRED', status: 'MET', noteRo: 'IMM după bilanțul ANAF pe 2025.' },
+        { requirementId: 'ELIGIBLE_CATEGORY', level: 'REQUIRED', status: 'MET', noteRo: 'Irigațiile intră în investițiile verzi acoperite de garanție.' },
+        { requirementId: 'TECHNICAL_THRESHOLD', level: 'REQUIRED', status: 'MET', evidenceCalcIds: [recPct.calcId, threshold.calcId], noteRo: 'Economia de apă a configurației recomandate trece pragul de 25%.' },
+        { requirementId: 'DNSH', level: 'PROBABLE', status: 'TO_CONFIRM', conditionId: 'cp_fertigation_plan', noteRo: 'Trecut cu condiții: planul de fertirigare și reciclarea tuburilor de picurare.' },
+        { requirementId: 'IMPACT_QUANTIFIED', level: 'REQUIRED', status: 'MET', evidenceCalcIds: [recSaved.calcId, recCo2.calcId], noteRo: 'Apa economisită și CO₂ evitat, calculate pe acest credit.' },
+        { requirementId: 'CLIENT_BENEFIT', level: 'REQUIRED', status: 'MET', noteRo: 'Dobândă mai mică și fără ipotecă față de creditul clasic.' },
+        { requirementId: 'PERIODIC_REPORTING', level: 'REQUIRED', status: 'MET', noteRo: 'Contorul de apă și facturile de energie, la 12 luni.' },
+      ],
+      alternatives: [
+        { fundId: 'F4', status: 'TO_CONFIRM', noteRo: 'Finanțarea pentru irigații cu FEI poate înlocui F1 dacă mai e activă; de confirmat cu Raiffeisen.' },
+        { fundId: 'F6', status: 'NOT_AVAILABLE', noteRo: 'Nicio sesiune AFIR deschisă pentru care ferma e eligibilă.' },
+      ],
+    },
     substantialContribution: 'WATER_MARINE_RESOURCES',
     dnsh: [
       { objective: 'CLIMATE_MITIGATION', status: 'PASS', justificationRo: 'Pompa solară înlocuiește aproape tot consumul din rețea; emisiile scad față de situația actuală.', evidence: ['ENERGY_INVOICES', 'TECHNICAL_SHEET'] },
@@ -608,11 +650,11 @@ function buildIrigatii() {
     ],
     conditionsPrecedent: [
       { conditionId: 'cp_investeu_guarantee', type: 'GUARANTEE_APPROVAL', documentType: 'GUARANTEE_APPROVAL', descriptionRo: 'Includerea creditului în portofoliul garantat InvestEU (FEI).', timing: 'BEFORE_SIGNING', blocking: true },
-      { conditionId: 'cp_fertigation_plan', type: 'DOCUMENT', documentType: 'OTHER', descriptionRo: 'Plan de fertirigare pentru parcelele ct_0415_01 și ct_0415_02 (zonă vulnerabilă la nitrați).', timing: 'BEFORE_FIRST_DISBURSEMENT', blocking: false },
+      { conditionId: 'cp_fertigation_plan', type: 'DOCUMENT', documentType: 'OTHER', descriptionRo: 'Plan de fertirigare pentru parcelele ct_0415_01 și ct_0415_02 (zonă vulnerabilă la nitrați).', timing: 'BEFORE_FIRST_DISBURSEMENT', blocking: false, missingFieldKey: 'fertigation_plan' },
       { conditionId: 'cp_final_invoice', type: 'INVOICE_MATCH', documentType: 'FINAL_INVOICE', descriptionRo: 'Factura finală corespunde configurației aprobate: picurare, senzori, contor, pompă solară 25 kWp.', timing: 'BEFORE_FINAL_DISBURSEMENT', blocking: true },
       { conditionId: 'cp_drip_recycling', type: 'DOCUMENT', documentType: 'OTHER', descriptionRo: 'Angajamentul furnizorului de a prelua tuburile de picurare uzate la reciclare.', timing: 'BEFORE_FINAL_DISBURSEMENT', blocking: false },
       { conditionId: 'cp_commissioning', type: 'DOCUMENT', documentType: 'COMMISSIONING_REPORT', descriptionRo: 'Proces-verbal de punere în funcțiune și poze geolocalizate.', timing: 'AFTER_INSTALLATION', blocking: false },
-      { conditionId: 'cp_water_meter', type: 'TECHNICAL_SPEC', documentType: 'WATER_METER_CERTIFICATE', descriptionRo: 'Certificatul metrologic al contorului de apă montat.', timing: 'AFTER_INSTALLATION', blocking: false },
+      { conditionId: 'cp_water_meter', type: 'TECHNICAL_SPEC', documentType: 'WATER_METER_CERTIFICATE', descriptionRo: 'Certificatul metrologic al contorului de apă montat.', timing: 'AFTER_INSTALLATION', blocking: false, missingFieldKey: 'water_meter' },
     ],
     monitoringKpis: [
       { kpiId: 'kpi_water_use', metric: 'WATER_USE_M3', targetCalcId: recWater.calcId, frequency: 'ANNUAL', firstDue: 'MONTH_12', dataSource: 'WATER_METER', descriptionRo: 'Consumul real de apă, citit de pe contor, comparat cu estimarea.' },
@@ -633,7 +675,7 @@ function buildIrigatii() {
       { stepRo: 'La 12 luni: citirea contorului de apă și facturile de energie.' },
     ],
   };
-  R.completed(A3, 'submit_underwriting_report', '✅ Agentul 3 a terminat: eligibil verde cu condiții', report, 3, 21600);
+  R.completed(A3, 'submit_underwriting_report', '✅ Agentul 3 a terminat: eligibil verde cu condiții', report, 6, 21600);
 
   R.state('AGENT_3', 'GATA', 'Ofertele sunt gata; fermierul alege varianta și trimite cererea', {}, 300);
   const t0 = Date.parse('2026-10-28T09:30:00.000Z');
@@ -1029,6 +1071,21 @@ function buildUtilaje() {
   const co2H = R.calc('calculate_impact', 'impact.co2_horizon', 'CO₂ evitat pe 7 ani', ((bL * P.co2PerL) / 1000) * P.horizonYears, 'T_CO2', { dependsOn: [rCo2, horizon] });
   R.tool(A3, 'calculate_impact', 2, { configId: 'cfg_recommended', horizon: 'FROM_CONFIG' }, '🔧 Calculez impactul de mediu', `🔧 ${rSaved.display} motorină, ${rN.display}, ${rCo2.display} evitate`, () => [greenAmt, transAmt, greenPct, fuelH, co2H], {});
 
+  R.tool(A3, 'select_fund', 3, { optionId: 'B' }, '🔧 Aleg fondul care susține varianta B', '🔧 F6, granturi AFIR / PNS: alternativa pentru utilaje, prin grantul DR-12 și creditul de cofinanțare', null, {
+    fundId: 'F6', nameRo: 'Granturi AFIR / PNS', kind: 'PUBLIC_GRANT', role: 'ALTERNATIVE',
+    alternatives: [{ fundId: 'F1', nameRo: 'Garanția FEI InvestEU de sustenabilitate', status: 'AVAILABLE' }],
+  });
+  R.tool(A3, 'check_fund_requirements', 3, { fundId: 'F6', optionId: 'B' }, '🔧 Bifez cerințele fondului F6', '🔧 F6 nu are cerințe verzi proprii: condițiile vin din ghidul DR-12', null, {
+    fundId: 'F6', requirements: [], allMet: true,
+  });
+  R.tool(A3, 'get_bond_category', 3, {}, '🔧 Caut categoria din cadrul obligațiunilor verzi', '🔧 Categoria propusă: Agriculture and forestry; alternativ Energy efficiency', null, {
+    categories: [
+      { categoryId: 'AGRICULTURE_FORESTRY', nameEn: 'Agriculture and forestry', nameRo: 'Agricultură și silvicultură' },
+      { categoryId: 'ENERGY_EFFICIENCY', nameEn: 'Energy efficiency', nameRo: 'Eficiență energetică' },
+    ],
+    proposed: 'AGRICULTURE_FORESTRY', sourceRo: 'README §3.1: categoriile cadrului de obligațiuni verzi și sustenabile Raiffeisen (Sustainalytics, Second Party Opinion 2024)',
+  });
+
   const report = {
     decision: 'ELIGIBLE_WITH_CONDITIONS',
     moduleId: 'utilaje',
@@ -1041,6 +1098,10 @@ function buildUtilaje() {
     ],
     greenShare: { greenAmountCalcId: greenAmt.calcId, transitionAmountCalcId: transAmt.calcId, greenSharePctCalcId: greenPct.calcId },
     greenBond: { category: 'AGRICULTURE_FORESTRY', status: 'TO_CONFIRM', eligibleAmountCalcId: greenAmt.calcId, noteRo: 'Doar pachetul de precizie poate intra în portofoliul verde; tractoarele diesel sunt excluse. Categoria agricultură trebuie confirmată cu echipa Green Bonds (cadrul RBI 2025).' },
+    fund: {
+      fundId: 'F6', role: 'ALTERNATIVE', requirements: [],
+      alternatives: [{ fundId: 'F1', status: 'AVAILABLE', noteRo: 'Garanția FEI InvestEU, fondul principal pentru utilaje, dacă fermierul renunță la grant.' }],
+    },
     substantialContribution: 'CLIMATE_MITIGATION',
     dnsh: [
       { objective: 'CLIMATE_ADAPTATION', status: 'PASS', justificationRo: 'Investiția nu crește expunerea fermei la riscuri climatice.', evidence: [] },
@@ -1064,7 +1125,7 @@ function buildUtilaje() {
       { conditionId: 'cp_competences', type: 'DOCUMENT', documentType: 'OTHER', descriptionRo: 'Dovada competențelor profesionale ale administratorului (ar ridica intensitatea la 80%; plafonul rămâne 200.000 EUR).', timing: 'BEFORE_SIGNING', blocking: false },
       { conditionId: 'cp_afir_contract', type: 'GRANT_APPROVAL', documentType: 'AFIR_FINANCING_CONTRACT', descriptionRo: 'Contractul de finanțare AFIR semnat (pentru tragerea din punte).', timing: 'BEFORE_FIRST_DISBURSEMENT', blocking: true },
       { conditionId: 'cp_final_invoice', type: 'INVOICE_MATCH', documentType: 'FINAL_INVOICE', descriptionRo: 'Factura finală include tractoarele și pachetul de precizie aprobat (RTK, section control, doză variabilă).', timing: 'BEFORE_FINAL_DISBURSEMENT', blocking: true },
-      { conditionId: 'cp_scrapping', type: 'DOCUMENT', documentType: 'SCRAPPING_CERTIFICATE', descriptionRo: 'Certificatele de dezmembrare pentru cele 4 tractoare vechi.', timing: 'AFTER_INSTALLATION', blocking: false },
+      { conditionId: 'cp_scrapping', type: 'DOCUMENT', documentType: 'SCRAPPING_CERTIFICATE', descriptionRo: 'Certificatele de dezmembrare pentru cele 4 tractoare vechi.', timing: 'AFTER_INSTALLATION', blocking: false, missingFieldKey: 'scrapping_certificate' },
     ],
     monitoringKpis: [
       { kpiId: 'kpi_fuel_use', metric: 'FUEL_USE_L', targetCalcId: rFuelUse.calcId, frequency: 'ANNUAL', firstDue: 'MONTH_12', dataSource: 'OPEN_BANKING', descriptionRo: 'Motorina cumpărată, din tranzacții și facturi, comparată cu estimarea.' },

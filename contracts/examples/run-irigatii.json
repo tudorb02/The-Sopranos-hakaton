@@ -8,8 +8,8 @@
     "state": "MONITORIZARE",
     "mode": "LIVE",
     "createdAt": "2026-10-28T09:30:00.000Z",
-    "updatedAt": "2026-10-28T09:31:43.028Z",
-    "lastEventSeq": 59,
+    "updatedAt": "2026-10-28T09:31:47.930Z",
+    "lastEventSeq": 65,
     "farm": {
       "cui": "45871203",
       "company": {
@@ -467,7 +467,7 @@
         "status": "COMPLETED",
         "source": "LIVE",
         "startedAt": "2026-10-28T09:30:47.399Z",
-        "completedAt": "2026-10-28T09:30:54.528Z"
+        "completedAt": "2026-10-28T09:30:59.430Z"
       }
     ],
     "agents": {
@@ -1306,6 +1306,75 @@
           "eligibleAmountCalcId": "calc_303a25937cc7",
           "noteRo": "Categoria „Agriculture and forestry” exista în cadrul RBRO 2022; cadrul RBI 2025 nu o mai are. De confirmat cu echipa Green Bonds. Pompa solară se poate încadra separat la energie regenerabilă."
         },
+        "fund": {
+          "fundId": "F1",
+          "role": "PRIMARY",
+          "requirements": [
+            {
+              "requirementId": "SME_STATUS",
+              "level": "REQUIRED",
+              "status": "MET",
+              "noteRo": "IMM după bilanțul ANAF pe 2025."
+            },
+            {
+              "requirementId": "ELIGIBLE_CATEGORY",
+              "level": "REQUIRED",
+              "status": "MET",
+              "noteRo": "Irigațiile intră în investițiile verzi acoperite de garanție."
+            },
+            {
+              "requirementId": "TECHNICAL_THRESHOLD",
+              "level": "REQUIRED",
+              "status": "MET",
+              "evidenceCalcIds": [
+                "calc_e1b22b2598a8",
+                "calc_7247bfeee0ff"
+              ],
+              "noteRo": "Economia de apă a configurației recomandate trece pragul de 25%."
+            },
+            {
+              "requirementId": "DNSH",
+              "level": "PROBABLE",
+              "status": "TO_CONFIRM",
+              "conditionId": "cp_fertigation_plan",
+              "noteRo": "Trecut cu condiții: planul de fertirigare și reciclarea tuburilor de picurare."
+            },
+            {
+              "requirementId": "IMPACT_QUANTIFIED",
+              "level": "REQUIRED",
+              "status": "MET",
+              "evidenceCalcIds": [
+                "calc_d393fbd8e48c",
+                "calc_c4fe14e06cd5"
+              ],
+              "noteRo": "Apa economisită și CO₂ evitat, calculate pe acest credit."
+            },
+            {
+              "requirementId": "CLIENT_BENEFIT",
+              "level": "REQUIRED",
+              "status": "MET",
+              "noteRo": "Dobândă mai mică și fără ipotecă față de creditul clasic."
+            },
+            {
+              "requirementId": "PERIODIC_REPORTING",
+              "level": "REQUIRED",
+              "status": "MET",
+              "noteRo": "Contorul de apă și facturile de energie, la 12 luni."
+            }
+          ],
+          "alternatives": [
+            {
+              "fundId": "F4",
+              "status": "TO_CONFIRM",
+              "noteRo": "Finanțarea pentru irigații cu FEI poate înlocui F1 dacă mai e activă; de confirmat cu Raiffeisen."
+            },
+            {
+              "fundId": "F6",
+              "status": "NOT_AVAILABLE",
+              "noteRo": "Nicio sesiune AFIR deschisă pentru care ferma e eligibilă."
+            }
+          ]
+        },
         "substantialContribution": "WATER_MARINE_RESOURCES",
         "dnsh": [
           {
@@ -1396,7 +1465,8 @@
             "documentType": "OTHER",
             "descriptionRo": "Plan de fertirigare pentru parcelele ct_0415_01 și ct_0415_02 (zonă vulnerabilă la nitrați).",
             "timing": "BEFORE_FIRST_DISBURSEMENT",
-            "blocking": false
+            "blocking": false,
+            "missingFieldKey": "fertigation_plan"
           },
           {
             "conditionId": "cp_final_invoice",
@@ -1428,7 +1498,8 @@
             "documentType": "WATER_METER_CERTIFICATE",
             "descriptionRo": "Certificatul metrologic al contorului de apă montat.",
             "timing": "AFTER_INSTALLATION",
-            "blocking": false
+            "blocking": false,
+            "missingFieldKey": "water_meter"
           }
         ],
         "monitoringKpis": [
@@ -3707,17 +3778,27 @@
           "calc_c4fe14e06cd5",
           "calc_63eb160b82cf"
         ]
+      },
+      "calc_9c21f0c8dba2": {
+        "calcId": "calc_9c21f0c8dba2",
+        "tool": "select_fund",
+        "key": "fund.coverage",
+        "labelRo": "Acoperirea garanției F1",
+        "value": 70,
+        "unit": "PCT",
+        "display": "70,0%",
+        "sourceRo": "config/funds.json: F1, acordul FEI cu Raiffeisen din 2023 (procentul pentru 2026, de confirmat)"
       }
     },
     "submission": {
       "variant": "VERDE",
       "optionId": "B",
-      "submittedAt": "2026-10-28T09:31:35.028Z"
+      "submittedAt": "2026-10-28T09:31:39.930Z"
     },
     "officerActions": [
       {
         "action": "APPROVE",
-        "at": "2026-10-28T09:31:40.028Z",
+        "at": "2026-10-28T09:31:44.930Z",
         "officerId": "ofiter.demo",
         "commentRo": "Aprobat cu condițiile din raport."
       }

@@ -8,8 +8,8 @@
     "state": "GATA",
     "mode": "LIVE",
     "createdAt": "2026-10-28T10:15:00.000Z",
-    "updatedAt": "2026-10-28T10:15:55.896Z",
-    "lastEventSeq": 53,
+    "updatedAt": "2026-10-28T10:16:00.846Z",
+    "lastEventSeq": 59,
     "farm": {
       "cui": "38264019",
       "company": {
@@ -424,7 +424,7 @@
         "status": "DEGRADED",
         "source": "RETRY",
         "startedAt": "2026-10-28T10:15:43.919Z",
-        "completedAt": "2026-10-28T10:15:55.396Z"
+        "completedAt": "2026-10-28T10:16:00.346Z"
       }
     ],
     "agents": {
@@ -1155,6 +1155,18 @@
           "eligibleAmountCalcId": "calc_7153b7543f33",
           "noteRo": "Doar pachetul de precizie poate intra în portofoliul verde; tractoarele diesel sunt excluse. Categoria agricultură trebuie confirmată cu echipa Green Bonds (cadrul RBI 2025)."
         },
+        "fund": {
+          "fundId": "F6",
+          "role": "ALTERNATIVE",
+          "requirements": [],
+          "alternatives": [
+            {
+              "fundId": "F1",
+              "status": "AVAILABLE",
+              "noteRo": "Garanția FEI InvestEU, fondul principal pentru utilaje, dacă fermierul renunță la grant."
+            }
+          ]
+        },
         "substantialContribution": "CLIMATE_MITIGATION",
         "dnsh": [
           {
@@ -1279,7 +1291,8 @@
             "documentType": "SCRAPPING_CERTIFICATE",
             "descriptionRo": "Certificatele de dezmembrare pentru cele 4 tractoare vechi.",
             "timing": "AFTER_INSTALLATION",
-            "blocking": false
+            "blocking": false,
+            "missingFieldKey": "scrapping_certificate"
           }
         ],
         "monitoringKpis": [
