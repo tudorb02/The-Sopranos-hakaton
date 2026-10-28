@@ -69,7 +69,12 @@ public final class FinancingConfig {
                 : context.module().financing().horizonYears();
     }
 
+    /** The fixed rate of a line that is not priced by price_loan (the bridge loan). */
     public static BigDecimal rate(JsonNode line) {
+        if (!line.path("annualRatePct").isNumber()) {
+            throw new IllegalArgumentException("Linia " + line.path("lineId").asText()
+                    + " nu are dobândă fixă: dobânda ei se calculează cu price_loan");
+        }
         return line.path("annualRatePct").decimalValue();
     }
 

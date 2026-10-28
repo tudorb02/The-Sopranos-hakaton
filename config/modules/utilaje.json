@@ -14,7 +14,7 @@
     "kind": "MIN_PCT",
     "value": 20,
     "unit": "PCT",
-    "sourceRo": "config/modules/utilaje.json (propunere; −20% motorină sau îngrășăminte / ha)",
+    "sourceRo": "README §6.3: reducere ≥ 20% de motorină pe hectar sau de azot pe hectar, cu motor Stage V (propunere, de confirmat cu Raiffeisen)",
     "demo": true
   },
   "requiredDocs": [
@@ -297,13 +297,9 @@
       "value": 150,
       "sourceRo": "Estimare echipă, de validat cu mentorii"
     },
-    "inputsEurPerHa": {
-      "value": 250,
-      "sourceRo": "Sămânță + îngrășăminte + pesticide; Estimare echipă, de validat cu mentorii"
-    },
-    "invoiceToleranceRatio": {
-      "value": 0.05,
-      "sourceRo": "Abaterea maximă dintre normă și facturi acceptată fără semnalare"
+    "requiredEmissionStage": {
+      "value": "V",
+      "sourceRo": "README §6.3: motorul utilajului nou respectă Stage V (Reg. UE 2016/1628)"
     },
     "specificFuelByAge": {
       "value": [
@@ -341,9 +337,10 @@
   },
   "substantialContribution": "CLIMATE_MITIGATION",
   "financing": {
-    "termMonths": 84,
-    "horizonYears": 7,
-    "standardLine": "rbro.invest.machinery",
+    "termMonths": 60,
+    "horizonYears": 5,
+    "maxGraceMonths": 12,
+    "standardLine": "rbro.invest.standard",
     "greenLine": "rbro.agri.green_investeu",
     "cofinancingLine": "rbro.agri.cofinancing_fgcr",
     "bridgeLine": "rbro.agri.bridge_afir"

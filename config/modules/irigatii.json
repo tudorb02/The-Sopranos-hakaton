@@ -13,7 +13,7 @@
     "kind": "MIN_PCT",
     "value": 25,
     "unit": "PCT",
-    "sourceRo": "config/modules/irigatii.json (propunere, de confirmat cu Raiffeisen)",
+    "sourceRo": "README §6.1: economie de apă ≥ 25% față de sistemul actual (propunere, de confirmat cu Raiffeisen)",
     "demo": true
   },
   "requiredDocs": [
@@ -34,8 +34,8 @@
     },
     {
       "docType": "ENERGY_INVOICES",
-      "labelRo": "Consumul actual de apă sau energia de pompare (12 luni)",
-      "required": true
+      "labelRo": "Facturile de energie pentru pompare (12 luni), pentru verificarea estimării",
+      "required": false
     }
   ],
   "questionnaire": [
@@ -216,6 +216,14 @@
       ],
       "prefillFrom": "NONE",
       "required": true
+    },
+    {
+      "questionId": "pumping_head_m",
+      "labelRo": "De la ce adâncime sau înălțime pompați apa (m)?",
+      "type": "NUMBER",
+      "unit": "M",
+      "prefillFrom": "NONE",
+      "required": true
     }
   ],
   "calculator": "irrigation",
@@ -282,26 +290,93 @@
     }
   },
   "parameters": {
-    "netNeedM3PerHa": {
-      "value": 3800,
-      "sourceRo": "Necesar net legume în câmp, sud-est; Estimare echipă, de validat cu mentorii"
-    },
-    "currentEfficiencyPct": {
+    "systems": {
       "value": {
-        "ASPERSIE_VECHE": 65,
-        "ASPERSIE": 75,
-        "PICURARE": 88,
-        "BRAZDE": 50
+        "BRAZDE": {
+          "efficiencyPct": 60,
+          "pressureHeadM": 0
+        },
+        "ASPERSIE_VECHE": {
+          "efficiencyPct": 65,
+          "pressureHeadM": 35
+        },
+        "ASPERSIE": {
+          "efficiencyPct": 75,
+          "pressureHeadM": 35
+        },
+        "PICURARE": {
+          "efficiencyPct": 90,
+          "pressureHeadM": 15
+        }
       },
-      "sourceRo": "Eficiențe tipice de aplicare (FAO); Estimare echipă, de validat cu mentorii"
+      "sourceRo": "README §6.1: eficiența aplicării (brazde 0,60, aspersie 0,75, picurare 0,90) și presiunea de lucru (aspersie ≈ 3,5 bar, picurare ≈ 1,5 bar), aceleași ca în data/demo/test-documents. Aspersia veche: eficiență mai mică din uzură (estimare echipă). Valori de pornire, de validat cu mentorii"
     },
-    "pumpingKwhPerM3Fallback": {
-      "value": 0.45,
-      "sourceRo": "Folosit doar fără facturi de energie; Estimare echipă, de validat cu mentorii"
+    "componentSystems": {
+      "value": {
+        "IRRIGATION_SPRINKLER": "ASPERSIE",
+        "IRRIGATION_DRIP": "PICURARE"
+      },
+      "sourceRo": "Sistemul de irigare al fiecărei componente din ofertă sau din catalog"
+    },
+    "sensorDemandReductionPct": {
+      "value": 10,
+      "sourceRo": "README §6.1: senzorii de umiditate reduc necesarul cu 10% (valoare de pornire, de validat)"
+    },
+    "cropCoefficients": {
+      "value": {
+        "tomate": 0.85,
+        "ardei": 0.8,
+        "castraveți": 0.8,
+        "varză": 0.75,
+        "ceapă": 0.75,
+        "IMPLICIT": 0.8
+      },
+      "sourceRo": "Kc mediu pe sezon (FAO-56, valori conservatoare); tomate, ardei și varză ca în data/demo/test-documents. IMPLICIT pentru culturile fără valoare. De validat"
+    },
+    "climateZones": {
+      "value": {
+        "SUD_EST": {
+          "counties": [
+            "Constanța",
+            "Tulcea",
+            "Călărași",
+            "Ialomița",
+            "Brăila",
+            "Galați"
+          ],
+          "et0SeasonMm": 700,
+          "effectiveRainSeasonMm": 200
+        },
+        "IMPLICIT": {
+          "counties": [],
+          "et0SeasonMm": 650,
+          "effectiveRainSeasonMm": 230
+        }
+      },
+      "sourceRo": "ET₀ și ploaia efectivă în sezonul de irigare (aprilie–septembrie), pe zonă; sud-estul ca în data/demo/test-documents. Estimări echipă, de înlocuit cu datele Copernicus pe parcelă"
+    },
+    "pumpEfficiencyPct": {
+      "value": 65,
+      "sourceRo": "Randamentul pompei cu motor (apă la ieșire / energie consumată), valoare tipică; de validat"
     },
     "waterPriceEurPerM3": {
-      "value": 0.12,
-      "sourceRo": "Tarif apă ANIF + transport; Estimare echipă, de validat cu mentorii"
+      "value": {
+        "ANIF": 0.12,
+        "PUT": 0.02,
+        "RAU_LAC": 0.02,
+        "BAZIN": 0.02
+      },
+      "sourceRo": "Rețeaua ANIF: tarif apă + transport; puț, râu sau bazin: contribuția pentru resursa de apă. Estimări echipă, de validat"
+    },
+    "energyInvoiceToleranceRatio": {
+      "value": 0.2,
+      "sourceRo": "Facturile de energie verifică estimarea; peste 20% diferență, abaterea se verifică la monitorizare (regulă de demo)"
+    },
+    "newIrrigation": {
+      "value": {
+        "minEfficiencyPct": 85
+      },
+      "sourceRo": "README §6.1, ferme care încep să irige: sistem cu η ≥ 0,85, autorizație ANAR și fără stres hidric sever"
     },
     "pvYieldKwhPerKwp": {
       "value": 1280,
@@ -316,6 +391,7 @@
   "financing": {
     "termMonths": 60,
     "horizonYears": 5,
+    "maxGraceMonths": 12,
     "standardLine": "rbro.invest.standard",
     "greenLine": "rbro.agri.green_investeu"
   }

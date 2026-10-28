@@ -58,7 +58,7 @@ public class BuildScenarioTool implements ToolHandler {
     public String description() {
         return "Computes the repayment schedule (EQUAL_MONTHLY or SEASONAL, paid only in the cash-in months), total "
                 + "interest including the bridge loan, collateral costs, savings over the horizon and the net cost "
-                + "of one option. Call build_funding_stack first.";
+                + "of one option, at the rate from price_loan. Call build_funding_stack and price_loan first.";
     }
 
     @Override
@@ -90,7 +90,10 @@ public class BuildScenarioTool implements ToolHandler {
         checkTerm(context, line, cfg, termMonths);
         YearMonth firstMonth = YearMonth.from(context.today())
                 .plusMonths(RuleValues.financingDefault(context, "firstInstallmentOffsetMonths").longValue());
-        BigDecimal rate = FinancingConfig.rate(line);
+        BigDecimal rate = option.ratePct();
+        if (rate == null) {
+            throw new IllegalArgumentException("Apelează întâi price_loan pentru opțiunea " + option.optionId());
+        }
         String p = "option_" + option.optionId().toLowerCase() + ".";
 
         boolean seasonal = "SEASONAL".equals(Params.requiredText(input, "scheduleType"));
@@ -102,10 +105,16 @@ public class BuildScenarioTool implements ToolHandler {
             }
             Set<Month> months = paymentMonths(input, context);
             schedule = LoanCalculator.seasonal(option.mainLoanEur(), rate, termMonths, firstMonth, months, 0);
+            int grace = monthsBeforeFirstPayment(schedule);
+            int maxGrace = context.module().financing().maxGraceMonths();
+            if (maxGrace > 0 && grace > maxGrace) {
+                throw new IllegalArgumentException("Prima rată ar veni după " + grace + " luni; grația până la prima "
+                        + "recoltă poate fi de cel mult " + maxGrace + " luni");
+            }
             installment = context.calc(p + "installment", "Rata sezonieră", schedule.installmentEur(), Unit.EUR)
                     .formula("rate egale doar în lunile cu încasări; VA la dobânda creditului = principalul").add();
-            context.calc(p + "grace", "Luni fără rată până la prima încasare",
-                    BigDecimal.valueOf(monthsBeforeFirstPayment(schedule)), Unit.MONTHS).add();
+            context.calc(p + "grace", "Luni fără rată până la prima încasare", BigDecimal.valueOf(grace), Unit.MONTHS)
+                    .source("grația până la prima recoltă, cel mult " + maxGrace + " luni (config/modules)").add();
         } else {
             schedule = LoanCalculator.monthly(option.mainLoanEur(), rate, termMonths, firstMonth);
             installment = context.calc(p + "installment", "Rata lunară", schedule.installmentEur(), Unit.EUR_PER_MONTH)
@@ -192,7 +201,7 @@ public class BuildScenarioTool implements ToolHandler {
     private static Map<String, String> savingsMetrics(ToolContext context) {
         return "irrigation".equals(context.module().calculator())
                 ? Map.of("savings_water_eur", "water_eur", "savings_energy_eur", "energy_eur")
-                : Map.of("savings_fuel_eur", "fuel_eur", "savings_inputs_eur", "inputs_eur");
+                : Map.of("savings_fuel_eur", "fuel_eur", "savings_nitrogen_eur", "nitrogen_eur");
     }
 
     private static Set<Month> paymentMonths(JsonNode input, ToolContext context) {

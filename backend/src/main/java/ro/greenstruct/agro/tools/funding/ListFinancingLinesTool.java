@@ -47,8 +47,10 @@ public class ListFinancingLinesTool implements ToolHandler {
         for (String lineId : FinancingConfig.moduleLines(context)) {
             JsonNode line = FinancingConfig.requireLine(context, lineId);
             String key = "line." + FinancingConfig.shortId(lineId);
-            context.calc(key + ".rate", "Dobândă " + line.path("nameRo").asText(), FinancingConfig.rate(line), Unit.PCT)
-                    .source("config/financing-lines.json (demo)").add();
+            if (line.has("annualRatePct")) {
+                context.calc(key + ".rate", "Dobândă " + line.path("nameRo").asText(), FinancingConfig.rate(line),
+                        Unit.PCT).source("config/financing-lines.json (demo)").add();
+            }
             BigDecimal upfront = line.path("collateralUpfrontEur").decimalValue();
             if (upfront.signum() > 0) {
                 context.calc(key + ".collateral_initial", "Costuri inițiale ipotecă", upfront, Unit.EUR).add();
@@ -61,6 +63,7 @@ public class ListFinancingLinesTool implements ToolHandler {
             node.put("green", line.path("green").asBoolean());
             node.put("collateral", line.path("collateral").asText());
             node.set("repayment", line.path("repayment"));
+            node.put("rate", line.has("annualRatePct") ? "FIXED" : "PRICED_BY_PRICE_LOAN");
             String guaranteeId = line.path("guaranteeId").asText(null);
             if (guaranteeId != null) {
                 node.put("guaranteeId", guaranteeId);

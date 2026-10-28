@@ -1,10 +1,10 @@
 {
   "version": "2026-10-demo",
-  "note": "Toate condițiile sunt valori de demo, de confirmat cu mentorii Raiffeisen.",
+  "note": "Toate condițiile sunt valori de demo, de confirmat cu mentorii Raiffeisen. Dobânzile creditelor principale se calculează pe componente din config/pricing.json (price_loan); aici rămâne doar dobânda creditului-punte.",
   "defaults": {
     "firstInstallmentOffsetMonths": 4,
     "affordabilityLimitPct": 40,
-    "sourceRo": "Prima rată la 4 luni după luna analizei; limita: ratele pe 12 luni ≤ 40% din cashflow-ul net anual; utilajele second-hand: vechimea la ultima rată ≤ 12 ani (regulă de demo, de confirmat)",
+    "sourceRo": "Prima rată la 4 luni după luna analizei (semnare, tragere, montaj); la ratele după încasări, grația ține până la prima lună cu încasări, cel mult maxGraceMonths din modul. Limita: ratele pe 12 luni ≤ 40% din cashflow-ul net anual; utilajele second-hand: vechimea la ultima rată ≤ 12 ani (reguli de demo, de confirmat)",
     "maxEquipmentAgeAtMaturityYears": 12
   },
   "lines": [
@@ -13,7 +13,6 @@
       "nameRo": "Credit standard de investiții",
       "kind": "STANDARD_LOAN",
       "green": false,
-      "annualRatePct": 8.9,
       "collateral": "MORTGAGE",
       "collateralUpfrontEur": 1450,
       "collateralAnnualEur": 380,
@@ -29,7 +28,6 @@
       "nameRo": "Credit standard pentru utilaje (gaj pe utilaj)",
       "kind": "STANDARD_LOAN",
       "green": false,
-      "annualRatePct": 7.5,
       "collateral": "ASSET_PLEDGE",
       "collateralUpfrontEur": 0,
       "collateralAnnualEur": 0,
@@ -44,7 +42,6 @@
       "nameRo": "Credit verde Raiffeisen pentru agricultură, garantat InvestEU",
       "kind": "GREEN_LOAN",
       "green": true,
-      "annualRatePct": 6.4,
       "collateral": "GUARANTEE",
       "guaranteeId": "eif.investeu.sustainability",
       "collateralUpfrontEur": 0,
@@ -62,7 +59,6 @@
       "nameRo": "Credit de cofinanțare pentru proiecte AFIR, garantat FGCR",
       "kind": "CO_FINANCING_LOAN",
       "green": false,
-      "annualRatePct": 6.0,
       "collateral": "GUARANTEE",
       "guaranteeId": "fgcr.cofinancing",
       "collateralUpfrontEur": 0,
@@ -79,7 +75,7 @@
       "nameRo": "Credit-punte până la încasarea grantului AFIR",
       "kind": "BRIDGE_LOAN",
       "green": false,
-      "annualRatePct": 7.0,
+      "annualRatePct": 7,
       "termMonths": 12,
       "collateral": "GRANT_ASSIGNMENT",
       "collateralUpfrontEur": 0,

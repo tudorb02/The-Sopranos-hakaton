@@ -8,8 +8,8 @@
     "state": "MONITORIZARE",
     "mode": "LIVE",
     "createdAt": "2026-10-28T09:30:00.000Z",
-    "updatedAt": "2026-10-28T09:31:51.233Z",
-    "lastEventSeq": 69,
+    "updatedAt": "2026-10-28T09:31:52.895Z",
+    "lastEventSeq": 71,
     "farm": {
       "cui": "45871203",
       "company": {
@@ -37,7 +37,7 @@
         "totalHa": 40,
         "standardOutputEur": 412000,
         "irrigatedNow": true,
-        "currentIrrigation": "ASPERSIE_VECHE",
+        "currentIrrigation": "BRAZDE",
         "crops": [
           {
             "year": 2026,
@@ -229,7 +229,7 @@
               "areaHa": 8,
               "crop": "varză",
               "natura2000": false,
-              "nitrateVulnerable": true,
+              "nitrateVulnerable": false,
               "droughtRisk": "HIGH",
               "hailRisk": "MEDIUM",
               "floodRisk": "LOW",
@@ -272,7 +272,7 @@
               "areaHa": 8,
               "crop": "ceapă",
               "natura2000": false,
-              "nitrateVulnerable": true,
+              "nitrateVulnerable": false,
               "droughtRisk": "HIGH",
               "hailRisk": "MEDIUM",
               "floodRisk": "LOW",
@@ -432,7 +432,7 @@
       "nitrogen_kg_ha": 180,
       "tillage": "MINIMA",
       "cover_crops": "ROTATIE",
-      "irrigation_current": "ASPERSIE_VECHE",
+      "irrigation_current": "BRAZDE",
       "crop_insurance": false,
       "certifications": [
         "GLOBALGAP"
@@ -444,8 +444,9 @@
         "SEP",
         "OCT"
       ],
-      "old_equipment_fate": "VANZARE",
-      "water_source": "ANIF"
+      "old_equipment_fate": "NU_E_CAZUL",
+      "water_source": "PUT",
+      "pumping_head_m": 35
     },
     "agentStatus": [
       {
@@ -460,14 +461,14 @@
         "status": "COMPLETED",
         "source": "LIVE",
         "startedAt": "2026-10-28T09:30:31.263Z",
-        "completedAt": "2026-10-28T09:30:50.158Z"
+        "completedAt": "2026-10-28T09:30:51.778Z"
       },
       {
         "agent": "GREEN_UNDERWRITER",
         "status": "COMPLETED",
         "source": "LIVE",
-        "startedAt": "2026-10-28T09:30:50.708Z",
-        "completedAt": "2026-10-28T09:31:02.733Z"
+        "startedAt": "2026-10-28T09:30:52.328Z",
+        "completedAt": "2026-10-28T09:31:04.395Z"
       }
     ],
     "agents": {
@@ -544,21 +545,21 @@
             },
             {
               "key": "APPLICATION_EFFICIENCY_PCT",
-              "rawValue": "76,5%",
+              "rawValue": "75%",
               "unit": "PCT",
               "page": 3,
               "confidence": "HIGH"
             },
             {
               "key": "OPERATING_PRESSURE_BAR",
-              "rawValue": "6-8 bar",
+              "rawValue": "3,5 bar",
               "unit": "BAR",
               "page": 3,
               "confidence": "HIGH"
             },
             {
               "key": "WATER_SOURCE",
-              "rawValue": "hidrant ANIF, stația de punere sub presiune SPP 4",
+              "rawValue": "puț forat propriu, nivel dinamic la 35 m",
               "unit": "TEXT",
               "page": 1,
               "confidence": "MEDIUM"
@@ -589,7 +590,7 @@
             {
               "lineId": "ln_2",
               "category": "PUMP",
-              "descriptionRo": "Electropompă de suprafață 55 kW",
+              "descriptionRo": "Electropompă submersibilă 55 kW",
               "fields": [
                 {
                   "key": "PUMP_POWER_KW",
@@ -682,7 +683,7 @@
             },
             {
               "key": "WATER_SOURCE",
-              "rawValue": "rețeaua ANIF, SPP 4",
+              "rawValue": "apă subterană, puț forat F1",
               "unit": "TEXT",
               "page": 2,
               "confidence": "HIGH"
@@ -715,14 +716,14 @@
             },
             {
               "key": "ENERGY_KWH",
-              "rawValue": "105.230 kWh",
+              "rawValue": "36.900 kWh",
               "unit": "KWH",
               "page": 13,
               "confidence": "HIGH"
             },
             {
               "key": "ENERGY_COST",
-              "rawValue": "104.598,62 lei",
+              "rawValue": "36.678,60 lei",
               "unit": "RON",
               "page": 13,
               "confidence": "MEDIUM"
@@ -731,7 +732,7 @@
           "lineItems": [],
           "missingFields": [],
           "warnings": [
-            "Facturile acoperă tot locul de consum, nu doar pompa. Abaterea se verifică la monitorizare."
+            "Facturile acoperă tot locul de consum, nu doar pompa."
           ]
         }
       ],
@@ -740,10 +741,10 @@
         "indicator": "WATER_SAVING_PCT",
         "threshold": {
           "thresholdCalcId": "calc_7247bfeee0ff",
-          "sourceRo": "config/modules/irigatii.json: economie de apă ≥ 25% (propunere GreenStruct, de confirmat cu Raiffeisen)"
+          "sourceRo": "README §6.1: economie de apă ≥ 25% față de sistemul actual (propunere, de confirmat cu Raiffeisen)"
         },
         "baseline": {
-          "descriptionRo": "Aspersie veche cu tambur și conducte uzate pe 40 ha de legume. Apa e estimată din necesarul net și eficiența sistemului; energia vine din facturile pe 12 luni.",
+          "descriptionRo": "Legume pe 40 ha irigate prin brazde dintr-un puț de 35 m. Apa vine din nevoia culturilor (Kc, ET₀, ploaia) și eficiența brazdelor; energia de pompare e estimată și confirmată de facturi.",
           "dataSource": "MIXED",
           "metrics": [
             {
@@ -771,16 +772,16 @@
             "titleRo": "Aspersie clasică (oferta AquaFlux)",
             "components": [
               {
-                "componentId": "cmp_offer_sprinkler_system",
+                "componentId": "cmp_offer_ln_1",
                 "category": "IRRIGATION_SPRINKLER",
-                "nameRo": "2 instalații cu tambur, conducte și montaj",
+                "nameRo": "Instalație de irigat cu tambur, 2 buc.",
                 "source": "OFFER",
                 "costCalcId": "calc_8366bde9bcb1"
               },
               {
-                "componentId": "cmp_offer_pump",
+                "componentId": "cmp_offer_ln_2",
                 "category": "PUMP",
-                "nameRo": "Electropompă 55 kW",
+                "nameRo": "Electropompă submersibilă 55 kW",
                 "source": "OFFER",
                 "costCalcId": "calc_ce80103c11c3"
               }
@@ -806,29 +807,28 @@
                 "calcId": "calc_5a761be3c803"
               }
             ],
-            "noteRo": "Oferta nu include contor de apă."
+            "noteRo": "Aspersia lucrează la 3,5 bar: consumul de energie crește față de brazde. Oferta nu include contor de apă."
           },
           {
             "configId": "cfg_min_pass",
             "role": "ALTERNATIVE",
-            "titleRo": "Picurare + senzori + contor (pompa din ofertă)",
+            "titleRo": "Picurare + contor (pompa din ofertă)",
             "components": [
+              {
+                "componentId": "cmp_offer_ln_2",
+                "category": "PUMP",
+                "nameRo": "Electropompă submersibilă 55 kW",
+                "source": "OFFER",
+                "costCalcId": "calc_ce80103c11c3"
+              },
               {
                 "componentId": "cmp_drip_system",
                 "category": "IRRIGATION_DRIP",
                 "nameRo": "Picurare cu conducte și montaj, 40 ha",
                 "source": "CATALOG_REPLACEMENT",
                 "catalogId": "irg.drip.surface_veg",
-                "replacesComponentId": "cmp_offer_sprinkler_system",
+                "replacesComponentId": "cmp_offer_ln_1",
                 "costCalcId": "calc_5afabb1e9d1a"
-              },
-              {
-                "componentId": "cmp_soil_sensors",
-                "category": "SOIL_MOISTURE_SENSORS",
-                "nameRo": "Senzori de umiditate a solului (10 stații)",
-                "source": "CATALOG_UPGRADE",
-                "catalogId": "irg.sensors.soil_moisture",
-                "costCalcId": "calc_d9568ad91cca"
               },
               {
                 "componentId": "cmp_water_meter",
@@ -837,27 +837,20 @@
                 "source": "CATALOG_UPGRADE",
                 "catalogId": "irg.meter.electromagnetic",
                 "costCalcId": "calc_aab8f2296bbf"
-              },
-              {
-                "componentId": "cmp_offer_pump",
-                "category": "PUMP",
-                "nameRo": "Electropompă 55 kW",
-                "source": "OFFER",
-                "costCalcId": "calc_ce80103c11c3"
               }
             ],
             "totalCostCalcId": "calc_fc0bd840357d",
             "upgradeCostCalcId": "calc_a803f5160b6a",
-            "indicatorCalcId": "calc_e1b22b2598a8",
+            "indicatorCalcId": "calc_0b3b59fbc3cf",
             "thresholdResult": "PASS",
             "impacts": [
               {
                 "metric": "WATER_SAVING_PCT",
-                "calcId": "calc_e1b22b2598a8"
+                "calcId": "calc_0b3b59fbc3cf"
               },
               {
                 "metric": "WATER_SAVED_M3",
-                "calcId": "calc_d393fbd8e48c"
+                "calcId": "calc_a717e6997b45"
               },
               {
                 "metric": "ENERGY_SAVED_KWH",
@@ -868,29 +861,28 @@
                 "calcId": "calc_8414ef95e4d6"
               }
             ],
-            "noteRo": "Cea mai ieftină variantă care trece pragul."
+            "noteRo": "Trece pragul (Verde), sub nivelul Verde Plus."
           },
           {
             "configId": "cfg_recommended",
             "role": "RECOMMENDED",
-            "titleRo": "Picurare + senzori + contor + pompă solară",
+            "titleRo": "Picurare + senzori de umiditate + contor",
             "components": [
+              {
+                "componentId": "cmp_offer_ln_2",
+                "category": "PUMP",
+                "nameRo": "Electropompă submersibilă 55 kW",
+                "source": "OFFER",
+                "costCalcId": "calc_ce80103c11c3"
+              },
               {
                 "componentId": "cmp_drip_system",
                 "category": "IRRIGATION_DRIP",
                 "nameRo": "Picurare cu conducte și montaj, 40 ha",
                 "source": "CATALOG_REPLACEMENT",
                 "catalogId": "irg.drip.surface_veg",
-                "replacesComponentId": "cmp_offer_sprinkler_system",
+                "replacesComponentId": "cmp_offer_ln_1",
                 "costCalcId": "calc_5afabb1e9d1a"
-              },
-              {
-                "componentId": "cmp_soil_sensors",
-                "category": "SOIL_MOISTURE_SENSORS",
-                "nameRo": "Senzori de umiditate a solului (10 stații)",
-                "source": "CATALOG_UPGRADE",
-                "catalogId": "irg.sensors.soil_moisture",
-                "costCalcId": "calc_d9568ad91cca"
               },
               {
                 "componentId": "cmp_water_meter",
@@ -901,13 +893,12 @@
                 "costCalcId": "calc_aab8f2296bbf"
               },
               {
-                "componentId": "cmp_solar_pump",
-                "category": "SOLAR_PUMP",
-                "nameRo": "Pompă solară 25 kWp cu invertor",
-                "source": "CATALOG_REPLACEMENT",
-                "catalogId": "irg.pump.solar_25kwp",
-                "replacesComponentId": "cmp_offer_pump",
-                "costCalcId": "calc_4aa4ee631cb2"
+                "componentId": "cmp_soil_sensors",
+                "category": "SOIL_MOISTURE_SENSORS",
+                "nameRo": "Senzori de umiditate în sol + programare automată",
+                "source": "CATALOG_UPGRADE",
+                "catalogId": "irg.sensors.soil_moisture",
+                "costCalcId": "calc_d9568ad91cca"
               }
             ],
             "totalCostCalcId": "calc_a918f7b5af59",
@@ -924,38 +915,34 @@
                 "calcId": "calc_d393fbd8e48c"
               },
               {
-                "metric": "GRID_ENERGY_REPLACED_KWH",
-                "calcId": "calc_be23e85e071b"
-              },
-              {
-                "metric": "RENEWABLE_KWH",
-                "calcId": "calc_d3c4308040f2"
+                "metric": "ENERGY_SAVED_KWH",
+                "calcId": "calc_4ccfe0136799"
               },
               {
                 "metric": "CO2_AVOIDED_T",
                 "calcId": "calc_c4fe14e06cd5"
               }
             ],
-            "noteRo": "Pompa solară e peste minimul necesar, dar se amortizează în mai puțin de 2 ani din energie."
+            "noteRo": "Peste pragul pentru Verde Plus (25% × 1,5 = 37,5%), cu mai puțină energie decât azi."
           }
         ],
         "initialConfigId": "cfg_initial",
         "recommendedConfigId": "cfg_recommended",
-        "recommendationType": "UPGRADE_TO_PASS",
+        "recommendationType": "UPGRADE_BEYOND_REQUEST",
         "dnshChecks": [
           {
             "objective": "WATER_MARINE_RESOURCES",
-            "status": "PASS_WITH_CONDITIONS",
+            "status": "PASS",
             "evidence": [
               "WATER_PERMIT_ANAR"
             ],
-            "noteRo": "Aviz ANAR valabil până în 2028, volum autorizat peste consumul estimat. Lipsește contorul din ofertă; e inclus în configurația recomandată."
+            "noteRo": "Aviz ANAR valabil până în 2028; volumul autorizat (240.000 m³) acoperă consumul nou. Contorul e în configurația recomandată."
           },
           {
             "objective": "POLLUTION_PREVENTION",
-            "status": "PASS_WITH_CONDITIONS",
+            "status": "PASS",
             "evidence": [],
-            "noteRo": "Parcelele ct_0415_01 și ct_0415_02 sunt în zonă vulnerabilă la nitrați: e nevoie de plan de fertirigare."
+            "noteRo": "Nicio parcelă în zonă vulnerabilă la nitrați."
           },
           {
             "objective": "BIODIVERSITY",
@@ -976,22 +963,15 @@
         },
         "missingFields": [
           {
-            "fieldKey": "water_meter",
-            "labelRo": "Contor de apă în configurația finală",
-            "requiredFor": "DNSH",
+            "fieldKey": "water_meter_certificate",
+            "labelRo": "Certificatul metrologic al contorului de apă, după montaj",
+            "requiredFor": "DISBURSEMENT",
             "docType": "WATER_METER_CERTIFICATE",
-            "blocking": false
-          },
-          {
-            "fieldKey": "fertigation_plan",
-            "labelRo": "Plan de fertirigare pentru parcelele din zona vulnerabilă la nitrați",
-            "requiredFor": "DNSH",
-            "docType": "OTHER",
             "blocking": false
           }
         ],
-        "summaryRo": "Oferta de aspersie clasică (85.000 EUR) economisește 15,0% apă, sub pragul de 25%. Recomand picurare + senzori de umiditate + contor + pompă solară 25 kWp: 32,0% economie de apă, 97.503 kWh/an din rețea înlocuiți, 22,4 t CO₂/an evitate. Varianta minimă fără pompa solară trece și ea pragul, dar pompa solară se amortizează în 22,5 luni.",
-        "farmerMessageRo": "Sistemul ales economisește 15% apă, iar pentru creditul verde e nevoie de 25%. Am găsit o soluție: picurare + senzori de umiditate + pompă solară. Economisești 32% apă și aproape toată energia de pompare."
+        "summaryRo": "Oferta de aspersie clasică (85.000 EUR) economisește 20,0% apă față de brazde, sub pragul de 25%, și crește energia de pompare. Recomand picurare + senzori de umiditate + contor (113.000 EUR): 40,0% economie de apă (94.133 m³/an), 4.933 kWh/an mai puțin și 1,3 t CO₂/an evitate. Picurarea simplă (33,3%) rămâne alternativă.",
+        "farmerMessageRo": "Aspersia economisește 20% apă. Pentru creditul verde e nevoie de 25%. Cu picurare și senzori ajungi la 40% și consumi mai puțină energie decât azi."
       },
       "fundingRecommendation": {
         "options": [
@@ -999,15 +979,15 @@
             "optionId": "A",
             "kind": "STANDARD",
             "configId": "cfg_initial",
-            "titleRo": "Credit standard pentru aspersie clasică",
+            "titleRo": "Credit clasic pentru aspersie",
             "investmentCalcId": "calc_dd3e1c036d6e",
             "fundingStack": [
               {
                 "itemId": "fs_a_loan",
                 "type": "STANDARD_LOAN",
-                "productId": "STANDARD_INVEST",
+                "productId": "rbro.invest.standard",
                 "amountCalcId": "calc_d0950c66e770",
-                "rateCalcId": "calc_0624dfb96859",
+                "rateCalcId": "calc_9d2aa5c1befd",
                 "termCalcId": "calc_333c94ff9f97",
                 "repayment": {
                   "scheduleType": "EQUAL_MONTHLY",
@@ -1039,13 +1019,23 @@
                 "calcId": "calc_a15aeadc5c2c"
               }
             ],
+            "rate": {
+              "indexCalcId": "calc_430b323e69c2",
+              "fundingCostCalcId": "calc_8c17eb468793",
+              "riskCostCalcId": "calc_a57706fcbaa9",
+              "capitalCostCalcId": "calc_28998c5a9adb",
+              "operationalCostCalcId": "calc_fa38158eda8f",
+              "targetProfitCalcId": "calc_7ae6a0de6652",
+              "marginCalcId": "calc_76343d3e29e9",
+              "rateCalcId": "calc_9d2aa5c1befd"
+            },
             "affordability": {
               "status": "PASS_WITH_WARNING",
               "ratioCalcId": "calc_6182c52e1d85",
               "limitCalcId": "calc_2f508ed2e843",
               "dscrCalcId": "calc_b3a763250d76",
               "debtServiceCalcId": "calc_ebdc158f1422",
-              "noteRo": "Încape pe an, dar ratele din februarie–aprilie cad în luni cu cashflow negativ și se plătesc din rezervă."
+              "noteRo": "Încape pe an, dar ratele din ianuarie–aprilie cad în luni cu cashflow negativ și se plătesc din rezervă."
             },
             "greenEligible": false
           },
@@ -1053,15 +1043,15 @@
             "optionId": "B",
             "kind": "GREEN_PACKAGE",
             "configId": "cfg_recommended",
-            "titleRo": "Credit verde Raiffeisen cu garanție FEI și rate după recoltă",
+            "titleRo": "Credit verde Raiffeisen cu rate după recoltă",
             "investmentCalcId": "calc_a918f7b5af59",
             "fundingStack": [
               {
                 "itemId": "fs_b_green_loan",
                 "type": "GREEN_LOAN",
-                "productId": "GREEN_AGRI",
-                "amountCalcId": "calc_87740fb5047b",
-                "rateCalcId": "calc_0e9ea97fea66",
+                "productId": "rbro.agri.green_investeu",
+                "amountCalcId": "calc_7527684c6e16",
+                "rateCalcId": "calc_5d1839fceffa",
                 "termCalcId": "calc_333c94ff9f97",
                 "repayment": {
                   "scheduleType": "SEASONAL",
@@ -1076,18 +1066,18 @@
                   ]
                 },
                 "status": "TO_CONFIRM",
-                "noteRo": "Dobânda și condițiile liniei verzi se confirmă cu Raiffeisen."
+                "noteRo": "Rate doar în lunile în care vinzi recolta; condițiile se confirmă cu banca."
               },
               {
                 "itemId": "fs_b_guarantee",
                 "type": "GUARANTEE",
-                "productId": "FEI_INVESTEU",
+                "productId": "eif.investeu.sustainability",
                 "programCode": "INVESTEU_FEI",
                 "amountCalcId": "calc_57e06d1ffbff",
-                "coverageCalcId": "calc_42f11558d908",
+                "coverageCalcId": "calc_c6d44878b082",
                 "guaranteesItemId": "fs_b_green_loan",
                 "status": "TO_CONFIRM",
-                "noteRo": "Garanție InvestEU prin FEI, fără ipotecă. Condițiile pentru 2026 se confirmă cu mentorii."
+                "noteRo": "Fără ipotecă, datorită unei garanții europene."
               }
             ],
             "headlineInstallmentCalcId": "calc_50e2bcd8bf71",
@@ -1098,7 +1088,6 @@
             "totals": {
               "totalPaymentsCalcId": "calc_ab90e89a8c92",
               "totalInterestCalcId": "calc_20218e9a58ec",
-              "collateralCostsCalcId": "calc_50ed4004deee",
               "savingsOverHorizonCalcId": "calc_3cfb0e3ef7b7",
               "netCostCalcId": "calc_796094b52fe4"
             },
@@ -1112,6 +1101,20 @@
                 "calcId": "calc_210746f4fe25"
               }
             ],
+            "rate": {
+              "indexCalcId": "calc_9551d979bfe2",
+              "fundingCostCalcId": "calc_12beebf32e24",
+              "riskCostCalcId": "calc_ac0e251fc1bd",
+              "capitalCostCalcId": "calc_62f88c0aeeec",
+              "operationalCostCalcId": "calc_72dbd76e5447",
+              "targetProfitCalcId": "calc_16193244a450",
+              "programSubsidyCalcId": "calc_9b8ac07ae39e",
+              "tierAdjustmentCalcId": "calc_2639f742db79",
+              "guaranteeCoverageCalcId": "calc_b6d91d2f2112",
+              "effectiveRiskWeightCalcId": "calc_c295f06607f8",
+              "marginCalcId": "calc_39ddd30f208b",
+              "rateCalcId": "calc_5d1839fceffa"
+            },
             "affordability": {
               "status": "PASS",
               "ratioCalcId": "calc_f9a058ff199a",
@@ -1130,10 +1133,10 @@
           "affordabilityPassed": true
         },
         "greenTier": {
-          "tier": "VERDE_CU_UPGRADE",
+          "tier": "VERDE_PLUS",
           "thresholdMet": true,
           "upgradeNeeded": true,
-          "dnshStatus": "PASS_WITH_CONDITIONS",
+          "dnshStatus": "PASS",
           "thresholdCalcId": "calc_2abff80232ce",
           "requestedIndicatorCalcId": "calc_6bcb8dcb510b",
           "financedIndicatorCalcId": "calc_941a5004799f",
@@ -1198,22 +1201,27 @@
                 "noteRo": "Administratorul are 52 de ani; limita e 45."
               }
             ],
-            "noteRo": "Deschis, dar ferma nu e eligibilă; irigațiile ar fi oricum doar componentă secundară."
+            "noteRo": "Deschis, dar ferma nu e eligibilă."
           },
           {
             "programCode": "FM_PV",
-            "result": "ELIGIBLE",
+            "result": "NOT_ELIGIBLE",
             "session": "CLOSED",
             "checkedAt": "2026-10-28",
             "sourceUrl": "https://www.afir.ro/",
             "criteria": [
+              {
+                "criterion": "SECTOR_ELIGIBLE",
+                "result": "FAIL",
+                "noteRo": "Configurația nu are pompă solară sau panouri."
+              },
               {
                 "criterion": "SESSION_OPEN",
                 "result": "FAIL",
                 "noteRo": "Sesiunea iunie–august 2026 s-a închis."
               }
             ],
-            "noteRo": "Pompa solară s-ar fi putut finanța aici; urmărim următoarea sesiune."
+            "noteRo": "Ar finanța o pompă solară, care nu e în configurația recomandată."
           },
           {
             "programCode": "INVESTEU_FEI",
@@ -1262,10 +1270,37 @@
               "driver": "OPERATING_SAVINGS",
               "calcId": "calc_ee04660eaafa"
             }
+          ],
+          "rateDifferenceCalcId": "calc_72e482298b81",
+          "rateDrivers": [
+            {
+              "component": "FUNDING",
+              "calcId": "calc_55056af84525"
+            },
+            {
+              "component": "RISK",
+              "calcId": "calc_c7af79d3d8fc"
+            },
+            {
+              "component": "CAPITAL",
+              "calcId": "calc_a6abad99695e"
+            },
+            {
+              "component": "OPERATIONAL",
+              "calcId": "calc_d492f5decd07"
+            },
+            {
+              "component": "PROGRAM_SUBSIDY",
+              "calcId": "calc_067fe99766ad"
+            },
+            {
+              "component": "TIER_ADJUSTMENT",
+              "calcId": "calc_b102567718ca"
+            }
           ]
         },
-        "farmerExplanationRo": "Creditul verde e mai mare cu 40.000 EUR, dar plătești doar în lunile în care vinzi recolta (iulie–octombrie), fără ipotecă, și economisești 8.992 EUR/an la apă și 19.501 EUR/an la energie. Câștigi 67.327 EUR în 5 ani alegând creditul verde.",
-        "officerNotesRo": "Opțiunea B: credit verde 125.000 EUR, 60 de luni, rate sezoniere iul–oct, garanție InvestEU 70% (fără ipotecă). Nu există grant AFIR deschis pentru irigații; DR-12 neeligibil (vârsta administratorului). Dobânda verde și acoperirea FEI sunt valori demo, de confirmat. Rata A cade în lunile cu cashflow negativ."
+        "farmerExplanationRo": "Creditul verde e mai mare cu 28.000 EUR, dar dobânda e 6,28% în loc de 8,90%, plătești doar în lunile în care vinzi recolta (iulie–octombrie) și nu ai nevoie de ipotecă. Folosești cu 40% mai puțină apă decât azi. Câștigi 6.653 EUR în 5 ani alegând creditul verde.",
+        "officerNotesRo": "Opțiunea B: credit verde 113.000 EUR, 60 de luni, rate sezoniere iul–oct, garanție InvestEU 70% (fără ipotecă), nivel Verde Plus. Dobânda pe componente: 6,28% față de 8,90% la creditul clasic (-2,62%). Nu există grant AFIR deschis pentru irigații; DR-12 neeligibil (vârsta administratorului). Parametrii dobânzii sunt valori demo."
       },
       "underwritingReport": {
         "decision": "ELIGIBLE_WITH_CONDITIONS",
@@ -1276,22 +1311,22 @@
           "valueCalcId": "calc_e1b22b2598a8",
           "thresholdCalcId": "calc_7247bfeee0ff",
           "result": "PASS",
-          "sourceRo": "config/modules/irigatii.json: economie de apă ≥ 25% față de sistemul actual (propunere, de confirmat cu Raiffeisen); minimul AFIR la modernizare e 10%."
+          "sourceRo": "README §6.1: economie de apă ≥ 25% față de sistemul actual (propunere, de confirmat cu Raiffeisen); minimul AFIR la modernizare e 10%."
         },
         "componentLabels": [
+          {
+            "componentId": "cmp_offer_ln_2",
+            "label": "NONE",
+            "basis": "NONE",
+            "amountCalcId": "calc_ce80103c11c3",
+            "rationaleRo": "Pompa din ofertă rămâne; nu e o investiție verde în sine."
+          },
           {
             "componentId": "cmp_drip_system",
             "label": "MARKET_GREEN",
             "basis": "LMA_GREEN_LOAN_PRINCIPLES",
             "amountCalcId": "calc_5afabb1e9d1a",
             "rationaleRo": "Irigare prin picurare cu economie de apă măsurabilă peste prag."
-          },
-          {
-            "componentId": "cmp_soil_sensors",
-            "label": "MARKET_GREEN",
-            "basis": "LMA_GREEN_LOAN_PRINCIPLES",
-            "amountCalcId": "calc_d9568ad91cca",
-            "rationaleRo": "Reduc udarea inutilă; parte din pachetul care trece pragul."
           },
           {
             "componentId": "cmp_water_meter",
@@ -1301,12 +1336,11 @@
             "rationaleRo": "Contorizarea face economia verificabilă; obligatorie pentru monitorizare."
           },
           {
-            "componentId": "cmp_solar_pump",
-            "label": "TAXONOMY_ALIGNED",
-            "basis": "EU_TAXONOMY_ACTIVITY",
-            "taxonomyActivity": "4.1",
-            "amountCalcId": "calc_4aa4ee631cb2",
-            "rationaleRo": "Producție de energie solară fotovoltaică pentru consum propriu."
+            "componentId": "cmp_soil_sensors",
+            "label": "MARKET_GREEN",
+            "basis": "LMA_GREEN_LOAN_PRINCIPLES",
+            "amountCalcId": "calc_d9568ad91cca",
+            "rationaleRo": "Reduc udarea inutilă; duc pachetul la Verde Plus."
           }
         ],
         "greenShare": {
@@ -1318,7 +1352,7 @@
           "category": "AGRICULTURE_FORESTRY",
           "status": "TO_CONFIRM",
           "eligibleAmountCalcId": "calc_303a25937cc7",
-          "noteRo": "Categoria „Agriculture and forestry” exista în cadrul RBRO 2022; cadrul RBI 2025 nu o mai are. De confirmat cu echipa Green Bonds. Pompa solară se poate încadra separat la energie regenerabilă."
+          "noteRo": "Categoria „Agriculture and forestry” exista în cadrul RBRO 2022; cadrul RBI 2025 nu o mai are. De confirmat cu echipa Green Bonds."
         },
         "fund": {
           "fundId": "F1",
@@ -1349,9 +1383,8 @@
             {
               "requirementId": "DNSH",
               "level": "PROBABLE",
-              "status": "TO_CONFIRM",
-              "conditionId": "cp_fertigation_plan",
-              "noteRo": "Trecut cu condiții: planul de fertirigare și reciclarea tuburilor de picurare."
+              "status": "MET",
+              "noteRo": "Trecut pe toate obiectivele."
             },
             {
               "requirementId": "IMPACT_QUANTIFIED",
@@ -1361,12 +1394,15 @@
                 "calc_d393fbd8e48c",
                 "calc_c4fe14e06cd5"
               ],
-              "noteRo": "Apa economisită și CO₂ evitat, calculate pe acest credit."
+              "noteRo": "Apa și energia economisite, calculate pe acest credit."
             },
             {
               "requirementId": "CLIENT_BENEFIT",
               "level": "REQUIRED",
               "status": "MET",
+              "evidenceCalcIds": [
+                "calc_72e482298b81"
+              ],
               "noteRo": "Dobândă mai mică și fără ipotecă față de creditul clasic."
             },
             {
@@ -1394,7 +1430,7 @@
           {
             "objective": "CLIMATE_MITIGATION",
             "status": "PASS",
-            "justificationRo": "Pompa solară înlocuiește aproape tot consumul din rețea; emisiile scad față de situația actuală.",
+            "justificationRo": "Picurarea cu senzori consumă mai puțină energie de pompare decât brazdele de azi.",
             "evidence": [
               "ENERGY_INVOICES",
               "TECHNICAL_SHEET"
@@ -1408,17 +1444,15 @@
           },
           {
             "objective": "CIRCULAR_ECONOMY",
-            "status": "PASS_WITH_CONDITIONS",
-            "justificationRo": "Tuburile de picurare se uzează: e nevoie de angajamentul furnizorului de a le prelua la reciclare.",
-            "evidence": [],
-            "conditionId": "cp_drip_recycling"
+            "status": "PASS",
+            "justificationRo": "Nu se înlocuiește un echipament existent; tuburile de picurare uzate se predau furnizorului, angajament cerut în oferta finală.",
+            "evidence": []
           },
           {
             "objective": "POLLUTION_PREVENTION",
-            "status": "PASS_WITH_CONDITIONS",
-            "justificationRo": "Două parcele sunt în zonă vulnerabilă la nitrați. Fertirigarea trebuie să urmeze Codul de bune practici agricole.",
-            "evidence": [],
-            "conditionId": "cp_fertigation_plan"
+            "status": "PASS",
+            "justificationRo": "Nicio parcelă în zonă vulnerabilă la nitrați.",
+            "evidence": []
           },
           {
             "objective": "BIODIVERSITY",
@@ -1439,13 +1473,8 @@
             "period": "ANNUAL"
           },
           {
-            "metric": "GRID_ENERGY_REPLACED_KWH",
-            "calcId": "calc_be23e85e071b",
-            "period": "ANNUAL"
-          },
-          {
-            "metric": "RENEWABLE_KWH",
-            "calcId": "calc_d3c4308040f2",
+            "metric": "ENERGY_SAVED_KWH",
+            "calcId": "calc_4ccfe0136799",
             "period": "ANNUAL"
           },
           {
@@ -1474,29 +1503,20 @@
             "blocking": true
           },
           {
-            "conditionId": "cp_fertigation_plan",
+            "conditionId": "cp_final_offer",
             "type": "DOCUMENT",
-            "documentType": "OTHER",
-            "descriptionRo": "Plan de fertirigare pentru parcelele ct_0415_01 și ct_0415_02 (zonă vulnerabilă la nitrați).",
+            "documentType": "OFFER",
+            "descriptionRo": "Oferta finală a furnizorului pentru picurare, senzori și contor, cu preluarea tuburilor uzate la reciclare; suma se ajustează după ea.",
             "timing": "BEFORE_FIRST_DISBURSEMENT",
-            "blocking": false,
-            "missingFieldKey": "fertigation_plan"
+            "blocking": true
           },
           {
             "conditionId": "cp_final_invoice",
             "type": "INVOICE_MATCH",
             "documentType": "FINAL_INVOICE",
-            "descriptionRo": "Factura finală corespunde configurației aprobate: picurare, senzori, contor, pompă solară 25 kWp.",
+            "descriptionRo": "Factura finală corespunde configurației aprobate: picurare, senzori, contor.",
             "timing": "BEFORE_FINAL_DISBURSEMENT",
             "blocking": true
-          },
-          {
-            "conditionId": "cp_drip_recycling",
-            "type": "DOCUMENT",
-            "documentType": "OTHER",
-            "descriptionRo": "Angajamentul furnizorului de a prelua tuburile de picurare uzate la reciclare.",
-            "timing": "BEFORE_FINAL_DISBURSEMENT",
-            "blocking": false
           },
           {
             "conditionId": "cp_commissioning",
@@ -1513,7 +1533,7 @@
             "descriptionRo": "Certificatul metrologic al contorului de apă montat.",
             "timing": "AFTER_INSTALLATION",
             "blocking": false,
-            "missingFieldKey": "water_meter"
+            "missingFieldKey": "water_meter_certificate"
           }
         ],
         "monitoringKpis": [
@@ -1527,13 +1547,13 @@
             "descriptionRo": "Consumul real de apă, citit de pe contor, comparat cu estimarea."
           },
           {
-            "kpiId": "kpi_grid_energy",
+            "kpiId": "kpi_pumping_energy",
             "metric": "PUMPING_ENERGY_KWH",
-            "targetCalcId": "calc_866e6fb0311a",
+            "targetCalcId": "calc_3e0d82db0ccf",
             "frequency": "ANNUAL",
             "firstDue": "MONTH_12",
             "dataSource": "INVOICES",
-            "descriptionRo": "Energia din rețea folosită la pompare, din facturi."
+            "descriptionRo": "Energia folosită la pompare, din facturi."
           },
           {
             "kpiId": "kpi_commissioning",
@@ -1562,10 +1582,10 @@
             "mitigationRo": "Picurarea și senzorii reduc expunerea; recomandăm asigurarea culturilor."
           },
           {
-            "category": "NITRATE_ZONE",
+            "category": "WATER_AVAILABILITY",
             "severity": "MEDIUM",
-            "descriptionRo": "Două parcele în zonă vulnerabilă la nitrați.",
-            "mitigationRo": "Plan de fertirigare, condiție înainte de tragere."
+            "descriptionRo": "Stres hidric ridicat în zonă.",
+            "mitigationRo": "Consumul nou (141.200 m³) e mult sub volumul autorizat de ANAR (240.000 m³)."
           },
           {
             "category": "DATA_QUALITY",
@@ -1574,18 +1594,19 @@
             "mitigationRo": "Contorul și KPI-ul de energie corectează estimarea după 12 luni."
           }
         ],
-        "committeeSummaryRo": "Fermă de legume, 40 ha, sud-est. Investiția inițială (aspersie clasică, 85.000 EUR) nu trecea pragul (15,0% < 25%). Configurația recomandată (picurare, senzori, contor, pompă solară, 125.000 EUR) atinge 32,0% economie de apă, 97.503 kWh/an din rețea înlocuiți și 25,4 t CO₂/an evitate. 100% din sumă e etichetată verde (pompa solară aliniată la Taxonomie, activitatea 4.1). Structură: credit verde cu garanție InvestEU 70%, fără ipotecă, rate sezoniere iul–oct; avantaj net pentru client 67.327 EUR pe 5 ani. Nu există grant AFIR deschis. Recomandare: eligibil cu condiții.",
+        "committeeSummaryRo": "Fermă de legume, 40 ha, sud-est, irigată azi prin brazde. Aspersia cerută (85.000 EUR) economisea 20,0% apă (sub pragul de 25%) și creștea energia de pompare. Configurația recomandată (picurare, senzori, contor, 113.000 EUR) atinge 40,0%: nivel Verde Plus, DNSH trecut pe toate obiectivele. Credit verde cu garanție InvestEU 70%, fără ipotecă, rate sezoniere iul–oct, la 6,28% față de 8,90%; avantaj net pentru client 6.653 EUR pe 5 ani. Recomandare: eligibil cu condiții (aprobarea garanției, oferta și factura finală).",
         "farmerNextSteps": [
           {
-            "stepRo": "Trimite planul de fertirigare pentru cele două parcele din zona de nitrați.",
-            "conditionId": "cp_fertigation_plan"
-          },
-          {
-            "stepRo": "Cere furnizorului oferta finală pentru picurare, senzori, contor și pompă solară."
+            "stepRo": "Cere furnizorului oferta finală pentru picurare, senzori și contor, cu preluarea tuburilor uzate.",
+            "conditionId": "cp_final_offer"
           },
           {
             "stepRo": "După montaj: procesul-verbal de punere în funcțiune și poze geolocalizate.",
             "conditionId": "cp_commissioning"
+          },
+          {
+            "stepRo": "După montaj: certificatul metrologic al contorului de apă.",
+            "conditionId": "cp_water_meter"
           },
           {
             "stepRo": "La 12 luni: citirea contorului de apă și facturile de energie."
@@ -1609,9 +1630,9 @@
         "tool": "extract_document",
         "key": "doc.offer.efficiency",
         "labelRo": "Eficiență de aplicare declarată (aspersie)",
-        "value": 76.5,
+        "value": 75,
         "unit": "PCT",
-        "display": "76,5%",
+        "display": "75,0%",
         "sourceRo": "Oferta AquaFlux, fișa tehnică, pag. 3"
       },
       "calc_177ce2321b6d": {
@@ -1628,11 +1649,11 @@
         "calcId": "calc_8366bde9bcb1",
         "tool": "extract_document",
         "key": "doc.offer.line.sprinkler_system",
-        "labelRo": "Instalații cu tambur, conducte și montaj",
-        "value": 70500,
+        "labelRo": "Instalații cu tambur",
+        "value": 49000,
         "unit": "EUR",
-        "display": "70.500 EUR",
-        "sourceRo": "Oferta AquaFlux, pozițiile 1, 3, 4"
+        "display": "49.000 EUR",
+        "sourceRo": "Oferta AquaFlux, poziția 1"
       },
       "calc_ce80103c11c3": {
         "calcId": "calc_ce80103c11c3",
@@ -1668,163 +1689,205 @@
         "calcId": "calc_428b93fdaafb",
         "tool": "extract_document",
         "key": "doc.energy.kwh_12m",
-        "labelRo": "Energie de pompare facturată (12 luni)",
-        "value": 105230,
+        "labelRo": "Energie facturată (12 luni)",
+        "value": 36900,
         "unit": "KWH_PER_YEAR",
-        "display": "105.230 kWh/an",
+        "display": "36.900 kWh/an",
         "sourceRo": "Facturi energie 10.2025–09.2026"
       },
       "calc_7247bfeee0ff": {
         "calcId": "calc_7247bfeee0ff",
         "tool": "get_module_rules",
         "key": "rules.threshold.water_saving",
-        "labelRo": "Prag verde: economie de apă",
+        "labelRo": "Pragul verde: economie de apă",
         "value": 25,
         "unit": "PCT",
         "display": "25,0%",
-        "sourceRo": "config/modules/irigatii.json (propunere, de confirmat cu Raiffeisen)"
+        "sourceRo": "README §6.1: economie de apă ≥ 25% față de sistemul actual (propunere, de confirmat cu Raiffeisen)"
       },
-      "calc_76de49c0863f": {
-        "calcId": "calc_76de49c0863f",
+      "calc_4c25549f5147": {
+        "calcId": "calc_4c25549f5147",
         "tool": "get_module_rules",
-        "key": "rules.need_net",
-        "labelRo": "Necesar net de apă, legume, zona sud-est",
-        "value": 3800,
-        "unit": "M3_PER_HA",
-        "display": "3.800 m³/ha",
-        "sourceRo": "config/modules/irigatii.json (valoare demo)"
+        "key": "rules.efficiency.brazde",
+        "labelRo": "Eficiența sistemului BRAZDE",
+        "value": 60,
+        "unit": "PCT",
+        "display": "60,0%",
+        "sourceRo": "config/modules/irigatii.json (README §6.1)"
       },
-      "calc_b032ab17add0": {
-        "calcId": "calc_b032ab17add0",
+      "calc_fec47c488c16": {
+        "calcId": "calc_fec47c488c16",
         "tool": "get_module_rules",
-        "key": "rules.eff.old_sprinkler",
-        "labelRo": "Eficiență aspersie veche (tambur, conducte uzate)",
+        "key": "rules.efficiency.aspersie",
+        "labelRo": "Eficiența sistemului ASPERSIE",
+        "value": 75,
+        "unit": "PCT",
+        "display": "75,0%",
+        "sourceRo": "config/modules/irigatii.json (README §6.1)"
+      },
+      "calc_54c2067b910c": {
+        "calcId": "calc_54c2067b910c",
+        "tool": "get_module_rules",
+        "key": "rules.efficiency.picurare",
+        "labelRo": "Eficiența sistemului PICURARE",
+        "value": 90,
+        "unit": "PCT",
+        "display": "90,0%",
+        "sourceRo": "config/modules/irigatii.json (README §6.1)"
+      },
+      "calc_977ac6b64df4": {
+        "calcId": "calc_977ac6b64df4",
+        "tool": "get_module_rules",
+        "key": "rules.sensors",
+        "labelRo": "Reducerea necesarului cu senzori de umiditate",
+        "value": 10,
+        "unit": "PCT",
+        "display": "10,0%",
+        "sourceRo": "config/modules/irigatii.json (README §6.1)"
+      },
+      "calc_0e3447100b4a": {
+        "calcId": "calc_0e3447100b4a",
+        "tool": "get_module_rules",
+        "key": "rules.pump_efficiency",
+        "labelRo": "Randamentul pompei",
         "value": 65,
         "unit": "PCT",
         "display": "65,0%",
-        "sourceRo": "data/catalog/irigatii.json"
-      },
-      "calc_b1df24df8660": {
-        "calcId": "calc_b1df24df8660",
-        "tool": "get_module_rules",
-        "key": "rules.eff.drip",
-        "labelRo": "Eficiență picurare",
-        "value": 88,
-        "unit": "PCT",
-        "display": "88,0%",
-        "sourceRo": "data/catalog/irigatii.json"
-      },
-      "calc_621401d011e9": {
-        "calcId": "calc_621401d011e9",
-        "tool": "get_module_rules",
-        "key": "rules.sensors.saving",
-        "labelRo": "Reducere prin senzori de umiditate",
-        "value": 8,
-        "unit": "PCT",
-        "display": "8,0%",
-        "sourceRo": "data/catalog/irigatii.json"
+        "sourceRo": "config/modules/irigatii.json"
       },
       "calc_74af1538ddd0": {
         "calcId": "calc_74af1538ddd0",
         "tool": "get_module_rules",
         "key": "rules.price.water",
-        "labelRo": "Preț apă de irigat (ANIF + distribuție)",
-        "value": 0.12,
+        "labelRo": "Prețul apei (PUT)",
+        "value": 0.02,
         "unit": "EUR_PER_M3",
-        "display": "0,12 EUR/m³",
-        "sourceRo": "config/prices.json (demo)"
+        "display": "0,02 EUR/m³",
+        "sourceRo": "config/modules/irigatii.json: puț propriu (estimare echipă)"
       },
       "calc_dcd787338dc4": {
         "calcId": "calc_dcd787338dc4",
         "tool": "get_module_rules",
         "key": "rules.price.electricity",
-        "labelRo": "Preț energie electrică",
+        "labelRo": "Prețul energiei electrice",
         "value": 0.2,
         "unit": "EUR_PER_KWH",
         "display": "0,20 EUR/kWh",
-        "sourceRo": "config/prices.json (demo)"
+        "sourceRo": "config/prices.json (estimare echipă)"
       },
       "calc_2001d7a57182": {
         "calcId": "calc_2001d7a57182",
         "tool": "get_module_rules",
         "key": "rules.factor.grid",
-        "labelRo": "Factor de emisie rețea RO",
+        "labelRo": "Factor de emisie al rețelei",
         "value": 0.26,
         "unit": "KG_CO2_PER_KWH",
         "display": "0,260 kg CO₂/kWh",
-        "sourceRo": "config/factors.json (Nowtricity 2024, de confirmat cu EEA/ANRE)"
+        "sourceRo": "config/factors.json (README §6: 0,26 t CO₂/MWh)"
       },
       "calc_e65d8c396ee7": {
         "calcId": "calc_e65d8c396ee7",
         "tool": "compute_baseline",
         "key": "baseline.area",
-        "labelRo": "Suprafață irigată (parcele selectate)",
+        "labelRo": "Suprafața parcelelor alese",
         "value": 40,
         "unit": "HA",
         "display": "40 ha",
-        "sourceRo": "APIA, 5 parcele selectate"
+        "sourceRo": "APIA"
+      },
+      "calc_d4358f1b31f6": {
+        "calcId": "calc_d4358f1b31f6",
+        "tool": "compute_baseline",
+        "key": "baseline.net_need",
+        "labelRo": "Nevoia netă de apă a culturilor",
+        "value": 141200,
+        "unit": "M3_PER_YEAR",
+        "display": "141.200 m³/an",
+        "formula": "Σ max(0, Kc × ET₀ − P_ef) × 10 × ha",
+        "sourceRo": "Kc pe cultură (APIA); ET₀ 700 mm și ploaie efectivă 200 mm pe sezon, zona SUD_EST",
+        "dependsOn": [
+          "calc_e65d8c396ee7"
+        ]
+      },
+      "calc_548c4e7dee9c": {
+        "calcId": "calc_548c4e7dee9c",
+        "tool": "compute_baseline",
+        "key": "baseline.efficiency",
+        "labelRo": "Eficiența sistemului actual",
+        "value": 60,
+        "unit": "PCT",
+        "display": "60,0%",
+        "sourceRo": "config/modules/irigatii.json"
       },
       "calc_29043a4571fa": {
         "calcId": "calc_29043a4571fa",
         "tool": "compute_baseline",
         "key": "baseline.water",
-        "labelRo": "Apă folosită azi",
-        "value": 233846.15,
+        "labelRo": "Apă extrasă azi",
+        "value": 235333.33,
         "unit": "M3_PER_YEAR",
-        "display": "233.846 m³/an",
-        "formula": "ha × necesar net / eficiență actuală",
+        "display": "235.333 m³/an",
+        "formula": "NIR / η actual",
         "dependsOn": [
-          "calc_e65d8c396ee7",
-          "calc_76de49c0863f",
-          "calc_b032ab17add0"
+          "calc_d4358f1b31f6",
+          "calc_548c4e7dee9c"
         ]
+      },
+      "calc_e3384d10d1e7": {
+        "calcId": "calc_e3384d10d1e7",
+        "tool": "compute_baseline",
+        "key": "baseline.lift",
+        "labelRo": "Înălțimea de pompare",
+        "value": 35,
+        "unit": "M",
+        "display": "35 m",
+        "sourceRo": "chestionar"
       },
       "calc_2ba423961603": {
         "calcId": "calc_2ba423961603",
         "tool": "compute_baseline",
         "key": "baseline.energy",
         "labelRo": "Energie de pompare azi",
-        "value": 105230,
+        "value": 34530.64,
         "unit": "KWH_PER_YEAR",
-        "display": "105.230 kWh/an",
-        "sourceRo": "facturi energie 12 luni",
+        "display": "34.531 kWh/an",
+        "formula": "m³ × (H ridicare + H presiune) × 0,002725 / η pompă",
         "dependsOn": [
-          "calc_428b93fdaafb"
+          "calc_29043a4571fa",
+          "calc_e3384d10d1e7"
         ]
       },
-      "calc_f896f6e4b98f": {
-        "calcId": "calc_f896f6e4b98f",
+      "calc_ed1346fa4467": {
+        "calcId": "calc_ed1346fa4467",
         "tool": "compute_baseline",
-        "key": "baseline.kwh_per_m3",
-        "labelRo": "Energie specifică de pompare azi",
-        "value": 0.45,
-        "unit": "KWH_PER_M3",
-        "display": "0,45 kWh/m³",
-        "formula": "kWh facturați / m³",
+        "key": "baseline.energy_invoiced",
+        "labelRo": "Energie din facturi (12 luni)",
+        "value": 36900,
+        "unit": "KWH_PER_YEAR",
+        "display": "36.900 kWh/an",
+        "sourceRo": "facturile de energie",
         "dependsOn": [
-          "calc_2ba423961603",
-          "calc_29043a4571fa"
+          "calc_428b93fdaafb"
         ]
       },
       "calc_b0ff29012f3b": {
         "calcId": "calc_b0ff29012f3b",
         "tool": "compute_baseline",
         "key": "baseline.co2",
-        "labelRo": "CO₂ din pomparea de azi",
-        "value": 27.36,
+        "labelRo": "CO₂ din pompare azi",
+        "value": 8.98,
         "unit": "T_CO2_PER_YEAR",
-        "display": "27,4 t CO₂/an",
+        "display": "9,0 t CO₂/an",
         "formula": "kWh × factor rețea",
         "dependsOn": [
-          "calc_2ba423961603",
-          "calc_2001d7a57182"
+          "calc_2ba423961603"
         ]
       },
       "calc_dd3e1c036d6e": {
         "calcId": "calc_dd3e1c036d6e",
         "tool": "compute_indicator",
         "key": "cfg_initial.total_cost",
-        "labelRo": "Cost configurație inițială",
+        "labelRo": "Cost total cfg_initial",
         "value": 85000,
         "unit": "EUR",
         "display": "85.000 EUR",
@@ -1836,26 +1899,25 @@
         "calcId": "calc_c2b8feb9827d",
         "tool": "compute_indicator",
         "key": "cfg_initial.water",
-        "labelRo": "Apă folosită cu aspersia nouă",
-        "value": 198692.81,
+        "labelRo": "Apă extrasă pe an",
+        "value": 188266.67,
         "unit": "M3_PER_YEAR",
-        "display": "198.693 m³/an",
-        "formula": "ha × necesar net / eficiență",
+        "display": "188.267 m³/an",
+        "formula": "NIR × (1 − s senzori) / η",
         "dependsOn": [
-          "calc_e65d8c396ee7",
-          "calc_76de49c0863f",
-          "calc_82020f884e97"
+          "calc_d4358f1b31f6",
+          "calc_fec47c488c16"
         ]
       },
       "calc_ed40c2662d8d": {
         "calcId": "calc_ed40c2662d8d",
         "tool": "compute_indicator",
         "key": "cfg_initial.water_saving_pct",
-        "labelRo": "Economie de apă: aspersie clasică",
-        "value": 15.03,
+        "labelRo": "Economie de apă",
+        "value": 20,
         "unit": "PCT",
-        "display": "15,0%",
-        "formula": "1 − apă nouă / apă veche",
+        "display": "20,0%",
+        "formula": "1 − apă nouă / apă actuală",
         "dependsOn": [
           "calc_c2b8feb9827d",
           "calc_29043a4571fa"
@@ -1865,56 +1927,89 @@
         "calcId": "calc_558427ebadab",
         "tool": "compute_indicator",
         "key": "cfg_initial.water_saved",
-        "labelRo": "Apă economisită: aspersie clasică",
-        "value": 35153.34,
+        "labelRo": "Apă economisită pe an",
+        "value": 47066.67,
         "unit": "M3_PER_YEAR",
-        "display": "35.153 m³/an",
+        "display": "47.067 m³/an",
         "dependsOn": [
           "calc_29043a4571fa",
           "calc_c2b8feb9827d"
+        ]
+      },
+      "calc_9cf880c53ea0": {
+        "calcId": "calc_9cf880c53ea0",
+        "tool": "compute_indicator",
+        "key": "cfg_initial.pumping_energy",
+        "labelRo": "Energie de pompare",
+        "value": 55249.03,
+        "unit": "KWH_PER_YEAR",
+        "display": "55.249 kWh/an",
+        "formula": "m³ × (H ridicare + H presiune) × 0,002725 / η pompă",
+        "dependsOn": [
+          "calc_c2b8feb9827d",
+          "calc_e3384d10d1e7"
         ]
       },
       "calc_c26e76b8bdf8": {
         "calcId": "calc_c26e76b8bdf8",
         "tool": "compute_indicator",
         "key": "cfg_initial.energy_saved",
-        "labelRo": "Energie de pompare economisită: aspersie clasică",
-        "value": 15818.24,
+        "labelRo": "Energie economisită pe an",
+        "value": -20718.38,
         "unit": "KWH_PER_YEAR",
-        "display": "15.818 kWh/an",
-        "formula": "kWh azi − m³ noi × 0,45 kWh/m³",
+        "display": "-20.718 kWh/an",
+        "formula": "kWh azi − kWh din rețea după investiție (negativ = consum mai mare)",
         "dependsOn": [
           "calc_2ba423961603",
-          "calc_c2b8feb9827d"
+          "calc_9cf880c53ea0"
         ]
       },
       "calc_5a761be3c803": {
         "calcId": "calc_5a761be3c803",
         "tool": "compute_indicator",
         "key": "cfg_initial.co2_avoided",
-        "labelRo": "CO₂ evitat: aspersie clasică",
-        "value": 4.11,
+        "labelRo": "CO₂ evitat pe an",
+        "value": -5.39,
         "unit": "T_CO2_PER_YEAR",
-        "display": "4,1 t CO₂/an",
+        "display": "-5,4 t CO₂/an",
+        "formula": "kWh economisiți × factor rețea",
         "dependsOn": [
           "calc_c26e76b8bdf8",
           "calc_2001d7a57182"
         ]
       },
-      "calc_b14f7d2bf24f": {
-        "calcId": "calc_b14f7d2bf24f",
+      "calc_18212e51aaaf": {
+        "calcId": "calc_18212e51aaaf",
         "tool": "search_upgrades",
-        "key": "cand.sprinkler_sensors.pct",
-        "labelRo": "Variantă: aspersie + senzori",
-        "value": 21.83,
+        "key": "cand.drip.pct",
+        "labelRo": "Indicator cu pachetul pkg_drip",
+        "value": 33.33,
         "unit": "PCT",
-        "display": "21,8%"
+        "display": "33,3%"
       },
-      "calc_c9d451d88579": {
-        "calcId": "calc_c9d451d88579",
+      "calc_e6fea5783a93": {
+        "calcId": "calc_e6fea5783a93",
         "tool": "search_upgrades",
-        "key": "cand.sprinkler_sensors.cost",
-        "labelRo": "Cost variantă aspersie + senzori + contor",
+        "key": "cand.drip.cost",
+        "labelRo": "Cost total cu pachetul pkg_drip",
+        "value": 106500,
+        "unit": "EUR",
+        "display": "106.500 EUR"
+      },
+      "calc_06a13db2c692": {
+        "calcId": "calc_06a13db2c692",
+        "tool": "search_upgrades",
+        "key": "cand.sensors.pct",
+        "labelRo": "Indicator cu pachetul pkg_sensors",
+        "value": 28,
+        "unit": "PCT",
+        "display": "28,0%"
+      },
+      "calc_9e47d44cd6bf": {
+        "calcId": "calc_9e47d44cd6bf",
+        "tool": "search_upgrades",
+        "key": "cand.sensors.cost",
+        "labelRo": "Cost total cu pachetul pkg_sensors",
         "value": 92700,
         "unit": "EUR",
         "display": "92.700 EUR"
@@ -1923,16 +2018,16 @@
         "calcId": "calc_2832b8c821d0",
         "tool": "search_upgrades",
         "key": "cand.drip_sensors.pct",
-        "labelRo": "Variantă: picurare + senzori",
-        "value": 32.05,
+        "labelRo": "Indicator cu pachetul pkg_drip_sensors",
+        "value": 40,
         "unit": "PCT",
-        "display": "32,0%"
+        "display": "40,0%"
       },
       "calc_c1c4e3bab64d": {
         "calcId": "calc_c1c4e3bab64d",
         "tool": "search_upgrades",
         "key": "cand.drip_sensors.cost",
-        "labelRo": "Cost variantă picurare + senzori + contor (pompa din ofertă)",
+        "labelRo": "Cost total cu pachetul pkg_drip_sensors",
         "value": 113000,
         "unit": "EUR",
         "display": "113.000 EUR"
@@ -1941,21 +2036,109 @@
         "calcId": "calc_fc0bd840357d",
         "tool": "simulate_upgrade_package",
         "key": "cfg_min_pass.total_cost",
-        "labelRo": "Cost: picurare + senzori + contor, pompa din ofertă",
-        "value": 113000,
+        "labelRo": "Cost total cfg_min_pass",
+        "value": 106500,
         "unit": "EUR",
-        "display": "113.000 EUR"
+        "display": "106.500 EUR"
       },
       "calc_a803f5160b6a": {
         "calcId": "calc_a803f5160b6a",
         "tool": "simulate_upgrade_package",
         "key": "cfg_min_pass.upgrade_cost",
-        "labelRo": "Cost suplimentar față de ofertă",
+        "labelRo": "Cost suplimentar față de oferta inițială",
+        "value": 21500,
+        "unit": "EUR",
+        "display": "21.500 EUR",
+        "dependsOn": [
+          "calc_fc0bd840357d",
+          "calc_dd3e1c036d6e"
+        ]
+      },
+      "calc_207cb5064ec0": {
+        "calcId": "calc_207cb5064ec0",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_min_pass.water",
+        "labelRo": "Apă extrasă pe an",
+        "value": 156888.89,
+        "unit": "M3_PER_YEAR",
+        "display": "156.889 m³/an",
+        "formula": "NIR × (1 − s senzori) / η",
+        "dependsOn": [
+          "calc_d4358f1b31f6",
+          "calc_54c2067b910c"
+        ]
+      },
+      "calc_0b3b59fbc3cf": {
+        "calcId": "calc_0b3b59fbc3cf",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_min_pass.water_saving_pct",
+        "labelRo": "Economie de apă",
+        "value": 33.33,
+        "unit": "PCT",
+        "display": "33,3%",
+        "formula": "1 − apă nouă / apă actuală",
+        "dependsOn": [
+          "calc_207cb5064ec0",
+          "calc_29043a4571fa"
+        ]
+      },
+      "calc_a717e6997b45": {
+        "calcId": "calc_a717e6997b45",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_min_pass.water_saved",
+        "labelRo": "Apă economisită pe an",
+        "value": 78444.44,
+        "unit": "M3_PER_YEAR",
+        "display": "78.444 m³/an"
+      },
+      "calc_751086426460": {
+        "calcId": "calc_751086426460",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_min_pass.pumping_energy",
+        "labelRo": "Energie de pompare",
+        "value": 32886.32,
+        "unit": "KWH_PER_YEAR",
+        "display": "32.886 kWh/an",
+        "formula": "m³ × (H ridicare + H presiune) × 0,002725 / η pompă"
+      },
+      "calc_636b1db77771": {
+        "calcId": "calc_636b1db77771",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_min_pass.energy_saved",
+        "labelRo": "Energie economisită pe an",
+        "value": 1644.32,
+        "unit": "KWH_PER_YEAR",
+        "display": "1.644 kWh/an"
+      },
+      "calc_8414ef95e4d6": {
+        "calcId": "calc_8414ef95e4d6",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_min_pass.co2_avoided",
+        "labelRo": "CO₂ evitat pe an",
+        "value": 0.43,
+        "unit": "T_CO2_PER_YEAR",
+        "display": "0,4 t CO₂/an",
+        "formula": "kWh economisiți × factor rețea"
+      },
+      "calc_a918f7b5af59": {
+        "calcId": "calc_a918f7b5af59",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.total_cost",
+        "labelRo": "Cost total cfg_recommended",
+        "value": 113000,
+        "unit": "EUR",
+        "display": "113.000 EUR"
+      },
+      "calc_b3e0d3d1305a": {
+        "calcId": "calc_b3e0d3d1305a",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.upgrade_cost",
+        "labelRo": "Cost suplimentar față de oferta inițială",
         "value": 28000,
         "unit": "EUR",
         "display": "28.000 EUR",
         "dependsOn": [
-          "calc_fc0bd840357d",
+          "calc_a918f7b5af59",
           "calc_dd3e1c036d6e"
         ]
       },
@@ -1963,27 +2146,26 @@
         "calcId": "calc_630081c21e27",
         "tool": "simulate_upgrade_package",
         "key": "cfg_recommended.water",
-        "labelRo": "Apă folosită cu picurare + senzori",
-        "value": 158909.09,
+        "labelRo": "Apă extrasă pe an",
+        "value": 141200,
         "unit": "M3_PER_YEAR",
-        "display": "158.909 m³/an",
-        "formula": "ha × necesar net × (1 − senzori) / eficiență picurare",
+        "display": "141.200 m³/an",
+        "formula": "NIR × (1 − s senzori) / η",
         "dependsOn": [
-          "calc_e65d8c396ee7",
-          "calc_76de49c0863f",
-          "calc_621401d011e9",
-          "calc_b1df24df8660"
+          "calc_d4358f1b31f6",
+          "calc_54c2067b910c",
+          "calc_977ac6b64df4"
         ]
       },
       "calc_e1b22b2598a8": {
         "calcId": "calc_e1b22b2598a8",
         "tool": "simulate_upgrade_package",
         "key": "cfg_recommended.water_saving_pct",
-        "labelRo": "Economie de apă: picurare + senzori",
-        "value": 32.05,
+        "labelRo": "Economie de apă",
+        "value": 40,
         "unit": "PCT",
-        "display": "32,0%",
-        "formula": "1 − apă nouă / apă veche",
+        "display": "40,0%",
+        "formula": "1 − apă nouă / apă actuală",
         "dependsOn": [
           "calc_630081c21e27",
           "calc_29043a4571fa"
@@ -1993,64 +2175,54 @@
         "calcId": "calc_d393fbd8e48c",
         "tool": "simulate_upgrade_package",
         "key": "cfg_recommended.water_saved",
-        "labelRo": "Apă economisită: picurare + senzori",
-        "value": 74937.06,
+        "labelRo": "Apă economisită pe an",
+        "value": 94133.33,
         "unit": "M3_PER_YEAR",
-        "display": "74.937 m³/an",
+        "display": "94.133 m³/an",
         "dependsOn": [
           "calc_29043a4571fa",
           "calc_630081c21e27"
         ]
       },
-      "calc_636b1db77771": {
-        "calcId": "calc_636b1db77771",
+      "calc_3e0d82db0ccf": {
+        "calcId": "calc_3e0d82db0ccf",
         "tool": "simulate_upgrade_package",
-        "key": "cfg_min_pass.energy_saved",
-        "labelRo": "Energie economisită: picurare cu pompa din ofertă",
-        "value": 65502.73,
+        "key": "cfg_recommended.pumping_energy",
+        "labelRo": "Energie de pompare",
+        "value": 29597.69,
         "unit": "KWH_PER_YEAR",
-        "display": "65.503 kWh/an",
-        "formula": "kWh azi − m³ noi × 0,25 kWh/m³"
-      },
-      "calc_8414ef95e4d6": {
-        "calcId": "calc_8414ef95e4d6",
-        "tool": "simulate_upgrade_package",
-        "key": "cfg_min_pass.co2_avoided",
-        "labelRo": "CO₂ evitat: picurare cu pompa din ofertă",
-        "value": 17.03,
-        "unit": "T_CO2_PER_YEAR",
-        "display": "17,0 t CO₂/an"
-      },
-      "calc_8272ac1df4aa": {
-        "calcId": "calc_8272ac1df4aa",
-        "tool": "simulate_upgrade_package",
-        "key": "rules.pv_yield",
-        "labelRo": "Producție PV specifică, sud-est",
-        "value": 1280,
-        "unit": "KWH_PER_KWP",
-        "display": "1.280 kWh/kWp",
-        "sourceRo": "PVGIS 5.3 (Constanța), config/factors.json"
-      },
-      "calc_a918f7b5af59": {
-        "calcId": "calc_a918f7b5af59",
-        "tool": "simulate_upgrade_package",
-        "key": "cfg_recommended.total_cost",
-        "labelRo": "Cost configurație recomandată",
-        "value": 125000,
-        "unit": "EUR",
-        "display": "125.000 EUR"
-      },
-      "calc_b3e0d3d1305a": {
-        "calcId": "calc_b3e0d3d1305a",
-        "tool": "simulate_upgrade_package",
-        "key": "cfg_recommended.upgrade_cost",
-        "labelRo": "Cost suplimentar față de ofertă",
-        "value": 40000,
-        "unit": "EUR",
-        "display": "40.000 EUR",
+        "display": "29.598 kWh/an",
+        "formula": "m³ × (H ridicare + H presiune) × 0,002725 / η pompă",
         "dependsOn": [
-          "calc_a918f7b5af59",
-          "calc_dd3e1c036d6e"
+          "calc_630081c21e27",
+          "calc_e3384d10d1e7"
+        ]
+      },
+      "calc_4ccfe0136799": {
+        "calcId": "calc_4ccfe0136799",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.energy_saved",
+        "labelRo": "Energie economisită pe an",
+        "value": 4932.95,
+        "unit": "KWH_PER_YEAR",
+        "display": "4.933 kWh/an",
+        "dependsOn": [
+          "calc_2ba423961603",
+          "calc_3e0d82db0ccf"
+        ]
+      },
+      "calc_c4fe14e06cd5": {
+        "calcId": "calc_c4fe14e06cd5",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.co2_avoided",
+        "labelRo": "CO₂ evitat pe an",
+        "value": 1.28,
+        "unit": "T_CO2_PER_YEAR",
+        "display": "1,3 t CO₂/an",
+        "formula": "kWh economisiți × factor rețea",
+        "dependsOn": [
+          "calc_4ccfe0136799",
+          "calc_2001d7a57182"
         ]
       },
       "calc_5afabb1e9d1a": {
@@ -2067,7 +2239,7 @@
         "calcId": "calc_d9568ad91cca",
         "tool": "simulate_upgrade_package",
         "key": "cmp.sensors.cost",
-        "labelRo": "Senzori de umiditate a solului (10 stații)",
+        "labelRo": "Senzori de umiditate a solului",
         "value": 6500,
         "unit": "EUR",
         "display": "6.500 EUR",
@@ -2083,164 +2255,21 @@
         "display": "1.200 EUR",
         "sourceRo": "data/catalog/irigatii.json: irg.meter.electromagnetic"
       },
-      "calc_4aa4ee631cb2": {
-        "calcId": "calc_4aa4ee631cb2",
-        "tool": "simulate_upgrade_package",
-        "key": "cmp.solar_pump.cost",
-        "labelRo": "Pompă solară 25 kWp cu invertor",
-        "value": 26500,
-        "unit": "EUR",
-        "display": "26.500 EUR",
-        "sourceRo": "data/catalog/irigatii.json: irg.pump.solar_25kwp"
-      },
-      "calc_3e0d82db0ccf": {
-        "calcId": "calc_3e0d82db0ccf",
-        "tool": "simulate_upgrade_package",
-        "key": "cfg_recommended.pumping_energy",
-        "labelRo": "Energie de pompare cu picurare",
-        "value": 39727.27,
-        "unit": "KWH_PER_YEAR",
-        "display": "39.727 kWh/an",
-        "formula": "m³ × 0,25 kWh/m³",
-        "dependsOn": [
-          "calc_630081c21e27"
-        ]
-      },
-      "calc_d3c4308040f2": {
-        "calcId": "calc_d3c4308040f2",
-        "tool": "simulate_upgrade_package",
-        "key": "cfg_recommended.pv_kwh",
-        "labelRo": "Energie solară folosită la pompare",
-        "value": 32000,
-        "unit": "KWH_PER_YEAR",
-        "display": "32.000 kWh/an",
-        "formula": "min(kWp × kWh/kWp, consum pompare)",
-        "dependsOn": [
-          "calc_8272ac1df4aa",
-          "calc_3e0d82db0ccf"
-        ]
-      },
-      "calc_866e6fb0311a": {
-        "calcId": "calc_866e6fb0311a",
-        "tool": "simulate_upgrade_package",
-        "key": "cfg_recommended.grid_kwh",
-        "labelRo": "Energie din rețea rămasă",
-        "value": 7727.27,
-        "unit": "KWH_PER_YEAR",
-        "display": "7.727 kWh/an",
-        "dependsOn": [
-          "calc_3e0d82db0ccf",
-          "calc_d3c4308040f2"
-        ]
-      },
-      "calc_be23e85e071b": {
-        "calcId": "calc_be23e85e071b",
-        "tool": "simulate_upgrade_package",
-        "key": "cfg_recommended.grid_replaced",
-        "labelRo": "Energie din rețea economisită",
-        "value": 97502.73,
-        "unit": "KWH_PER_YEAR",
-        "display": "97.503 kWh/an",
-        "dependsOn": [
-          "calc_2ba423961603",
-          "calc_866e6fb0311a"
-        ]
-      },
-      "calc_c4fe14e06cd5": {
-        "calcId": "calc_c4fe14e06cd5",
-        "tool": "simulate_upgrade_package",
-        "key": "cfg_recommended.co2_avoided",
-        "labelRo": "CO₂ evitat: configurația recomandată",
-        "value": 25.35,
-        "unit": "T_CO2_PER_YEAR",
-        "display": "25,4 t CO₂/an",
-        "formula": "kWh economisiți × factor rețea",
-        "dependsOn": [
-          "calc_be23e85e071b",
-          "calc_2001d7a57182"
-        ]
-      },
-      "calc_f5a3a1333a3a": {
-        "calcId": "calc_f5a3a1333a3a",
-        "tool": "simulate_upgrade_package",
-        "key": "cfg_recommended.solar_payback",
-        "labelRo": "Amortizare pompă solară față de pompa din ofertă",
-        "value": 22.5,
-        "unit": "MONTHS",
-        "display": "22,5 luni",
-        "formula": "(cost pompă solară − cost pompă ofertă) / economie lunară la energie",
-        "dependsOn": [
-          "calc_4aa4ee631cb2",
-          "calc_ce80103c11c3",
-          "calc_d3c4308040f2",
-          "calc_dcd787338dc4"
-        ]
-      },
-      "calc_0624dfb96859": {
-        "calcId": "calc_0624dfb96859",
-        "tool": "list_financing_lines",
-        "key": "line.standard.rate",
-        "labelRo": "Dobândă credit standard",
-        "value": 8.9,
-        "unit": "PCT",
-        "display": "8,9%",
-        "sourceRo": "config/financing-lines.json: STANDARD_INVEST (demo)"
-      },
-      "calc_0e9ea97fea66": {
-        "calcId": "calc_0e9ea97fea66",
-        "tool": "list_financing_lines",
-        "key": "line.green.rate",
-        "labelRo": "Dobândă credit verde cu garanție InvestEU",
-        "value": 6.4,
-        "unit": "PCT",
-        "display": "6,4%",
-        "sourceRo": "config/financing-lines.json: GREEN_AGRI (demo, de confirmat)"
-      },
       "calc_333c94ff9f97": {
         "calcId": "calc_333c94ff9f97",
         "tool": "list_financing_lines",
         "key": "line.term",
-        "labelRo": "Durată credit",
+        "labelRo": "Durata creditului",
         "value": 60,
         "unit": "MONTHS",
         "display": "60 luni",
-        "sourceRo": "config/financing-lines.json"
-      },
-      "calc_42f11558d908": {
-        "calcId": "calc_42f11558d908",
-        "tool": "list_financing_lines",
-        "key": "line.investeu.coverage",
-        "labelRo": "Acoperire garanție InvestEU (FEI)",
-        "value": 70,
-        "unit": "PCT",
-        "display": "70,0%",
-        "sourceRo": "config/financing-lines.json: FEI_INVESTEU (de confirmat)"
-      },
-      "calc_82a3511dc8e9": {
-        "calcId": "calc_82a3511dc8e9",
-        "tool": "list_financing_lines",
-        "key": "line.mortgage.initial",
-        "labelRo": "Costuri inițiale ipotecă (evaluare + notar)",
-        "value": 1450,
-        "unit": "EUR",
-        "display": "1.450 EUR",
-        "sourceRo": "config/financing-lines.json (demo)"
-      },
-      "calc_0993cdaa0191": {
-        "calcId": "calc_0993cdaa0191",
-        "tool": "list_financing_lines",
-        "key": "line.mortgage.annual",
-        "labelRo": "Asigurare anuală imobil ipotecat",
-        "value": 380,
-        "unit": "EUR_PER_YEAR",
-        "display": "380 EUR/an",
-        "sourceRo": "config/financing-lines.json (demo)"
+        "sourceRo": "config/modules/irigatii.json"
       },
       "calc_63eb160b82cf": {
         "calcId": "calc_63eb160b82cf",
         "tool": "list_financing_lines",
         "key": "line.horizon",
-        "labelRo": "Orizont de comparație",
+        "labelRo": "Orizontul comparației",
         "value": 5,
         "unit": "YEARS",
         "display": "5 ani",
@@ -2250,11 +2279,41 @@
         "calcId": "calc_2f508ed2e843",
         "tool": "list_financing_lines",
         "key": "line.affordability_limit",
-        "labelRo": "Limită serviciu datorie / cashflow net",
+        "labelRo": "Limita ratelor față de cashflow",
         "value": 40,
         "unit": "PCT",
         "display": "40,0%",
         "sourceRo": "config/financing-lines.json (demo)"
+      },
+      "calc_8d006f8a316f": {
+        "calcId": "calc_8d006f8a316f",
+        "tool": "list_financing_lines",
+        "key": "line.standard.collateral_initial",
+        "labelRo": "Costuri inițiale ipotecă",
+        "value": 1450,
+        "unit": "EUR",
+        "display": "1.450 EUR",
+        "sourceRo": "config/financing-lines.json (demo)"
+      },
+      "calc_ffaa6d27d284": {
+        "calcId": "calc_ffaa6d27d284",
+        "tool": "list_financing_lines",
+        "key": "line.standard.collateral_annual",
+        "labelRo": "Costuri anuale ipotecă",
+        "value": 380,
+        "unit": "EUR_PER_YEAR",
+        "display": "380 EUR/an",
+        "sourceRo": "config/financing-lines.json (demo)"
+      },
+      "calc_c6d44878b082": {
+        "calcId": "calc_c6d44878b082",
+        "tool": "list_financing_lines",
+        "key": "guarantee.sustainability.coverage",
+        "labelRo": "Garanție FEI – InvestEU Sustainability",
+        "value": 70,
+        "unit": "PCT",
+        "display": "70,0%",
+        "sourceRo": "Acord FEI cu Raiffeisen, 25.10.2023; procentul pentru 2026 e de confirmat"
       },
       "calc_2abff80232ce": {
         "calcId": "calc_2abff80232ce",
@@ -2264,25 +2323,25 @@
         "value": 25,
         "unit": "PCT",
         "display": "25,0%",
-        "sourceRo": "config/modules/irigatii.json (propunere, de confirmat cu Raiffeisen)"
+        "sourceRo": "README §6.1: economie de apă ≥ 25% față de sistemul actual (propunere, de confirmat cu Raiffeisen)"
       },
       "calc_6bcb8dcb510b": {
         "calcId": "calc_6bcb8dcb510b",
         "tool": "determine_green_tier",
         "key": "green_tier.requested_indicator",
         "labelRo": "Indicatorul investiției cerute",
-        "value": 15.03,
+        "value": 20,
         "unit": "PCT",
-        "display": "15,0%"
+        "display": "20,0%"
       },
       "calc_941a5004799f": {
         "calcId": "calc_941a5004799f",
         "tool": "determine_green_tier",
         "key": "green_tier.financed_indicator",
         "labelRo": "Indicatorul investiției finanțate de creditul verde",
-        "value": 32.05,
+        "value": 40,
         "unit": "PCT",
-        "display": "32,0%"
+        "display": "40,0%"
       },
       "calc_275bfc9a8a7c": {
         "calcId": "calc_275bfc9a8a7c",
@@ -2298,14 +2357,26 @@
           "calc_2abff80232ce"
         ]
       },
-      "calc_87740fb5047b": {
-        "calcId": "calc_87740fb5047b",
+      "calc_d0950c66e770": {
+        "calcId": "calc_d0950c66e770",
         "tool": "build_funding_stack",
-        "key": "option_b.green_loan.amount",
-        "labelRo": "Credit verde",
-        "value": 125000,
+        "key": "option_a.loan.amount",
+        "labelRo": "Credit standard de investiții",
+        "value": 85000,
         "unit": "EUR",
-        "display": "125.000 EUR",
+        "display": "85.000 EUR",
+        "dependsOn": [
+          "calc_dd3e1c036d6e"
+        ]
+      },
+      "calc_7527684c6e16": {
+        "calcId": "calc_7527684c6e16",
+        "tool": "build_funding_stack",
+        "key": "option_b.loan.amount",
+        "labelRo": "Credit verde Raiffeisen pentru agricultură, garantat InvestEU",
+        "value": 113000,
+        "unit": "EUR",
+        "display": "113.000 EUR",
         "dependsOn": [
           "calc_a918f7b5af59"
         ]
@@ -2314,40 +2385,307 @@
         "calcId": "calc_57e06d1ffbff",
         "tool": "build_funding_stack",
         "key": "option_b.guarantee.amount",
-        "labelRo": "Sumă acoperită de garanția InvestEU",
-        "value": 87500,
+        "labelRo": "Valoare garantată",
+        "value": 79100,
         "unit": "EUR",
-        "display": "87.500 EUR",
-        "formula": "credit × acoperire",
+        "display": "79.100 EUR",
+        "formula": "credit × acoperire garanție",
         "dependsOn": [
-          "calc_87740fb5047b",
-          "calc_42f11558d908"
+          "calc_7527684c6e16",
+          "calc_c6d44878b082"
         ]
       },
-      "calc_d0950c66e770": {
-        "calcId": "calc_d0950c66e770",
-        "tool": "build_funding_stack",
-        "key": "option_a.loan.amount",
-        "labelRo": "Credit standard",
-        "value": 85000,
-        "unit": "EUR",
-        "display": "85.000 EUR",
+      "calc_430b323e69c2": {
+        "calcId": "calc_430b323e69c2",
+        "tool": "price_loan",
+        "key": "option_a.rate.index",
+        "labelRo": "Indice EURIBOR 3M",
+        "value": 2,
+        "unit": "PCT",
+        "display": "2,00%",
+        "sourceRo": "config/pricing.json (valoare demo)"
+      },
+      "calc_8c17eb468793": {
+        "calcId": "calc_8c17eb468793",
+        "tool": "price_loan",
+        "key": "option_a.rate.funding_cost",
+        "labelRo": "Cost de finanțare",
+        "value": 1.2,
+        "unit": "PCT",
+        "display": "1,20%",
+        "sourceRo": "config/pricing.json (valoare demo)"
+      },
+      "calc_a57706fcbaa9": {
+        "calcId": "calc_a57706fcbaa9",
+        "tool": "price_loan",
+        "key": "option_a.rate.risk_cost",
+        "labelRo": "Cost de risc",
+        "value": 1.35,
+        "unit": "PCT",
+        "display": "1,35%",
+        "formula": "PD × LGD × (1 − g)"
+      },
+      "calc_28998c5a9adb": {
+        "calcId": "calc_28998c5a9adb",
+        "tool": "price_loan",
+        "key": "option_a.rate.capital_cost",
+        "labelRo": "Cost de capital",
+        "value": 1.08,
+        "unit": "PCT",
+        "display": "1,08%",
+        "formula": "RW efectiv × rata de capital × costul capitalului"
+      },
+      "calc_fa38158eda8f": {
+        "calcId": "calc_fa38158eda8f",
+        "tool": "price_loan",
+        "key": "option_a.rate.operational_cost",
+        "labelRo": "Cost operațional",
+        "value": 1.5,
+        "unit": "PCT",
+        "display": "1,50%"
+      },
+      "calc_7ae6a0de6652": {
+        "calcId": "calc_7ae6a0de6652",
+        "tool": "price_loan",
+        "key": "option_a.rate.target_profit",
+        "labelRo": "Profit țintă",
+        "value": 1.77,
+        "unit": "PCT",
+        "display": "1,77%"
+      },
+      "calc_76343d3e29e9": {
+        "calcId": "calc_76343d3e29e9",
+        "tool": "price_loan",
+        "key": "option_a.rate.margin",
+        "labelRo": "Marja",
+        "value": 6.9,
+        "unit": "PCT",
+        "display": "6,90%",
+        "formula": "finanțare + risc + capital + operațional + profit (+ subvenție + nivel verde)",
         "dependsOn": [
-          "calc_dd3e1c036d6e"
+          "calc_8c17eb468793",
+          "calc_a57706fcbaa9",
+          "calc_28998c5a9adb",
+          "calc_fa38158eda8f",
+          "calc_7ae6a0de6652"
         ]
+      },
+      "calc_9d2aa5c1befd": {
+        "calcId": "calc_9d2aa5c1befd",
+        "tool": "price_loan",
+        "key": "option_a.rate",
+        "labelRo": "Dobânda creditului",
+        "value": 8.9,
+        "unit": "PCT",
+        "display": "8,90%",
+        "formula": "indice + marjă",
+        "dependsOn": [
+          "calc_430b323e69c2",
+          "calc_76343d3e29e9"
+        ]
+      },
+      "calc_9551d979bfe2": {
+        "calcId": "calc_9551d979bfe2",
+        "tool": "price_loan",
+        "key": "option_b.rate.index",
+        "labelRo": "Indice EURIBOR 3M",
+        "value": 2,
+        "unit": "PCT",
+        "display": "2,00%",
+        "sourceRo": "config/pricing.json (valoare demo)"
+      },
+      "calc_12beebf32e24": {
+        "calcId": "calc_12beebf32e24",
+        "tool": "price_loan",
+        "key": "option_b.rate.funding_cost",
+        "labelRo": "Cost de finanțare",
+        "value": 0.9,
+        "unit": "PCT",
+        "display": "0,90%",
+        "sourceRo": "config/pricing.json (valoare demo)"
+      },
+      "calc_ac0e251fc1bd": {
+        "calcId": "calc_ac0e251fc1bd",
+        "tool": "price_loan",
+        "key": "option_b.rate.risk_cost",
+        "labelRo": "Cost de risc",
+        "value": 0.34,
+        "unit": "PCT",
+        "display": "0,34%",
+        "formula": "PD × LGD × (1 − g)"
+      },
+      "calc_62f88c0aeeec": {
+        "calcId": "calc_62f88c0aeeec",
+        "tool": "price_loan",
+        "key": "option_b.rate.capital_cost",
+        "labelRo": "Cost de capital",
+        "value": 0.32,
+        "unit": "PCT",
+        "display": "0,32%",
+        "formula": "RW efectiv × rata de capital × costul capitalului"
+      },
+      "calc_72dbd76e5447": {
+        "calcId": "calc_72dbd76e5447",
+        "tool": "price_loan",
+        "key": "option_b.rate.operational_cost",
+        "labelRo": "Cost operațional",
+        "value": 1.35,
+        "unit": "PCT",
+        "display": "1,35%"
+      },
+      "calc_16193244a450": {
+        "calcId": "calc_16193244a450",
+        "tool": "price_loan",
+        "key": "option_b.rate.target_profit",
+        "labelRo": "Profit țintă",
+        "value": 1.77,
+        "unit": "PCT",
+        "display": "1,77%"
+      },
+      "calc_b6d91d2f2112": {
+        "calcId": "calc_b6d91d2f2112",
+        "tool": "price_loan",
+        "key": "option_b.rate.guarantee_coverage",
+        "labelRo": "Partea acoperită de garanție (g)",
+        "value": 70,
+        "unit": "PCT",
+        "display": "70,00%"
+      },
+      "calc_c295f06607f8": {
+        "calcId": "calc_c295f06607f8",
+        "tool": "price_loan",
+        "key": "option_b.rate.effective_risk_weight",
+        "labelRo": "Ponderea de risc efectivă",
+        "value": 22.5,
+        "unit": "PCT",
+        "display": "22,50%",
+        "formula": "RW client × (1 − g) + RW garant × g"
+      },
+      "calc_9b8ac07ae39e": {
+        "calcId": "calc_9b8ac07ae39e",
+        "tool": "price_loan",
+        "key": "option_b.rate.program_subsidy",
+        "labelRo": "Subvenție sau comision redus pe program",
+        "value": -0.4,
+        "unit": "PCT",
+        "display": "-0,40%"
+      },
+      "calc_2639f742db79": {
+        "calcId": "calc_2639f742db79",
+        "tool": "price_loan",
+        "key": "option_b.rate.tier_adjustment",
+        "labelRo": "Ajustarea pentru nivelul verde",
+        "value": 0,
+        "unit": "PCT",
+        "display": "0,00%"
+      },
+      "calc_39ddd30f208b": {
+        "calcId": "calc_39ddd30f208b",
+        "tool": "price_loan",
+        "key": "option_b.rate.margin",
+        "labelRo": "Marja",
+        "value": 4.28,
+        "unit": "PCT",
+        "display": "4,28%",
+        "formula": "finanțare + risc + capital + operațional + profit (+ subvenție + nivel verde)",
+        "dependsOn": [
+          "calc_12beebf32e24",
+          "calc_ac0e251fc1bd",
+          "calc_62f88c0aeeec",
+          "calc_72dbd76e5447",
+          "calc_16193244a450"
+        ]
+      },
+      "calc_5d1839fceffa": {
+        "calcId": "calc_5d1839fceffa",
+        "tool": "price_loan",
+        "key": "option_b.rate",
+        "labelRo": "Dobânda creditului verde",
+        "value": 6.28,
+        "unit": "PCT",
+        "display": "6,28%",
+        "formula": "indice + marjă",
+        "dependsOn": [
+          "calc_9551d979bfe2",
+          "calc_39ddd30f208b"
+        ]
+      },
+      "calc_55056af84525": {
+        "calcId": "calc_55056af84525",
+        "tool": "price_loan",
+        "key": "pricing.diff.funding_cost",
+        "labelRo": "Verde față de clasic: cost de finanțare (obligațiuni verzi)",
+        "value": -0.3,
+        "unit": "PCT",
+        "display": "-0,30%"
+      },
+      "calc_c7af79d3d8fc": {
+        "calcId": "calc_c7af79d3d8fc",
+        "tool": "price_loan",
+        "key": "pricing.diff.risk_cost",
+        "labelRo": "Verde față de clasic: cost de risc (garanția FEI și PD mai mic)",
+        "value": -1.01,
+        "unit": "PCT",
+        "display": "-1,01%"
+      },
+      "calc_a6abad99695e": {
+        "calcId": "calc_a6abad99695e",
+        "tool": "price_loan",
+        "key": "pricing.diff.capital_cost",
+        "labelRo": "Verde față de clasic: cost de capital (ponderea de risc a garantului)",
+        "value": -0.76,
+        "unit": "PCT",
+        "display": "-0,76%"
+      },
+      "calc_d492f5decd07": {
+        "calcId": "calc_d492f5decd07",
+        "tool": "price_loan",
+        "key": "pricing.diff.operational_cost",
+        "labelRo": "Verde față de clasic: cost operațional (analiză automată)",
+        "value": -0.15,
+        "unit": "PCT",
+        "display": "-0,15%"
+      },
+      "calc_067fe99766ad": {
+        "calcId": "calc_067fe99766ad",
+        "tool": "price_loan",
+        "key": "pricing.diff.program_subsidy",
+        "labelRo": "Verde față de clasic: subvenție pe program",
+        "value": -0.4,
+        "unit": "PCT",
+        "display": "-0,40%"
+      },
+      "calc_b102567718ca": {
+        "calcId": "calc_b102567718ca",
+        "tool": "price_loan",
+        "key": "pricing.diff.tier_adjustment",
+        "labelRo": "Verde față de clasic: nivelul verde",
+        "value": 0,
+        "unit": "PCT",
+        "display": "0,00%"
+      },
+      "calc_72e482298b81": {
+        "calcId": "calc_72e482298b81",
+        "tool": "price_loan",
+        "key": "pricing.diff.rate",
+        "labelRo": "Dobânda verde față de cea clasică",
+        "value": -2.62,
+        "unit": "PCT",
+        "display": "-2,62%",
+        "formula": "dobânda verde − dobânda clasică"
       },
       "calc_a809f69f22d0": {
         "calcId": "calc_a809f69f22d0",
         "tool": "build_scenario",
         "key": "option_a.installment",
-        "labelRo": "Rată lunară A",
+        "labelRo": "Rata lunară",
         "value": 1760.34,
         "unit": "EUR_PER_MONTH",
         "display": "1.760 EUR/lună",
         "formula": "PMT = P · r / (1 − (1 + r)^−n)",
         "dependsOn": [
           "calc_d0950c66e770",
-          "calc_0624dfb96859",
+          "calc_9d2aa5c1befd",
           "calc_333c94ff9f97"
         ]
       },
@@ -2355,7 +2693,7 @@
         "calcId": "calc_f014a43a0390",
         "tool": "build_scenario",
         "key": "option_a.schedule",
-        "labelRo": "Grafic rambursare A (total plăți)",
+        "labelRo": "Total plătit pe credit",
         "value": 105620.26,
         "unit": "EUR",
         "display": "105.620 EUR",
@@ -2909,40 +3247,32 @@
         "calcId": "calc_844ee0c3df10",
         "tool": "build_scenario",
         "key": "option_a.total_payments",
-        "labelRo": "Total plăți A",
+        "labelRo": "Total plăți (credit + punte)",
         "value": 105620.26,
         "unit": "EUR",
-        "display": "105.620 EUR",
-        "dependsOn": [
-          "calc_a809f69f22d0",
-          "calc_333c94ff9f97"
-        ]
+        "display": "105.620 EUR"
       },
       "calc_b6c87588a50c": {
         "calcId": "calc_b6c87588a50c",
         "tool": "build_scenario",
         "key": "option_a.total_interest",
-        "labelRo": "Dobânzi totale A",
+        "labelRo": "Total dobânzi",
         "value": 20620.26,
         "unit": "EUR",
-        "display": "20.620 EUR",
-        "dependsOn": [
-          "calc_844ee0c3df10",
-          "calc_d0950c66e770"
-        ]
+        "display": "20.620 EUR"
       },
       "calc_eebd9bafd904": {
         "calcId": "calc_eebd9bafd904",
         "tool": "build_scenario",
         "key": "option_a.collateral_costs",
-        "labelRo": "Costuri ipotecă A pe 5 ani",
+        "labelRo": "Costuri cu ipoteca",
         "value": 3350,
         "unit": "EUR",
         "display": "3.350 EUR",
         "formula": "cost inițial + cost anual × ani",
         "dependsOn": [
-          "calc_82a3511dc8e9",
-          "calc_0993cdaa0191",
+          "calc_8d006f8a316f",
+          "calc_ffaa6d27d284",
           "calc_63eb160b82cf"
         ]
       },
@@ -2950,10 +3280,10 @@
         "calcId": "calc_524b3238bf59",
         "tool": "build_scenario",
         "key": "option_a.savings.water_eur",
-        "labelRo": "Economie la apă A",
-        "value": 4218.4,
+        "labelRo": "Economie anuală (water_eur)",
+        "value": 941.33,
         "unit": "EUR_PER_YEAR",
-        "display": "4.218 EUR/an",
+        "display": "941 EUR/an",
         "dependsOn": [
           "calc_558427ebadab",
           "calc_74af1538ddd0"
@@ -2963,10 +3293,10 @@
         "calcId": "calc_a15aeadc5c2c",
         "tool": "build_scenario",
         "key": "option_a.savings.energy_eur",
-        "labelRo": "Economie la energie A",
-        "value": 3163.65,
+        "labelRo": "Economie anuală (energy_eur)",
+        "value": -4143.68,
         "unit": "EUR_PER_YEAR",
-        "display": "3.164 EUR/an",
+        "display": "-4.144 EUR/an",
         "dependsOn": [
           "calc_c26e76b8bdf8",
           "calc_dcd787338dc4"
@@ -2976,10 +3306,10 @@
         "calcId": "calc_29385cb95c19",
         "tool": "build_scenario",
         "key": "option_a.savings_horizon",
-        "labelRo": "Economii A pe 5 ani",
-        "value": 36910.24,
+        "labelRo": "Economii pe 5 ani",
+        "value": -16011.72,
         "unit": "EUR",
-        "display": "36.910 EUR",
+        "display": "-16.012 EUR",
         "dependsOn": [
           "calc_524b3238bf59",
           "calc_a15aeadc5c2c",
@@ -2990,11 +3320,11 @@
         "calcId": "calc_5ff003fc5f7f",
         "tool": "build_scenario",
         "key": "option_a.net_cost",
-        "labelRo": "Cost net A pe 5 ani",
-        "value": 72060.02,
+        "labelRo": "Cost net pe 5 ani",
+        "value": 124981.98,
         "unit": "EUR",
-        "display": "72.060 EUR",
-        "formula": "plăți + costuri garanții − grant − economii",
+        "display": "124.982 EUR",
+        "formula": "investiție − grant + dobânzi + costuri garanții − economii",
         "dependsOn": [
           "calc_844ee0c3df10",
           "calc_eebd9bafd904",
@@ -3005,14 +3335,14 @@
         "calcId": "calc_50e2bcd8bf71",
         "tool": "build_scenario",
         "key": "option_b.installment",
-        "labelRo": "Rată sezonieră B (iulie–octombrie)",
-        "value": 7359.9,
+        "labelRo": "Rata sezonieră",
+        "value": 6633.79,
         "unit": "EUR",
-        "display": "7.360 EUR",
+        "display": "6.634 EUR",
         "formula": "rate egale doar în lunile cu încasări; VA la dobânda creditului = principalul",
         "dependsOn": [
-          "calc_87740fb5047b",
-          "calc_0e9ea97fea66",
+          "calc_7527684c6e16",
+          "calc_5d1839fceffa",
           "calc_333c94ff9f97"
         ]
       },
@@ -3020,19 +3350,20 @@
         "calcId": "calc_9cf035261c34",
         "tool": "build_scenario",
         "key": "option_b.grace",
-        "labelRo": "Perioadă fără plăți până la prima recoltă",
+        "labelRo": "Luni fără rată până la prima încasare",
         "value": 5,
         "unit": "MONTHS",
-        "display": "5 luni"
+        "display": "5 luni",
+        "sourceRo": "grația până la prima recoltă, cel mult 12 luni (config/modules)"
       },
       "calc_5d9455d5ee24": {
         "calcId": "calc_5d9455d5ee24",
         "tool": "build_scenario",
         "key": "option_b.schedule",
-        "labelRo": "Grafic rambursare B (total plăți)",
-        "value": 147198.05,
+        "labelRo": "Total plătit pe credit",
+        "value": 132675.76,
         "unit": "EUR",
-        "display": "147.198 EUR",
+        "display": "132.676 EUR",
         "dependsOn": [
           "calc_50e2bcd8bf71"
         ],
@@ -3041,512 +3372,512 @@
             "period": "2027-02",
             "values": {
               "payment": 0,
-              "interest": 666.67,
-              "principal": -666.67,
-              "balance": 125666.67
+              "interest": 591.51,
+              "principal": -591.51,
+              "balance": 113591.51
             }
           },
           {
             "period": "2027-03",
             "values": {
               "payment": 0,
-              "interest": 670.22,
-              "principal": -670.22,
-              "balance": 126336.89
+              "interest": 594.6,
+              "principal": -594.6,
+              "balance": 114186.11
             }
           },
           {
             "period": "2027-04",
             "values": {
               "payment": 0,
-              "interest": 673.8,
-              "principal": -673.8,
-              "balance": 127010.69
+              "interest": 597.72,
+              "principal": -597.72,
+              "balance": 114783.83
             }
           },
           {
             "period": "2027-05",
             "values": {
               "payment": 0,
-              "interest": 677.39,
-              "principal": -677.39,
-              "balance": 127688.08
+              "interest": 600.85,
+              "principal": -600.85,
+              "balance": 115384.67
             }
           },
           {
             "period": "2027-06",
             "values": {
               "payment": 0,
-              "interest": 681,
-              "principal": -681,
-              "balance": 128369.08
+              "interest": 603.99,
+              "principal": -603.99,
+              "balance": 115988.67
             }
           },
           {
             "period": "2027-07",
             "values": {
-              "payment": 7359.9,
-              "interest": 684.64,
-              "principal": 6675.27,
-              "balance": 121693.81
+              "payment": 6633.79,
+              "interest": 607.15,
+              "principal": 6026.64,
+              "balance": 109962.03
             }
           },
           {
             "period": "2027-08",
             "values": {
-              "payment": 7359.9,
-              "interest": 649.03,
-              "principal": 6710.87,
-              "balance": 114982.94
+              "payment": 6633.79,
+              "interest": 575.61,
+              "principal": 6058.18,
+              "balance": 103903.85
             }
           },
           {
             "period": "2027-09",
             "values": {
-              "payment": 7359.9,
-              "interest": 613.24,
-              "principal": 6746.66,
-              "balance": 108236.28
+              "payment": 6633.79,
+              "interest": 543.89,
+              "principal": 6089.89,
+              "balance": 97813.95
             }
           },
           {
             "period": "2027-10",
             "values": {
-              "payment": 7359.9,
-              "interest": 577.26,
-              "principal": 6782.64,
-              "balance": 101453.64
+              "payment": 6633.79,
+              "interest": 512.02,
+              "principal": 6121.77,
+              "balance": 91692.18
             }
           },
           {
             "period": "2027-11",
             "values": {
               "payment": 0,
-              "interest": 541.09,
-              "principal": -541.09,
-              "balance": 101994.73
+              "interest": 479.97,
+              "principal": -479.97,
+              "balance": 92172.15
             }
           },
           {
             "period": "2027-12",
             "values": {
               "payment": 0,
-              "interest": 543.97,
-              "principal": -543.97,
-              "balance": 102538.7
+              "interest": 482.48,
+              "principal": -482.48,
+              "balance": 92654.63
             }
           },
           {
             "period": "2028-01",
             "values": {
               "payment": 0,
-              "interest": 546.87,
-              "principal": -546.87,
-              "balance": 103085.57
+              "interest": 485.01,
+              "principal": -485.01,
+              "balance": 93139.64
             }
           },
           {
             "period": "2028-02",
             "values": {
               "payment": 0,
-              "interest": 549.79,
-              "principal": -549.79,
-              "balance": 103635.36
+              "interest": 487.55,
+              "principal": -487.55,
+              "balance": 93627.19
             }
           },
           {
             "period": "2028-03",
             "values": {
               "payment": 0,
-              "interest": 552.72,
-              "principal": -552.72,
-              "balance": 104188.08
+              "interest": 490.1,
+              "principal": -490.1,
+              "balance": 94117.29
             }
           },
           {
             "period": "2028-04",
             "values": {
               "payment": 0,
-              "interest": 555.67,
-              "principal": -555.67,
-              "balance": 104743.75
+              "interest": 492.66,
+              "principal": -492.66,
+              "balance": 94609.95
             }
           },
           {
             "period": "2028-05",
             "values": {
               "payment": 0,
-              "interest": 558.63,
-              "principal": -558.63,
-              "balance": 105302.39
+              "interest": 495.24,
+              "principal": -495.24,
+              "balance": 95105.2
             }
           },
           {
             "period": "2028-06",
             "values": {
               "payment": 0,
-              "interest": 561.61,
-              "principal": -561.61,
-              "balance": 105864
+              "interest": 497.84,
+              "principal": -497.84,
+              "balance": 95603.03
             }
           },
           {
             "period": "2028-07",
             "values": {
-              "payment": 7359.9,
-              "interest": 564.61,
-              "principal": 6795.29,
-              "balance": 99068.7
+              "payment": 6633.79,
+              "interest": 500.44,
+              "principal": 6133.35,
+              "balance": 89469.69
             }
           },
           {
             "period": "2028-08",
             "values": {
-              "payment": 7359.9,
-              "interest": 528.37,
-              "principal": 6831.54,
-              "balance": 92237.17
+              "payment": 6633.79,
+              "interest": 468.34,
+              "principal": 6165.45,
+              "balance": 83304.23
             }
           },
           {
             "period": "2028-09",
             "values": {
-              "payment": 7359.9,
-              "interest": 491.93,
-              "principal": 6867.97,
-              "balance": 85369.2
+              "payment": 6633.79,
+              "interest": 436.06,
+              "principal": 6197.73,
+              "balance": 77106.51
             }
           },
           {
             "period": "2028-10",
             "values": {
-              "payment": 7359.9,
-              "interest": 455.3,
-              "principal": 6904.6,
-              "balance": 78464.6
+              "payment": 6633.79,
+              "interest": 403.62,
+              "principal": 6230.17,
+              "balance": 70876.34
             }
           },
           {
             "period": "2028-11",
             "values": {
               "payment": 0,
-              "interest": 418.48,
-              "principal": -418.48,
-              "balance": 78883.07
+              "interest": 371.01,
+              "principal": -371.01,
+              "balance": 71247.35
             }
           },
           {
             "period": "2028-12",
             "values": {
               "payment": 0,
-              "interest": 420.71,
-              "principal": -420.71,
-              "balance": 79303.78
+              "interest": 372.95,
+              "principal": -372.95,
+              "balance": 71620.3
             }
           },
           {
             "period": "2029-01",
             "values": {
               "payment": 0,
-              "interest": 422.95,
-              "principal": -422.95,
-              "balance": 79726.74
+              "interest": 374.9,
+              "principal": -374.9,
+              "balance": 71995.2
             }
           },
           {
             "period": "2029-02",
             "values": {
               "payment": 0,
-              "interest": 425.21,
-              "principal": -425.21,
-              "balance": 80151.95
+              "interest": 376.86,
+              "principal": -376.86,
+              "balance": 72372.07
             }
           },
           {
             "period": "2029-03",
             "values": {
               "payment": 0,
-              "interest": 427.48,
-              "principal": -427.48,
-              "balance": 80579.42
+              "interest": 378.84,
+              "principal": -378.84,
+              "balance": 72750.91
             }
           },
           {
             "period": "2029-04",
             "values": {
               "payment": 0,
-              "interest": 429.76,
-              "principal": -429.76,
-              "balance": 81009.18
+              "interest": 380.82,
+              "principal": -380.82,
+              "balance": 73131.73
             }
           },
           {
             "period": "2029-05",
             "values": {
               "payment": 0,
-              "interest": 432.05,
-              "principal": -432.05,
-              "balance": 81441.23
+              "interest": 382.81,
+              "principal": -382.81,
+              "balance": 73514.54
             }
           },
           {
             "period": "2029-06",
             "values": {
               "payment": 0,
-              "interest": 434.35,
-              "principal": -434.35,
-              "balance": 81875.58
+              "interest": 384.82,
+              "principal": -384.82,
+              "balance": 73899.36
             }
           },
           {
             "period": "2029-07",
             "values": {
-              "payment": 7359.9,
-              "interest": 436.67,
-              "principal": 6923.23,
-              "balance": 74952.35
+              "payment": 6633.79,
+              "interest": 386.83,
+              "principal": 6246.96,
+              "balance": 67652.4
             }
           },
           {
             "period": "2029-08",
             "values": {
-              "payment": 7359.9,
-              "interest": 399.75,
-              "principal": 6960.16,
-              "balance": 67992.19
+              "payment": 6633.79,
+              "interest": 354.13,
+              "principal": 6279.66,
+              "balance": 61372.75
             }
           },
           {
             "period": "2029-09",
             "values": {
-              "payment": 7359.9,
-              "interest": 362.63,
-              "principal": 6997.28,
-              "balance": 60994.92
+              "payment": 6633.79,
+              "interest": 321.26,
+              "principal": 6312.53,
+              "balance": 55060.22
             }
           },
           {
             "period": "2029-10",
             "values": {
-              "payment": 7359.9,
-              "interest": 325.31,
-              "principal": 7034.6,
-              "balance": 53960.32
+              "payment": 6633.79,
+              "interest": 288.22,
+              "principal": 6345.57,
+              "balance": 48714.65
             }
           },
           {
             "period": "2029-11",
             "values": {
               "payment": 0,
-              "interest": 287.79,
-              "principal": -287.79,
-              "balance": 54248.11
+              "interest": 255,
+              "principal": -255,
+              "balance": 48969.65
             }
           },
           {
             "period": "2029-12",
             "values": {
               "payment": 0,
-              "interest": 289.32,
-              "principal": -289.32,
-              "balance": 54537.43
+              "interest": 256.34,
+              "principal": -256.34,
+              "balance": 49225.99
             }
           },
           {
             "period": "2030-01",
             "values": {
               "payment": 0,
-              "interest": 290.87,
-              "principal": -290.87,
-              "balance": 54828.3
+              "interest": 257.68,
+              "principal": -257.68,
+              "balance": 49483.66
             }
           },
           {
             "period": "2030-02",
             "values": {
               "payment": 0,
-              "interest": 292.42,
-              "principal": -292.42,
-              "balance": 55120.72
+              "interest": 259.03,
+              "principal": -259.03,
+              "balance": 49742.69
             }
           },
           {
             "period": "2030-03",
             "values": {
               "payment": 0,
-              "interest": 293.98,
-              "principal": -293.98,
-              "balance": 55414.69
+              "interest": 260.38,
+              "principal": -260.38,
+              "balance": 50003.07
             }
           },
           {
             "period": "2030-04",
             "values": {
               "payment": 0,
-              "interest": 295.55,
-              "principal": -295.55,
-              "balance": 55710.24
+              "interest": 261.75,
+              "principal": -261.75,
+              "balance": 50264.82
             }
           },
           {
             "period": "2030-05",
             "values": {
               "payment": 0,
-              "interest": 297.12,
-              "principal": -297.12,
-              "balance": 56007.36
+              "interest": 263.12,
+              "principal": -263.12,
+              "balance": 50527.93
             }
           },
           {
             "period": "2030-06",
             "values": {
               "payment": 0,
-              "interest": 298.71,
-              "principal": -298.71,
-              "balance": 56306.06
+              "interest": 264.49,
+              "principal": -264.49,
+              "balance": 50792.42
             }
           },
           {
             "period": "2030-07",
             "values": {
-              "payment": 7359.9,
-              "interest": 300.3,
-              "principal": 7059.6,
-              "balance": 49246.46
+              "payment": 6633.79,
+              "interest": 265.88,
+              "principal": 6367.91,
+              "balance": 44424.51
             }
           },
           {
             "period": "2030-08",
             "values": {
-              "payment": 7359.9,
-              "interest": 262.65,
-              "principal": 7097.25,
-              "balance": 42149.21
+              "payment": 6633.79,
+              "interest": 232.54,
+              "principal": 6401.24,
+              "balance": 38023.27
             }
           },
           {
             "period": "2030-09",
             "values": {
-              "payment": 7359.9,
-              "interest": 224.8,
-              "principal": 7135.11,
-              "balance": 35014.1
+              "payment": 6633.79,
+              "interest": 199.04,
+              "principal": 6434.75,
+              "balance": 31588.52
             }
           },
           {
             "period": "2030-10",
             "values": {
-              "payment": 7359.9,
-              "interest": 186.74,
-              "principal": 7173.16,
-              "balance": 27840.94
+              "payment": 6633.79,
+              "interest": 165.35,
+              "principal": 6468.44,
+              "balance": 25120.08
             }
           },
           {
             "period": "2030-11",
             "values": {
               "payment": 0,
-              "interest": 148.49,
-              "principal": -148.49,
-              "balance": 27989.42
+              "interest": 131.49,
+              "principal": -131.49,
+              "balance": 25251.58
             }
           },
           {
             "period": "2030-12",
             "values": {
               "payment": 0,
-              "interest": 149.28,
-              "principal": -149.28,
-              "balance": 28138.7
+              "interest": 132.18,
+              "principal": -132.18,
+              "balance": 25383.76
             }
           },
           {
             "period": "2031-01",
             "values": {
               "payment": 0,
-              "interest": 150.07,
-              "principal": -150.07,
-              "balance": 28288.77
+              "interest": 132.87,
+              "principal": -132.87,
+              "balance": 25516.63
             }
           },
           {
             "period": "2031-02",
             "values": {
               "payment": 0,
-              "interest": 150.87,
-              "principal": -150.87,
-              "balance": 28439.65
+              "interest": 133.57,
+              "principal": -133.57,
+              "balance": 25650.2
             }
           },
           {
             "period": "2031-03",
             "values": {
               "payment": 0,
-              "interest": 151.68,
-              "principal": -151.68,
-              "balance": 28591.33
+              "interest": 134.27,
+              "principal": -134.27,
+              "balance": 25784.47
             }
           },
           {
             "period": "2031-04",
             "values": {
               "payment": 0,
-              "interest": 152.49,
-              "principal": -152.49,
-              "balance": 28743.81
+              "interest": 134.97,
+              "principal": -134.97,
+              "balance": 25919.44
             }
           },
           {
             "period": "2031-05",
             "values": {
               "payment": 0,
-              "interest": 153.3,
-              "principal": -153.3,
-              "balance": 28897.11
+              "interest": 135.68,
+              "principal": -135.68,
+              "balance": 26055.12
             }
           },
           {
             "period": "2031-06",
             "values": {
               "payment": 0,
-              "interest": 154.12,
-              "principal": -154.12,
-              "balance": 29051.23
+              "interest": 136.39,
+              "principal": -136.39,
+              "balance": 26191.5
             }
           },
           {
             "period": "2031-07",
             "values": {
-              "payment": 7359.9,
-              "interest": 154.94,
-              "principal": 7204.96,
-              "balance": 21846.27
+              "payment": 6633.79,
+              "interest": 137.1,
+              "principal": 6496.69,
+              "balance": 19694.82
             }
           },
           {
             "period": "2031-08",
             "values": {
-              "payment": 7359.9,
-              "interest": 116.51,
-              "principal": 7243.39,
-              "balance": 14602.88
+              "payment": 6633.79,
+              "interest": 103.09,
+              "principal": 6530.69,
+              "balance": 13164.12
             }
           },
           {
             "period": "2031-09",
             "values": {
-              "payment": 7359.9,
-              "interest": 77.88,
-              "principal": 7282.02,
-              "balance": 7320.86
+              "payment": 6633.79,
+              "interest": 68.91,
+              "principal": 6564.88,
+              "balance": 6599.24
             }
           },
           {
             "period": "2031-10",
             "values": {
-              "payment": 7359.9,
-              "interest": 39.04,
-              "principal": 7320.86,
+              "payment": 6633.79,
+              "interest": 34.54,
+              "principal": 6599.24,
               "balance": 0
             }
           },
@@ -3583,45 +3914,28 @@
         "calcId": "calc_ab90e89a8c92",
         "tool": "build_scenario",
         "key": "option_b.total_payments",
-        "labelRo": "Total plăți B",
-        "value": 147198.05,
+        "labelRo": "Total plăți (credit + punte)",
+        "value": 132675.76,
         "unit": "EUR",
-        "display": "147.198 EUR",
-        "dependsOn": [
-          "calc_50e2bcd8bf71"
-        ]
+        "display": "132.676 EUR"
       },
       "calc_20218e9a58ec": {
         "calcId": "calc_20218e9a58ec",
         "tool": "build_scenario",
         "key": "option_b.total_interest",
-        "labelRo": "Dobânzi totale B",
-        "value": 22198.05,
+        "labelRo": "Total dobânzi",
+        "value": 19675.76,
         "unit": "EUR",
-        "display": "22.198 EUR",
-        "dependsOn": [
-          "calc_ab90e89a8c92",
-          "calc_87740fb5047b"
-        ]
-      },
-      "calc_50ed4004deee": {
-        "calcId": "calc_50ed4004deee",
-        "tool": "build_scenario",
-        "key": "option_b.collateral_costs",
-        "labelRo": "Costuri ipotecă B",
-        "value": 0,
-        "unit": "EUR",
-        "display": "0 EUR",
-        "sourceRo": "garanție FEI, fără ipotecă"
+        "display": "19.676 EUR"
       },
       "calc_f9d1d7a17b2e": {
         "calcId": "calc_f9d1d7a17b2e",
         "tool": "build_scenario",
         "key": "option_b.savings.water_eur",
-        "labelRo": "Economie la apă B",
-        "value": 8992.45,
+        "labelRo": "Economie anuală (water_eur)",
+        "value": 1882.67,
         "unit": "EUR_PER_YEAR",
-        "display": "8.992 EUR/an",
+        "display": "1.883 EUR/an",
         "dependsOn": [
           "calc_d393fbd8e48c",
           "calc_74af1538ddd0"
@@ -3631,12 +3945,12 @@
         "calcId": "calc_210746f4fe25",
         "tool": "build_scenario",
         "key": "option_b.savings.energy_eur",
-        "labelRo": "Economie la energie B",
-        "value": 19500.55,
+        "labelRo": "Economie anuală (energy_eur)",
+        "value": 986.59,
         "unit": "EUR_PER_YEAR",
-        "display": "19.501 EUR/an",
+        "display": "987 EUR/an",
         "dependsOn": [
-          "calc_be23e85e071b",
+          "calc_4ccfe0136799",
           "calc_dcd787338dc4"
         ]
       },
@@ -3644,10 +3958,10 @@
         "calcId": "calc_3cfb0e3ef7b7",
         "tool": "build_scenario",
         "key": "option_b.savings_horizon",
-        "labelRo": "Economii B pe 5 ani",
-        "value": 142464.97,
+        "labelRo": "Economii pe 5 ani",
+        "value": 14346.28,
         "unit": "EUR",
-        "display": "142.465 EUR",
+        "display": "14.346 EUR",
         "dependsOn": [
           "calc_f9d1d7a17b2e",
           "calc_210746f4fe25",
@@ -3658,14 +3972,13 @@
         "calcId": "calc_796094b52fe4",
         "tool": "build_scenario",
         "key": "option_b.net_cost",
-        "labelRo": "Cost net B pe 5 ani",
-        "value": 4733.09,
+        "labelRo": "Cost net pe 5 ani",
+        "value": 118329.48,
         "unit": "EUR",
-        "display": "4.733 EUR",
-        "formula": "plăți + costuri garanții − grant − economii",
+        "display": "118.329 EUR",
+        "formula": "investiție − grant + dobânzi + costuri garanții − economii",
         "dependsOn": [
           "calc_ab90e89a8c92",
-          "calc_50ed4004deee",
           "calc_3cfb0e3ef7b7"
         ]
       },
@@ -3673,11 +3986,11 @@
         "calcId": "calc_79c1e3df6a0f",
         "tool": "compare_scenarios",
         "key": "compare.net_advantage",
-        "labelRo": "Avantaj net B față de A pe 5 ani",
-        "value": 67326.93,
+        "labelRo": "Avantaj net B față de A",
+        "value": 6652.5,
         "unit": "EUR",
-        "display": "67.327 EUR",
-        "formula": "(economii B − plăți B − costuri B) − (economii A − plăți A − costuri A)",
+        "display": "6.653 EUR",
+        "formula": "cost net A − cost net B",
         "dependsOn": [
           "calc_5ff003fc5f7f",
           "calc_796094b52fe4"
@@ -3687,19 +4000,19 @@
         "calcId": "calc_836c116a36c7",
         "tool": "compare_scenarios",
         "key": "compare.driver.investment",
-        "labelRo": "Investiție mai mare",
-        "value": -40000,
+        "labelRo": "Contribuția la avantaj: investment",
+        "value": -28000,
         "unit": "EUR",
-        "display": "-40.000 EUR"
+        "display": "-28.000 EUR"
       },
       "calc_0263c8f1bf1e": {
         "calcId": "calc_0263c8f1bf1e",
         "tool": "compare_scenarios",
         "key": "compare.driver.interest",
-        "labelRo": "Diferență de dobânzi",
-        "value": -1577.79,
+        "labelRo": "Contribuția la avantaj: interest",
+        "value": 944.5,
         "unit": "EUR",
-        "display": "-1.578 EUR",
+        "display": "945 EUR",
         "dependsOn": [
           "calc_b6c87588a50c",
           "calc_20218e9a58ec"
@@ -3709,23 +4022,22 @@
         "calcId": "calc_68dae76f0ad4",
         "tool": "compare_scenarios",
         "key": "compare.driver.collateral",
-        "labelRo": "Fără costuri de ipotecă",
+        "labelRo": "Contribuția la avantaj: collateral",
         "value": 3350,
         "unit": "EUR",
         "display": "3.350 EUR",
         "dependsOn": [
-          "calc_eebd9bafd904",
-          "calc_50ed4004deee"
+          "calc_eebd9bafd904"
         ]
       },
       "calc_ee04660eaafa": {
         "calcId": "calc_ee04660eaafa",
         "tool": "compare_scenarios",
         "key": "compare.driver.savings",
-        "labelRo": "Economii suplimentare (apă + energie)",
-        "value": 105554.72,
+        "labelRo": "Contribuția la avantaj: savings",
+        "value": 30358,
         "unit": "EUR",
-        "display": "105.555 EUR",
+        "display": "30.358 EUR",
         "dependsOn": [
           "calc_29385cb95c19",
           "calc_3cfb0e3ef7b7"
@@ -3735,11 +4047,11 @@
         "calcId": "calc_3ec756084452",
         "tool": "compare_scenarios",
         "key": "compare.upgrade_payback",
-        "labelRo": "Amortizarea upgrade-ului",
-        "value": 22.74,
+        "labelRo": "Recuperarea investiției suplimentare din economii",
+        "value": 55.34,
         "unit": "MONTHS",
-        "display": "22,7 luni",
-        "formula": "cost upgrade / economie lunară suplimentară",
+        "display": "55,3 luni",
+        "formula": "cost suplimentar / economie lunară suplimentară (fără grant)",
         "dependsOn": [
           "calc_b3e0d3d1305a",
           "calc_29385cb95c19",
@@ -3750,11 +4062,11 @@
         "calcId": "calc_6182c52e1d85",
         "tool": "check_affordability",
         "key": "option_a.affordability_ratio",
-        "labelRo": "Serviciu anual datorie / cashflow net anual, A",
+        "labelRo": "Ratele din primul an față de cashflow-ul net",
         "value": 21.47,
         "unit": "PCT",
         "display": "21,5%",
-        "formula": "rate pe 12 luni / cashflow net din Open Banking",
+        "formula": "rate pe 12 luni / cashflow net anual (Open Banking)",
         "dependsOn": [
           "calc_a809f69f22d0"
         ]
@@ -3763,11 +4075,11 @@
         "calcId": "calc_f9a058ff199a",
         "tool": "check_affordability",
         "key": "option_b.affordability_ratio",
-        "labelRo": "Serviciu anual datorie / cashflow net anual, B",
-        "value": 29.92,
+        "labelRo": "Ratele din primul an față de cashflow-ul net",
+        "value": 26.97,
         "unit": "PCT",
-        "display": "29,9%",
-        "formula": "rate sezoniere pe an / cashflow net din Open Banking",
+        "display": "27,0%",
+        "formula": "rate pe 12 luni / cashflow net anual (Open Banking)",
         "dependsOn": [
           "calc_50e2bcd8bf71"
         ]
@@ -3789,9 +4101,9 @@
         "tool": "compute_dscr",
         "key": "option_a.dscr",
         "labelRo": "DSCR: acoperirea ratelor din cashflow și economii",
-        "value": 5.01,
+        "value": 4.51,
         "unit": "RATIO",
-        "display": "5,01",
+        "display": "4,51",
         "formula": "(cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului",
         "sourceRo": "Open Banking (cashflow pe 12 luni)",
         "dependsOn": [
@@ -3803,9 +4115,9 @@
         "tool": "compute_dscr",
         "key": "option_b.debt_service_year",
         "labelRo": "Rate și dobânzi în cel mai greu an de credit",
-        "value": 29439.6,
+        "value": 26535.16,
         "unit": "EUR_PER_YEAR",
-        "display": "29.440 EUR/an",
+        "display": "26.535 EUR/an",
         "dependsOn": [
           "calc_50e2bcd8bf71"
         ]
@@ -3815,9 +4127,9 @@
         "tool": "compute_dscr",
         "key": "option_b.dscr",
         "labelRo": "DSCR: acoperirea ratelor din cashflow și economii",
-        "value": 4.31,
+        "value": 3.82,
         "unit": "RATIO",
-        "display": "4,31",
+        "display": "3,82",
         "formula": "(cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului",
         "sourceRo": "Open Banking (cashflow pe 12 luni)",
         "dependsOn": [
@@ -3828,16 +4140,24 @@
         "calcId": "calc_303a25937cc7",
         "tool": "calculate_impact",
         "key": "label.green_amount",
-        "labelRo": "Sumă etichetată verde (Taxonomie + piață)",
-        "value": 125000,
+        "labelRo": "Sumă etichetată verde",
+        "value": 98500,
         "unit": "EUR",
-        "display": "125.000 EUR",
+        "display": "98.500 EUR",
         "dependsOn": [
           "calc_5afabb1e9d1a",
           "calc_d9568ad91cca",
-          "calc_aab8f2296bbf",
-          "calc_4aa4ee631cb2"
+          "calc_aab8f2296bbf"
         ]
+      },
+      "calc_a5b1f32fdaad": {
+        "calcId": "calc_a5b1f32fdaad",
+        "tool": "calculate_impact",
+        "key": "label.taxonomy_amount",
+        "labelRo": "Din care aliniată la Taxonomia UE",
+        "value": 0,
+        "unit": "EUR",
+        "display": "0 EUR"
       },
       "calc_fe28c3f5f45f": {
         "calcId": "calc_fe28c3f5f45f",
@@ -3852,10 +4172,11 @@
         "calcId": "calc_4c363f6ded82",
         "tool": "calculate_impact",
         "key": "label.green_share",
-        "labelRo": "Pondere verde în investiție",
-        "value": 100,
+        "labelRo": "Ponderea verde a investiției",
+        "value": 87.17,
         "unit": "PCT",
-        "display": "100,0%",
+        "display": "87,2%",
+        "formula": "sumă verde / investiție totală",
         "dependsOn": [
           "calc_303a25937cc7",
           "calc_a918f7b5af59"
@@ -3865,12 +4186,25 @@
         "calcId": "calc_bebec36b270e",
         "tool": "calculate_impact",
         "key": "impact.water_horizon",
-        "labelRo": "Apă economisită pe 5 ani",
-        "value": 374685.31,
+        "labelRo": "Apă economisită pe orizont",
+        "value": 470666.67,
         "unit": "M3",
-        "display": "374.685 m³",
+        "display": "470.667 m³",
         "dependsOn": [
           "calc_d393fbd8e48c",
+          "calc_63eb160b82cf"
+        ]
+      },
+      "calc_5c9027c1dd24": {
+        "calcId": "calc_5c9027c1dd24",
+        "tool": "calculate_impact",
+        "key": "impact.energy_horizon",
+        "labelRo": "Energie economisită pe orizont",
+        "value": 24664.74,
+        "unit": "KWH",
+        "display": "24.665 kWh",
+        "dependsOn": [
+          "calc_4ccfe0136799",
           "calc_63eb160b82cf"
         ]
       },
@@ -3878,10 +4212,10 @@
         "calcId": "calc_197575634aa0",
         "tool": "calculate_impact",
         "key": "impact.co2_horizon",
-        "labelRo": "CO₂ evitat pe 5 ani",
-        "value": 126.75,
+        "labelRo": "CO₂ evitat pe orizont",
+        "value": 6.41,
         "unit": "T_CO2",
-        "display": "126,8 t CO₂",
+        "display": "6,4 t CO₂",
         "dependsOn": [
           "calc_c4fe14e06cd5",
           "calc_63eb160b82cf"
@@ -3901,12 +4235,12 @@
     "submission": {
       "variant": "VERDE",
       "optionId": "B",
-      "submittedAt": "2026-10-28T09:31:43.233Z"
+      "submittedAt": "2026-10-28T09:31:44.895Z"
     },
     "officerActions": [
       {
         "action": "APPROVE",
-        "at": "2026-10-28T09:31:48.233Z",
+        "at": "2026-10-28T09:31:49.895Z",
         "officerId": "ofiter.demo",
         "commentRo": "Aprobat cu condițiile din raport."
       }

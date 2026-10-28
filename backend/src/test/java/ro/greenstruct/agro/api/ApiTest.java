@@ -57,7 +57,8 @@ class ApiTest {
                 .andExpect(jsonPath("$.company.name").value("Agro Câmpia Bărăganului SRL"))
                 .andExpect(jsonPath("$.company.manager.age").value(38))
                 .andExpect(jsonPath("$.parcels.features.length()").value(4))
-                .andExpect(jsonPath("$.cashflow.annualNetEur").value(210000));
+                // 12 months of net cash flow in the demo farm file: 240,000 EUR
+                .andExpect(jsonPath("$.cashflow.annualNetEur").value(240000));
     }
 
     @Test
@@ -99,7 +100,8 @@ class ApiTest {
 
         Run run = runs.find(mapper.readTree(body).path("runId").asText()).orElseThrow();
         assertThat(run.request().parcelIds()).containsExactly("ct_0412_01", "ct_0412_02");
-        assertThat(run.missingDocuments()).containsExactly("WATER_PERMIT_ANAR", "ENERGY_INVOICES");
+        // the energy invoices only verify the estimate (README §6.1): optional, so not missing
+        assertThat(run.missingDocuments()).containsExactly("WATER_PERMIT_ANAR");
         assertThat(run.request().documents()).singleElement().satisfies(doc -> {
             assertThat(doc.docType()).isEqualTo("OFFER");
             assertThat(doc.fileName()).isEqualTo("oferta.pdf");

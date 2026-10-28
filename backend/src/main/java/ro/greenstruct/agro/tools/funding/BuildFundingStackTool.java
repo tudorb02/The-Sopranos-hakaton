@@ -135,7 +135,7 @@ public class BuildFundingStackTool implements ToolHandler {
         BigDecimal bridgeInterest = bridgeLine == null ? BigDecimal.ZERO : stack.bridgeInterestEur();
         return new FinancingOption(optionId, cfg.configId(), products, mainLine.path("lineId").asText(),
                 stack.cofinancingLoanEur(), stack.grantEur(), grantProgram, stack.guaranteedAmountEur(), guaranteeId,
-                bridge, bridgeInterest, bridgeLine == null ? null : bridgeLine.path("lineId").asText(), null, null);
+                bridge, bridgeInterest, bridgeLine == null ? null : bridgeLine.path("lineId").asText(), null, null, null);
     }
 
     private ObjectNode describe(ToolContext context, FinancingOption option) {

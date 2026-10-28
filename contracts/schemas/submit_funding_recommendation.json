@@ -228,6 +228,7 @@
           "type": "string",
           "enum": [
             "GRANT_IN_STACK",
+            "ALTERNATIVE_AVAILABLE",
             "NO_OPEN_SESSION",
             "NOT_ELIGIBLE"
           ]
@@ -256,7 +257,9 @@
       "required": [
         "horizonCalcId",
         "netAdvantageCalcId",
-        "drivers"
+        "drivers",
+        "rateDifferenceCalcId",
+        "rateDrivers"
       ],
       "properties": {
         "horizonCalcId": {
@@ -291,6 +294,39 @@
                   "OPERATING_SAVINGS",
                   "COLLATERAL_COSTS",
                   "BRIDGE_COST"
+                ]
+              },
+              "calcId": {
+                "$ref": "#/$defs/calcRef"
+              }
+            }
+          }
+        },
+        "rateDifferenceCalcId": {
+          "description": "Dobânda verde − dobânda clasică, în puncte procentuale (price_loan).",
+          "$ref": "#/$defs/calcRef"
+        },
+        "rateDrivers": {
+          "description": "De ce e dobânda verde mai mică: diferența pe fiecare componentă (README §4, pasul 6), din price_loan.",
+          "type": "array",
+          "maxItems": 6,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "component",
+              "calcId"
+            ],
+            "properties": {
+              "component": {
+                "type": "string",
+                "enum": [
+                  "FUNDING",
+                  "RISK",
+                  "CAPITAL",
+                  "OPERATIONAL",
+                  "PROGRAM_SUBSIDY",
+                  "TIER_ADJUSTMENT"
                 ]
               },
               "calcId": {
@@ -403,6 +439,7 @@
         "collateral",
         "totals",
         "annualSavings",
+        "rate",
         "affordability",
         "greenEligible"
       ],
@@ -483,6 +520,59 @@
               "$ref": "#/$defs/calcRef"
             },
             "netCostCalcId": {
+              "$ref": "#/$defs/calcRef"
+            }
+          }
+        },
+        "rate": {
+          "description": "Dobânda creditului principal pe componente (README §4, pasul 6), din price_loan. Subvenția de program, ajustarea de nivel verde, garanția și ponderea de risc efectivă lipsesc la creditul clasic.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "indexCalcId",
+            "fundingCostCalcId",
+            "riskCostCalcId",
+            "capitalCostCalcId",
+            "operationalCostCalcId",
+            "targetProfitCalcId",
+            "marginCalcId",
+            "rateCalcId"
+          ],
+          "properties": {
+            "indexCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "fundingCostCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "riskCostCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "capitalCostCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "operationalCostCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "targetProfitCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "programSubsidyCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "tierAdjustmentCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "guaranteeCoverageCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "effectiveRiskWeightCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "marginCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "rateCalcId": {
               "$ref": "#/$defs/calcRef"
             }
           }

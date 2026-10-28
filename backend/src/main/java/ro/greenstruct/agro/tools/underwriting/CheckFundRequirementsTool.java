@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;
 
 import ro.greenstruct.agro.engine.greentier.DnshStatus;
+import ro.greenstruct.agro.engine.pricing.LoanPricingCalculator;
 import ro.greenstruct.agro.engine.sme.SmeStatus;
 import ro.greenstruct.agro.orchestration.AgentSlot;
 import ro.greenstruct.agro.tools.AssessedDnsh;
@@ -18,6 +19,7 @@ import ro.greenstruct.agro.tools.ToolContext;
 import ro.greenstruct.agro.tools.ToolHandler;
 import ro.greenstruct.agro.tools.ToolOutput;
 import ro.greenstruct.agro.tools.funding.FinancingConfig;
+import ro.greenstruct.agro.tools.funding.PricingConfig;
 import ro.greenstruct.agro.tools.workspace.Configuration;
 import ro.greenstruct.agro.tools.workspace.FinancingOption;
 
@@ -127,11 +129,12 @@ public class CheckFundRequirementsTool implements ToolHandler {
         };
     }
 
-    /** A lower rate than the module's standard loan, or no mortgage where the standard loan needs one. */
+    /** A lower rate than the classic loan (price_loan), or no mortgage where the standard loan needs one. */
     private static Check benefit(FinancingOption option, ToolContext context) {
         JsonNode line = FinancingConfig.requireLine(context, option.mainLineId());
         JsonNode standard = FinancingConfig.requireLine(context, context.module().financing().standardLine());
-        boolean lowerRate = FinancingConfig.rate(line).compareTo(FinancingConfig.rate(standard)) < 0;
+        BigDecimal classicRate = LoanPricingCalculator.classic(PricingConfig.parameters(context)).ratePct();
+        boolean lowerRate = option.ratePct() != null && option.ratePct().compareTo(classicRate) < 0;
         boolean noMortgage = collateral(line).signum() == 0 && collateral(standard).signum() > 0;
         if (lowerRate && noMortgage) {
             return new Check("MET", "Dobândă mai mică decât la creditul clasic și fără ipotecă.");

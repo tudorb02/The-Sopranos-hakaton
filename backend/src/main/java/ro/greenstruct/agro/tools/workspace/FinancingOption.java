@@ -7,8 +7,8 @@ import java.util.Map;
 import ro.greenstruct.agro.engine.finance.LoanSchedule;
 
 /**
- * Option A / B / C: a configuration plus how it is financed. Amounts come from build_funding_stack; the
- * schedule and the totals from build_scenario.
+ * Option A / B / C: a configuration plus how it is financed. Amounts come from build_funding_stack, the main loan's
+ * rate from price_loan (null until then), the schedule and the totals from build_scenario.
  */
 public record FinancingOption(
         String optionId,
@@ -23,6 +23,7 @@ public record FinancingOption(
         BigDecimal bridgeLoanEur,
         BigDecimal bridgeInterestEur,
         String bridgeLineId,
+        BigDecimal ratePct,
         LoanSchedule schedule,
         Map<String, BigDecimal> totals) {
 
@@ -31,9 +32,15 @@ public record FinancingOption(
         totals = totals == null ? Map.of() : Map.copyOf(totals);
     }
 
+    public FinancingOption withRate(BigDecimal newRatePct) {
+        return new FinancingOption(optionId, configId, products, mainLineId, mainLoanEur, grantEur, grantProgram,
+                guaranteeEur, guaranteeId, bridgeLoanEur, bridgeInterestEur, bridgeLineId, newRatePct, schedule, totals);
+    }
+
     public FinancingOption withScenario(LoanSchedule newSchedule, Map<String, BigDecimal> newTotals) {
         return new FinancingOption(optionId, configId, products, mainLineId, mainLoanEur, grantEur, grantProgram,
-                guaranteeEur, guaranteeId, bridgeLoanEur, bridgeInterestEur, bridgeLineId, newSchedule, newTotals);
+                guaranteeEur, guaranteeId, bridgeLoanEur, bridgeInterestEur, bridgeLineId, ratePct, newSchedule,
+                newTotals);
     }
 
     public BigDecimal total(String name) {

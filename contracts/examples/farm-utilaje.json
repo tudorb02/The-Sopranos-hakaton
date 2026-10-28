@@ -238,79 +238,79 @@
       "months": [
         {
           "month": "2025-10",
-          "inflowEur": 61000,
+          "inflowEur": 63500,
           "outflowEur": 15000,
-          "netEur": 46000
+          "netEur": 48500
         },
         {
           "month": "2025-11",
-          "inflowEur": 37000,
+          "inflowEur": 39500,
           "outflowEur": 15000,
-          "netEur": 22000
+          "netEur": 24500
         },
         {
           "month": "2025-12",
-          "inflowEur": 34000,
+          "inflowEur": 36500,
           "outflowEur": 15000,
-          "netEur": 19000
+          "netEur": 21500
         },
         {
           "month": "2026-01",
           "inflowEur": 15000,
-          "outflowEur": 23000,
-          "netEur": -8000
+          "outflowEur": 20500,
+          "netEur": -5500
         },
         {
           "month": "2026-02",
           "inflowEur": 15000,
-          "outflowEur": 24000,
-          "netEur": -9000
+          "outflowEur": 21500,
+          "netEur": -6500
         },
         {
           "month": "2026-03",
           "inflowEur": 15000,
-          "outflowEur": 29000,
-          "netEur": -14000
+          "outflowEur": 26500,
+          "netEur": -11500
         },
         {
           "month": "2026-04",
           "inflowEur": 15000,
-          "outflowEur": 27000,
-          "netEur": -12000
+          "outflowEur": 24500,
+          "netEur": -9500
         },
         {
           "month": "2026-05",
           "inflowEur": 15000,
-          "outflowEur": 21000,
-          "netEur": -6000
+          "outflowEur": 18500,
+          "netEur": -3500
         },
         {
           "month": "2026-06",
-          "inflowEur": 19000,
+          "inflowEur": 21500,
           "outflowEur": 15000,
-          "netEur": 4000
+          "netEur": 6500
         },
         {
           "month": "2026-07",
-          "inflowEur": 93000,
+          "inflowEur": 95500,
           "outflowEur": 15000,
-          "netEur": 78000
+          "netEur": 80500
         },
         {
           "month": "2026-08",
-          "inflowEur": 67000,
+          "inflowEur": 69500,
           "outflowEur": 15000,
-          "netEur": 52000
+          "netEur": 54500
         },
         {
           "month": "2026-09",
-          "inflowEur": 53000,
+          "inflowEur": 55500,
           "outflowEur": 15000,
-          "netEur": 38000
+          "netEur": 40500
         }
       ],
-      "annualNetEur": 210000,
-      "avgMonthlyNetEur": 17500,
+      "annualNetEur": 240000,
+      "avgMonthlyNetEur": 20000,
       "peakMonths": [
         "JUL",
         "AUG",

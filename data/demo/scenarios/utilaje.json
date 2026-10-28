@@ -27,7 +27,8 @@
     ],
     "old_equipment_fate": "CASARE",
     "hours_per_year": 650,
-    "manager_competences": false
+    "manager_competences": false,
+    "loan_term": "ANI_7"
   },
   "documents": [
     {

@@ -10,10 +10,9 @@
       "costEurPerTractor": 13000,
       "effect": {
         "fuelSavingPct": 10,
-        "inputSavingPct": 3,
         "nitrogenSavingPct": 5
       },
-      "sourceRo": "Motorină: Haapala et al., Agronomy Research 23(1), 2025 (−20% la semănat; 10% conservator). Inputuri: PAMI/Iowa State. Azot: studiu CEMEPE (−4,8…8,8%)"
+      "sourceRo": "Motorină: Haapala et al., Agronomy Research 23(1), 2025 (−20% la semănat; 10% conservator). Azot: studiu CEMEPE (−4,8…8,8%)"
     },
     {
       "catalogId": "utl.tractor.new_stage_v",

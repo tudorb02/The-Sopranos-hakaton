@@ -1,6 +1,7 @@
 package ro.greenstruct.agro.engine.machinery;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.List;
 
@@ -30,6 +31,22 @@ class MachineryCalculatorTest {
         assertThat(fuel.proposedLitres()).isEqualByComparingTo("28512");
         assertThat(fuel.savedLitres()).isEqualByComparingTo("7488");
         assertThat(fuel.savingPct()).isEqualByComparingTo("20.8");
+    }
+
+    @Test
+    void theMachineryTestFarmOfTheReadme() {
+        // DEMO-0003 (data/demo/test-documents): 46,800 l on 600 ha = 78 l/ha today; the new tractor's sheet says
+        // 68 l/ha (1 − 68 / 78 = 12.82%), GPS RTK saves 9% more: 68 × 0.91 = 61.88 l/ha, 1 − 61.88 / 78 = 20.67%
+        BigDecimal perHa = MachineryCalculator.litresPerHa(new BigDecimal("46800"), new BigDecimal("600"));
+        assertThat(perHa).isEqualByComparingTo("78");
+        BigDecimal tractor = BigDecimal.ONE.subtract(new BigDecimal("68").divide(perHa, MathContext.DECIMAL128))
+                .multiply(BigDecimal.valueOf(100));
+
+        FuelComparison fuel = MachineryCalculator.fuel(new BigDecimal("600"), perHa, List.of(tractor, new BigDecimal("9")));
+
+        // (78 − 61.88) × 600 = 9,672 l a year
+        assertThat(fuel.savedLitres().setScale(2, RoundingMode.HALF_EVEN)).isEqualByComparingTo("9672.00");
+        assertThat(fuel.savingPct().setScale(2, RoundingMode.HALF_EVEN)).isEqualByComparingTo("20.67");
     }
 
     @Test

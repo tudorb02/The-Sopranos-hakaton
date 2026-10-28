@@ -24,4 +24,13 @@ class ScenarioComparisonTest {
         assertThat(money(comparison.netAdvantageEur())).isEqualByComparingTo("241532.20");
         assertThat(comparison.proposedIsBetter()).isTrue();
     }
+
+    @Test
+    void higherRunningCostsRaiseTheNetCost() {
+        // 85,000 − 0 + 20,000 + 3,350 − (−16,000) = 124,350
+        ScenarioCost sprinkler = new ScenarioCost("A", new BigDecimal("85000"), BigDecimal.ZERO, new BigDecimal("20000"),
+                new BigDecimal("3350"), new BigDecimal("-16000"));
+
+        assertThat(sprinkler.netCostEur()).isEqualByComparingTo("124350");
+    }
 }

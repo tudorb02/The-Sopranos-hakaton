@@ -24,7 +24,7 @@
     "totalHa": 40,
     "standardOutputEur": 412000,
     "irrigatedNow": true,
-    "currentIrrigation": "ASPERSIE_VECHE",
+    "currentIrrigation": "BRAZDE",
     "crops": [
       {
         "year": 2026,
@@ -216,7 +216,7 @@
           "areaHa": 8,
           "crop": "varză",
           "natura2000": false,
-          "nitrateVulnerable": true,
+          "nitrateVulnerable": false,
           "droughtRisk": "HIGH",
           "hailRisk": "MEDIUM",
           "floodRisk": "LOW",
@@ -259,7 +259,7 @@
           "areaHa": 8,
           "crop": "ceapă",
           "natura2000": false,
-          "nitrateVulnerable": true,
+          "nitrateVulnerable": false,
           "droughtRisk": "HIGH",
           "hailRisk": "MEDIUM",
           "floodRisk": "LOW",

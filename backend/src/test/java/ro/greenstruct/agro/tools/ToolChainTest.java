@@ -90,8 +90,8 @@ class ToolChainTest {
     void irrigationDossierReproducesTheFixture() {
         String run = newRun("45871203", "irigatii",
                 List.of("ct_0412_01", "ct_0412_02", "ct_0412_03", "ct_0415_01", "ct_0415_02"),
-                "{\"irrigation_current\": \"ASPERSIE_VECHE\", \"cashin_months\": [\"JUL\", \"AUG\", \"SEP\", \"OCT\"],"
-                        + " \"old_equipment_fate\": \"VANZARE\"}",
+                "{\"irrigation_current\": \"BRAZDE\", \"water_source\": \"PUT\", \"pumping_head_m\": 35,"
+                        + " \"cashin_months\": [\"JUL\", \"AUG\", \"SEP\", \"OCT\"], \"old_equipment_fate\": \"NU_E_CAZUL\"}",
                 Map.of("doc_oferta_aspersie", "OFFER", "doc_aviz_anar", "WATER_PERMIT_ANAR",
                         "doc_facturi_energie", "ENERGY_INVOICES"));
 
@@ -99,109 +99,145 @@ class ToolChainTest {
         call(run, "extract_document", "{\"documentId\": \"doc_aviz_anar\"}");
         call(run, "extract_document", "{\"documentId\": \"doc_facturi_energie\"}");
         call(run, "get_module_rules", "{}");
-        call(run, "compute_baseline", "{}");
-        assertValue(run, "baseline.water", "233846.15");
-        assertValue(run, "baseline.kwh_per_m3", "0.45");
+        JsonNode baseline = call(run, "compute_baseline", "{}");
+        assertThat(baseline.path("climateZone").asText()).isEqualTo("SUD_EST");
+        // (Kc × 700 mm − 200 mm) × 10 × 8 ha per parcel: tomatoes 0.85 → 31,600; peppers and cucumbers 0.80 → 28,800
+        // each; cabbage and onions 0.75 → 26,000 each: 141,200 m³ in total
+        assertValue(run, "baseline.net_need", "141200");
+        // furrows: 141,200 / 0.60 = 235,333.33 m³
+        assertValue(run, "baseline.water", "235333.33");
+        // 235,333.33 m³ × (35 m lift + 0) × 0.002725 / 0.65 = 34,530.64 kWh; the invoices (36,900 kWh) are within 20%
+        assertValue(run, "baseline.energy", "34530.64");
+        assertValue(run, "baseline.energy_invoiced", "36900");
+        assertThat(baseline.path("warnings").toString()).doesNotContain("20%");
 
         JsonNode initial = call(run, "compute_indicator", "{\"documentId\": \"doc_oferta_aspersie\"}");
         assertThat(initial.path("thresholdResult").asText()).isEqualTo("FAIL");
         assertValue(run, "cfg_initial.total_cost", "85000");
-        assertValue(run, "cfg_initial.water_saving_pct", "15.03");
-        // The fixture rounds kWh/m³ to 0.45 before multiplying; the engine keeps 0.449998…, hence +0.65 kWh.
-        assertValue(run, "cfg_initial.energy_saved", "15818.89");
+        // sprinkler: 141,200 / 0.75 = 188,266.67 m³, 1 − 0.60 / 0.75 = 20%
+        assertValue(run, "cfg_initial.water_saving_pct", "20");
+        // at 3.5 bar: 188,266.67 × (35 + 35) × 0.002725 / 0.65 = 55,249.03 kWh, 20,718.38 kWh more than furrows
+        assertValue(run, "cfg_initial.energy_saved", "-20718.38");
+        // −20,718.38 kWh × 0.26 kg/kWh / 1000 = −5.39 t
+        assertValue(run, "cfg_initial.co2_avoided", "-5.3868");
 
         JsonNode search = call(run, "search_upgrades", "{\"baseConfigId\": \"cfg_initial\"}");
-        assertThat(search.path("candidates")).anySatisfy(c -> {
-            assertThat(c.path("packageId").asText()).isEqualTo("pkg_drip_sensors");
-            assertThat(c.path("thresholdResult").asText()).isEqualTo("PASS");
-        });
-        assertValue(run, "cand.sensors.pct", "21.83");
+        assertThat(search.path("candidates")).allSatisfy(c -> assertThat(c.path("thresholdResult").asText()).isEqualTo("PASS"));
+        // sprinkler + sensors 1 − 0.9 × 0.60 / 0.75 = 28%; drip 1 − 0.60 / 0.90 = 33.33%; drip + sensors 40%
+        assertValue(run, "cand.sensors.pct", "28");
+        assertValue(run, "cand.sensors.cost", "92700");
+        assertValue(run, "cand.drip.pct", "33.33");
+        assertValue(run, "cand.drip_sensors.pct", "40");
         assertValue(run, "cand.drip_sensors.cost", "113000");
 
+        // drip replaces the sprinklers, pipes and works: pump 14,500 + drip 90,800 + meter 1,200 = 106,500 EUR
         call(run, "simulate_upgrade_package", "{\"baseConfigId\": \"cfg_initial\", \"configId\": \"cfg_min_pass\","
-                + " \"add\": [\"irg.drip.surface_veg\", \"irg.sensors.soil_moisture\", \"irg.meter.electromagnetic\"]}");
-        assertValue(run, "cfg_min_pass.water_saving_pct", "32.05");
-        assertValue(run, "cfg_min_pass.energy_saved", "65502.73");
+                + " \"add\": [\"irg.drip.surface_veg\", \"irg.meter.electromagnetic\"]}");
+        assertValue(run, "cfg_min_pass.total_cost", "106500");
+        assertValue(run, "cfg_min_pass.water_saving_pct", "33.33");
         JsonNode recommended = call(run, "simulate_upgrade_package",
-                "{\"baseConfigId\": \"cfg_min_pass\", \"configId\": \"cfg_recommended\", \"add\": [\"irg.pump.solar_25kwp\"]}");
+                "{\"baseConfigId\": \"cfg_min_pass\", \"configId\": \"cfg_recommended\", \"add\": [\"irg.sensors.soil_moisture\"]}");
         assertThat(recommended.path("thresholdResult").asText()).isEqualTo("PASS");
-        assertValue(run, "cfg_recommended.total_cost", "125000");
-        assertValue(run, "cfg_recommended.upgrade_cost", "40000");
-        assertValue(run, "cfg_recommended.pv_kwh", "32000");
-        assertValue(run, "cfg_recommended.energy_saved", "97502.73");
-        // 97,502.73 kWh × 0.26 kg/kWh (config/factors.json) / 1,000 = 25.3507 t
-        assertValue(run, "cfg_recommended.co2_avoided", "25.35");
+        assertValue(run, "cfg_recommended.total_cost", "113000");
+        assertValue(run, "cfg_recommended.upgrade_cost", "28000");
+        assertValue(run, "cfg_recommended.water_saving_pct", "40");
+        // 141,200 m³ × (35 + 15) × 0.002725 / 0.65 = 29,597.69 kWh: 4,932.95 kWh less than today, × 0.26 / 1000 = 1.28 t
+        assertValue(run, "cfg_recommended.pumping_energy", "29597.69");
+        assertValue(run, "cfg_recommended.energy_saved", "4932.95");
+        assertValue(run, "cfg_recommended.co2_avoided", "1.2826");
 
         JsonNode dnsh = call(run, "check_dnsh_inputs", "{\"configId\": \"cfg_recommended\"}");
-        assertThat(dnsh.path("permitValid").asBoolean()).isTrue();
+        assertThat(dnsh.path("nitrateVulnerableParcels")).isEmpty();
         assertThat(dnsh.path("waterMeterInConfig").asBoolean()).isTrue();
-        assertThat(dnsh.path("nitrateVulnerableParcels")).extracting(JsonNode::asText)
-                .containsExactly("ct_0415_01", "ct_0415_02");
 
         call(run, "list_financing_lines", "{}");
         JsonNode eligibility = call(run, "check_program_eligibility", "{\"configId\": \"cfg_recommended\"}");
         assertThat(programs(eligibility)).containsEntry("DR_12", "NOT_ELIGIBLE/OPEN")
                 .containsEntry("DR_26", "ELIGIBLE/NOT_OPEN")
-                .containsEntry("FM_PV", "ELIGIBLE/CLOSED")
+                // FM_PV funds solar pumps or panels, which the recommended configuration does not have
+                .containsEntry("FM_PV", "NOT_ELIGIBLE/CLOSED")
                 .containsEntry("INVESTEU_FEI", "ELIGIBLE/PERMANENT");
 
         call(run, "build_funding_stack", "{\"options\": ["
                 + "{\"optionId\": \"A\", \"configId\": \"cfg_initial\", \"products\": [\"rbro.invest.standard\"]},"
                 + "{\"optionId\": \"B\", \"configId\": \"cfg_recommended\", \"products\": [\"rbro.agri.green_investeu\"]}]}");
-        assertValue(run, "option_b.guarantee.amount", "87500");
-
-        call(run, "build_scenario", "{\"optionId\": \"A\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        assertValue(run, "option_a.installment", "1760.34");
-        assertValue(run, "option_a.collateral_costs", "3350");
-        assertValue(run, "option_a.savings_horizon", "36910.89");
-        assertValue(run, "option_a.net_cost", "72059.37");
-        call(run, "build_scenario", "{\"optionId\": \"B\", \"scheduleType\": \"SEASONAL\"}");
-        assertValue(run, "option_b.installment", "7359.90");
-        assertValue(run, "option_b.grace", "5");
-        assertValue(run, "option_b.total_interest", "22198.05");
-        assertValue(run, "option_b.savings_horizon", "142464.97");
-
-        JsonNode comparison = call(run, "compare_scenarios", "{\"optionIds\": [\"A\", \"B\"]}");
-        assertThat(comparison.path("better").asText()).isEqualTo("B");
-        assertValue(run, "compare.net_advantage", "67326.29");
-        assertValue(run, "compare.upgrade_payback", "22.74");
-
-        JsonNode affordability = call(run, "check_affordability", "{\"optionIds\": [\"A\", \"B\"]}");
-        assertThat(affordability.path("A").path("result").asText()).isEqualTo("PASS_WITH_WARNING");
-        assertThat(affordability.path("B").path("result").asText()).isEqualTo("PASS");
-        assertValue(run, "option_a.affordability_ratio", "21.47");
-        assertValue(run, "option_b.affordability_ratio", "29.92");
-
-        call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
-        // (98,400 net cash flow + 36,910.89 / 5 savings) / (12 × 1,760.34) = 105,782.18 / 21,124.08 = 5.0077
-        assertValue(run, "option_a.dscr", "5.0077");
-        // Seasonal: 4 installments in every loan year. (98,400 + 142,464.97 / 5) / (4 × 7,359.90) = 4.3103
-        assertValue(run, "option_b.debt_service_year", "29439.60");
-        assertValue(run, "option_b.dscr", "4.3103");
+        // 113,000 × 70%
+        assertValue(run, "option_b.guarantee.amount", "79100");
+        assertThat(tools.execute(run, "build_scenario", mapper.createObjectNode().put("optionId", "A")
+                .put("scheduleType", "EQUAL_MONTHLY")).messageRo()).contains("price_loan");
 
         assertThat(tools.execute(run, "determine_green_tier", mapper.createObjectNode()
                 .put("requestedConfigId", "cfg_initial").put("financedConfigId", "cfg_recommended")).messageRo())
                 .contains("Lipsește statusul DNSH");
         JsonNode tier = call(run, "determine_green_tier", "{\"requestedConfigId\": \"cfg_initial\","
-                + " \"financedConfigId\": \"cfg_recommended\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
-        // The offer saves 15.03% (< 25%); with the upgrade 32.05%: above 25% but below 25% × 1.5 = 37.5%.
-        assertThat(tier.path("tier").asText()).isEqualTo("VERDE_CU_UPGRADE");
+                + " \"financedConfigId\": \"cfg_recommended\", \"dnshStatus\": \"PASS\"}");
+        // 40% ≥ 25% × 1.5 = 37.5% and DNSH passed on every objective: Verde Plus, even though the offer (20%) needed the upgrade
+        assertThat(tier.path("tier").asText()).isEqualTo("VERDE_PLUS");
         assertThat(tier.path("upgradeNeeded").asBoolean()).isTrue();
         assertValue(run, "green_tier.verde_plus_min", "37.5");
-        assertValue(run, "green_tier.financed_indicator", "32.05");
+
+        call(run, "price_loan", "{\"optionIds\": [\"A\", \"B\"]}");
+        // classic: 2.0 + 1.2 + 3% × 45% + 75% × 12% × 12% + 1.5 + 1.77 = 2.0 + 1.2 + 1.35 + 1.08 + 1.5 + 1.77 = 8.90%
+        assertValue(run, "option_a.rate.risk_cost", "1.35");
+        assertValue(run, "option_a.rate.capital_cost", "1.08");
+        assertValue(run, "option_a.rate", "8.9");
+        // green, g = 70%, Verde Plus (+0): 2.0 + 0.9 + 2.5% × 45% × 30% + 22.5% × 12% × 12% + 1.35 + 1.77 − 0.40
+        // = 2.0 + 0.9 + 0.3375 + 0.324 + 1.35 + 1.77 − 0.40 = 6.2815%
+        assertValue(run, "option_b.rate.risk_cost", "0.3375");
+        assertValue(run, "option_b.rate.capital_cost", "0.324");
+        assertValue(run, "option_b.rate.tier_adjustment", "0");
+        assertValue(run, "option_b.rate", "6.2815");
+        // −0.30 funding, −1.0125 risk, −0.756 capital, −0.15 operational, −0.40 subsidy = −2.6185 pp
+        assertValue(run, "pricing.diff.risk_cost", "-1.0125");
+        assertValue(run, "pricing.diff.capital_cost", "-0.756");
+        assertValue(run, "pricing.diff.rate", "-2.6185");
+
+        call(run, "build_scenario", "{\"optionId\": \"A\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
+        // PMT(85,000; 8.9% / 12; 60) = 1,760.34
+        assertValue(run, "option_a.installment", "1760.34");
+        // 1,450 + 380 × 5
+        assertValue(run, "option_a.collateral_costs", "3350");
+        // a year: 47,066.67 m³ × 0.02 = 941.33 EUR of water, −20,718.38 kWh × 0.20 = −4,143.68 EUR of energy; × 5
+        assertValue(run, "option_a.savings_horizon", "-16011.72");
+        call(run, "build_scenario", "{\"optionId\": \"B\", \"scheduleType\": \"SEASONAL\"}");
+        // 20 payments in July–October 2027–2031 with the present value of 113,000 at 6.2815%; none in Feb–Jun 2027
+        assertValue(run, "option_b.installment", "6633.79");
+        assertValue(run, "option_b.grace", "5");
+        assertValue(run, "option_b.total_interest", "19675.76");
+        // (94,133.33 m³ × 0.02 + 4,932.95 kWh × 0.20) × 5 = (1,882.67 + 986.59) × 5
+        assertValue(run, "option_b.savings_horizon", "14346.28");
+
+        JsonNode comparison = call(run, "compare_scenarios", "{\"optionIds\": [\"A\", \"B\"]}");
+        assertThat(comparison.path("better").asText()).isEqualTo("B");
+        // (85,000 + 20,620.26 + 3,350 + 16,011.72) − (113,000 + 19,675.76 − 14,346.28) = 124,981.98 − 118,329.48
+        assertValue(run, "compare.net_advantage", "6652.5");
+        // 28,000 / ((2,869.26 + 3,202.34) / 12)
+        assertValue(run, "compare.upgrade_payback", "55.34");
+
+        JsonNode affordability = call(run, "check_affordability", "{\"optionIds\": [\"A\", \"B\"]}");
+        assertThat(affordability.path("A").path("result").asText()).isEqualTo("PASS_WITH_WARNING");
+        assertThat(affordability.path("B").path("result").asText()).isEqualTo("PASS");
+        assertValue(run, "option_a.affordability_ratio", "21.47");
+        assertValue(run, "option_b.affordability_ratio", "26.97");
+
+        call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
+        // (98,400 − 3,202.34) / (12 × 1,760.34) = 95,197.66 / 21,124.08 = 4.5066
+        assertValue(run, "option_a.dscr", "4.5066");
+        // (98,400 + 2,869.26) / (4 × 6,633.79) = 101,269.26 / 26,535.16 = 3.8164
+        assertValue(run, "option_b.dscr", "3.8164");
 
         JsonNode labels = call(run, "get_labeling_rules", "{\"configId\": \"cfg_recommended\"}");
         assertThat(labels.path("rules")).anySatisfy(rule -> {
-            assertThat(rule.path("category").asText()).isEqualTo("SOLAR_PUMP");
-            assertThat(rule.path("label").asText()).isEqualTo("TAXONOMY_ALIGNED");
-            assertThat(rule.path("taxonomyActivity").asText()).isEqualTo("4.1");
+            assertThat(rule.path("category").asText()).isEqualTo("IRRIGATION_DRIP");
+            assertThat(rule.path("label").asText()).isEqualTo("MARKET_GREEN");
         });
         call(run, "get_dnsh_criteria", "{}");
         call(run, "calculate_impact", "{\"configId\": \"cfg_recommended\"}");
-        assertValue(run, "label.green_share", "100");
-        assertValue(run, "impact.water_horizon", "374685.31");
-        // 25.3507 t × 5 years = 126.7535 t
-        assertValue(run, "impact.co2_horizon", "126.75");
+        // drip, sensors and meter are green, the offer's pump is not: 98,500 / 113,000
+        assertValue(run, "label.green_share", "87.17");
+        // 94,133.33 m³ × 5 years; 1.2826 t × 5 years
+        assertValue(run, "impact.water_horizon", "470666.67");
+        assertValue(run, "impact.co2_horizon", "6.4129");
 
         // B is secured by the FEI InvestEU guarantee: F1, the primary fund for irrigation (config/funds.json).
         JsonNode fund = call(run, "select_fund", "{\"optionId\": \"B\"}");
@@ -213,16 +249,13 @@ class ToolChainTest {
         assertValue(run, "fund.coverage", "70");
         assertThat(tools.execute(run, "select_fund", mapper.createObjectNode().put("optionId", "A")).ok()).isFalse();
 
-        assertThat(tools.execute(run, "check_fund_requirements",
-                mapper.createObjectNode().put("fundId", "F1").put("optionId", "B")).messageRo())
-                .contains("Lipsește statusul DNSH");
         JsonNode requirements = call(run, "check_fund_requirements",
-                "{\"fundId\": \"F1\", \"optionId\": \"B\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
+                "{\"fundId\": \"F1\", \"optionId\": \"B\", \"dnshStatus\": \"PASS\"}");
         assertThat(requirements.path("requirements"))
                 .extracting(r -> r.path("requirementId").asText() + "/" + r.path("status").asText())
-                .containsExactly("SME_STATUS/MET", "ELIGIBLE_CATEGORY/MET", "TECHNICAL_THRESHOLD/MET", "DNSH/TO_CONFIRM",
+                .containsExactly("SME_STATUS/MET", "ELIGIBLE_CATEGORY/MET", "TECHNICAL_THRESHOLD/MET", "DNSH/MET",
                         "IMPACT_QUANTIFIED/MET", "CLIENT_BENEFIT/MET", "PERIODIC_REPORTING/MET");
-        assertThat(requirements.path("allMet").asBoolean()).isFalse();
+        assertThat(requirements.path("allMet").asBoolean()).isTrue();
 
         JsonNode bond = call(run, "get_bond_category", "{}");
         assertThat(bond.path("proposed").asText()).isEqualTo("AGRICULTURE_FORESTRY");
@@ -232,7 +265,7 @@ class ToolChainTest {
     void machineryDossierReproducesTheFixture() {
         String run = newRun("38264019", "utilaje", List.of("cl_1001", "cl_1002", "cl_1003", "cl_1004"),
                 "{\"nitrogen_kg_ha\": 150, \"manager_competences\": false, \"old_equipment_fate\": \"CASARE\","
-                        + " \"cashin_months\": [\"JUL\", \"AUG\", \"SEP\", \"OCT\"]}",
+                        + " \"cashin_months\": [\"JUL\", \"AUG\", \"SEP\", \"OCT\"], \"loan_term\": \"ANI_7\"}",
                 Map.of("doc_oferta_tractoare", "OFFER", "doc_facturi_motorina", "FUEL_INVOICES"));
 
         call(run, "extract_document", "{\"documentId\": \"doc_oferta_tractoare\"}");
@@ -241,29 +274,33 @@ class ToolChainTest {
         assertValue(run, "rules.price.fuel_net", "1.17");
         call(run, "compute_baseline", "{\"currentFleet\": {\"totalCount\": 4, \"replacedCount\": 4,"
                 + " \"averageAgeYears\": 22}}");
-        assertValue(run, "baseline.fuel", "36000");
+        // 36,180 l invoiced / 400 ha = 90.45 l/ha
+        assertValue(run, "baseline.fuel_per_ha", "90.45");
+        assertValue(run, "baseline.fuel", "36180");
         assertValue(run, "baseline.nitrogen", "60000");
-        // 36,000 l × 2.68 kg/l / 1,000 = 96.48 t
-        assertValue(run, "baseline.co2", "96.48");
+        // 36,180 l × 2.68 kg/l / 1,000 = 96.96 t
+        assertValue(run, "baseline.co2", "96.9624");
 
         JsonNode initial = call(run, "compute_indicator", "{\"documentId\": \"doc_oferta_tractoare\"}");
         assertThat(initial.path("thresholdResult").asText()).isEqualTo("FAIL");
         assertThat(initial.path("sizing").asText()).isEqualTo("PASS");
         assertValue(run, "cfg_initial.total_cost", "440000");
-        // The fixture uses a flat 12%; the engine derives 1 − 246/280 g/kWh = 12.14% from the tractors' age.
-        assertValue(run, "cfg_initial.fuel_saving_pct", "12.14");
+        // new Stage V tractors (246 g/kWh) replacing 22-year-old ones (280 g/kWh): 1 − 246 / 280 = 12.14%
+        assertValue(run, "cfg_initial.fuel_saving_pct", "12.1429");
         assertValue(run, "cfg_initial.hp_per_ha", "2.1");
 
         call(run, "simulate_upgrade_package", "{\"baseConfigId\": \"cfg_initial\", \"configId\": \"cfg_recommended\","
                 + " \"add\": [\"utl.precision.rtk_sc_vra\"]}");
         assertValue(run, "cfg_recommended.total_cost", "492000");
-        assertValue(run, "cfg_recommended.fuel_saving_pct", "20.93");
-        assertValue(run, "cfg_recommended.fuel_saved", "7534.29");
+        // 1 − (1 − 0.121429) × (1 − 0.10) = 20.93%; 36,180 l × 0.209286 = 7,571.96 l
+        assertValue(run, "cfg_recommended.fuel_saving_pct", "20.9286");
+        assertValue(run, "cfg_recommended.fuel_saved", "7571.96");
+        // variable rate: 400 ha × 150 kg N/ha × 5% = 3,000 kg; × 1.10 EUR/kg = 3,300 EUR a year
         assertValue(run, "cfg_recommended.nitrogen_saved", "3000");
-        assertValue(run, "cfg_recommended.inputs_saved", "3000");
+        assertValue(run, "cfg_recommended.nitrogen_cost_saved", "3300");
         assertValue(run, "cfg_recommended.precision_share", "10.57");
-        // 7,534.29 l × 2.68 kg/l / 1,000 = 20.1919 t
-        assertValue(run, "cfg_recommended.co2_avoided", "20.19");
+        // (7,571.96 l × 2.68 + 3,000 kg N × 4.29) / 1,000 = 20.2929 + 12.87 = 33.1629 t CO₂e
+        assertValue(run, "cfg_recommended.co2_avoided", "33.1629");
 
         JsonNode eligibility = call(run, "check_program_eligibility", "{\"configId\": \"cfg_recommended\"}");
         assertThat(programs(eligibility)).containsEntry("DR_12", "ELIGIBLE/OPEN")
@@ -272,41 +309,13 @@ class ToolChainTest {
         assertValue(run, "dr_12.intensity", "65");
         assertValue(run, "dr_12.precision_points", "15");
 
+        // The green offer is the green credit with the FEI guarantee; the DR-12 grant stays an alternative.
+        call(run, "list_financing_lines", "{}");
         call(run, "build_funding_stack", "{\"options\": ["
-                + "{\"optionId\": \"A\", \"configId\": \"cfg_initial\", \"products\": [\"rbro.invest.machinery\"]},"
-                + "{\"optionId\": \"B\", \"configId\": \"cfg_recommended\", \"products\": [\"DR_12\","
-                + " \"rbro.agri.cofinancing_fgcr\", \"rbro.agri.bridge_afir\"]}]}");
-        assertValue(run, "option_b.grant.amount", "200000");
-        assertValue(run, "option_b.loan.amount", "292000");
-        assertValue(run, "option_b.guarantee.amount", "233600");
-
-        call(run, "build_scenario", "{\"optionId\": \"A\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        call(run, "build_scenario", "{\"optionId\": \"B\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        assertValue(run, "option_a.installment", "6748.84");
-        assertValue(run, "option_b.installment", "4265.70");
-        assertValue(run, "option_b.bridge.interest", "14000");
-        assertValue(run, "option_b.total_interest", "80318.62");
-        assertValue(run, "option_a.net_cost", "531097.62");
-        assertValue(run, "option_b.net_cost", "289607.55");
-
-        call(run, "compare_scenarios", "{\"optionIds\": [\"A\", \"B\"]}");
-        assertValue(run, "compare.net_advantage", "241490.06");
-        assertValue(run, "compare.driver.grant", "200000");
-        assertValue(run, "compare.driver.interest", "46584.06");
-        // Without the grant, the 52.000 EUR precision package pays back from fuel and inputs alone in ~93 months.
-        assertValue(run, "compare.upgrade_payback", "93.12");
-
-        call(run, "check_affordability", "{\"optionIds\": [\"A\", \"B\"]}");
-        assertValue(run, "option_a.affordability_ratio", "38.56");
-        assertValue(run, "option_b.affordability_ratio", "24.38");
-
-        call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
-        // Savings A = 84 × 6,748.84 paid − 531,097.62 net cost = 35,804.94 over 7 years = 5,114.99 a year:
-        // (210,000 + 5,114.99) / (12 × 6,748.84) = 215,114.99 / 80,986.08 = 2.6562
-        assertValue(run, "option_a.dscr", "2.6562");
-        // Savings B = 492,000 − 200,000 grant + 80,318.62 interest − 289,607.55 = 82,711.07 over 7 years; the bridge
-        // is repaid from the grant: (210,000 + 11,815.87) / (12 × 4,265.70) = 221,815.87 / 51,188.40 = 4.3333
-        assertValue(run, "option_b.dscr", "4.3333");
+                + "{\"optionId\": \"A\", \"configId\": \"cfg_initial\", \"products\": [\"rbro.invest.standard\"]},"
+                + "{\"optionId\": \"B\", \"configId\": \"cfg_recommended\", \"products\": [\"rbro.agri.green_investeu\"]}]}");
+        // 492,000 × 70%
+        assertValue(run, "option_b.guarantee.amount", "344400");
 
         JsonNode tier = call(run, "determine_green_tier", "{\"requestedConfigId\": \"cfg_initial\","
                 + " \"financedConfigId\": \"cfg_recommended\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
@@ -314,23 +323,65 @@ class ToolChainTest {
         assertThat(tier.path("tier").asText()).isEqualTo("VERDE_CU_UPGRADE");
         assertValue(run, "green_tier.verde_plus_min", "30");
 
+        call(run, "price_loan", "{\"optionIds\": [\"A\", \"B\"]}");
+        assertValue(run, "option_a.rate", "8.9");
+        // 6.2815% + 0.20 pp for "Verde cu upgrade" = 6.4815%
+        assertValue(run, "option_b.rate.tier_adjustment", "0.2");
+        assertValue(run, "option_b.rate", "6.4815");
+        assertValue(run, "pricing.diff.rate", "-2.4185");
+
+        call(run, "build_scenario", "{\"optionId\": \"A\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
+        call(run, "build_scenario", "{\"optionId\": \"B\", \"scheduleType\": \"SEASONAL\"}");
+        assertValue(run, "line.horizon", "7");
+        // PMT(440,000; 8.9% / 12; 84) = 7,056.88; mortgage 1,450 + 380 × 7 = 4,110
+        assertValue(run, "option_a.installment", "7056.88");
+        assertValue(run, "option_a.collateral_costs", "4110");
+        // 28 payments in July–October 2027–2033 with the present value of 492,000 at 6.4815%
+        assertValue(run, "option_b.installment", "22026.27");
+        assertValue(run, "option_b.grace", "5");
+        assertValue(run, "option_b.total_interest", "124735.6");
+        // 440,000 + 152,778.32 interest + 4,110 − 5,140.58 × 7 fuel = 560,904.24
+        assertValue(run, "option_a.net_cost", "560904.24");
+        // 492,000 + 124,735.60 − (8,859.95 fuel + 3,300 nitrogen) × 7 = 531,615.97
+        assertValue(run, "option_b.net_cost", "531615.97");
+
+        call(run, "compare_scenarios", "{\"optionIds\": [\"A\", \"B\"]}");
+        assertValue(run, "compare.net_advantage", "29288.27");
+        assertValue(run, "compare.driver.interest", "28042.73");
+        // the 52,000 EUR precision package pays back from the extra fuel and nitrogen savings in 88.9 months
+        assertValue(run, "compare.upgrade_payback", "88.9");
+
+        JsonNode affordability = call(run, "check_affordability", "{\"optionIds\": [\"A\", \"B\"]}");
+        assertThat(affordability.path("A").path("result").asText()).isEqualTo("PASS_WITH_WARNING");
+        assertThat(affordability.path("B").path("result").asText()).isEqualTo("PASS");
+        // 12 × 7,056.88 / 240,000 and 4 × 22,026.27 / 240,000: both under the 40% limit
+        assertValue(run, "option_a.affordability_ratio", "35.28");
+        assertValue(run, "option_b.affordability_ratio", "36.71");
+
+        call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
+        // (240,000 + 5,140.58) / (12 × 7,056.88) = 245,140.58 / 84,682.56 = 2.8948
+        assertValue(run, "option_a.dscr", "2.8948");
+        // (240,000 + 12,159.95) / (4 × 22,026.27) = 252,159.95 / 88,105.08 = 2.8620
+        assertValue(run, "option_b.dscr", "2.8620");
+
         call(run, "calculate_impact", "{\"configId\": \"cfg_recommended\"}");
         assertValue(run, "label.green_amount", "52000");
         assertValue(run, "label.transition_amount", "440000");
-        assertValue(run, "impact.fuel_horizon", "52740");
-        // 52,740.03 l over 7 years × 2.68 kg/l / 1,000 = 141.3433 t
-        assertValue(run, "impact.co2_horizon", "141.34");
+        // 7,571.96 l and 33.1629 t × 7 years
+        assertValue(run, "impact.fuel_horizon", "53003.7");
+        assertValue(run, "impact.co2_horizon", "232.14");
 
-        // B uses the DR-12 grant and the AFIR co-financing line: F6, an alternative for machinery with no own
-        // green requirements in config/funds.json; F1 stays available.
+        // F1 backs the green credit; F6 (the DR-12 grant, eligible and open) is available as the alternative.
         JsonNode fund = call(run, "select_fund", "{\"optionId\": \"B\"}");
-        assertThat(fund.path("fundId").asText()).isEqualTo("F6");
-        assertThat(fund.path("role").asText()).isEqualTo("ALTERNATIVE");
+        assertThat(fund.path("fundId").asText()).isEqualTo("F1");
+        assertThat(fund.path("role").asText()).isEqualTo("PRIMARY");
         assertThat(fund.path("alternatives")).extracting(a -> a.path("fundId").asText() + "/" + a.path("status").asText())
-                .containsExactly("F1/AVAILABLE");
+                .containsExactly("F6/AVAILABLE");
         JsonNode requirements = call(run, "check_fund_requirements",
-                "{\"fundId\": \"F6\", \"optionId\": \"B\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
-        assertThat(requirements.path("requirements")).isEmpty();
+                "{\"fundId\": \"F1\", \"optionId\": \"B\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
+        assertThat(requirements.path("requirements"))
+                .extracting(r -> r.path("requirementId").asText() + "/" + r.path("status").asText())
+                .contains("DNSH/TO_CONFIRM", "CLIENT_BENEFIT/MET", "TECHNICAL_THRESHOLD/MET");
 
         JsonNode bond = call(run, "get_bond_category", "{}");
         assertThat(bond.path("categories")).extracting(c -> c.path("categoryId").asText())
@@ -398,12 +449,17 @@ class ToolChainTest {
 
         call(run, "list_financing_lines", "{}");
         call(run, "build_funding_stack", "{\"options\": ["
-                + "{\"optionId\": \"A\", \"configId\": \"cfg_initial\", \"products\": [\"rbro.invest.machinery\"]},"
+                + "{\"optionId\": \"A\", \"configId\": \"cfg_initial\", \"products\": [\"rbro.invest.standard\"]},"
                 + "{\"optionId\": \"C\", \"configId\": \"cfg_new\", \"products\": [\"DR_12\","
                 + " \"rbro.agri.cofinancing_fgcr\", \"rbro.agri.bridge_afir\"]}]}");
+        // C's co-financing loan is priced as a classic loan whose FGCR guarantee (80%) lowers risk and capital:
+        // 2.0 + 1.2 + 3% × 45% × 20% + 15% × 12% × 12% + 1.5 + 1.77 = 2.0 + 1.2 + 0.27 + 0.216 + 1.5 + 1.77 = 6.956%
+        call(run, "price_loan", "{\"optionIds\": [\"A\", \"C\"]}");
+        assertValue(run, "option_c.rate", "6.956");
         call(run, "build_scenario", "{\"optionId\": \"A\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
         assertValue(run, "line.horizon", "7");
-        assertValue(run, "option_a.installment", "5215.01");
+        // PMT(340,000; 8.9% / 12; 84) = 5,453.05
+        assertValue(run, "option_a.installment", "5453.05");
         call(run, "build_scenario", "{\"optionId\": \"C\", \"scheduleType\": \"SEASONAL\"}");
         JsonNode comparison = call(run, "compare_scenarios", "{\"optionIds\": [\"A\", \"C\"]}");
         assertThat(comparison.path("better").asText()).isEqualTo("C");
@@ -418,7 +474,7 @@ class ToolChainTest {
         call(run, "compute_baseline", "{}");
         call(run, "compute_indicator", "{\"documentId\": \"doc_sh_vechi\"}");
         call(run, "build_funding_stack", "{\"options\": [{\"optionId\": \"A\", \"configId\": \"cfg_initial\","
-                + " \"products\": [\"rbro.invest.machinery\"]}]}");
+                + " \"products\": [\"rbro.invest.standard\"]}]}");
 
         ToolOutput output = tools.execute(run, "build_scenario",
                 mapper.createObjectNode().put("optionId", "A").put("scheduleType", "EQUAL_MONTHLY"));

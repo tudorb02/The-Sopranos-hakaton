@@ -1,6 +1,6 @@
 {
   "module": "irigatii",
-  "note": "Prețuri pentru 40 ha, de verificat în Baza de prețuri de referință AFIR. role: INDICATOR schimbă economia de apă, COMPLIANCE e cerut de DNSH/AFIR, ENERGY schimbă doar energia.",
+  "note": "Prețuri pentru 40 ha, de verificat în Baza de prețuri de referință AFIR. role: INDICATOR schimbă economia de apă, COMPLIANCE e cerut de DNSH/AFIR, ENERGY schimbă doar energia. Eficiența și presiunea fiecărui sistem, ca și reducerea prin senzori, stau în config/modules/irigatii.json.",
   "items": [
     {
       "catalogId": "irg.drip.surface_veg",
@@ -8,11 +8,8 @@
       "nameRo": "Irigare prin picurare la suprafață pentru legume (cu conducte și montaj)",
       "role": "INDICATOR",
       "costEur": 90800,
-      "effect": {
-        "efficiencyPct": 88,
-        "pumpingKwhPerM3": 0.25
-      },
-      "sourceRo": "Eficiență FAO ~88–90%; preț estimativ echipă",
+      "effect": {},
+      "sourceRo": "Sistem PICURARE din config/modules/irigatii.json (η 0,90, 1,5 bar); preț estimativ echipă",
       "replacesCategories": [
         "IRRIGATION_SPRINKLER",
         "PIPES",
@@ -25,10 +22,8 @@
       "nameRo": "Senzori de umiditate în sol + programare automată",
       "role": "INDICATOR",
       "costEur": 6500,
-      "effect": {
-        "demandReductionPct": 8
-      },
-      "sourceRo": "Estimare echipă, de validat"
+      "effect": {},
+      "sourceRo": "Reducerea necesarului (10%) din config/modules/irigatii.json; preț estimativ echipă, de validat"
     },
     {
       "catalogId": "irg.meter.electromagnetic",

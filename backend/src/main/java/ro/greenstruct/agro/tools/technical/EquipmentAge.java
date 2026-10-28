@@ -21,16 +21,27 @@ public final class EquipmentAge {
 
     public static final String USED = "used";
     public static final String MANUFACTURE_YEAR = "manufactureYear";
+    /** 1 when the offer states the required emission stage (Stage V), 0 when it states another one. */
+    public static final String STAGE_V = "stageV";
 
     private EquipmentAge() {
     }
 
-    /** Attributes for one offer line: used = 1 for second-hand, manufactureYear when printed. */
-    public static Map<String, BigDecimal> fromOfferLine(DocumentFacts.LineFacts line, int currentYear) {
+    /**
+     * Attributes for one offer line: used = 1 for second-hand, manufactureYear when printed, stageV when the line
+     * states an emission stage and the module requires one (requiredStage, e.g. "V"; null for no requirement).
+     */
+    public static Map<String, BigDecimal> fromOfferLine(DocumentFacts.LineFacts line, int currentYear,
+                                                        String requiredStage) {
         Map<String, BigDecimal> attributes = new HashMap<>();
         BigDecimal year = line.numbers().get("MANUFACTURE_YEAR");
         if (year != null) {
             attributes.put(MANUFACTURE_YEAR, year);
+        }
+        String stage = line.texts().get("EMISSION_STAGE");
+        if (requiredStage != null && stage != null) {
+            String declared = stage.toUpperCase(Locale.ROOT).replace("STAGE", "").replace("TREAPTA", "").trim();
+            attributes.put(STAGE_V, declared.equals(requiredStage) ? BigDecimal.ONE : BigDecimal.ZERO);
         }
         String condition = line.texts().getOrDefault("CONDITION", "").toLowerCase(Locale.ROOT);
         boolean used = condition.contains("second") || condition.contains("folosit") || condition.contains("utilizat")

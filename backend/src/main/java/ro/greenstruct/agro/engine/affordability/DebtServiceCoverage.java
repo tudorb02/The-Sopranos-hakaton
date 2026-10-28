@@ -8,7 +8,6 @@ import ro.greenstruct.agro.engine.finance.Installment;
 import ro.greenstruct.agro.engine.finance.LoanSchedule;
 
 import static ro.greenstruct.agro.engine.Decimals.MC;
-import static ro.greenstruct.agro.engine.Decimals.requireNonNegative;
 
 /**
  * DSCR of README §4 step 7: (annual operating cash flow + annual savings) / annual debt service (principal and
@@ -30,8 +29,14 @@ public final class DebtServiceCoverage {
         }
     }
 
+    /**
+     * annualSavingsEur may be negative: an investment that costs more to run (a sprinkler pumping at higher pressure
+     * than furrows) leaves less cash for the installments.
+     */
     public static Result compute(BigDecimal annualOperatingCashFlowEur, BigDecimal annualSavingsEur, LoanSchedule schedule) {
-        requireNonNegative(annualSavingsEur, "annualSavingsEur");
+        if (annualSavingsEur == null) {
+            throw new IllegalArgumentException("annualSavingsEur is required");
+        }
         if (annualOperatingCashFlowEur == null) {
             throw new IllegalArgumentException("annualOperatingCashFlowEur is required");
         }

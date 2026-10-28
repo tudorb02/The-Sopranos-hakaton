@@ -31,6 +31,11 @@ public final class MachineryCalculator {
                 toPct(BigDecimal.ONE.subtract(remaining)));
     }
 
+    /** README §6, category 3: today's diesel per hectare = litres invoiced in 12 months / hectares worked. */
+    public static BigDecimal litresPerHa(BigDecimal litres, BigDecimal hectares) {
+        return requireNonNegative(litres, "litres").divide(requirePositive(hectares, "hectares"), MC);
+    }
+
     /** Net diesel cost for a VAT payer: pump price / (1 + VAT) − agricultural excise refund, converted to EUR. */
     public static BigDecimal netDieselEurPerLitre(BigDecimal pumpPriceLeiPerLitre, BigDecimal vatPct,
                                                   BigDecimal exciseRefundLeiPerLitre, BigDecimal ronPerEur) {

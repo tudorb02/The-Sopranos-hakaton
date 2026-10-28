@@ -14,7 +14,7 @@
     "nitrogen_kg_ha": 180,
     "tillage": "MINIMA",
     "cover_crops": "ROTATIE",
-    "irrigation_current": "ASPERSIE_VECHE",
+    "irrigation_current": "BRAZDE",
     "crop_insurance": false,
     "certifications": [
       "GLOBALGAP"
@@ -26,8 +26,9 @@
       "SEP",
       "OCT"
     ],
-    "old_equipment_fate": "VANZARE",
-    "water_source": "ANIF"
+    "old_equipment_fate": "NU_E_CAZUL",
+    "water_source": "PUT",
+    "pumping_head_m": 35
   },
   "documents": [
     {

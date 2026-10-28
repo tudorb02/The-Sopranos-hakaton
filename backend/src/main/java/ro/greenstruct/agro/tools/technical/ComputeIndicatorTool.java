@@ -58,7 +58,7 @@ public class ComputeIndicatorTool implements ToolHandler {
                 .orElseThrow(() -> new IllegalArgumentException("Extrage întâi documentul " + documentId));
 
         Configuration cfg = ConfigurationMetrics.build(context, configId, null,
-                offerComponents(offer, context.today().getYear()));
+                offerComponents(offer, context.today().getYear(), requiredStage(context)));
         context.workspace().putConfiguration(cfg);
         ConfigurationMetrics.emit(context, cfg, cfg);
 
@@ -80,23 +80,22 @@ public class ComputeIndicatorTool implements ToolHandler {
      * One component per offer line; document-level technical fields go to the matching component, and
      * every line records whether it is second-hand and its manufacture year.
      */
-    static List<InvestmentComponent> offerComponents(DocumentFacts offer, int currentYear) {
+    /** The emission stage new machines must meet (utilaje: "V"); null for modules without one. */
+    private static String requiredStage(ToolContext context) {
+        return context.module().parameters().path("requiredEmissionStage").path("value").asText(null);
+    }
+
+    static List<InvestmentComponent> offerComponents(DocumentFacts offer, int currentYear, String requiredStage) {
         List<InvestmentComponent> components = new ArrayList<>();
         for (DocumentFacts.LineFacts line : offer.lines()) {
             BigDecimal price = line.numbers().get("LINE_PRICE_NET");
             if (price == null) {
                 continue;
             }
-            Map<String, BigDecimal> attributes = new HashMap<>(EquipmentAge.fromOfferLine(line, currentYear));
+            Map<String, BigDecimal> attributes = new HashMap<>(EquipmentAge.fromOfferLine(line, currentYear, requiredStage));
             BigDecimal quantity = line.numbers().getOrDefault("QUANTITY", BigDecimal.ONE);
+            // Irrigation systems take their efficiency from config/modules/irigatii.json, not from the supplier's claim.
             switch (line.category()) {
-                case "IRRIGATION_SPRINKLER", "IRRIGATION_DRIP" -> {
-                    BigDecimal efficiency = line.numbers().getOrDefault("APPLICATION_EFFICIENCY_PCT",
-                            offer.numbers().get("APPLICATION_EFFICIENCY_PCT"));
-                    if (efficiency != null) {
-                        attributes.put("efficiencyPct", efficiency);
-                    }
-                }
                 case "PUMP" -> {
                     BigDecimal power = line.numbers().getOrDefault("PUMP_POWER_KW", offer.numbers().get("PUMP_POWER_KW"));
                     if (power != null) {

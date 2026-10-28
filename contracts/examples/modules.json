@@ -16,7 +16,7 @@
         "kind": "MIN_PCT",
         "value": 25,
         "unit": "PCT",
-        "sourceRo": "config/modules/irigatii.json (propunere, de confirmat cu Raiffeisen)",
+        "sourceRo": "README §6.1: economie de apă ≥ 25% față de sistemul actual (propunere, de confirmat cu Raiffeisen)",
         "demo": true
       },
       "requiredDocs": [
@@ -37,8 +37,8 @@
         },
         {
           "docType": "ENERGY_INVOICES",
-          "labelRo": "Consumul actual de apă sau energia de pompare (12 luni)",
-          "required": true
+          "labelRo": "Facturile de energie pentru pompare (12 luni), pentru verificarea estimării",
+          "required": false
         }
       ],
       "questionnaire": [
@@ -217,6 +217,14 @@
               "labelRo": "bazin de acumulare"
             }
           ],
+          "prefillFrom": "NONE",
+          "required": true
+        },
+        {
+          "questionId": "pumping_head_m",
+          "labelRo": "De la ce adâncime sau înălțime pompați apa (m)?",
+          "type": "NUMBER",
+          "unit": "M",
           "prefillFrom": "NONE",
           "required": true
         }
@@ -429,7 +437,7 @@
         "kind": "MIN_PCT",
         "value": 20,
         "unit": "PCT",
-        "sourceRo": "config/modules/utilaje.json (propunere; −20% motorină sau îngrășăminte / ha)",
+        "sourceRo": "README §6.3: reducere ≥ 20% de motorină pe hectar sau de azot pe hectar, cu motor Stage V (propunere, de confirmat cu Raiffeisen)",
         "demo": true
       },
       "requiredDocs": [
@@ -513,35 +521,6 @@
           "required": false
         },
         {
-          "questionId": "irrigation_current",
-          "labelRo": "Irigați acum? Cu ce sistem?",
-          "type": "SINGLE_CHOICE",
-          "options": [
-            {
-              "value": "NU",
-              "labelRo": "nu irig"
-            },
-            {
-              "value": "ASPERSIE_VECHE",
-              "labelRo": "aspersie veche"
-            },
-            {
-              "value": "ASPERSIE",
-              "labelRo": "aspersie"
-            },
-            {
-              "value": "PICURARE",
-              "labelRo": "picurare"
-            },
-            {
-              "value": "BRAZDE",
-              "labelRo": "pe brazde"
-            }
-          ],
-          "prefillFrom": "APIA",
-          "required": true
-        },
-        {
           "questionId": "crop_insurance",
           "labelRo": "Aveți asigurare pentru culturi?",
           "type": "BOOLEAN",
@@ -566,13 +545,6 @@
               "labelRo": "niciuna"
             }
           ],
-          "prefillFrom": "NONE",
-          "required": false
-        },
-        {
-          "questionId": "offtake_contracts",
-          "labelRo": "Aveți contracte de vânzare cu procesatori sau retaileri?",
-          "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": false
         },
@@ -609,19 +581,67 @@
           "required": true
         },
         {
-          "questionId": "hours_per_year",
-          "labelRo": "Câte ore lucrează un tractor pe an?",
-          "type": "NUMBER",
-          "unit": "HOURS",
-          "prefillFrom": "NONE",
-          "required": false
-        },
-        {
           "questionId": "manager_competences",
           "labelRo": "Administratorul are studii sau un curs de calificare în agricultură?",
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": false
+        },
+        {
+          "questionId": "current_tractors",
+          "labelRo": "Câte tractoare aveți acum în fermă?",
+          "type": "NUMBER",
+          "prefillFrom": "NONE",
+          "required": true
+        },
+        {
+          "questionId": "replaced_tractors",
+          "labelRo": "Câte dintre ele scoateți din fermă după investiție? (0 = doar extindeți flota)",
+          "type": "NUMBER",
+          "prefillFrom": "NONE",
+          "required": true
+        },
+        {
+          "questionId": "replaced_fleet_age",
+          "labelRo": "Ce vechime au tractoarele pe care le scoateți?",
+          "type": "SINGLE_CHOICE",
+          "options": [
+            {
+              "value": "ANI_0_7",
+              "labelRo": "sub 8 ani"
+            },
+            {
+              "value": "ANI_8_15",
+              "labelRo": "8–15 ani"
+            },
+            {
+              "value": "PESTE_15_ANI",
+              "labelRo": "peste 15 ani"
+            }
+          ],
+          "prefillFrom": "NONE",
+          "required": true
+        },
+        {
+          "questionId": "loan_term",
+          "labelRo": "Pe câți ani vreți creditul?",
+          "type": "SINGLE_CHOICE",
+          "options": [
+            {
+              "value": "ANI_3",
+              "labelRo": "3 ani"
+            },
+            {
+              "value": "ANI_5",
+              "labelRo": "5 ani"
+            },
+            {
+              "value": "ANI_7",
+              "labelRo": "7 ani"
+            }
+          ],
+          "prefillFrom": "NONE",
+          "required": true
         }
       ]
     },

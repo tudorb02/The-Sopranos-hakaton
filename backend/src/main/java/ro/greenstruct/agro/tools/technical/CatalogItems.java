@@ -49,6 +49,7 @@ public final class CatalogItems {
         attributes.put("hp", hp);
         attributes.put(EquipmentAge.MANUFACTURE_YEAR, BigDecimal.valueOf(currentYear));
         attributes.put(EquipmentAge.USED, BigDecimal.ZERO);
+        attributes.put(EquipmentAge.STAGE_V, BigDecimal.ONE);
         BigDecimal cost = item.path("costEurPerHp").decimalValue().multiply(hp, MC).multiply(offered.quantity(), MC);
         return new InvestmentComponent(offered.componentId().replace("cmp_offer_", "cmp_new_"), offered.category(),
                 item.path("nameRo").asText() + " (" + hp.toPlainString() + " CP)", "CATALOG",

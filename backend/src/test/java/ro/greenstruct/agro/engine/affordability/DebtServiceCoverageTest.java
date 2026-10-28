@@ -54,6 +54,15 @@ class DebtServiceCoverageTest {
     }
 
     @Test
+    void higherRunningCostsLowerTheCover() {
+        // (95,000 − 3,000) / 6,000 = 15.33
+        DebtServiceCoverage.Result result = DebtServiceCoverage.compute(CASH_FLOW, new BigDecimal("-3000"),
+                schedule(1000, 1000, 1000, 1000, 1000, 1000));
+
+        assertThat(money(result.dscr())).isEqualByComparingTo("15.33");
+    }
+
+    @Test
     void nothingDueMeansNoRatio() {
         assertThat(DebtServiceCoverage.compute(CASH_FLOW, SAVINGS, schedule(0, 0, 0)).dscr()).isNull();
     }

@@ -51,7 +51,8 @@ public record ModuleDefinition(
     public record LabelRule(String label, String taxonomyActivity, String when, String usedLabel) {
     }
 
-    public record Financing(int termMonths, int horizonYears, String standardLine, String greenLine,
+    /** maxGraceMonths: the longest wait until the first instalment after harvest (README §13), per module. */
+    public record Financing(int termMonths, int horizonYears, int maxGraceMonths, String standardLine, String greenLine,
                             String cofinancingLine, String bridgeLine) {
     }
 }
