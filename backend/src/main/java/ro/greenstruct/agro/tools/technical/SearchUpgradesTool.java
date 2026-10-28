@@ -2,8 +2,10 @@ package ro.greenstruct.agro.tools.technical;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -73,10 +75,16 @@ public class SearchUpgradesTool implements ToolHandler {
         List<Candidate> candidates = new ArrayList<>();
         for (int mask = 1; mask < (1 << indicatorItems.size()); mask++) {
             List<String> ids = new ArrayList<>();
+            Set<String> categories = new HashSet<>();
+            boolean sameCategoryTwice = false;
             for (int i = 0; i < indicatorItems.size(); i++) {
                 if ((mask & (1 << i)) != 0) {
                     ids.add(indicatorItems.get(i).path("catalogId").asText());
+                    sameCategoryTwice |= !categories.add(indicatorItems.get(i).path("category").asText());
                 }
+            }
+            if (sameCategoryTwice) {
+                continue; // e.g. two sizes of the same installation: the second would only replace the first
             }
             String packageId = "pkg_" + String.join("_", ids.stream().map(UpgradePackages::shortName).toList());
             ids.addAll(compliance);
