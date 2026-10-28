@@ -126,7 +126,8 @@ class ToolChainTest {
         assertValue(run, "cfg_recommended.upgrade_cost", "40000");
         assertValue(run, "cfg_recommended.pv_kwh", "32000");
         assertValue(run, "cfg_recommended.energy_saved", "97502.73");
-        assertValue(run, "cfg_recommended.co2_avoided", "22.43");
+        // 97,502.73 kWh × 0.26 kg/kWh (config/factors.json) / 1,000 = 25.3507 t
+        assertValue(run, "cfg_recommended.co2_avoided", "25.35");
 
         JsonNode dnsh = call(run, "check_dnsh_inputs", "{\"configId\": \"cfg_recommended\"}");
         assertThat(dnsh.path("permitValid").asBoolean()).isTrue();
@@ -178,7 +179,8 @@ class ToolChainTest {
         call(run, "calculate_impact", "{\"configId\": \"cfg_recommended\"}");
         assertValue(run, "label.green_share", "100");
         assertValue(run, "impact.water_horizon", "374685.31");
-        assertValue(run, "impact.co2_horizon", "112.13");
+        // 25.3507 t × 5 years = 126.7535 t
+        assertValue(run, "impact.co2_horizon", "126.75");
     }
 
     @Test
@@ -196,7 +198,8 @@ class ToolChainTest {
                 + " \"averageAgeYears\": 22}}");
         assertValue(run, "baseline.fuel", "36000");
         assertValue(run, "baseline.nitrogen", "60000");
-        assertValue(run, "baseline.co2", "95.76");
+        // 36,000 l × 2.68 kg/l / 1,000 = 96.48 t
+        assertValue(run, "baseline.co2", "96.48");
 
         JsonNode initial = call(run, "compute_indicator", "{\"documentId\": \"doc_oferta_tractoare\"}");
         assertThat(initial.path("thresholdResult").asText()).isEqualTo("FAIL");
@@ -214,7 +217,8 @@ class ToolChainTest {
         assertValue(run, "cfg_recommended.nitrogen_saved", "3000");
         assertValue(run, "cfg_recommended.inputs_saved", "3000");
         assertValue(run, "cfg_recommended.precision_share", "10.57");
-        assertValue(run, "cfg_recommended.co2_avoided", "20.04");
+        // 7,534.29 l × 2.68 kg/l / 1,000 = 20.1919 t
+        assertValue(run, "cfg_recommended.co2_avoided", "20.19");
 
         JsonNode eligibility = call(run, "check_program_eligibility", "{\"configId\": \"cfg_recommended\"}");
         assertThat(programs(eligibility)).containsEntry("DR_12", "ELIGIBLE/OPEN")
@@ -255,7 +259,8 @@ class ToolChainTest {
         assertValue(run, "label.green_amount", "52000");
         assertValue(run, "label.transition_amount", "440000");
         assertValue(run, "impact.fuel_horizon", "52740");
-        assertValue(run, "impact.co2_horizon", "140.29");
+        // 52,740.03 l over 7 years × 2.68 kg/l / 1,000 = 141.3433 t
+        assertValue(run, "impact.co2_horizon", "141.34");
     }
 
     @Test

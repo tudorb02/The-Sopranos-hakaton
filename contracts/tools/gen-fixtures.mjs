@@ -159,7 +159,7 @@ function buildIrigatii() {
   const P = {
     areaHa: 40, needNetM3Ha: 3800, effOld: 0.65, effSprinkler: 0.765, effDrip: 0.88, sensorSaving: 0.08,
     kwhM3Pressurized: 0.45, kwhM3Drip: 0.25, pvKwp: 25, pvYield: 1280, waterPrice: 0.12, elecPrice: 0.2,
-    gridFactor: 0.23, threshold: 25, invoiceKwh: 105230,
+    gridFactor: 0.26, threshold: 25, invoiceKwh: 105230,
     offer: 85000, offerSprinkler: 70500, offerPump: 14500,
     drip: 90800, sensors: 6500, meter: 1200, solarPump: 26500,
     rateStd: 8.9, rateGreen: 6.4, term: 60, feiCoverage: 70, mortgageInitial: 1450, mortgageAnnual: 380,
@@ -655,7 +655,7 @@ function buildUtilaje() {
   const R = new RunBuilder('run_utl3m8vz2c6h', '2026-10-28T10:15:00.000Z');
   const P = {
     areaHa: 400, lPerHa: 90, tractorSaving: 0.12, precisionFuelSaving: 0.1, inputsEurHa: 250, inputsSaving: 0.03,
-    nKgHa: 150, vraSaving: 0.05, fuelPriceLei: 10.3, vat: 1.21, excise: 2.697, eurRon: 4.97, co2PerL: 2.66,
+    nKgHa: 150, vraSaving: 0.05, fuelPriceLei: 10.3, vat: 1.21, excise: 2.697, eurRon: 4.97, co2PerL: 2.68,
     threshold: 20, tractor240: 250000, tractor180: 190000, precision: 52000, powerHp: 840, maxHpHa: 2.5,
     grantIntensity: 65, grantCap: 200000, rateStd: 7.5, rateCofin: 6.0, rateBridge: 7.0, term: 84, bridgeTerm: 12,
     fgcrCoverage: 80, horizonYears: 7, annualNetCf: 210000, affordLimit: 40, precisionPoints: 15,

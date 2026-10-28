@@ -1487,7 +1487,7 @@
             "mitigationRo": "Contorul și KPI-ul de energie corectează estimarea după 12 luni."
           }
         ],
-        "committeeSummaryRo": "Fermă de legume, 40 ha, sud-est. Investiția inițială (aspersie clasică, 85.000 EUR) nu trecea pragul (15,0% < 25%). Configurația recomandată (picurare, senzori, contor, pompă solară, 125.000 EUR) atinge 32,0% economie de apă, 97.503 kWh/an din rețea înlocuiți și 22,4 t CO₂/an evitate. 100% din sumă e etichetată verde (pompa solară aliniată la Taxonomie, activitatea 4.1). Structură: credit verde cu garanție InvestEU 70%, fără ipotecă, rate sezoniere iul–oct; avantaj net pentru client 67.327 EUR pe 5 ani. Nu există grant AFIR deschis. Recomandare: eligibil cu condiții.",
+        "committeeSummaryRo": "Fermă de legume, 40 ha, sud-est. Investiția inițială (aspersie clasică, 85.000 EUR) nu trecea pragul (15,0% < 25%). Configurația recomandată (picurare, senzori, contor, pompă solară, 125.000 EUR) atinge 32,0% economie de apă, 97.503 kWh/an din rețea înlocuiți și 25,4 t CO₂/an evitate. 100% din sumă e etichetată verde (pompa solară aliniată la Taxonomie, activitatea 4.1). Structură: credit verde cu garanție InvestEU 70%, fără ipotecă, rate sezoniere iul–oct; avantaj net pentru client 67.327 EUR pe 5 ani. Nu există grant AFIR deschis. Recomandare: eligibil cu condiții.",
         "farmerNextSteps": [
           {
             "stepRo": "Trimite planul de fertirigare pentru cele două parcele din zona de nitrați.",
@@ -1662,9 +1662,9 @@
         "tool": "get_module_rules",
         "key": "rules.factor.grid",
         "labelRo": "Factor de emisie rețea RO",
-        "value": 0.23,
+        "value": 0.26,
         "unit": "KG_CO2_PER_KWH",
-        "display": "0,230 kg CO₂/kWh",
+        "display": "0,260 kg CO₂/kWh",
         "sourceRo": "config/factors.json (Nowtricity 2024, de confirmat cu EEA/ANRE)"
       },
       "calc_e65d8c396ee7": {
@@ -1724,9 +1724,9 @@
         "tool": "compute_baseline",
         "key": "baseline.co2",
         "labelRo": "CO₂ din pomparea de azi",
-        "value": 24.2,
+        "value": 27.36,
         "unit": "T_CO2_PER_YEAR",
-        "display": "24,2 t CO₂/an",
+        "display": "27,4 t CO₂/an",
         "formula": "kWh × factor rețea",
         "dependsOn": [
           "calc_2ba423961603",
@@ -1806,9 +1806,9 @@
         "tool": "compute_indicator",
         "key": "cfg_initial.co2_avoided",
         "labelRo": "CO₂ evitat: aspersie clasică",
-        "value": 3.64,
+        "value": 4.11,
         "unit": "T_CO2_PER_YEAR",
-        "display": "3,6 t CO₂/an",
+        "display": "4,1 t CO₂/an",
         "dependsOn": [
           "calc_c26e76b8bdf8",
           "calc_2001d7a57182"
@@ -1930,9 +1930,9 @@
         "tool": "simulate_upgrade_package",
         "key": "cfg_min_pass.co2_avoided",
         "labelRo": "CO₂ evitat: picurare cu pompa din ofertă",
-        "value": 15.07,
+        "value": 17.03,
         "unit": "T_CO2_PER_YEAR",
-        "display": "15,1 t CO₂/an"
+        "display": "17,0 t CO₂/an"
       },
       "calc_8272ac1df4aa": {
         "calcId": "calc_8272ac1df4aa",
@@ -2064,9 +2064,9 @@
         "tool": "simulate_upgrade_package",
         "key": "cfg_recommended.co2_avoided",
         "labelRo": "CO₂ evitat: configurația recomandată",
-        "value": 22.43,
+        "value": 25.35,
         "unit": "T_CO2_PER_YEAR",
-        "display": "22,4 t CO₂/an",
+        "display": "25,4 t CO₂/an",
         "formula": "kWh economisiți × factor rețea",
         "dependsOn": [
           "calc_be23e85e071b",
@@ -3698,9 +3698,9 @@
         "tool": "calculate_impact",
         "key": "impact.co2_horizon",
         "labelRo": "CO₂ evitat pe 5 ani",
-        "value": 112.13,
+        "value": 126.75,
         "unit": "T_CO2",
-        "display": "112,1 t CO₂",
+        "display": "126,8 t CO₂",
         "dependsOn": [
           "calc_c4fe14e06cd5",
           "calc_63eb160b82cf"

@@ -1,0 +1,176 @@
+{
+  "version": "2026-10-28",
+  "noteRo": "Fondurile Raiffeisen cu cerințe verzi (README §3). Lista e construită din surse publice (README §15); termenii actuali (procentul garanției, dacă un program mai e activ) se confirmă cu Raiffeisen. F1 e garanția eif.investeu.sustainability din financing-lines.json; F6 sunt programele AFIR din funding-programs.json.",
+  "statuses": {
+    "REQUIRED": "✅ cerință clară",
+    "PROBABLE": "🟡 probabilă, de confirmat",
+    "NOT_APPLICABLE": "— nu se aplică"
+  },
+  "requirementsSourceRo": "README §3.2, din surse publice; cerințele 🟡 se confirmă cu Raiffeisen. README §3.2 le detaliază doar pentru F1–F3; pentru F4–F6 se aplică cerința din bankRequirementRo.",
+  "requirements": [
+    { "requirementId": "SME_STATUS", "labelRo": "Firma e IMM", "coveredByRo": "ANAF: angajați, cifră de afaceri, active" },
+    { "requirementId": "ELIGIBLE_CATEGORY", "labelRo": "Investiția e într-o categorie eligibilă", "coveredByRo": "fiecare din cele 6 categorii e legată de o categorie a fondului" },
+    { "requirementId": "TECHNICAL_THRESHOLD", "labelRo": "Pragul tehnic e atins, cu dovezi", "coveredByRo": "motorul de calcul + documentele încărcate" },
+    { "requirementId": "DNSH", "labelRo": "Investiția nu face rău mediului (DNSH)", "coveredByRo": "hărți (Natura 2000, nitrați, stres hidric) + autorizații" },
+    { "requirementId": "IMPACT_QUANTIFIED", "labelRo": "Impactul e cuantificat (CO₂, MWh, m³)", "coveredByRo": "motorul de calcul, pe fiecare credit" },
+    { "requirementId": "CLIENT_BENEFIT", "labelRo": "Beneficiul ajunge la client (dobândă, garanție)", "coveredByRo": "comparația clasic vs. verde" },
+    { "requirementId": "PERIODIC_REPORTING", "labelRo": "Raportare periodică", "coveredByRo": "monitorizarea la 12 luni + raportul de portofoliu" }
+  ],
+  "funds": [
+    {
+      "fundId": "F1",
+      "nameRo": "Garanția FEI InvestEU de sustenabilitate",
+      "kind": "GUARANTEE",
+      "status": "ACTIVE",
+      "descriptionRo": "Garanție de portofoliu de la Fondul European de Investiții. Raiffeisen a semnat-o în 2023, alături de alte 4 bănci din România (1 mld. EUR în total pentru cele 5; presa indică ~400 mil. EUR pentru cele două scheme Raiffeisen).",
+      "bankRequirementRo": "Creditul finanțează o investiție verde sau sustenabilă (ex. energie regenerabilă, eficiență energetică); eligibilitatea trebuie documentată.",
+      "clientBenefitRo": "Potrivit FEI: dobândă mai mică, garanții reduse (fără ipotecă sau cu ipotecă mai mică), avans mai mic, maturitate mai lungă.",
+      "guaranteeId": "eif.investeu.sustainability",
+      "coveragePct": { "value": 70, "sourceRo": "Acord FEI cu Raiffeisen, 25.10.2023; procentul pentru 2026 e de confirmat (README §14). Trebuie să fie egal cu coveragePct al garanției eif.investeu.sustainability din financing-lines.json", "demo": true },
+      "requirements": {
+        "SME_STATUS": "REQUIRED",
+        "ELIGIBLE_CATEGORY": "REQUIRED",
+        "TECHNICAL_THRESHOLD": "REQUIRED",
+        "DNSH": "PROBABLE",
+        "IMPACT_QUANTIFIED": "REQUIRED",
+        "CLIENT_BENEFIT": "REQUIRED",
+        "PERIODIC_REPORTING": "REQUIRED"
+      },
+      "sourceRo": "EIF, „EIF and leading Romanian banks join forces to empower SMEs for sustainable growth” (2023); ZF English, acordul FEI – Raiffeisen; Romania Insider, InvestEU (07.2025) — README §15"
+    },
+    {
+      "fundId": "F2",
+      "nameRo": "Obligațiunile verzi și sustenabile Raiffeisen",
+      "kind": "BOND_FUNDING",
+      "status": "ACTIVE",
+      "descriptionRo": "~1 mld. EUR emise. Investitori printre care BERD (în prima obligațiune verde a băncii, 2021) și IFC (50,8 mil. EUR în 2023, inclusiv pentru finanțare agricolă sustenabilă).",
+      "bankRequirementRo": "Banii se alocă doar pe credite eligibile din categoriile cadrului băncii; banca publică rapoarte de alocare și de impact.",
+      "clientBenefitRo": "Dobândă mai mică, pentru că banca are finanțare dedicată.",
+      "requirements": {
+        "SME_STATUS": "NOT_APPLICABLE",
+        "ELIGIBLE_CATEGORY": "REQUIRED",
+        "TECHNICAL_THRESHOLD": "REQUIRED",
+        "DNSH": "REQUIRED",
+        "IMPACT_QUANTIFIED": "REQUIRED",
+        "CLIENT_BENEFIT": "PROBABLE",
+        "PERIODIC_REPORTING": "REQUIRED"
+      },
+      "sourceRo": "Sustainalytics, Second Party Opinion pentru Sustainability Bond Framework (2024) și Green Bond Framework; BERD, proiectul 52996; IFC, comunicat 2023; Romania Insider, a treia obligațiune verde; BVB, rezultate T1 2024 — README §15"
+    },
+    {
+      "fundId": "F3",
+      "nameRo": "Credit BIO",
+      "kind": "LOAN_PRODUCT",
+      "status": "ACTIVE",
+      "descriptionRo": "Produs Raiffeisen (din 2021) pentru teren certificat ecologic sau în conversie; banca l-a prezentat ca primul ei produs de creditare pentru IMM-uri care încurajează agricultura sustenabilă.",
+      "bankRequirementRo": "Certificare ecologică sau contract de conversie.",
+      "clientBenefitRo": "Condiții dedicate fermierilor bio.",
+      "requirements": {
+        "SME_STATUS": "NOT_APPLICABLE",
+        "ELIGIBLE_CATEGORY": "REQUIRED",
+        "TECHNICAL_THRESHOLD": "NOT_APPLICABLE",
+        "DNSH": "NOT_APPLICABLE",
+        "IMPACT_QUANTIFIED": "PROBABLE",
+        "CLIENT_BENEFIT": "REQUIRED",
+        "PERIODIC_REPORTING": "PROBABLE"
+      },
+      "sourceRo": "Economedia, „Raiffeisen Bank a lansat Credit BIO” — README §15; condițiile actuale se confirmă cu Raiffeisen (README §14)"
+    },
+    {
+      "fundId": "F4",
+      "nameRo": "Finanțare pentru irigații cu FEI (cu RWA Raiffeisen Agro)",
+      "kind": "FUNDING_PROGRAM",
+      "status": "TO_CONFIRM",
+      "descriptionRo": "Finanțare pentru irigații, raportată la ~jumătate din costul standard, prin FEI; data și starea actuală nu sunt clare.",
+      "bankRequirementRo": "Investiție în irigații.",
+      "clientBenefitRo": "Cost redus.",
+      "requirements": {},
+      "sourceRo": "Wall-Street.ro, „Raiffeisen Bank oferă consultanță și soluții de finanțare fermierilor” — README §15; dacă mai e activ se confirmă cu Raiffeisen (README §14)"
+    },
+    {
+      "fundId": "F5",
+      "nameRo": "Prefinanțarea subvențiilor APIA",
+      "kind": "LOAN_PRODUCT",
+      "status": "ACTIVE",
+      "descriptionRo": "Credit pe baza subvenției pe suprafață, cu analiză simplificată. Nu e un fond verde, dar acoperă golurile de cashflow.",
+      "bankRequirementRo": "Cerere unică APIA.",
+      "clientBenefitRo": "Lichiditate până vine subvenția.",
+      "requirements": {},
+      "sourceRo": "Bursa, „Raiffeisen Bank continuă finanțarea subvențiilor agricole APIA” — README §15"
+    },
+    {
+      "fundId": "F6",
+      "nameRo": "Granturi AFIR / PNS",
+      "kind": "PUBLIC_GRANT",
+      "status": "ACTIVE",
+      "descriptionRo": "Fonduri publice, nu ale băncii: IMM-ul primește un grant nerambursabil, iar banca poate finanța cofinanțarea.",
+      "bankRequirementRo": "Contract de finanțare AFIR.",
+      "clientBenefitRo": "O parte din investiție e acoperită de grant.",
+      "programCodes": ["DR_12", "DR_16", "DR_26"],
+      "cofinancingLineId": "rbro.agri.cofinancing_fgcr",
+      "requirements": {},
+      "sourceRo": "afir.ro, ghidurile DR-12, DR-16 și DR-26 (sesiunile și plafoanele sunt în funding-programs.json); dacă banca finanțează cofinanțarea se confirmă cu Raiffeisen (README §14)"
+    }
+  ],
+  "bondCategoriesSourceRo": "README §3.1: categoriile cadrului de obligațiuni verzi și sustenabile Raiffeisen (Sustainalytics, Second Party Opinion 2024)",
+  "bondCategories": [
+    { "categoryId": "AGRICULTURE_FORESTRY", "nameEn": "Agriculture and forestry", "nameRo": "Agricultură și silvicultură" },
+    { "categoryId": "RENEWABLE_ENERGY", "nameEn": "Renewable energy", "nameRo": "Energie regenerabilă" },
+    { "categoryId": "ENERGY_EFFICIENCY", "nameEn": "Energy efficiency", "nameRo": "Eficiență energetică" },
+    { "categoryId": "CLEAN_TRANSPORTATION", "nameEn": "Clean transportation", "nameRo": "Transport curat" },
+    { "categoryId": "POLLUTION_PREVENTION_CONTROL", "nameEn": "Pollution prevention and control", "nameRo": "Prevenirea și controlul poluării" }
+  ],
+  "modulesSourceRo": "README §3.3. Încadrarea pe categoriile F2 e propunerea noastră, după denumirile categoriilor din cadrul public al băncii; încadrarea finală o face banca. Prima categorie din listă e cea propusă.",
+  "modules": {
+    "irigatii": {
+      "primaryFund": "F1",
+      "alternatives": [
+        { "fundId": "F4", "noteRo": "În locul F1, dacă finanțarea pentru irigații cu FEI e încă activă (de confirmat)." },
+        { "fundId": "F6", "noteRo": "Grant AFIR, doar dacă există o sesiune deschisă și ferma e eligibilă." }
+      ],
+      "bondCategories": ["AGRICULTURE_FORESTRY"]
+    },
+    "energie": {
+      "primaryFund": "F1",
+      "alternatives": [
+        { "fundId": "F6", "noteRo": "Grant AFIR, doar dacă există o sesiune deschisă și ferma e eligibilă." }
+      ],
+      "bondCategories": ["RENEWABLE_ENERGY"]
+    },
+    "utilaje": {
+      "primaryFund": "F1",
+      "alternatives": [
+        { "fundId": "F6", "noteRo": "Grant AFIR, doar dacă există o sesiune deschisă și ferma e eligibilă." }
+      ],
+      "bondCategories": ["AGRICULTURE_FORESTRY", "ENERGY_EFFICIENCY"]
+    },
+    "zootehnie": {
+      "primaryFund": "F1",
+      "alternatives": [
+        { "fundId": "F6", "noteRo": "Grant AFIR, doar dacă există o sesiune deschisă și ferma e eligibilă." }
+      ],
+      "bondCategories": ["RENEWABLE_ENERGY", "POLLUTION_PREVENTION_CONTROL"]
+    },
+    "post_recolta": {
+      "primaryFund": "F1",
+      "alternatives": [
+        { "fundId": "F6", "noteRo": "Grant AFIR, doar dacă există o sesiune deschisă și ferma e eligibilă." }
+      ],
+      "bondCategories": ["ENERGY_EFFICIENCY"]
+    },
+    "ecologic": {
+      "primaryFund": "F3",
+      "alternatives": [
+        { "fundId": "F5", "noteRo": "În plus față de F3, pentru golurile de lichiditate din anii de conversie (README §6, categoria 6)." }
+      ],
+      "bondCategories": ["AGRICULTURE_FORESTRY"]
+    }
+  },
+  "smeDefinition": {
+    "requirementId": "SME_STATUS",
+    "employeesBelow": 250,
+    "maxTurnoverEur": 50000000,
+    "maxTotalAssetsEur": 43000000,
+    "sourceRo": "Recomandarea Comisiei 2003/361/CE, anexa, art. 2 alin. (1), preluată de Legea 346/2004, art. 4: sub 250 de angajați și cifră de afaceri netă ≤ 50 mil. EUR sau active totale ≤ 43 mil. EUR, din ultimul bilanț. Nu verificăm întreprinderile partenere sau legate (ANAF nu le publică). Sumele din bilanț, în lei, se convertesc cu factors.ronPerEur."
+  }
+}

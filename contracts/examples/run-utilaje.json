@@ -1344,7 +1344,7 @@
             "mitigationRo": "Marjă confortabilă sub limita de 40%."
           }
         ],
-        "committeeSummaryRo": "Fermă de cereale, 400 ha, administrator de 38 de ani. Cererea inițială (4 tractoare Stage V, 440.000 EUR) economisea 12,0% motorină, sub pragul de 20%. Cu pachetul de precizie (52.000 EUR) economia ajunge la 20,8%: 7.488 l/an, 3.000 kg N/an, 19,9 t CO₂/an. Etichete: tractoarele sunt tranziție (440.000 EUR), precizia e verde de piață (52.000 EUR, 10,6%). Structură: grant DR-12 200.000 EUR, credit de cofinanțare 292.000 EUR cu FGCR 80%, punte 200.000 EUR rambursată din grant. Rata scade de la 6.749 EUR/lună la 4.266 EUR/lună; avantaj net 241.532 EUR pe 7 ani. Recomandare: eligibil cu condiții (depunerea DR-12 până la 02.12.2026).",
+        "committeeSummaryRo": "Fermă de cereale, 400 ha, administrator de 38 de ani. Cererea inițială (4 tractoare Stage V, 440.000 EUR) economisea 12,0% motorină, sub pragul de 20%. Cu pachetul de precizie (52.000 EUR) economia ajunge la 20,8%: 7.488 l/an, 3.000 kg N/an, 20,1 t CO₂/an. Etichete: tractoarele sunt tranziție (440.000 EUR), precizia e verde de piață (52.000 EUR, 10,6%). Structură: grant DR-12 200.000 EUR, credit de cofinanțare 292.000 EUR cu FGCR 80%, punte 200.000 EUR rambursată din grant. Rata scade de la 6.749 EUR/lună la 4.266 EUR/lună; avantaj net 241.532 EUR pe 7 ani. Recomandare: eligibil cu condiții (depunerea DR-12 până la 02.12.2026).",
         "farmerNextSteps": [
           {
             "stepRo": "Nu semna contractul cu dealerul și nu plăti avans până nu depui cererea la AFIR.",
@@ -1507,9 +1507,9 @@
         "tool": "get_module_rules",
         "key": "rules.factor.diesel",
         "labelRo": "Factor CO₂ motorină",
-        "value": 2.66,
+        "value": 2.68,
         "unit": "KG_CO2_PER_L",
-        "display": "2,66 kg CO₂/l",
+        "display": "2,68 kg CO₂/l",
         "sourceRo": "config/factors.json (IPCC 2006)"
       },
       "calc_4172be44ee62": {
@@ -1565,9 +1565,9 @@
         "tool": "compute_baseline",
         "key": "baseline.co2",
         "labelRo": "CO₂ din motorină azi",
-        "value": 95.76,
+        "value": 96.48,
         "unit": "T_CO2_PER_YEAR",
-        "display": "95,8 t CO₂/an",
+        "display": "96,5 t CO₂/an",
         "dependsOn": [
           "calc_486911cf6705",
           "calc_bd69a78f1ecf"
@@ -1615,9 +1615,9 @@
         "tool": "compute_indicator",
         "key": "cfg_initial.co2_avoided",
         "labelRo": "CO₂ evitat: doar tractoare noi",
-        "value": 11.49,
+        "value": 11.58,
         "unit": "T_CO2_PER_YEAR",
-        "display": "11,5 t CO₂/an",
+        "display": "11,6 t CO₂/an",
         "dependsOn": [
           "calc_2fbd0fd8db8e",
           "calc_bd69a78f1ecf"
@@ -1742,9 +1742,9 @@
         "tool": "simulate_upgrade_package",
         "key": "cfg_recommended.co2_avoided",
         "labelRo": "CO₂ evitat: tractoare + precizie",
-        "value": 19.92,
+        "value": 20.07,
         "unit": "T_CO2_PER_YEAR",
-        "display": "19,9 t CO₂/an",
+        "display": "20,1 t CO₂/an",
         "dependsOn": [
           "calc_f77159831377",
           "calc_bd69a78f1ecf"
@@ -3956,9 +3956,9 @@
         "tool": "calculate_impact",
         "key": "impact.co2_horizon",
         "labelRo": "CO₂ evitat pe 7 ani",
-        "value": 139.43,
+        "value": 140.47,
         "unit": "T_CO2",
-        "display": "139,4 t CO₂",
+        "display": "140,5 t CO₂",
         "dependsOn": [
           "calc_78b6030c059d",
           "calc_f803b072e077"
