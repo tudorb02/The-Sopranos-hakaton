@@ -682,6 +682,7 @@
           "enum": [
             "AVAILABLE",
             "OPEN_CALL",
+            "ALTERNATIVE_AVAILABLE",
             "TO_CONFIRM"
           ]
         },

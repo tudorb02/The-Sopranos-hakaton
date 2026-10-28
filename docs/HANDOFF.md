@@ -58,6 +58,8 @@ Regenerarea contractelor după o schimbare de format: `cd backend && mvn test -D
 8. **Rulări înregistrate (`data/demo/golden/`):** nu există; pașii sunt în `data/demo/golden/README.md`. Nu sunt necesare, pentru că agenții pe reguli acoperă lipsa lor.
 9. **Contract:** `affordability.ratioCalcId`/`dscrCalcId` sunt opționale (fără Open Banking nu există cashflow); `componentCategory` și cheile de extracție au fost extinse pentru noile categorii.
 
+10. **Ce nu am preluat de la Miruna (`cb13f24`)**: contractul `option.rate` / `comparison.rateDrivers` (la noi `rateBreakdown` / `rateDifference`, citite de frontend și de raportul PDF), implementarea ei de irigații/utilaje/`price_loan` (pe structura de dinainte de `ModuleCalculator`) și ferma ei demo de utilaje (400 ha, cashflow 240.000 EUR/an, care ar rezolva punctul 1, dar nu corespunde PDF-urilor Product). Am preluat valorile `ALTERNATIVE_AVAILABLE` (stare de element al structurii de finanțare) și unitatea `EUR_PER_KG`. Merge-ul cu `origin` s-a făcut cu strategia `ours`.
+
 ## 5. Capcane
 
 - ANAF răspunde la un CUI necunoscut cu HTTP 404 și corp JSON; o cerere pe secundă. Testele nu cheamă ANAF-ul real. Calea de lucru e `/api/PlatitorTvaRest/v9/tva`.

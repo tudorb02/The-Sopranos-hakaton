@@ -42,6 +42,7 @@ public enum Unit {
     MWH_PER_YEAR(1, " MWh/an"),
     T(0, " t"),
     M2(0, " m²"),
+    EUR_PER_KG(2, " EUR/kg"),
     EUR_PER_KG_N(2, " EUR/kg N"),
     POINTS(0, " puncte");
 
