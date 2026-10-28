@@ -5,8 +5,17 @@ from decimal import Decimal
 from uuid import UUID, uuid4
 
 from sqlalchemy import (
-    JSON, BigInteger, Boolean, CheckConstraint, ForeignKey, Index, Integer,
-    Numeric, String, Text, UniqueConstraint,
+    JSON,
+    BigInteger,
+    Boolean,
+    CheckConstraint,
+    ForeignKey,
+    Index,
+    Integer,
+    Numeric,
+    String,
+    Text,
+    UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -156,5 +165,5 @@ class Insight(Identity, Base):
     type: Mapped[str] = mapped_column(String(60))
     payload: Mapped[dict] = mapped_column(JSON)
     status: Mapped[str] = mapped_column(String(20), default="new")
-    score: Mapped[Decimal] = mapped_column(Numeric(20, 8))
+    score: Mapped[Decimal] = mapped_column(Numeric(30, 10))
     created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)

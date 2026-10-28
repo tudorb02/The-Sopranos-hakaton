@@ -1,11 +1,12 @@
 from alembic import context
 from sqlalchemy import create_engine
 
+from app import models
 from app.db import Base, database_url
-from app import models  # noqa: F401
 
 config = context.config
 target_metadata = Base.metadata
+assert models.User.__table__.metadata is target_metadata
 
 
 def run_migrations():

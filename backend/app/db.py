@@ -45,7 +45,13 @@ def make_engine(url=None):
 
         @event.listens_for(engine, "connect")
         def enable_foreign_keys(connection, _):
+            connection.isolation_level = None
             connection.execute("PRAGMA foreign_keys=ON")
+
+        @event.listens_for(engine, "begin")
+        def begin_transaction(connection):
+            connection.exec_driver_sql("BEGIN")
+
     return engine
 
 
