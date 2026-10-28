@@ -16,6 +16,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 
 import ro.greenstruct.agro.config.GreenStructProperties;
+import ro.greenstruct.agro.engine.sme.SmeStatus;
 import ro.greenstruct.agro.external.UpstreamUnavailableException;
 import ro.greenstruct.agro.external.mock.DemoFarmRepository;
 import ro.greenstruct.agro.external.mock.MockDataSources;
@@ -53,7 +54,10 @@ class AnafCompanyRegistryTest {
     private static final String BALANCE_SHEET_2025 = """
             {"an": 2025, "cui": 40123456, "deni": "CÂMPIA VERDE AGRO SRL", "caen": 111,
              "den_caen": "Cultivarea cerealelor (exclusiv orez), plantelor leguminoase şi a plantelor producătoare de seminţe oleaginoase",
-             "i": [{"indicator": "I13", "val_indicator": 4970000, "val_den_indicator": "Cifra de afaceri neta"},
+             "i": [{"indicator": "I1", "val_indicator": 6958000, "val_den_indicator": "ACTIVE IMOBILIZATE - TOTAL"},
+                   {"indicator": "I2", "val_indicator": 2485000, "val_den_indicator": "ACTIVE CIRCULANTE - TOTAL, din care"},
+                   {"indicator": "I6", "val_indicator": 49700, "val_den_indicator": "CHELTUIELI IN AVANS"},
+                   {"indicator": "I13", "val_indicator": 4970000, "val_den_indicator": "Cifra de afaceri neta"},
                    {"indicator": "I18", "val_indicator": 497000, "val_den_indicator": "Profit net"},
                    {"indicator": "I19", "val_indicator": 0, "val_den_indicator": "Pierdere neta"},
                    {"indicator": "I20", "val_indicator": 12, "val_den_indicator": "Numar mediu de salariati"}]}
@@ -92,6 +96,10 @@ class AnafCompanyRegistryTest {
         assertThat(company.turnoverEur()).isEqualByComparingTo("1000000");
         assertThat(company.netProfitEur()).isEqualByComparingTo("100000");
         assertThat(company.employees()).isEqualTo(12);
+        // (6,958,000 + 2,485,000 + 49,700) RON / 4.97 = 1,910,000 EUR
+        assertThat(company.totalAssetsEur()).isEqualByComparingTo("1910000");
+        // 12 employees, turnover 1 mil. EUR
+        assertThat(company.smeStatus()).isEqualTo(SmeStatus.SME);
         assertThat(company.financialYear()).isEqualTo(2025);
         assertThat(company.vatPayer()).isTrue();
         assertThat(company.manager()).isNull();
@@ -118,6 +126,8 @@ class AnafCompanyRegistryTest {
 
         var company = registry.company(CUI).orElseThrow().company();
         assertThat(company.turnoverEur()).isNull();
+        assertThat(company.totalAssetsEur()).isNull();
+        assertThat(company.smeStatus()).isEqualTo(SmeStatus.UNKNOWN);
         assertThat(company.caen()).isEqualTo("0111");
         assertThat(company.caenLabelRo()).isEqualTo("Cod CAEN 0111");
     }
@@ -127,6 +137,8 @@ class AnafCompanyRegistryTest {
         CompanyRecord demo = registry.company("38264019").orElseThrow();
 
         assertThat(demo.company().name()).isEqualTo("Agro Câmpia Bărăganului SRL");
+        // derived from the demo file: 9 employees, turnover 612,000 EUR, assets 2,480,000 EUR
+        assertThat(demo.company().smeStatus()).isEqualTo(SmeStatus.SME);
         assertThat(demo.source().mode()).isEqualTo("MOCK");
         server.verify();
     }
@@ -219,8 +231,8 @@ class AnafCompanyRegistryTest {
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         RestClient.Builder builder = RestClient.builder().baseUrl(anaf.baseUrl());
         server = MockRestServiceServer.bindTo(builder).build();
+        var reference = new ReferenceData(properties, mapper);
         return new AnafCompanyRegistry(new AnafClient(builder.build(), Duration.ZERO),
-                new MockDataSources(new DemoFarmRepository(properties, mapper), mapper), properties,
-                new ReferenceData(properties, mapper));
+                new MockDataSources(new DemoFarmRepository(properties, mapper), mapper, reference), properties, reference);
     }
 }

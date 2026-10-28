@@ -14,8 +14,10 @@
       "employees": 14,
       "turnoverEur": 486000,
       "netProfitEur": 61000,
+      "totalAssetsEur": 1320000,
       "financialYear": 2025,
       "vatPayer": true,
+      "smeStatus": "SME",
       "manager": {
         "age": 52,
         "installedAt": "2014-03-12"

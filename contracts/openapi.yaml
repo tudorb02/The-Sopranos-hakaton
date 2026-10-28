@@ -585,7 +585,7 @@ components:
     Company:
       type: object
       additionalProperties: false
-      required: [cui, name, legalForm, caen, caenLabelRo, county, registeredAt, employees, turnoverEur, financialYear, vatPayer, manager]
+      required: [cui, name, legalForm, caen, caenLabelRo, county, registeredAt, employees, turnoverEur, totalAssetsEur, financialYear, vatPayer, smeStatus]
       properties:
         cui:
           $ref: '#/components/schemas/Cui'
@@ -614,17 +614,25 @@ components:
           type: integer
           minimum: 0
         turnoverEur:
-          type: number
+          type: [number, 'null']
+          description: null când firma nu are bilanț depus în ultimii doi ani.
         netProfitEur:
-          type: number
+          type: [number, 'null']
+        totalAssetsEur:
+          type: [number, 'null']
+          description: Active imobilizate + active circulante + cheltuieli în avans, din ultimul bilanț; null fără bilanț.
         financialYear:
           type: integer
         vatPayer:
           type: boolean
+        smeStatus:
+          type: string
+          enum: [SME, NOT_SME, UNKNOWN]
+          description: IMM = sub 250 de angajați și (cifra de afaceri ≤ 50 mil. EUR sau active totale ≤ 43 mil. EUR), Recomandarea 2003/361/CE. UNKNOWN când bilanțul nu dă cifrele.
         manager:
-          type: object
+          type: [object, 'null']
           additionalProperties: false
-          description: Doar ce trebuie pentru eligibilitate (DR-12); fără nume sau CNP.
+          description: Doar ce trebuie pentru eligibilitate (DR-12); fără nume sau CNP. null pentru firmele căutate la ANAF, unde datele sunt la ONRC.
           required: [age, installedAt]
           properties:
             age:

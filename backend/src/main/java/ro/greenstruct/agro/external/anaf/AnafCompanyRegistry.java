@@ -87,7 +87,8 @@ public class AnafCompanyRegistry implements CompanyRegistryPort {
         if (vatRecord.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(AnafCompanyMapper.map(vatRecord.get(), latestBalanceSheet(cui, date.getYear()), ronPerEur()));
+        return Optional.of(AnafCompanyMapper.map(vatRecord.get(), latestBalanceSheet(cui, date.getYear()), ronPerEur(),
+                reference.smeRule()));
     }
 
     /** Balance sheets are filed by the end of May: last year's may not exist yet, so we also try the one before. */

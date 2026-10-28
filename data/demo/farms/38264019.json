@@ -12,6 +12,7 @@
     "employees": 9,
     "turnoverEur": 612000,
     "netProfitEur": 88000,
+    "totalAssetsEur": 2480000,
     "financialYear": 2025,
     "vatPayer": true,
     "manager": {

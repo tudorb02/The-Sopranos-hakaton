@@ -19,9 +19,11 @@ import ro.greenstruct.agro.external.model.CompanyRecord;
 import ro.greenstruct.agro.external.model.DataSourceInfo;
 import ro.greenstruct.agro.external.model.FarmData;
 import ro.greenstruct.agro.external.model.FarmInfo;
+import ro.greenstruct.agro.modules.ReferenceData;
 
 /**
- * ANAF, APIA and Open Banking backed by the demo farm files (copies of contracts/examples/farm-*.json).
+ * ANAF, APIA and Open Banking backed by the demo farm files (copies of contracts/examples/farm-*.json without the
+ * derived smeStatus).
  * A real adapter replaces one port at a time without touching the orchestrator or the agents.
  */
 @Component
@@ -29,15 +31,17 @@ public class MockDataSources implements CompanyRegistryPort, FarmRegistryPort, O
 
     private final DemoFarmRepository farms;
     private final ObjectMapper mapper;
+    private final ReferenceData reference;
 
-    public MockDataSources(DemoFarmRepository farms, ObjectMapper mapper) {
+    public MockDataSources(DemoFarmRepository farms, ObjectMapper mapper, ReferenceData reference) {
         this.farms = farms;
         this.mapper = mapper;
+        this.reference = reference;
     }
 
     @Override
     public Optional<CompanyRecord> company(String cui) {
-        return farms.find(cui).map(file -> new CompanyRecord(convert(file.path("company"), CompanyInfo.class),
+        return farms.find(cui).map(file -> new CompanyRecord(company(file.path("company")),
                 dataSources(cui).stream().filter(source -> "ANAF".equals(source.source())).findFirst()
                         .orElse(new DataSourceInfo("ANAF", "MOCK", Instant.now()))));
     }
@@ -63,6 +67,12 @@ public class MockDataSources implements CompanyRegistryPort, FarmRegistryPort, O
                 .map(file -> mapper.convertValue(file.path("dataSources"), new TypeReference<List<DataSourceInfo>>() {
                 }))
                 .orElse(List.of());
+    }
+
+    /** The demo files give the balance-sheet figures; the SME status is derived from them by the same rule as for ANAF. */
+    private CompanyInfo company(JsonNode node) {
+        CompanyInfo info = convert(node, CompanyInfo.class);
+        return info.withSmeStatus(reference.smeRule().classify(info.employees(), info.turnoverEur(), info.totalAssetsEur()));
     }
 
     private <T> T convert(JsonNode node, Class<T> type) {

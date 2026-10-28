@@ -1129,7 +1129,7 @@ function farmIrigatii() {
   ];
   return {
     cui: '45871203',
-    company: { cui: '45871203', name: 'Legume Dobrogea Verde SRL', legalForm: 'SRL', caen: '0113', caenLabelRo: 'Cultivarea legumelor, a pepenilor, a rădăcinoaselor și tuberculilor', county: 'Constanța', locality: 'Valu lui Traian', registeredAt: '2014-03-12', employees: 14, turnoverEur: 486000, netProfitEur: 61000, financialYear: 2025, vatPayer: true, manager: { age: 52, installedAt: '2014-03-12' } },
+    company: { cui: '45871203', name: 'Legume Dobrogea Verde SRL', legalForm: 'SRL', caen: '0113', caenLabelRo: 'Cultivarea legumelor, a pepenilor, a rădăcinoaselor și tuberculilor', county: 'Constanța', locality: 'Valu lui Traian', registeredAt: '2014-03-12', employees: 14, turnoverEur: 486000, netProfitEur: 61000, totalAssetsEur: 1320000, financialYear: 2025, vatPayer: true, smeStatus: 'SME', manager: { age: 52, installedAt: '2014-03-12' } },
     farm: { totalHa: 40, standardOutputEur: 412000, irrigatedNow: true, currentIrrigation: 'ASPERSIE_VECHE', crops: [{ year: 2026, crop: 'legume în câmp', ha: 40, yieldTPerHa: 38 }, { year: 2025, crop: 'legume în câmp', ha: 40, yieldTPerHa: 35 }, { year: 2024, crop: 'legume în câmp', ha: 38, yieldTPerHa: 31 }], livestock: [], apiaSubsidiesEur: 9800 },
     parcels: {
       type: 'FeatureCollection',
@@ -1156,7 +1156,7 @@ function farmUtilaje() {
   ];
   return {
     cui: '38264019',
-    company: { cui: '38264019', name: 'Agro Câmpia Bărăganului SRL', legalForm: 'SRL', caen: '0111', caenLabelRo: 'Cultivarea cerealelor (exclusiv orez), plantelor leguminoase și a plantelor producătoare de semințe oleaginoase', county: 'Călărași', locality: 'Dragalina', registeredAt: '2023-02-20', employees: 9, turnoverEur: 612000, netProfitEur: 88000, financialYear: 2025, vatPayer: true, manager: { age: 38, installedAt: '2023-02-20' } },
+    company: { cui: '38264019', name: 'Agro Câmpia Bărăganului SRL', legalForm: 'SRL', caen: '0111', caenLabelRo: 'Cultivarea cerealelor (exclusiv orez), plantelor leguminoase și a plantelor producătoare de semințe oleaginoase', county: 'Călărași', locality: 'Dragalina', registeredAt: '2023-02-20', employees: 9, turnoverEur: 612000, netProfitEur: 88000, totalAssetsEur: 2480000, financialYear: 2025, vatPayer: true, smeStatus: 'SME', manager: { age: 38, installedAt: '2023-02-20' } },
     farm: { totalHa: 400, standardOutputEur: 236000, irrigatedNow: false, currentIrrigation: 'NU', crops: [{ year: 2026, crop: 'grâu', ha: 100, yieldTPerHa: 6.1 }, { year: 2026, crop: 'porumb', ha: 100, yieldTPerHa: 7.4 }, { year: 2026, crop: 'floarea-soarelui', ha: 100, yieldTPerHa: 2.8 }, { year: 2026, crop: 'rapiță', ha: 100, yieldTPerHa: 3.2 }], livestock: [], apiaSubsidiesEur: 98000 },
     parcels: {
       type: 'FeatureCollection',
