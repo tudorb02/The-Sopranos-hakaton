@@ -68,8 +68,8 @@ Aplicația are **două zone** care lucrează pe același dosar:
 │  (reprezentantul firmei)   │          │                                │
 │                            │          │                                │
 │  1. CUI + 2 acorduri       │          │  • dosarul firmei + hartă      │
-│  2. încarcă oferta (aplicația │          │  • pașii agenților, live       │
-│  3. bifează parcelele      │          │  • calculele, cu sursa lor     │
+│  2. bifează parcelele      │          │  • pașii agenților, live       │
+│  3. oferta → categoria     │          │  • calculele, cu sursa lor     │
 │  4. documente esențiale    │          │  • clasic vs. verde            │
 │  5. întrebări esențiale    │          │  • de ce dobânda e mai mică    │
 │                            │          │  • raport verde + fond         │
