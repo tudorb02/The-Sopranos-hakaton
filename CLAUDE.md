@@ -146,6 +146,13 @@ DevOps: medii AWS + CI/CD (în paralel, de la început)
 3. **Proactiv (programat):** Scheduler → Analytics → Agent formulează insight-uri → apar în feed / ca notificare („luna viitoare ai 10 zile de naștere”).
 
 ### 4.4 Stack tehnic 🟡
+Pentru demo-ul frontend Daria/Matei, cererea de integrare din 28.10.2026 introduce
+un API separat Node.js + Express în `server/`, cu PostgreSQL în baza `nexxt_demo`.
+Prefixul este `/api/demo/v1`, iar contractul este `api/node-openapi.yaml`.
+Serviciul servește datele și salvează acțiunile demo; nu înlocuiește backend-ul
+Python, motorul de analiză sau fluxul pentru persoane juridice/credit verde.
+Planul și presupunerile sunt în `docs/node-api-plan.md`.
+
 | Zonă | Propunere |
 |---|---|
 | Backend + Agent | Python 3.12, FastAPI, SQLAlchemy + Alembic, Pydantic |

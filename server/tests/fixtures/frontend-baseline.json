@@ -1,0 +1,3638 @@
+{
+  "today": "2026-11-12",
+  "accounts": {
+    "login": {
+      "title": "Bine ai revenit",
+      "lead": "Alege contul cu care intri în demo.",
+      "note": "Prototip de hackathon cu date fictive, neafiliat Raiffeisen Bank. Nu se cer date de autentificare; în aplicația reală intri cu PIN sau biometrie."
+    },
+    "accounts": [
+      {
+        "id": "pf",
+        "profile": "Salariat",
+        "name": "Daria Ionescu",
+        "initial": "D",
+        "detail": "Cont curent RON · RO12 RZBR •••• 1234",
+        "href": "#/intra/pf"
+      },
+      {
+        "id": "student",
+        "profile": "Student",
+        "name": "Matei Popescu",
+        "initial": "M",
+        "detail": "Cont curent RON · RO45 RZBR •••• 5678",
+        "href": "#/intra/student"
+      }
+    ]
+  },
+  "categories": {
+    "alimente": {
+      "label": "Alimente",
+      "icon": "cart",
+      "tone": "cat-1"
+    },
+    "cafenele": {
+      "label": "Cafenele",
+      "icon": "cup",
+      "tone": "cat-2"
+    },
+    "livrari": {
+      "label": "Livrări de mâncare",
+      "icon": "bag",
+      "tone": "cat-3"
+    },
+    "iesiri": {
+      "label": "Restaurante",
+      "icon": "utensils",
+      "tone": "cat-4"
+    },
+    "taxi": {
+      "label": "Taxi",
+      "icon": "car",
+      "tone": "cat-5"
+    },
+    "nesortat": {
+      "label": "Fără categorie",
+      "icon": "help",
+      "tone": "cat-none"
+    },
+    "cumparaturi": {
+      "label": "Cumpărături",
+      "icon": "shirt",
+      "tone": "cat-fixed"
+    },
+    "cadouri": {
+      "label": "Cadouri",
+      "icon": "gift",
+      "tone": "cat-fixed"
+    },
+    "abonamente": {
+      "label": "Abonamente",
+      "icon": "repeat",
+      "tone": "cat-fixed"
+    },
+    "locuinta": {
+      "label": "Locuință",
+      "icon": "home",
+      "tone": "cat-fixed"
+    },
+    "transport": {
+      "label": "Transport",
+      "icon": "bus",
+      "tone": "cat-fixed"
+    },
+    "studii": {
+      "label": "Studii",
+      "icon": "book",
+      "tone": "cat-fixed"
+    },
+    "telefon": {
+      "label": "Telefon și internet",
+      "icon": "phone",
+      "tone": "cat-fixed"
+    },
+    "economii": {
+      "label": "Economii",
+      "icon": "wallet",
+      "tone": "cat-fixed"
+    },
+    "venit": {
+      "label": "Venit",
+      "icon": "arrow",
+      "tone": "cat-income"
+    }
+  },
+  "legal": {
+    "eyebrow": "Informare",
+    "title": "Recomandările și datele tale",
+    "items": [
+      {
+        "icon": "compass",
+        "text": "Recomandările sunt personalizate pe baza datelor tale. Au caracter informativ, iar deciziile îți aparțin."
+      },
+      {
+        "icon": "chat",
+        "text": "Coach-ul este un asistent bazat pe inteligență artificială și poate greși. Nu oferă consultanță financiară sau de investiții."
+      },
+      {
+        "icon": "lock",
+        "text": "Toate informațiile tale sunt criptate, atât la transmitere, cât și la stocare."
+      },
+      {
+        "icon": "shield",
+        "text": "Nu efectuăm nicio operațiune fără acordul tău. Datele tale nu sunt folosite pentru evaluarea creditelor sau în scop de marketing și le poți șterge oricând."
+      }
+    ],
+    "strip": "Date criptate și private · Deciziile îți aparțin",
+    "access": {
+      "title": "Cine îți vede datele",
+      "items": [
+        {
+          "icon": "lock",
+          "title": "Tu",
+          "text": "Vezi în Profil tot ce știe coach-ul despre tine și poți corecta sau șterge orice rând."
+        },
+        {
+          "icon": "compass",
+          "title": "Coach-ul",
+          "text": "Citește extrasele și răspunsurile tale doar ca să-ți calculeze bugetele și recomandările. Modelul AI nu învață din datele tale."
+        },
+        {
+          "icon": "chat",
+          "title": "Un consultant Raiffeisen",
+          "text": "Vede profilul din coach doar dacă i-l arăți tu, într-o discuție în Chat 1:1, și doar cât durează discuția."
+        },
+        {
+          "icon": "shield",
+          "title": "Alte firme",
+          "text": "Nimeni. Nu vindem și nu dăm datele tale altor firme, nici pentru reclame, nici pentru evaluarea creditelor."
+        }
+      ]
+    },
+    "never": {
+      "title": "Ce nu facem niciodată",
+      "items": [
+        "Nu îți cerem parola, PIN-ul sau codurile primite prin SMS",
+        "Nu facem plăți și nu mutăm bani fără aprobarea ta în aplicație",
+        "Nu citim titlurile din calendar sau ce faci în alte aplicații",
+        "Nu trimitem datele tale în afara Uniunii Europene"
+      ]
+    },
+    "log": {
+      "title": "Ultimele accesări",
+      "items": [
+        {
+          "who": "Coach-ul",
+          "what": "A citit plățile de ieri, pentru rezumatul de azi",
+          "when": "Azi, 07:00"
+        },
+        {
+          "who": "Tu",
+          "what": "Ai deschis Profilul",
+          "when": "Ieri, 21:14"
+        },
+        {
+          "who": "Coach-ul",
+          "what": "A citit calendarul pentru săptămâna viitoare",
+          "when": "10 nov., 07:00"
+        }
+      ],
+      "note": "Niciun angajat al băncii nu a deschis profilul tău din coach."
+    },
+    "security": {
+      "title": "Cum îți protejăm datele",
+      "items": [
+        {
+          "icon": "lock",
+          "title": "Criptate peste tot",
+          "text": "Datele sunt criptate când circulă între telefon și bancă și când sunt stocate. Fără cheile de criptare ale băncii, datele copiate nu pot fi citite."
+        },
+        {
+          "icon": "shield",
+          "title": "Protejate ca aplicația",
+          "text": "Coach-ul se deschide doar din aplicație, după PIN, amprentă sau Face ID. Nu ai alt cont sau altă parolă de ținut minte."
+        },
+        {
+          "icon": "compass",
+          "title": "Fără numele tău la modelul AI",
+          "text": "Modelul primește tranzacțiile cu un cod în loc de nume și IBAN. Datele rămân în sistemele băncii, în UE."
+        },
+        {
+          "icon": "card",
+          "title": "Fără date de card",
+          "text": "Coach-ul nu primește numărul complet al cardului, codul CVV sau parole."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Finanțele tale rămân private",
+      "items": [
+        "Nimic din coach nu devine public: nu există profiluri publice, clasamente sau comparații cu alți clienți",
+        "Nu publicăm, nu vindem și nu arătăm nimănui sumele, plățile sau obiectivele tale",
+        "Pe ecranul blocat, notificările pot apărea fără sume",
+        "Poți ascunde sumele și în aplicație, când e cineva lângă tine"
+      ]
+    },
+    "incident": {
+      "title": "Dacă se întâmplă ceva",
+      "items": [
+        {
+          "icon": "phone",
+          "title": "Ți-ai pierdut telefonul",
+          "text": "Sună la *2000 ca să blochezi accesul. Profilul din coach nu e salvat pe telefon, ci în sistemele băncii."
+        },
+        {
+          "icon": "bell",
+          "title": "Un incident de securitate",
+          "text": "Dacă ar exista vreodată un incident care îți afectează datele, te anunțăm direct și anunțăm autoritatea de protecție a datelor (ANSPDCP), cum cere legea."
+        },
+        {
+          "icon": "help",
+          "title": "O bănuială",
+          "text": "Verifică ultimele accesări de mai sus și scrie-ne din Chat 1:1 sau la *2000."
+        }
+      ]
+    },
+    "promise": {
+      "title": "Datele tale rămân private",
+      "items": [
+        "Criptate, la transmitere și la stocare",
+        "Nu devin publice și nu le vindem nimănui",
+        "Le vezi doar tu și le poți șterge oricând"
+      ],
+      "link": "Cine îți vede datele și cum le protejăm"
+    },
+    "screenPrivacy": [
+      {
+        "id": "hide-amounts",
+        "label": "Ascunde sumele pe ecran",
+        "hint": "Sumele apar ca „••••” până le atingi",
+        "on": false
+      },
+      {
+        "id": "quiet-notifications",
+        "label": "Fără sume în notificări",
+        "hint": "Pe ecranul blocat apare doar „Ai un mesaj de la coach”",
+        "on": true
+      }
+    ],
+    "dataTitle": "Ce date folosește coach-ul",
+    "data": [
+      {
+        "name": "Extrase de cont",
+        "note": "Contul curent și extrasele atașate de tine"
+      },
+      {
+        "name": "Răspunsurile tale",
+        "note": "Din întrebările de început și din discuții"
+      },
+      {
+        "name": "Calendar",
+        "note": "Opțional: doar zilele de naștere și evenimentele marcate"
+      },
+      {
+        "name": "Screen Time",
+        "note": "Opțional: doar dacă ai deschis aplicațiile alese"
+      }
+    ],
+    "erase": "Din Profil → Dezactivează coach-ul. Extrasele importate și răspunsurile tale se șterg, iar contul și cardurile nu sunt afectate.",
+    "contact": "Ai o întrebare? Scrie-ne din Chat 1:1 în aplicație sau sună la *2000."
+  },
+  "personas": {
+    "pf": {
+      "analysis": {
+        "title": "Analizez ultimele 24 de luni",
+        "lead": "12 luni importate din contul curent și 12 din extrasul atașat. Durează circa un minut.",
+        "items": [
+          {
+            "label": "Venituri și ziua salariului",
+            "state": "done",
+            "note": "Salariu pe 5, în 24 din 24 de luni"
+          },
+          {
+            "label": "Plăți recurente și abonamente",
+            "state": "done",
+            "note": "9 plăți recurente, dintre care 3 abonamente"
+          },
+          {
+            "label": "Categorii pentru 1.946 de plăți",
+            "state": "running",
+            "note": "1.362 din 1.946",
+            "progress": 70
+          },
+          {
+            "label": "Obiceiuri și luni cu cheltuieli mari",
+            "state": "waiting",
+            "note": "Urmează"
+          }
+        ],
+        "note": "Poți închide aplicația. Îți scriu când e gata."
+      },
+      "apps": {
+        "found": "Am găsit 3 abonamente în extrase.",
+        "items": [
+          {
+            "name": "FitZone Gym",
+            "lei": 220,
+            "note": "Plătit lunar din ianuarie",
+            "on": true
+          },
+          {
+            "name": "StreamFlix",
+            "lei": 55,
+            "note": "Plătit lunar",
+            "on": false
+          },
+          {
+            "name": "MuzicaPlus",
+            "lei": 25,
+            "note": "Plătit lunar",
+            "on": false
+          }
+        ],
+        "learns": [
+          "Doar dacă ai deschis aplicația într-o zi"
+        ],
+        "doesNotLearn": [
+          "Cât timp stai în aplicație sau ce faci acolo",
+          "Alte aplicații decât cele alese de tine"
+        ],
+        "platform": "Pe iPhone folosesc Screen Time, iar pe Android accesul la datele de utilizare. Telefonul îți cere acordul la pasul următor."
+      },
+      "calendar": {
+        "options": [
+          {
+            "id": "google",
+            "icon": "calendar",
+            "title": "Google Calendar",
+            "note": "Citesc doar zilele de naștere și evenimentele marcate de tine.",
+            "action": "Conectează",
+            "href": "#/activare/calendar/conectat"
+          },
+          {
+            "id": "phone",
+            "icon": "phone",
+            "title": "Calendarul telefonului",
+            "note": "Datele rămân pe telefon. Coach-ul află doar câte evenimente sunt și când.",
+            "action": "Permite"
+          }
+        ],
+        "reads": [
+          "Tipul evenimentului și data",
+          "Zilele de naștere din contactele Google"
+        ],
+        "doesNotRead": [
+          "Titluri, invitați sau locații",
+          "Nu modific nimic în calendar"
+        ],
+        "found": [
+          {
+            "day": "nov.",
+            "month": "2026",
+            "title": "10 zile de naștere",
+            "note": "Din contactele tale Google"
+          },
+          {
+            "day": "dec.",
+            "month": "2026",
+            "title": "Sf. Nicolae, Crăciun, Sf. Ștefan",
+            "note": "Sărbători cu cadouri"
+          },
+          {
+            "day": "19",
+            "month": "iun.",
+            "title": "Nuntă",
+            "note": "Eveniment marcat de tine, în 2027"
+          }
+        ],
+        "gift": {
+          "question": "Cât vrei să dai de obicei pe un cadou?",
+          "groups": [
+            {
+              "label": "Pentru prieteni",
+              "options": [
+                "50 lei",
+                "100 lei",
+                "150 lei",
+                "Altă sumă"
+              ],
+              "selected": "100 lei"
+            },
+            {
+              "label": "Pentru familie",
+              "options": [
+                "100 lei",
+                "200 lei",
+                "300 lei",
+                "Altă sumă"
+              ],
+              "selected": "200 lei"
+            }
+          ],
+          "result": "Pentru cele 10 zile de naștere din noiembrie: aproximativ 1.200 lei."
+        }
+      },
+      "entry": {
+        "title": "Coach financiar",
+        "badge": "Nou",
+        "subtitle": "Funcție opțională",
+        "text": "Îți analizează extrasele de cont și te ajută cu bugete pe categorii și cu obiective. Îl activezi doar dacă vrei și îl poți opri oricând."
+      },
+      "findings": {
+        "lead": "Din 24 de luni de extrase, din calendar și din răspunsurile tale.",
+        "items": [
+          {
+            "text": "Între 27 și 5 ale lunii ai sub 100 lei în cont, în 5 din ultimele 6 luni.",
+            "src": "obs"
+          },
+          {
+            "text": "Aproape în fiecare dimineață plătești circa 30 lei la Boabe & Co: aproximativ 600 lei pe lună.",
+            "note": "Te întreb despre asta în discuție.",
+            "src": "obs"
+          },
+          {
+            "text": "FitZone Gym: 220 lei pe lună, iar aplicația sălii n-a mai fost deschisă din aprilie.",
+            "src": "obs"
+          },
+          {
+            "text": "În noiembrie ai 10 zile de naștere.",
+            "src": "obs",
+            "label": "din calendar"
+          }
+        ],
+        "firstStep": {
+          "icon": "gift",
+          "title": "Primul pas pe care ți-l propun",
+          "text": "Pe 5 noiembrie, după salariu, pune deoparte cei 1.200 lei pentru cadouri. Așa vezi de la început cât îți rămâne pentru restul lunii.",
+          "action": "Vezi propunerea",
+          "href": "#/chat"
+        }
+      },
+      "intro": {
+        "title": "Activează coach-ul financiar",
+        "lead": "Te ajut să vezi unde se duc banii, să-ți pui bugete pe categorii și să strângi pentru ce îți dorești.",
+        "duration": "Durează circa 3 minute",
+        "does": [
+          "Citesc extrasele de cont pe care mi le dai și îți arăt tiparele",
+          "Te întreb doar ce nu pot vedea din tranzacții",
+          "Îți scriu când te apropii de o limită stabilită de tine"
+        ]
+      },
+      "products": [
+        {
+          "icon": "card",
+          "name": "Conturi curente"
+        },
+        {
+          "icon": "wallet",
+          "name": "Economii și depozite"
+        },
+        {
+          "icon": "card",
+          "name": "Carduri"
+        },
+        {
+          "icon": "bank",
+          "name": "Credite"
+        },
+        {
+          "icon": "shield",
+          "name": "Asigurări"
+        }
+      ],
+      "questions": [
+        {
+          "id": "probleme",
+          "title": "Ce te încurcă cel mai des când vine vorba de bani?",
+          "hint": "Poți alege mai multe.",
+          "options": [
+            {
+              "label": "Rămân fără bani înainte de salariu",
+              "selected": true
+            },
+            {
+              "label": "Nu știu unde se duc banii",
+              "selected": true
+            },
+            {
+              "label": "Nu reușesc să pun deoparte"
+            },
+            {
+              "label": "Plătesc abonamente pe care nu le folosesc"
+            },
+            {
+              "label": "Altceva"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Spune cu cuvintele tale",
+              "type": "textarea",
+              "value": "Cheltui foarte repede banii și nu-mi dau seama unde se duc."
+            }
+          ]
+        },
+        {
+          "id": "obiective",
+          "title": "Pentru ce ai vrea să strângi bani în lunile următoare?",
+          "hint": "Poți alege mai multe.",
+          "options": [
+            {
+              "label": "O achiziție",
+              "selected": true
+            },
+            {
+              "label": "O vacanță"
+            },
+            {
+              "label": "Un fond pentru urgențe"
+            },
+            {
+              "label": "Nimic anume acum"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Ce anume?",
+              "value": "Laptop"
+            },
+            {
+              "label": "Cât costă?",
+              "value": "2000",
+              "suffix": "lei",
+              "numeric": true
+            },
+            {
+              "label": "Până când?",
+              "type": "select",
+              "value": "Cât mai curând",
+              "options": [
+                "Cât mai curând",
+                "În 3 luni",
+                "În 6 luni",
+                "Până la final de an"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bani-in-afara",
+          "title": "Ai bani care nu trec prin contul ăsta?",
+          "hint": "De exemplu tichete de masă, numerar sau un cont la altă bancă. Așa calculez corect cât îți rămâne.",
+          "options": [
+            {
+              "label": "Tichete de masă",
+              "selected": true
+            },
+            {
+              "label": "Numerar"
+            },
+            {
+              "label": "Cont la altă bancă"
+            },
+            {
+              "label": "Nu"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Tichete de masă pe lună",
+              "value": "800",
+              "suffix": "lei",
+              "numeric": true
+            }
+          ]
+        },
+        {
+          "id": "gospodarie",
+          "title": "Împarți cheltuielile casei cu cineva?",
+          "options": [
+            {
+              "label": "Nu, doar eu",
+              "selected": true
+            },
+            {
+              "label": "Da, cu partenerul"
+            },
+            {
+              "label": "Da, cu colegi de apartament"
+            },
+            {
+              "label": "Locuiesc cu familia"
+            }
+          ]
+        },
+        {
+          "id": "notificari",
+          "title": "Cât de des vrei să-ți scriu și când să nu te deranjez?",
+          "options": [
+            {
+              "label": "Doar când e important"
+            },
+            {
+              "label": "Cel mult o dată pe zi",
+              "selected": true
+            },
+            {
+              "label": "Doar rezumatul săptămânal"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Fără notificări de la",
+              "value": "22:00"
+            },
+            {
+              "label": "până la",
+              "value": "08:00"
+            },
+            {
+              "label": "Rezumatul săptămânal",
+              "type": "select",
+              "value": "Duminică, la 19:00",
+              "options": [
+                "Duminică, la 19:00",
+                "Luni, la 08:00",
+                "Vineri, la 18:00",
+                "Fără rezumat"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "servicii",
+          "title": "Vrei să-ți spun și când un serviciu Raiffeisen te-ar ajuta?",
+          "hint": "Îți spun de fiecare dată de ce și cât costă. Poți schimba oricând din Profil.",
+          "options": [
+            {
+              "label": "Da, cel mult o dată pe săptămână",
+              "selected": true
+            },
+            {
+              "label": "Nu, doar sfaturi"
+            }
+          ]
+        }
+      ],
+      "statements": {
+        "lead": "Coach-ul lucrează cu extrasele tale de cont. Cu cât au mai multe luni, cu atât vede mai bine tiparele: ideal 12–24.",
+        "account": {
+          "name": "Cont curent RON",
+          "iban": "RO12 RZBR •••• 1234"
+        },
+        "periods": [
+          "Ultimele 12 luni (nov. 2025 – oct. 2026)",
+          "Ultimele 6 luni",
+          "Ultimele 3 luni"
+        ],
+        "imported": {
+          "title": "12 extrase lunare importate",
+          "meta": "nov. 2025 – oct. 2026 · 978 de plăți · se actualizează lunar"
+        },
+        "attachHint": "Din anii trecuți sau de la altă bancă.",
+        "formats": "PDF, XLS sau CSV · până la 10 MB",
+        "files": [
+          {
+            "name": "extras_nov2024-oct2025.pdf",
+            "meta": "12 luni · 968 de plăți",
+            "state": "done"
+          },
+          {
+            "name": "extras_alta_banca_2026.csv",
+            "meta": "Se procesează…",
+            "state": "reading",
+            "progress": 60
+          }
+        ],
+        "howTo": [
+          "Deschide aplicația sau internet banking-ul băncii",
+          "Intră la cont și caută „Extras de cont”",
+          "Alege perioada cea mai lungă, în format PDF sau XLS",
+          "Salvează fișierul și atașează-l aici"
+        ],
+        "privacy": "Fișierele sunt criptate, nu devin publice și le vede doar coach-ul. Din extrase citesc data, suma, comerciantul și descrierea; transferurile către persoane apar doar ca „transfer către o persoană”. Poți șterge oricând un extras."
+      },
+      "categories": {
+        "alimente": {
+          "label": "Alimente",
+          "icon": "cart",
+          "tone": "cat-1"
+        },
+        "cafenele": {
+          "label": "Cafenele",
+          "icon": "cup",
+          "tone": "cat-2"
+        },
+        "livrari": {
+          "label": "Livrări de mâncare",
+          "icon": "bag",
+          "tone": "cat-3"
+        },
+        "iesiri": {
+          "label": "Restaurante",
+          "icon": "utensils",
+          "tone": "cat-4"
+        },
+        "taxi": {
+          "label": "Taxi",
+          "icon": "car",
+          "tone": "cat-5"
+        },
+        "nesortat": {
+          "label": "Fără categorie",
+          "icon": "help",
+          "tone": "cat-none"
+        },
+        "cumparaturi": {
+          "label": "Cumpărături",
+          "icon": "shirt",
+          "tone": "cat-fixed"
+        },
+        "cadouri": {
+          "label": "Cadouri",
+          "icon": "gift",
+          "tone": "cat-fixed"
+        },
+        "abonamente": {
+          "label": "Abonamente",
+          "icon": "repeat",
+          "tone": "cat-fixed"
+        },
+        "locuinta": {
+          "label": "Locuință",
+          "icon": "home",
+          "tone": "cat-fixed"
+        },
+        "transport": {
+          "label": "Transport",
+          "icon": "bus",
+          "tone": "cat-fixed"
+        },
+        "studii": {
+          "label": "Studii",
+          "icon": "book",
+          "tone": "cat-fixed"
+        },
+        "telefon": {
+          "label": "Telefon și internet",
+          "icon": "phone",
+          "tone": "cat-fixed"
+        },
+        "economii": {
+          "label": "Economii",
+          "icon": "wallet",
+          "tone": "cat-fixed"
+        },
+        "venit": {
+          "label": "Venit",
+          "icon": "arrow",
+          "tone": "cat-income"
+        }
+      },
+      "categoryNotes": {
+        "cafenele": "Intră la bugetul Cafenele: cel mult 3 pe săptămână.",
+        "nesortat": "Nu recunosc comerciantul. Pare o cumpărătură online: alege categoria, ca plata să fie inclusă în bugetul potrivit.",
+        "locuinta": "Cheltuială fixă: nu se adună la cheltuielile variabile.",
+        "abonamente": "Cheltuială fixă: nu se adună la cheltuielile variabile.",
+        "economii": "Economii: nu se adună la cheltuieli.",
+        "venit": "Încasare: nu se adună la cheltuieli."
+      },
+      "days": [
+        {
+          "label": "Azi",
+          "date": "joi, 12 nov.",
+          "total": 85,
+          "items": [
+            {
+              "id": "t1",
+              "time": "08:12",
+              "merchant": "Boabe & Co",
+              "raw": "BOABE&CO CAFENEA BUCURESTI RO",
+              "name": "Cafea și covrig",
+              "category": "cafenele",
+              "lei": -30,
+              "renamed": true,
+              "rule": true,
+              "tags": [
+                "birou"
+              ],
+              "note": "Cafeaua de dimineață, în drum spre birou",
+              "status": "În așteptare",
+              "history": "Ultimele 3 luni: 58 de plăți, 1.740 lei"
+            },
+            {
+              "id": "t2",
+              "time": "06:00",
+              "merchant": "StreamFlix",
+              "raw": "STREAMFLIX.COM SUBSCRIPTION",
+              "name": "StreamFlix",
+              "category": "abonamente",
+              "lei": -55,
+              "recurring": true,
+              "status": "Finalizată"
+            }
+          ]
+        },
+        {
+          "label": "Ieri",
+          "date": "miercuri, 11 nov.",
+          "total": 54,
+          "items": [
+            {
+              "id": "t3",
+              "time": "22:10",
+              "merchant": "TaxiGo",
+              "raw": "TAXIGO RIDE BUCURESTI",
+              "name": "TaxiGo",
+              "category": "taxi",
+              "lei": -15,
+              "status": "Finalizată"
+            },
+            {
+              "id": "t4",
+              "time": "18:40",
+              "merchant": "Market Express",
+              "raw": "MARKET EXPRESS 0142 BUCURESTI",
+              "name": "Market Express",
+              "category": "alimente",
+              "lei": -39,
+              "status": "Finalizată"
+            }
+          ]
+        },
+        {
+          "label": "Marți",
+          "date": "10 nov.",
+          "total": 48,
+          "items": [
+            {
+              "id": "t5",
+              "time": "19:20",
+              "merchant": "Market Express",
+              "raw": "MARKET EXPRESS 0142 BUCURESTI",
+              "name": "Market Express",
+              "category": "alimente",
+              "lei": -18,
+              "status": "Finalizată"
+            },
+            {
+              "id": "t6",
+              "time": "08:05",
+              "merchant": "Boabe & Co",
+              "raw": "BOABE&CO CAFENEA BUCURESTI RO",
+              "name": "Cafea și covrig",
+              "category": "cafenele",
+              "lei": -30,
+              "renamed": true,
+              "rule": true,
+              "tags": [
+                "birou"
+              ],
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 58 de plăți, 1.740 lei"
+            }
+          ]
+        },
+        {
+          "label": "Luni",
+          "date": "9 nov.",
+          "total": 62,
+          "items": [
+            {
+              "id": "t7",
+              "time": "18:55",
+              "merchant": "Market Express",
+              "raw": "MARKET EXPRESS 0142 BUCURESTI",
+              "name": "Market Express",
+              "category": "alimente",
+              "lei": -32,
+              "status": "Finalizată"
+            },
+            {
+              "id": "t8",
+              "time": "08:20",
+              "merchant": "Boabe & Co",
+              "raw": "BOABE&CO CAFENEA BUCURESTI RO",
+              "name": "Cafea și covrig",
+              "category": "cafenele",
+              "lei": -30,
+              "renamed": true,
+              "rule": true,
+              "tags": [
+                "birou"
+              ],
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 58 de plăți, 1.740 lei"
+            }
+          ]
+        },
+        {
+          "label": "Duminică",
+          "date": "8 nov.",
+          "total": 75,
+          "items": [
+            {
+              "id": "t9",
+              "time": "20:30",
+              "merchant": "LivrareRapidă",
+              "raw": "LIVRARERAPIDA*COMANDA 88412",
+              "name": "Pizza de duminică",
+              "category": "livrari",
+              "lei": -75,
+              "renamed": true,
+              "status": "Finalizată"
+            }
+          ]
+        },
+        {
+          "label": "Sâmbătă",
+          "date": "7 nov.",
+          "total": 150,
+          "items": [
+            {
+              "id": "t10",
+              "time": "23:50",
+              "merchant": "TaxiGo",
+              "raw": "TAXIGO RIDE BUCURESTI",
+              "name": "TaxiGo",
+              "category": "taxi",
+              "lei": -25,
+              "status": "Finalizată"
+            },
+            {
+              "id": "t11",
+              "time": "21:15",
+              "merchant": "Bistro Central",
+              "raw": "BISTRO CENTRAL SRL BUCURESTI",
+              "name": "Cină cu prietenii",
+              "category": "iesiri",
+              "lei": -120,
+              "renamed": true,
+              "tags": [
+                "prieteni"
+              ],
+              "status": "Finalizată"
+            },
+            {
+              "id": "t12",
+              "time": "11:40",
+              "merchant": "Cafea Expres",
+              "raw": "CAFEAEXPRES SRL BUCURESTI RO",
+              "name": "Espresso",
+              "category": "cafenele",
+              "lei": -5,
+              "renamed": true,
+              "rule": true,
+              "note": "Un espresso la chioșcul de lângă metrou",
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 6 plăți, 30 lei"
+            }
+          ]
+        },
+        {
+          "label": "Vineri",
+          "date": "6 nov.",
+          "total": 2625,
+          "items": [
+            {
+              "id": "t13",
+              "time": "20:45",
+              "merchant": "LivrareRapidă",
+              "raw": "LIVRARERAPIDA*COMANDA 87990",
+              "name": "LivrareRapidă",
+              "category": "livrari",
+              "lei": -75,
+              "status": "Finalizată"
+            },
+            {
+              "id": "t14",
+              "time": "13:05",
+              "merchant": "ONLINE*ABC SRL",
+              "raw": "ONLINE*ABC SRL WWW.ABC.RO",
+              "name": "",
+              "category": "nesortat",
+              "lei": -120,
+              "needsReview": true,
+              "suggestion": "cumparaturi",
+              "status": "Finalizată"
+            },
+            {
+              "id": "t15",
+              "time": "09:00",
+              "merchant": "Transfer către o persoană",
+              "raw": "TRANSFER SMART MOBILE · CHIRIE NOIEMBRIE",
+              "name": "Chirie",
+              "category": "locuinta",
+              "lei": -2400,
+              "recurring": true,
+              "renamed": true,
+              "status": "Finalizată"
+            },
+            {
+              "id": "t16",
+              "time": "08:10",
+              "merchant": "Boabe & Co",
+              "raw": "BOABE&CO CAFENEA BUCURESTI RO",
+              "name": "Cafea și covrig",
+              "category": "cafenele",
+              "lei": -30,
+              "renamed": true,
+              "rule": true,
+              "tags": [
+                "birou"
+              ],
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 58 de plăți, 1.740 lei"
+            }
+          ]
+        },
+        {
+          "label": "Joi",
+          "date": "5 nov.",
+          "total": 95,
+          "items": [
+            {
+              "id": "t17",
+              "time": "18:30",
+              "merchant": "Market Express",
+              "raw": "MARKET EXPRESS 0142 BUCURESTI",
+              "name": "Market Express",
+              "category": "alimente",
+              "lei": -65,
+              "status": "Finalizată"
+            },
+            {
+              "id": "t18",
+              "time": "10:30",
+              "merchant": "FixPay → Super Acces Plus",
+              "raw": "FIXPAY ECONOMII CADOURI",
+              "name": "Deoparte pentru cadouri",
+              "category": "economii",
+              "lei": -1200,
+              "recurring": true,
+              "renamed": true,
+              "status": "Finalizată"
+            },
+            {
+              "id": "t19",
+              "time": "08:15",
+              "merchant": "Boabe & Co",
+              "raw": "BOABE&CO CAFENEA BUCURESTI RO",
+              "name": "Cafea și covrig",
+              "category": "cafenele",
+              "lei": -30,
+              "renamed": true,
+              "rule": true,
+              "tags": [
+                "birou"
+              ],
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 58 de plăți, 1.740 lei"
+            },
+            {
+              "id": "t20",
+              "time": "07:02",
+              "merchant": "Nord Media SRL",
+              "raw": "SALARIU NOIEMBRIE NORD MEDIA SRL",
+              "name": "Salariu",
+              "category": "venit",
+              "lei": 6200,
+              "recurring": true,
+              "renamed": true,
+              "status": "Finalizată"
+            }
+          ]
+        }
+      ],
+      "filters": [
+        {
+          "label": "Toate",
+          "selected": true
+        },
+        {
+          "label": "Cheltuieli"
+        },
+        {
+          "label": "Încasări"
+        },
+        {
+          "label": "Fără categorie · 1"
+        },
+        {
+          "label": "Recurente"
+        }
+      ],
+      "pickerCategories": [
+        "alimente",
+        "cafenele",
+        "livrari",
+        "iesiri",
+        "taxi",
+        "cumparaturi",
+        "cadouri",
+        "abonamente",
+        "locuinta"
+      ],
+      "review": {
+        "id": "t14",
+        "title": "1 plată de verificat",
+        "text": "ONLINE*ABC SRL · 120 lei · vineri, 6 nov."
+      },
+      "spending": {
+        "period": "5 – 12 noiembrie",
+        "title": "Cheltuieli variabile din 5 noiembrie",
+        "total": 739,
+        "fixed": 2455,
+        "fixedNote": "chiria și abonamentele",
+        "compare": "Cu 210 lei mai puțin față de aceeași perioadă din octombrie",
+        "parts": [
+          {
+            "id": "alimente",
+            "lei": 154
+          },
+          {
+            "id": "cafenele",
+            "lei": 155
+          },
+          {
+            "id": "livrari",
+            "lei": 150
+          },
+          {
+            "id": "iesiri",
+            "lei": 120
+          },
+          {
+            "id": "taxi",
+            "lei": 40
+          },
+          {
+            "id": "nesortat",
+            "lei": 120
+          }
+        ]
+      },
+      "tagSuggestions": [
+        "birou",
+        "weekend",
+        "prieteni",
+        "familie"
+      ],
+      "agenda": [
+        {
+          "day": "14",
+          "month": "nov.",
+          "title": "2 zile de naștere",
+          "note": "200 lei din bugetul de cadouri"
+        },
+        {
+          "day": "30",
+          "month": "nov.",
+          "title": "Sf. Andrei",
+          "note": "Doar urări, cum ai stabilit"
+        },
+        {
+          "day": "5",
+          "month": "dec.",
+          "title": "Salariu",
+          "note": "1.200 lei deoparte pentru Crăciun"
+        }
+      ],
+      "allocation": [
+        {
+          "id": "fixed",
+          "label": "Cheltuieli fixe",
+          "lei": 3020,
+          "tone": "fixed"
+        },
+        {
+          "id": "aside",
+          "label": "Deoparte pentru cadouri",
+          "lei": 1200,
+          "tone": "aside"
+        },
+        {
+          "id": "spend",
+          "label": "Disponibil pentru cheltuieli",
+          "lei": 1980,
+          "tone": "spend"
+        }
+      ],
+      "budgetGroups": [
+        {
+          "title": "Pe categorii",
+          "src": "agreed",
+          "note": "stabilite de tine"
+        }
+      ],
+      "budgets": [
+        {
+          "id": "cafenele",
+          "name": "Cafenele",
+          "icon": "cup",
+          "kind": "count",
+          "used": 3,
+          "max": 3,
+          "note": "3 din 3 săptămâna aceasta · următoarea, de luni",
+          "onHome": true
+        },
+        {
+          "id": "cadouri",
+          "name": "Cadouri",
+          "icon": "gift",
+          "kind": "amount",
+          "spent": 380,
+          "limit": 1200,
+          "note": "3 din 10 ocazii, din banii puși deoparte",
+          "onHome": true
+        },
+        {
+          "id": "iesiri",
+          "name": "Restaurante",
+          "icon": "utensils",
+          "kind": "amount",
+          "spent": 120,
+          "limit": 200,
+          "warn": true,
+          "note": "60% din buget, în primele 8 zile ale perioadei",
+          "onHome": true
+        },
+        {
+          "id": "haine",
+          "name": "Haine",
+          "icon": "shirt",
+          "kind": "pause",
+          "note": "Pauză până în ianuarie, cum am stabilit"
+        },
+        {
+          "id": "livrari",
+          "name": "Livrări de mâncare",
+          "icon": "bag",
+          "kind": "protected",
+          "spent": 150,
+          "note": "Fără limită, cum ai cerut"
+        }
+      ],
+      "chat": [
+        {
+          "type": "divider",
+          "text": "28 octombrie"
+        },
+        {
+          "type": "coach",
+          "text": "Văd o plată de aproximativ 30 lei aproape în fiecare dimineață la Boabe & Co, între 8:00 și 9:30. În ultimele 3 luni: 4–5 pe săptămână, aproximativ 600 lei pe lună. Ce cumperi de obicei?"
+        },
+        {
+          "type": "me",
+          "text": "Cafea și covrig în drum spre birou."
+        },
+        {
+          "type": "coach",
+          "text": "Mulțumesc. Cât de des ți-ar plăcea s-o iei, ca să te bucuri de ea fără să te încurce la final de lună?"
+        },
+        {
+          "type": "me",
+          "text": "De 3 ori pe săptămână."
+        },
+        {
+          "type": "proposal",
+          "title": "Buget nou: Cafenele",
+          "lines": [
+            "Cel mult 3 pe săptămână, la orice cafenea.",
+            "Îți scriu la a treia.",
+            "Economisești aproximativ 210 lei pe lună."
+          ],
+          "done": "Aprobat pe 28 octombrie"
+        },
+        {
+          "type": "coach",
+          "text": "Încă ceva: plătești 220 lei pe lună la FitZone, dar aplicația sălii n-a mai fost deschisă din aprilie. Mai mergi?"
+        },
+        {
+          "type": "me",
+          "text": "Nu. Vreau să renunț."
+        },
+        {
+          "type": "coach",
+          "text": "Atunci pașii sunt:",
+          "steps": [
+            "Ceri anularea la sală. Contractul poate avea o perioadă de preaviz.",
+            "După confirmare, blochezi plata din „Administrează plățile recurente”. Blocarea singură nu anulează contractul."
+          ],
+          "after": "O intrare costă 40 lei, deci abonamentul merită doar dacă mergi de cel puțin 6 ori pe lună."
+        },
+        {
+          "type": "service",
+          "id": "recurring-payments"
+        },
+        {
+          "type": "proposal",
+          "title": "Memento: cererea la FitZone",
+          "lines": [
+            "Îți amintesc vineri, la 10:00, să trimiți cererea de anulare."
+          ],
+          "actions": [
+            "Da, amintește-mi",
+            "Nu acum"
+          ]
+        },
+        {
+          "type": "divider",
+          "text": "Azi"
+        },
+        {
+          "type": "me",
+          "text": "Mai pot lua o cafea azi după-amiază?"
+        },
+        {
+          "type": "coach",
+          "text": "Ai ajuns la 3 din 3 săptămâna aceasta. Decizia e a ta: a patra cafea ar ieși din cei aproximativ 54 lei pe zi pe care îi mai ai până pe 4 decembrie."
+        }
+      ],
+      "client": {
+        "firstName": "Daria",
+        "name": "Daria Ionescu",
+        "initial": "D",
+        "segment": "persoană fizică",
+        "card": "Card Visa •••• 1234"
+      },
+      "cycle": {
+        "label": "5 nov. – 4 dec.",
+        "endsOn": "4 decembrie",
+        "basis": "Salariul intră pe 5 decembrie.",
+        "total": 6200,
+        "totalNote": "Din salariul de 6.200 lei, intrat pe 5 noiembrie.",
+        "fixed": 3020,
+        "setAside": 1200,
+        "spendable": 1980,
+        "spent": 739,
+        "left": 1241,
+        "perDay": 54,
+        "daysLeftLabel": "23 de zile"
+      },
+      "goal": {
+        "name": "Laptop",
+        "icon": "target",
+        "note": "Din economii, fără rate",
+        "saved": 0,
+        "amount": 2000,
+        "due": {
+          "label": "Obiectiv atins pe",
+          "date": "5 martie 2027",
+          "note": "prima depunere pe 5 ianuarie"
+        },
+        "plan": [
+          {
+            "month": "nov.",
+            "add": 0,
+            "total": 0
+          },
+          {
+            "month": "dec.",
+            "add": 0,
+            "total": 0
+          },
+          {
+            "month": "ian.",
+            "add": 700,
+            "total": 700
+          },
+          {
+            "month": "feb.",
+            "add": 700,
+            "total": 1400
+          },
+          {
+            "month": "mar.",
+            "add": 600,
+            "total": 2000
+          }
+        ],
+        "reason": "Noiembrie și decembrie au cadouri și Crăciunul, așa că începem din ianuarie.",
+        "fundingLabel": "estimat, ian.–mar.",
+        "funding": [
+          {
+            "name": "Fără abonamentul FitZone",
+            "lei": 220
+          },
+          {
+            "name": "Cafenele: 3 pe săptămână",
+            "lei": 210
+          },
+          {
+            "name": "Mai puține cadouri în ian.–mar.",
+            "lei": 200
+          },
+          {
+            "name": "Mai puține restaurante și haine",
+            "lei": 130
+          }
+        ],
+        "storage": "fixpay"
+      },
+      "insight": {
+        "figure": "28%",
+        "text": "din bugetul perioadei l-ai cheltuit în primele 4 zile după salariu. În octombrie, procentul a fost de 41%."
+      },
+      "lastMessage": {
+        "icon": "cup",
+        "meta": "Azi, 08:12 · Cafenele",
+        "title": "A treia cafea din această săptămână",
+        "text": "Până luni, cafeaua o faci acasă. Față de o săptămână obișnuită, economisești aproximativ 50 lei."
+      },
+      "nextGoals": [],
+      "pots": [
+        {
+          "name": "Cadouri, noiembrie",
+          "icon": "gift",
+          "lei": 820,
+          "note": "Rămași din 1.200 lei, pentru 7 ocazii"
+        },
+        {
+          "name": "Crăciun",
+          "icon": "wallet",
+          "lei": 1200,
+          "note": "Se pun deoparte pe 5 decembrie, după salariu"
+        }
+      ],
+      "profile": {
+        "statements": [
+          {
+            "icon": "card",
+            "name": "Cont curent RON",
+            "note": "nov. 2025 – oct. 2026, importat din aplicație · se actualizează lunar",
+            "status": "Importat"
+          },
+          {
+            "icon": "file",
+            "name": "Extrase atașate",
+            "note": "2 fișiere: nov. 2024 – oct. 2025 și o altă bancă",
+            "status": "Procesate"
+          }
+        ],
+        "about": [
+          {
+            "label": "Prenume",
+            "value": "Daria",
+            "src": "obs"
+          },
+          {
+            "label": "Vârstă",
+            "value": "25–34 ani",
+            "src": "obs"
+          },
+          {
+            "label": "Gospodărie",
+            "value": "1 persoană",
+            "src": "said"
+          },
+          {
+            "label": "Venit",
+            "value": "Salariu, pe 5 ale lunii",
+            "src": "obs"
+          },
+          {
+            "label": "Istoric analizat",
+            "value": "24 de luni, nov. 2024 – oct. 2026",
+            "src": "obs"
+          }
+        ],
+        "money": [
+          {
+            "label": "Salariu net",
+            "value": "circa 6.200 lei",
+            "src": "obs"
+          },
+          {
+            "label": "Tichete de masă",
+            "value": "circa 800 lei pe lună",
+            "src": "said"
+          },
+          {
+            "label": "Cheltuieli fixe",
+            "value": "3.020 lei pe lună",
+            "src": "obs"
+          },
+          {
+            "label": "Perioada de buget",
+            "value": "Din 5 până în 4 ale lunii următoare, după data salariului",
+            "src": "obs"
+          },
+          {
+            "label": "Buget săptămânal în noiembrie",
+            "value": "circa 460 lei",
+            "src": "est"
+          }
+        ],
+        "income": 6200,
+        "spending": [
+          {
+            "name": "Chirie",
+            "lei": 2400
+          },
+          {
+            "name": "Alimente",
+            "lei": 650,
+            "note": "plus tichetele"
+          },
+          {
+            "name": "Cafenele",
+            "lei": 600
+          },
+          {
+            "name": "Utilități",
+            "lei": 460
+          },
+          {
+            "name": "Livrări de mâncare",
+            "lei": 450
+          },
+          {
+            "name": "Restaurante",
+            "lei": 350
+          },
+          {
+            "name": "Cadouri",
+            "lei": 300
+          },
+          {
+            "name": "Haine",
+            "lei": 280
+          },
+          {
+            "name": "Transport",
+            "lei": 230
+          },
+          {
+            "name": "Altele",
+            "lei": 180
+          }
+        ],
+        "observed": [
+          {
+            "text": "Sub 100 lei în cont între 27 și 5 ale lunii, în 5 din ultimele 6 luni",
+            "src": "obs"
+          },
+          {
+            "text": "55% din cheltuieli în primele 10 zile după salariu",
+            "src": "obs"
+          },
+          {
+            "text": "Boabe & Co, circa 30 lei, 4–5 dimineți pe săptămână",
+            "quote": "cafea și covrig în drum spre birou",
+            "src": "said"
+          }
+        ],
+        "subscriptions": [
+          {
+            "name": "FitZone Gym",
+            "lei": 220,
+            "note": "Aplicația sălii nedeschisă din aprilie · 1.320 lei plătiți de atunci",
+            "status": "Anulezi la sală, apoi blochezi plata"
+          },
+          {
+            "name": "StreamFlix",
+            "lei": 55
+          },
+          {
+            "name": "MuzicaPlus",
+            "lei": 25
+          }
+        ],
+        "talk": [
+          {
+            "label": "Ton",
+            "value": "Direct, cu puțin umor"
+          },
+          {
+            "label": "Notificări",
+            "value": "Cel mult una pe zi"
+          },
+          {
+            "label": "Fără notificări",
+            "value": "22:00 – 08:00"
+          },
+          {
+            "label": "Rezumat săptămânal",
+            "value": "Duminică, la 19:00"
+          }
+        ],
+        "permissions": [
+          {
+            "id": "tx",
+            "label": "Extrase de cont",
+            "hint": "Contul curent și 2 extrase atașate · 24 de luni",
+            "on": true
+          },
+          {
+            "id": "live",
+            "label": "Plăți cu cardul, în timp real",
+            "hint": "Pentru mesajele despre bugete",
+            "on": true
+          },
+          {
+            "id": "screen",
+            "label": "Screen Time",
+            "hint": "Doar aplicația FitZone",
+            "on": true
+          },
+          {
+            "id": "calendar",
+            "label": "Google Calendar",
+            "hint": "Doar zilele de naștere și evenimentele marcate",
+            "on": true
+          },
+          {
+            "id": "contacts",
+            "label": "Contacte",
+            "hint": "Doar prenume, procesate pe telefon",
+            "on": true
+          },
+          {
+            "id": "health",
+            "label": "Health",
+            "hint": "Nu e folosit",
+            "on": false
+          }
+        ],
+        "unknown": [
+          "Fond pentru urgențe",
+          "Bonus de sărbători",
+          "Datorii la prieteni sau familie"
+        ]
+      },
+      "question": {
+        "amount": 120,
+        "merchant": "ONLINE*ABC SRL",
+        "date": "6 noiembrie",
+        "options": [
+          "Cumpărături online",
+          "Cadou",
+          "Altceva"
+        ],
+        "txId": "t14"
+      },
+      "reserve": {
+        "title": "Fond pentru urgențe",
+        "text": "Nu am vorbit încă despre asta. Un fond pentru urgențe te ajută când apare o cheltuială neprevăzută.",
+        "action": "Hai să vorbim",
+        "href": "#/chat"
+      },
+      "services": {
+        "on": true,
+        "hint": "Cel mult una pe săptămână, doar pentru nevoi pe care le-ai spus sau confirmat",
+        "items": [
+          {
+            "icon": "repeat",
+            "kind": "Transfer programat",
+            "name": "FixPay → Super Acces Plus",
+            "description": "FixPay mută automat, la data aleasă de tine, o sumă din contul curent în contul de economii Super Acces Plus.",
+            "terms": [
+              {
+                "label": "Cost FixPay",
+                "value": "0 lei în pachetul ZERO Simplu"
+              },
+              {
+                "label": "Dobândă",
+                "value": "2,00% pe an, variabilă; impozit pe dobândă 10%"
+              },
+              {
+                "label": "Retrageri",
+                "value": "Oricând"
+              }
+            ],
+            "link": {
+              "href": "https://www.raiffeisen.ro/ro/persoane-fizice/produsele-noastre/economii/cont-de-economii.html",
+              "label": "Super Acces Plus și FixPay pe raiffeisen.ro"
+            },
+            "source": "raiffeisen.ro: tarife (01.09.2026) și cont de economii (30.06.2026)",
+            "id": "fixpay",
+            "state": "active",
+            "status": "Activ",
+            "helps": "Pe 5, după salariu, banii pentru cadouri pleacă singuri în contul de economii, iar din ianuarie și cei pentru laptop: 700 lei pe 5 ianuarie și pe 5 februarie, apoi 600 lei pe 5 martie. Vezi de la început cât îți rămâne de cheltuit.",
+            "why": "Pe 28 octombrie ai spus că vrei să pui bani deoparte la început de lună.",
+            "without": "Fără FixPay, muți tu banii pe 5, din aplicație."
+          },
+          {
+            "icon": "lock",
+            "kind": "Funcție din Smart Mobile",
+            "name": "Administrează plățile recurente",
+            "description": "În Smart Mobile vezi plățile recurente făcute cu cardul Visa și le poți bloca.",
+            "terms": [
+              {
+                "label": "Unde",
+                "value": "Smart Mobile, la cardul Visa"
+              },
+              {
+                "label": "Atenție",
+                "value": "Blocarea plății nu anulează contractul"
+              }
+            ],
+            "link": {
+              "href": "https://www.raiffeisen.ro/ro/despre-noi/comunicate-de-presa/2026/smart-mobile-control-plati-recurente-si-abonamente.html",
+              "label": "Anunțul funcției pe raiffeisen.ro"
+            },
+            "source": "comunicat Raiffeisen Bank (25.05.2026)",
+            "id": "recurring-payments",
+            "state": "howto",
+            "status": "După anulare",
+            "helps": "După ce ceri anularea la FitZone, blochezi plata de 220 lei pe lună, ca să nu mai fie retrasă de pe card.",
+            "whyLabel": "De ce îți arăt asta",
+            "why": "Pe 28 octombrie ai spus că nu mai mergi la sală și vrei să renunți la abonament.",
+            "without": "Cererea de anulare la sală rămâne necesară: contractul poate avea o perioadă de preaviz.",
+            "actions": [
+              "Arată-mi pașii"
+            ]
+          },
+          {
+            "icon": "card",
+            "kind": "Economisire la plata cu cardul",
+            "name": "Plătești și economisești",
+            "description": "La fiecare plată cu cardul de debit, 1%, 3%, 5% sau 10% din sumă se mută automat într-un cont de economii dedicat.",
+            "terms": [
+              {
+                "label": "Cost",
+                "value": "0 lei administrare"
+              },
+              {
+                "label": "Dobândă",
+                "value": "10,00% pe an pentru primii 5.000 lei, variabilă"
+              },
+              {
+                "label": "Condiție",
+                "value": "Contul se alimentează doar din plățile cu cardul"
+              }
+            ],
+            "link": {
+              "href": "https://www.raiffeisen.ro/ro/persoane-fizice/produsele-noastre/economii/cont-de-economii.html",
+              "label": "„Plătești și economisești” pe raiffeisen.ro"
+            },
+            "source": "raiffeisen.ro: cont de economii (30.06.2026)",
+            "id": "savingbox",
+            "state": "later",
+            "status": "Mai târziu",
+            "helps": "Te-ar ajuta să economisești fără să te gândești, dar acum ar lua bani la fiecare plată, exact când îți lipsesc la final de lună. Ți-l propun după 3 luni în care ajungi la salariu cu bani în cont.",
+            "whyLabel": "De ce mai târziu",
+            "why": "În 5 din ultimele 6 luni ai avut sub 100 lei în cont între 27 și 5 ale lunii.",
+            "without": "Până atunci, FixPay pune deoparte sumele stabilite, pe 5, după salariu."
+          }
+        ]
+      },
+      "today": {
+        "label": "Joi, 12 noiembrie"
+      },
+      "unbudgeted": {
+        "total": 314,
+        "items": [
+          {
+            "name": "Alimente",
+            "icon": "cart",
+            "lei": 154,
+            "note": "Plus tichetele de masă"
+          },
+          {
+            "name": "Taxi",
+            "icon": "car",
+            "lei": 40
+          },
+          {
+            "name": "Fără categorie",
+            "icon": "help",
+            "lei": 120,
+            "note": "O plată de clarificat"
+          }
+        ]
+      },
+      "week": {
+        "spent": 194,
+        "daysSoFar": 4,
+        "guidePerDay": 54,
+        "scaleMax": 90,
+        "days": [
+          {
+            "d": "L",
+            "name": "luni",
+            "lei": 62
+          },
+          {
+            "d": "Ma",
+            "name": "marți",
+            "lei": 48
+          },
+          {
+            "d": "Mi",
+            "name": "miercuri",
+            "lei": 54
+          },
+          {
+            "d": "J",
+            "name": "joi",
+            "lei": 30,
+            "today": true
+          },
+          {
+            "d": "V",
+            "name": "vineri"
+          },
+          {
+            "d": "S",
+            "name": "sâmbătă"
+          },
+          {
+            "d": "D",
+            "name": "duminică"
+          }
+        ]
+      },
+      "pages": [
+        "rezumat",
+        "cheltuieli",
+        "bugete",
+        "obiective",
+        "profil"
+      ]
+    },
+    "student": {
+      "agenda": [
+        {
+          "day": "15",
+          "month": "nov.",
+          "title": "Bursa, circa 700 lei",
+          "note": "Estimat: o adaug în buget când intră"
+        },
+        {
+          "day": "20",
+          "month": "nov.",
+          "title": "Telefon",
+          "note": "25 lei, din necesare"
+        },
+        {
+          "day": "1",
+          "month": "dec.",
+          "title": "Bani de la familie",
+          "note": "1.200 lei · 120 lei în fondul de siguranță"
+        }
+      ],
+      "allocation": [
+        {
+          "id": "needs",
+          "label": "Necesare",
+          "lei": 1200,
+          "tone": "fixed"
+        },
+        {
+          "id": "aside",
+          "label": "Fond de siguranță",
+          "lei": 150,
+          "tone": "aside"
+        },
+        {
+          "id": "spend",
+          "label": "Opționale",
+          "lei": 511,
+          "tone": "spend"
+        }
+      ],
+      "analysis": {
+        "title": "Analizez ultimele 12 luni",
+        "lead": "12 luni importate din contul curent. Durează circa un minut.",
+        "items": [
+          {
+            "label": "Venituri și cât de sigure sunt",
+            "state": "done",
+            "note": "Bani de la familie pe 1, în 12 din 12 luni"
+          },
+          {
+            "label": "Plăți recurente și abonamente",
+            "state": "done",
+            "note": "4 plăți recurente, dintre care 2 abonamente"
+          },
+          {
+            "label": "Categorii pentru 1.104 plăți",
+            "state": "running",
+            "note": "773 din 1.104",
+            "progress": 70
+          },
+          {
+            "label": "Necesare și opționale",
+            "state": "waiting",
+            "note": "Urmează"
+          }
+        ],
+        "note": "Poți închide aplicația. Îți scriu când e gata."
+      },
+      "apps": {
+        "found": "Am găsit 2 abonamente în extrase.",
+        "items": [
+          {
+            "name": "LinguaPlus",
+            "lei": 45,
+            "note": "Plătit lunar din septembrie",
+            "on": true
+          },
+          {
+            "name": "MuzicaPlus Student",
+            "lei": 15,
+            "note": "Plătit lunar",
+            "on": false
+          }
+        ],
+        "learns": [
+          "Doar dacă ai deschis aplicația într-o zi"
+        ],
+        "doesNotLearn": [
+          "Cât timp stai în aplicație sau ce faci acolo",
+          "Alte aplicații decât cele alese de tine"
+        ],
+        "platform": "Pe iPhone folosesc Screen Time, iar pe Android accesul la datele de utilizare. Telefonul îți cere acordul la pasul următor."
+      },
+      "budgetGroups": [
+        {
+          "id": "necesare",
+          "title": "Necesare",
+          "src": "agreed",
+          "note": "stabilite de tine"
+        },
+        {
+          "id": "optionale",
+          "title": "Opționale",
+          "note": "mai ai 137 lei"
+        }
+      ],
+      "budgets": [
+        {
+          "id": "camin",
+          "group": "necesare",
+          "name": "Cămin",
+          "icon": "home",
+          "kind": "paid",
+          "spent": 350,
+          "note": "Plătit pe 2 noiembrie"
+        },
+        {
+          "id": "transport",
+          "group": "necesare",
+          "name": "Transport",
+          "icon": "bus",
+          "kind": "paid",
+          "spent": 50,
+          "note": "Abonament de student, plătit pe 2 noiembrie"
+        },
+        {
+          "id": "alimente",
+          "group": "necesare",
+          "name": "Alimente",
+          "icon": "cart",
+          "kind": "amount",
+          "spent": 297,
+          "limit": 700,
+          "note": "Circa 21 lei pe zi până pe 30 noiembrie"
+        },
+        {
+          "id": "studii",
+          "group": "necesare",
+          "name": "Studii",
+          "icon": "book",
+          "kind": "amount",
+          "spent": 0,
+          "limit": 75,
+          "note": "Cărți și imprimări"
+        },
+        {
+          "id": "telefon",
+          "group": "necesare",
+          "name": "Telefon și internet",
+          "icon": "phone",
+          "kind": "amount",
+          "spent": 0,
+          "limit": 25,
+          "note": "Se plătește pe 20 noiembrie"
+        },
+        {
+          "id": "iesiri",
+          "group": "optionale",
+          "name": "Restaurante",
+          "icon": "utensils",
+          "kind": "amount",
+          "spent": 120,
+          "limit": 120,
+          "warn": true,
+          "note": "Limita lunii atinsă",
+          "onHome": true
+        },
+        {
+          "id": "livrari",
+          "group": "optionale",
+          "name": "Livrări de mâncare",
+          "icon": "bag",
+          "kind": "amount",
+          "spent": 86,
+          "limit": 120,
+          "note": "2 comenzi luna aceasta",
+          "onHome": true
+        },
+        {
+          "id": "cafenele",
+          "group": "optionale",
+          "name": "Cafenele",
+          "icon": "cup",
+          "kind": "amount",
+          "spent": 40,
+          "limit": 60,
+          "note": "5 cafele luna aceasta",
+          "onHome": true
+        },
+        {
+          "id": "taxi",
+          "group": "optionale",
+          "name": "Taxi",
+          "icon": "car",
+          "kind": "amount",
+          "spent": 40,
+          "limit": 60,
+          "note": "Doar seara târziu, cum am stabilit"
+        }
+      ],
+      "calendar": {
+        "options": [
+          {
+            "id": "google",
+            "icon": "calendar",
+            "title": "Google Calendar",
+            "note": "Citesc doar zilele de naștere și evenimentele marcate de tine.",
+            "action": "Conectează",
+            "href": "#/activare/calendar/conectat"
+          },
+          {
+            "id": "phone",
+            "icon": "phone",
+            "title": "Calendarul telefonului",
+            "note": "Datele rămân pe telefon. Coach-ul află doar câte evenimente sunt și când.",
+            "action": "Permite"
+          }
+        ],
+        "reads": [
+          "Tipul evenimentului și data",
+          "Zilele de naștere din contactele Google"
+        ],
+        "doesNotRead": [
+          "Titluri, invitați sau locații",
+          "Nu modific nimic în calendar"
+        ],
+        "found": [
+          {
+            "day": "dec.",
+            "month": "2026",
+            "title": "3 zile de naștere",
+            "note": "Din contactele tale Google"
+          },
+          {
+            "day": "18",
+            "month": "ian.",
+            "title": "Sesiunea de iarnă",
+            "note": "Eveniment marcat de tine"
+          },
+          {
+            "day": "20",
+            "month": "feb.",
+            "title": "Termen pentru dosarul de bursă",
+            "note": "Eveniment marcat de tine"
+          }
+        ],
+        "gift": {
+          "question": "Cât vrei să dai de obicei pe un cadou?",
+          "groups": [
+            {
+              "label": "Pentru prieteni",
+              "options": [
+                "30 lei",
+                "50 lei",
+                "100 lei",
+                "Altă sumă"
+              ],
+              "selected": "50 lei"
+            },
+            {
+              "label": "Pentru familie",
+              "options": [
+                "50 lei",
+                "100 lei",
+                "150 lei",
+                "Altă sumă"
+              ],
+              "selected": "50 lei"
+            }
+          ],
+          "result": "Pentru cele 3 zile de naștere din decembrie: aproximativ 150 lei."
+        }
+      },
+      "categoryNotes": {
+        "alimente": "Necesar: intră în minimul lunar, înaintea cheltuielilor opționale.",
+        "cafenele": "Opțional: intră la bugetul Cafenele, 60 lei pe lună.",
+        "nesortat": "Nu recunosc comerciantul. Pare o plată online: alege categoria, ca plata să fie inclusă în bugetul potrivit.",
+        "locuinta": "Necesar: căminul, plătit o dată pe lună.",
+        "transport": "Necesar: abonamentul de student.",
+        "abonamente": "Opțional: se plătește lunar.",
+        "economii": "Economii: nu se adună la cheltuieli.",
+        "venit": "Încasare: nu se adună la cheltuieli."
+      },
+      "chat": [
+        {
+          "type": "divider",
+          "text": "28 octombrie"
+        },
+        {
+          "type": "coach",
+          "text": "În iulie, august și septembrie, banii s-au terminat cu 5–8 zile înainte de 1. În octombrie, cu bursa, mai ai 380 lei în cont cu 3 zile înainte de 1. Bursa vine sigur în fiecare lună de cursuri?"
+        },
+        {
+          "type": "me",
+          "text": "Doar dacă am media peste 9. Nu e sigur."
+        },
+        {
+          "type": "coach",
+          "text": "Atunci fac planul fără ea și o adaug doar după ce intră. Banii de la familie și meditațiile acoperă necesarele, de circa 1.200 lei pe lună."
+        },
+        {
+          "type": "proposal",
+          "title": "Regulă nouă: 10% deoparte",
+          "lines": [
+            "La fiecare încasare de peste 100 lei îți propun să muți 10% în fondul de siguranță.",
+            "Muți banii doar după ce confirmi.",
+            "Ținta: 1.200 lei, adică o lună de necesare."
+          ],
+          "done": "Aprobat pe 28 octombrie"
+        },
+        {
+          "type": "me",
+          "text": "Pot să economisesc și automat, din sume mici?"
+        },
+        {
+          "type": "coach",
+          "text": "Da. Banca are un serviciu care pune deoparte un procent din fiecare plată cu cardul. Cât timp banii nu îți ajung până la 1, ți-l propun la 1%."
+        },
+        {
+          "type": "service",
+          "id": "savingbox"
+        },
+        {
+          "type": "divider",
+          "text": "Azi"
+        },
+        {
+          "type": "me",
+          "text": "Mai pot comanda mâncare diseară?"
+        },
+        {
+          "type": "coach",
+          "text": "La Livrări de mâncare mai ai 34 lei din 120. O comandă obișnuită, de circa 40 lei, trece puțin peste limită. Decizia e a ta."
+        }
+      ],
+      "client": {
+        "firstName": "Matei",
+        "name": "Matei Popescu",
+        "initial": "M",
+        "segment": "persoană fizică · student",
+        "card": "Card Visa •••• 5678"
+      },
+      "cycle": {
+        "label": "1 – 30 nov.",
+        "endsOn": "30 noiembrie",
+        "basis": "Banii de la familie intră pe 1 decembrie.",
+        "pace": "La ritmul de până acum, circa 55 lei pe zi, banii îți ajung până pe 23 noiembrie.",
+        "total": 1861,
+        "totalNote": "Din 1.861 lei: 1.500 lei încasați în noiembrie și 361 lei rămași din octombrie. Bursa nu e inclusă.",
+        "spendable": 1711,
+        "spent": 1071,
+        "left": 640,
+        "perDay": 34,
+        "daysLeftLabel": "19 zile"
+      },
+      "days": [
+        {
+          "label": "Azi",
+          "date": "joi, 12 nov.",
+          "total": 8,
+          "items": [
+            {
+              "merchant": "Cafeteria Campus",
+              "raw": "CAFETERIA CAMPUS SRL CLUJ-NAPOCA",
+              "name": "Cafea",
+              "category": "cafenele",
+              "lei": -8,
+              "renamed": true,
+              "rule": true,
+              "tags": [
+                "facultate"
+              ],
+              "status": "În așteptare",
+              "history": "Ultimele 3 luni: 24 de plăți, 192 lei",
+              "id": "m1",
+              "time": "08:45",
+              "note": "Înainte de cursul de la 9"
+            }
+          ]
+        },
+        {
+          "label": "Ieri",
+          "date": "miercuri, 11 nov.",
+          "total": 42,
+          "items": [
+            {
+              "id": "m2",
+              "time": "22:40",
+              "merchant": "TaxiGo",
+              "raw": "TAXIGO RIDE CLUJ-NAPOCA",
+              "name": "TaxiGo",
+              "category": "taxi",
+              "lei": -16,
+              "status": "Finalizată"
+            },
+            {
+              "merchant": "Către Super Acces Plus",
+              "raw": "TRANSFER CONT PROPRIU · FOND SIGURANTA",
+              "name": "Fond de siguranță",
+              "category": "economii",
+              "renamed": true,
+              "status": "Finalizată",
+              "id": "m3",
+              "time": "19:32",
+              "lei": -15
+            },
+            {
+              "merchant": "Transfer de la o persoană",
+              "raw": "TRANSFER PRIMIT · MEDITATII",
+              "name": "Meditații",
+              "category": "venit",
+              "lei": 150,
+              "renamed": true,
+              "status": "Finalizată",
+              "id": "m4",
+              "time": "19:30"
+            },
+            {
+              "merchant": "Cantina Studențească",
+              "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+              "name": "Prânz la cantină",
+              "category": "alimente",
+              "lei": -18,
+              "renamed": true,
+              "rule": true,
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+              "id": "m5",
+              "time": "13:00"
+            },
+            {
+              "merchant": "Cafeteria Campus",
+              "raw": "CAFETERIA CAMPUS SRL CLUJ-NAPOCA",
+              "name": "Cafea",
+              "category": "cafenele",
+              "lei": -8,
+              "renamed": true,
+              "rule": true,
+              "tags": [
+                "facultate"
+              ],
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 24 de plăți, 192 lei",
+              "id": "m6",
+              "time": "08:40"
+            }
+          ]
+        },
+        {
+          "label": "Marți",
+          "date": "10 nov.",
+          "total": 107,
+          "items": [
+            {
+              "id": "m7",
+              "time": "21:30",
+              "merchant": "Pizzeria Napoca",
+              "raw": "PIZZERIA NAPOCA SRL CLUJ-NAPOCA",
+              "name": "Pizza cu colegii",
+              "category": "iesiri",
+              "lei": -52,
+              "renamed": true,
+              "tags": [
+                "prieteni"
+              ],
+              "status": "Finalizată"
+            },
+            {
+              "merchant": "Market Express",
+              "raw": "MARKET EXPRESS 0217 CLUJ-NAPOCA",
+              "name": "Market Express",
+              "category": "alimente",
+              "status": "Finalizată",
+              "id": "m8",
+              "time": "19:15",
+              "lei": -37
+            },
+            {
+              "merchant": "Cantina Studențească",
+              "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+              "name": "Prânz la cantină",
+              "category": "alimente",
+              "lei": -18,
+              "renamed": true,
+              "rule": true,
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+              "id": "m9",
+              "time": "13:00"
+            }
+          ]
+        },
+        {
+          "label": "Luni",
+          "date": "9 nov.",
+          "total": 26,
+          "items": [
+            {
+              "merchant": "Cantina Studențească",
+              "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+              "name": "Prânz la cantină",
+              "category": "alimente",
+              "lei": -18,
+              "renamed": true,
+              "rule": true,
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+              "id": "m10",
+              "time": "13:05"
+            },
+            {
+              "merchant": "Cafeteria Campus",
+              "raw": "CAFETERIA CAMPUS SRL CLUJ-NAPOCA",
+              "name": "Cafea",
+              "category": "cafenele",
+              "lei": -8,
+              "renamed": true,
+              "rule": true,
+              "tags": [
+                "facultate"
+              ],
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 24 de plăți, 192 lei",
+              "id": "m11",
+              "time": "08:30"
+            }
+          ]
+        },
+        {
+          "label": "Duminică",
+          "date": "8 nov.",
+          "total": 41,
+          "items": [
+            {
+              "id": "m12",
+              "time": "20:40",
+              "merchant": "LivrareRapidă",
+              "raw": "LIVRARERAPIDA*COMANDA 90544",
+              "name": "LivrareRapidă",
+              "category": "livrari",
+              "lei": -41,
+              "status": "Finalizată"
+            }
+          ]
+        },
+        {
+          "label": "Sâmbătă",
+          "date": "7 nov.",
+          "total": 80,
+          "items": [
+            {
+              "id": "m13",
+              "time": "16:20",
+              "merchant": "PLAYNET*STORE",
+              "raw": "PLAYNET*STORE 7781 ONLINE",
+              "name": "",
+              "category": "nesortat",
+              "lei": -28,
+              "needsReview": true,
+              "suggestion": "cumparaturi",
+              "status": "Finalizată"
+            },
+            {
+              "merchant": "Market Express",
+              "raw": "MARKET EXPRESS 0217 CLUJ-NAPOCA",
+              "name": "Market Express",
+              "category": "alimente",
+              "status": "Finalizată",
+              "id": "m14",
+              "time": "12:00",
+              "lei": -52
+            }
+          ]
+        },
+        {
+          "label": "Vineri",
+          "date": "6 nov.",
+          "total": 110,
+          "items": [
+            {
+              "id": "m15",
+              "time": "23:50",
+              "merchant": "TaxiGo",
+              "raw": "TAXIGO RIDE CLUJ-NAPOCA",
+              "name": "TaxiGo",
+              "category": "taxi",
+              "lei": -24,
+              "status": "Finalizată"
+            },
+            {
+              "id": "m16",
+              "time": "22:00",
+              "merchant": "Studio Pub",
+              "raw": "STUDIO PUB SRL CLUJ-NAPOCA",
+              "name": "Ieșire cu prietenii",
+              "category": "iesiri",
+              "lei": -68,
+              "renamed": true,
+              "tags": [
+                "prieteni"
+              ],
+              "status": "Finalizată"
+            },
+            {
+              "merchant": "Cantina Studențească",
+              "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+              "name": "Prânz la cantină",
+              "category": "alimente",
+              "lei": -18,
+              "renamed": true,
+              "rule": true,
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+              "id": "m17",
+              "time": "13:00"
+            }
+          ]
+        },
+        {
+          "label": "Joi",
+          "date": "5 nov.",
+          "total": 26,
+          "items": [
+            {
+              "merchant": "Cantina Studențească",
+              "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+              "name": "Prânz la cantină",
+              "category": "alimente",
+              "lei": -18,
+              "renamed": true,
+              "rule": true,
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+              "id": "m18",
+              "time": "13:00"
+            },
+            {
+              "merchant": "Cafeteria Campus",
+              "raw": "CAFETERIA CAMPUS SRL CLUJ-NAPOCA",
+              "name": "Cafea",
+              "category": "cafenele",
+              "lei": -8,
+              "renamed": true,
+              "rule": true,
+              "tags": [
+                "facultate"
+              ],
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 24 de plăți, 192 lei",
+              "id": "m19",
+              "time": "08:35"
+            }
+          ]
+        },
+        {
+          "label": "Miercuri",
+          "date": "4 nov.",
+          "total": 63,
+          "items": [
+            {
+              "id": "m20",
+              "time": "21:10",
+              "merchant": "LivrareRapidă",
+              "raw": "LIVRARERAPIDA*COMANDA 89917",
+              "name": "LivrareRapidă",
+              "category": "livrari",
+              "lei": -45,
+              "status": "Finalizată"
+            },
+            {
+              "merchant": "Către Super Acces Plus",
+              "raw": "TRANSFER CONT PROPRIU · FOND SIGURANTA",
+              "name": "Fond de siguranță",
+              "category": "economii",
+              "renamed": true,
+              "status": "Finalizată",
+              "id": "m21",
+              "time": "19:02",
+              "lei": -15
+            },
+            {
+              "merchant": "Transfer de la o persoană",
+              "raw": "TRANSFER PRIMIT · MEDITATII",
+              "name": "Meditații",
+              "category": "venit",
+              "lei": 150,
+              "renamed": true,
+              "status": "Finalizată",
+              "id": "m22",
+              "time": "19:00"
+            },
+            {
+              "merchant": "Cantina Studențească",
+              "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+              "name": "Prânz la cantină",
+              "category": "alimente",
+              "lei": -18,
+              "renamed": true,
+              "rule": true,
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+              "id": "m23",
+              "time": "13:00"
+            }
+          ]
+        },
+        {
+          "label": "Marți",
+          "date": "3 nov.",
+          "total": 86,
+          "items": [
+            {
+              "merchant": "Cantina Studențească",
+              "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+              "name": "Prânz la cantină",
+              "category": "alimente",
+              "lei": -18,
+              "renamed": true,
+              "rule": true,
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+              "id": "m24",
+              "time": "13:05"
+            },
+            {
+              "merchant": "Cafeteria Campus",
+              "raw": "CAFETERIA CAMPUS SRL CLUJ-NAPOCA",
+              "name": "Cafea",
+              "category": "cafenele",
+              "lei": -8,
+              "renamed": true,
+              "rule": true,
+              "tags": [
+                "facultate"
+              ],
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 24 de plăți, 192 lei",
+              "id": "m25",
+              "time": "08:40"
+            },
+            {
+              "id": "m26",
+              "time": "06:00",
+              "merchant": "LinguaPlus",
+              "raw": "LINGUAPLUS.COM SUBSCRIPTION",
+              "name": "LinguaPlus",
+              "category": "abonamente",
+              "lei": -45,
+              "recurring": true,
+              "status": "Finalizată"
+            },
+            {
+              "id": "m27",
+              "time": "06:00",
+              "merchant": "MuzicaPlus",
+              "raw": "MUZICAPLUS STUDENT",
+              "name": "MuzicaPlus Student",
+              "category": "abonamente",
+              "lei": -15,
+              "recurring": true,
+              "status": "Finalizată"
+            }
+          ]
+        },
+        {
+          "label": "Luni",
+          "date": "2 nov.",
+          "total": 418,
+          "items": [
+            {
+              "merchant": "Cantina Studențească",
+              "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+              "name": "Prânz la cantină",
+              "category": "alimente",
+              "lei": -18,
+              "renamed": true,
+              "rule": true,
+              "status": "Finalizată",
+              "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+              "id": "m28",
+              "time": "13:10"
+            },
+            {
+              "id": "m29",
+              "time": "09:20",
+              "merchant": "TransUrban",
+              "raw": "TRANSURBAN ABONAMENT STUDENT",
+              "name": "Abonament transport",
+              "category": "transport",
+              "lei": -50,
+              "recurring": true,
+              "renamed": true,
+              "status": "Finalizată"
+            },
+            {
+              "id": "m30",
+              "time": "09:00",
+              "merchant": "Cămin studențesc",
+              "raw": "CAMIN STUDENTESC C4 · TAXA NOIEMBRIE",
+              "name": "Cămin",
+              "category": "locuinta",
+              "lei": -350,
+              "recurring": true,
+              "renamed": true,
+              "status": "Finalizată"
+            }
+          ]
+        },
+        {
+          "label": "Duminică",
+          "date": "1 nov.",
+          "total": 64,
+          "items": [
+            {
+              "merchant": "Market Express",
+              "raw": "MARKET EXPRESS 0217 CLUJ-NAPOCA",
+              "name": "Market Express",
+              "category": "alimente",
+              "status": "Finalizată",
+              "id": "m31",
+              "time": "18:30",
+              "lei": -64
+            },
+            {
+              "merchant": "Către Super Acces Plus",
+              "raw": "TRANSFER CONT PROPRIU · FOND SIGURANTA",
+              "name": "Fond de siguranță",
+              "category": "economii",
+              "renamed": true,
+              "status": "Finalizată",
+              "id": "m32",
+              "time": "10:05",
+              "lei": -120
+            },
+            {
+              "id": "m33",
+              "time": "10:02",
+              "merchant": "Transfer de la o persoană",
+              "raw": "TRANSFER PRIMIT · BANI NOIEMBRIE",
+              "name": "Bani de la familie",
+              "category": "venit",
+              "lei": 1200,
+              "recurring": true,
+              "renamed": true,
+              "status": "Finalizată"
+            }
+          ]
+        }
+      ],
+      "essentials": {
+        "title": "Necesare până pe 30 noiembrie",
+        "total": 503,
+        "items": [
+          {
+            "name": "Cămin și transport",
+            "icon": "home",
+            "note": "400 lei, plătite pe 2 noiembrie",
+            "status": "Plătite"
+          },
+          {
+            "name": "Alimente",
+            "icon": "cart",
+            "note": "Circa 21 lei pe zi",
+            "lei": 403
+          },
+          {
+            "name": "Studii",
+            "icon": "book",
+            "note": "Cărți și imprimări",
+            "lei": 75
+          },
+          {
+            "name": "Telefon și internet",
+            "icon": "phone",
+            "note": "Pe 20 noiembrie",
+            "lei": 25
+          }
+        ],
+        "rest": {
+          "label": "Rămân pentru opționale",
+          "lei": 137
+        },
+        "pending": "Bursa nu e inclusă: circa 700 lei, în jur de 15 noiembrie. O adaug în buget când intră în cont."
+      },
+      "filters": [
+        {
+          "label": "Toate",
+          "selected": true
+        },
+        {
+          "label": "Cheltuieli"
+        },
+        {
+          "label": "Încasări"
+        },
+        {
+          "label": "Fără categorie · 1"
+        },
+        {
+          "label": "Recurente"
+        }
+      ],
+      "findings": {
+        "lead": "Din 12 luni de extrase, din calendar și din răspunsurile tale.",
+        "items": [
+          {
+            "text": "În iulie, august și septembrie, fără bursă, banii s-au terminat cu 5–8 zile înainte de 1.",
+            "src": "obs"
+          },
+          {
+            "text": "Necesarele tale costă circa 1.200 lei pe lună, cât primești de la familie.",
+            "src": "est"
+          },
+          {
+            "text": "LinguaPlus: 45 lei pe lună, iar aplicația a fost deschisă de 2 ori în octombrie.",
+            "note": "Te întreb despre asta în discuție.",
+            "src": "obs"
+          },
+          {
+            "text": "Pe 20 februarie ai termenul pentru dosarul de bursă.",
+            "src": "obs",
+            "label": "din calendar"
+          }
+        ],
+        "firstStep": {
+          "icon": "wallet",
+          "title": "Primul pas pe care ți-l propun",
+          "text": "La fiecare încasare de peste 100 lei, pune 10% în fondul de siguranță. Pe 1 noiembrie, din cei 1.200 lei de la familie, înseamnă 120 lei.",
+          "action": "Vezi propunerea",
+          "href": "#/chat"
+        }
+      },
+      "goal": {
+        "name": "Fond de siguranță",
+        "icon": "shield",
+        "note": "O lună de cheltuieli necesare",
+        "saved": 650,
+        "amount": 1200,
+        "due": {
+          "label": "Obiectiv atins în",
+          "date": "martie 2027",
+          "note": "10% din fiecare încasare"
+        },
+        "plan": [
+          {
+            "month": "oct.",
+            "add": 500,
+            "total": 500
+          },
+          {
+            "month": "nov.",
+            "add": 165,
+            "total": 665
+          },
+          {
+            "month": "dec.",
+            "add": 135,
+            "total": 800
+          },
+          {
+            "month": "ian.",
+            "add": 135,
+            "total": 935
+          },
+          {
+            "month": "feb.",
+            "add": 135,
+            "total": 1070
+          },
+          {
+            "month": "mar.",
+            "add": 130,
+            "total": 1200
+          }
+        ],
+        "reason": "Am pornit de la cei 500 lei rămași din jobul de vară. Planific doar cu banii siguri, de la familie și din meditații. Dacă intră bursa, termenul se apropie.",
+        "fundingLabel": "estimat, pe lună",
+        "funding": [
+          {
+            "name": "10% din banii de la familie",
+            "lei": 120
+          },
+          {
+            "name": "10% din meditații, cel puțin",
+            "lei": 15
+          }
+        ],
+        "storage": "savings",
+        "suggestion": "savingbox"
+      },
+      "ideas": {
+        "title": "Idei pentru tine",
+        "lead": "Pornesc de la ce mi-ai spus: vrei fondul de siguranță complet și cursul de UX design din martie. Primești cel mult o idee nouă pe săptămână.",
+        "featured": {
+          "icon": "wallet",
+          "eyebrow": "Ideea săptămânii · Venituri",
+          "title": "2 ore de meditații în plus pe săptămână",
+          "text": "La 50 lei ora, câștigi circa 400 lei în plus pe lună.",
+          "effects": [
+            "Fondul de siguranță e complet în decembrie, nu în martie.",
+            "Banii pentru cursul de UX design sunt gata în februarie."
+          ],
+          "why": "Pe 28 octombrie ai spus că dai meditații la matematică și că marțea și joia ai după-amiezile libere.",
+          "actions": [
+            "Adaugă în plan",
+            "Nu mă interesează"
+          ]
+        },
+        "groups": [
+          {
+            "title": "Venituri",
+            "items": [
+              {
+                "icon": "calendar",
+                "title": "Jobul de vară din 2027",
+                "text": "Vara aceasta ai câștigat 2.400 lei, iar în octombrie mai aveai 500. Dacă împarți suma pe cele 9 luni de cursuri, ai circa 270 lei în plus în fiecare lună.",
+                "status": "Revin cu un plan în mai"
+              }
+            ]
+          },
+          {
+            "title": "Educație financiară gratuită",
+            "note": "de la Raiffeisen Bank",
+            "items": [
+              {
+                "icon": "book",
+                "title": "5 sfaturi financiare pentru cei care se întrețin singuri",
+                "text": "Articol din ghidul „Despre bani 1:1” al băncii, despre bugetul celor care se descurcă pe cont propriu.",
+                "link": {
+                  "href": "https://www.raiffeisen.ro/ro/persoane-fizice/despre-bani-1-la-1/5-sfaturi-financiare-pentru-cei-care-se-intretin-singuri.html",
+                  "label": "Citește pe raiffeisen.ro"
+                }
+              },
+              {
+                "icon": "shield",
+                "title": "Fondul de urgență",
+                "text": "De ce contează o rezervă și cum o construiești treptat. Se potrivește cu obiectivul tău de acum.",
+                "link": {
+                  "href": "https://www.raiffeisen.ro/ro/persoane-fizice/despre-bani-1-la-1/fondul-de-urgenta-protejeaza-te-de-situatii-neasteptate.html",
+                  "label": "Citește pe raiffeisen.ro"
+                }
+              },
+              {
+                "icon": "target",
+                "title": "Money Strike",
+                "text": "Hartă de joc gratuită pentru educație financiară. Modul de învățare are 10 runde și îți arată la final dacă ești Econom, Impulsiv sau Echilibrat.",
+                "link": {
+                  "href": "https://www.raiffeisen.ro/ro/despre-noi/comunicate-de-presa/2025/money-strike-harta-fps-educatie-financiara-pentru-tineri.html",
+                  "label": "Despre joc pe raiffeisen.ro"
+                }
+              },
+              {
+                "icon": "lock",
+                "title": "Start în Investiții",
+                "text": "5 cursuri interactive în aplicație despre cum funcționează investițiile. Ți-l arăt după ce completezi fondul de siguranță și nu îți recomand fonduri.",
+                "link": {
+                  "href": "https://www.raiffeisen.ro/ro/despre-noi/comunicate-de-presa/2026/start-in-investitii-program-digital-raiffeisen-bank-disponibil-din-mobile-app.html",
+                  "label": "Despre program pe raiffeisen.ro"
+                },
+                "status": "După fondul de siguranță"
+              }
+            ]
+          },
+          {
+            "title": "Oportunități",
+            "items": [
+              {
+                "icon": "calendar",
+                "title": "Bursa pentru semestrul al II-lea",
+                "text": "Termenul pentru dosar e pe 20 februarie, din calendarul tău. Îți amintesc cu o săptămână înainte.",
+                "status": "Memento pe 13 februarie"
+              }
+            ]
+          }
+        ],
+        "rules": "Ideile sunt orientative și le poți ascunde oricând. Nu îți promit venituri și nu îți propun pariuri, cripto sau scheme de câștig rapid."
+      },
+      "insight": {
+        "figure": "6 zile",
+        "text": "Atât ți-au lipsit în medie până la 1 în lunile fără bursă, din iulie până în septembrie. În octombrie, cu bursa, ai încheiat luna cu 361 lei în cont."
+      },
+      "intro": {
+        "title": "Activează coach-ul financiar",
+        "lead": "Te ajut să vezi unde se duc banii, să-ți pui bugete pe categorii și să strângi pentru ce îți dorești.",
+        "duration": "Durează circa 3 minute",
+        "does": [
+          "Citesc extrasele de cont pe care mi le dai și îți arăt tiparele",
+          "Te întreb doar ce nu pot vedea din tranzacții",
+          "Îți scriu când te apropii de o limită stabilită de tine"
+        ]
+      },
+      "lastMessage": {
+        "icon": "wallet",
+        "meta": "Ieri, 19:32 · Fond de siguranță",
+        "title": "Ai pus 15 lei deoparte",
+        "text": "10% din cei 150 lei de la meditații, cum am stabilit. Fondul de siguranță are acum 650 din 1.200 lei."
+      },
+      "nextGoals": [
+        {
+          "name": "Curs de UX design",
+          "icon": "book",
+          "amount": 900,
+          "when": "Începe în martie 2027",
+          "text": "Cu planul de acum, începi să economisești pentru curs după fondul de siguranță. Cu ideea săptămânii, banii sunt gata în februarie.",
+          "action": "Vezi ideea",
+          "href": "#/idei"
+        }
+      ],
+      "pickerCategories": [
+        "alimente",
+        "cafenele",
+        "livrari",
+        "iesiri",
+        "taxi",
+        "cumparaturi",
+        "abonamente",
+        "studii",
+        "transport",
+        "telefon",
+        "locuinta"
+      ],
+      "pots": [],
+      "profile": {
+        "statements": [
+          {
+            "icon": "card",
+            "name": "Cont curent RON",
+            "note": "nov. 2025 – oct. 2026, importat din aplicație · se actualizează lunar",
+            "status": "Importat"
+          }
+        ],
+        "about": [
+          {
+            "label": "Prenume",
+            "value": "Matei",
+            "src": "obs"
+          },
+          {
+            "label": "Vârstă",
+            "value": "18–24 ani",
+            "src": "obs"
+          },
+          {
+            "label": "Ocupație",
+            "value": "Student, anul II",
+            "src": "said"
+          },
+          {
+            "label": "Locuință",
+            "value": "Cămin studențesc",
+            "src": "obs"
+          },
+          {
+            "label": "Istoric analizat",
+            "value": "12 luni, nov. 2025 – oct. 2026",
+            "src": "obs"
+          }
+        ],
+        "money": [
+          {
+            "label": "Bani de la familie",
+            "value": "1.200 lei, pe 1 ale lunii",
+            "src": "obs"
+          },
+          {
+            "label": "Bursă",
+            "value": "circa 700 lei în lunile de cursuri, doar cu media peste 9",
+            "src": "said"
+          },
+          {
+            "label": "Meditații",
+            "value": "150–450 lei pe lună",
+            "src": "said"
+          },
+          {
+            "label": "Minimul lunar",
+            "value": "1.200 lei: cămin, alimente, transport, telefon, studii",
+            "src": "est"
+          },
+          {
+            "label": "Perioada de buget",
+            "value": "Din 1 până la sfârșitul lunii, după banii de la familie",
+            "src": "agreed"
+          },
+          {
+            "label": "Regula de economisire",
+            "value": "10% din fiecare încasare de peste 100 lei",
+            "src": "agreed"
+          }
+        ],
+        "income": 1500,
+        "spending": [
+          {
+            "name": "Alimente",
+            "lei": 720
+          },
+          {
+            "name": "Cămin",
+            "lei": 350
+          },
+          {
+            "name": "Livrări de mâncare",
+            "lei": 210
+          },
+          {
+            "name": "Restaurante",
+            "lei": 190
+          },
+          {
+            "name": "Cafenele",
+            "lei": 90
+          },
+          {
+            "name": "Taxi",
+            "lei": 70
+          },
+          {
+            "name": "Abonamente",
+            "lei": 60
+          },
+          {
+            "name": "Studii",
+            "lei": 60
+          },
+          {
+            "name": "Transport",
+            "lei": 50
+          },
+          {
+            "name": "Telefon și internet",
+            "lei": 25
+          }
+        ],
+        "observed": [
+          {
+            "text": "În iulie, august și septembrie, fără bursă, banii s-au terminat cu 5–8 zile înainte de 1",
+            "src": "obs"
+          },
+          {
+            "text": "Bursa a intrat în martie–iunie și în octombrie, în jur de 15 ale lunii",
+            "src": "obs"
+          },
+          {
+            "text": "Meditații: 2–3 plăți pe lună, de la aceleași persoane",
+            "quote": "dau meditații la matematică",
+            "src": "said"
+          }
+        ],
+        "subscriptions": [
+          {
+            "name": "LinguaPlus",
+            "lei": 45,
+            "note": "Aplicația deschisă de 2 ori în octombrie · 135 lei plătiți din septembrie",
+            "status": "O păstrezi până la examenul din ianuarie"
+          },
+          {
+            "name": "MuzicaPlus Student",
+            "lei": 15
+          }
+        ],
+        "talk": [
+          {
+            "label": "Ton",
+            "value": "Prietenos, fără predici"
+          },
+          {
+            "label": "Notificări",
+            "value": "Cel mult una pe zi"
+          },
+          {
+            "label": "Fără notificări",
+            "value": "23:00 – 09:00"
+          },
+          {
+            "label": "Rezumat săptămânal",
+            "value": "Duminică, la 20:00"
+          }
+        ],
+        "permissions": [
+          {
+            "id": "tx",
+            "label": "Extrase de cont",
+            "hint": "Contul curent · 12 luni",
+            "on": true
+          },
+          {
+            "id": "live",
+            "label": "Plăți cu cardul, în timp real",
+            "hint": "Pentru mesajele despre bugete",
+            "on": true
+          },
+          {
+            "id": "screen",
+            "label": "Screen Time",
+            "hint": "Doar aplicația LinguaPlus",
+            "on": true
+          },
+          {
+            "id": "calendar",
+            "label": "Google Calendar",
+            "hint": "Doar zilele de naștere și termenele marcate de tine",
+            "on": true
+          },
+          {
+            "id": "contacts",
+            "label": "Contacte",
+            "hint": "Nu e folosit",
+            "on": false
+          },
+          {
+            "id": "health",
+            "label": "Health",
+            "hint": "Nu e folosit",
+            "on": false
+          }
+        ],
+        "unknown": [
+          "Cât costă anul următor",
+          "Planuri pentru vară",
+          "Datorii la prieteni"
+        ]
+      },
+      "question": {
+        "amount": 28,
+        "merchant": "PLAYNET*STORE",
+        "date": "7 noiembrie",
+        "options": [
+          "Un joc",
+          "Un abonament",
+          "Altceva"
+        ],
+        "txId": "m13"
+      },
+      "questions": [
+        {
+          "id": "venituri",
+          "title": "Din ce surse primești bani?",
+          "hint": "Poți alege mai multe. Așa știu pe ce bani te poți baza.",
+          "options": [
+            {
+              "label": "Bani de la familie",
+              "selected": true
+            },
+            {
+              "label": "Bursă",
+              "selected": true
+            },
+            {
+              "label": "Meditații sau proiecte",
+              "selected": true
+            },
+            {
+              "label": "Job part-time"
+            },
+            {
+              "label": "Job de vară",
+              "selected": true
+            },
+            {
+              "label": "Altceva"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Bani de la familie pe lună",
+              "value": "1200",
+              "suffix": "lei",
+              "numeric": true
+            },
+            {
+              "label": "Bursa e sigură?",
+              "type": "select",
+              "value": "Nu, depinde de medie",
+              "options": [
+                "Da",
+                "Nu, depinde de medie",
+                "Nu primesc bursă"
+              ]
+            },
+            {
+              "label": "Meditații pe lună, aproximativ",
+              "value": "300",
+              "suffix": "lei",
+              "numeric": true
+            },
+            {
+              "label": "Rămas din jobul de vară",
+              "value": "500",
+              "suffix": "lei",
+              "numeric": true
+            }
+          ]
+        },
+        {
+          "id": "necesare",
+          "title": "Ce cheltuieli trebuie acoperite în fiecare lună?",
+          "hint": "Din ele calculez minimul lunar. Restul sunt cheltuieli opționale.",
+          "options": [
+            {
+              "label": "Cămin sau chirie",
+              "selected": true
+            },
+            {
+              "label": "Alimente",
+              "selected": true
+            },
+            {
+              "label": "Transport",
+              "selected": true
+            },
+            {
+              "label": "Telefon și internet",
+              "selected": true
+            },
+            {
+              "label": "Taxe și materiale de studiu",
+              "selected": true
+            },
+            {
+              "label": "Sănătate"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Cămin pe lună",
+              "value": "350",
+              "suffix": "lei",
+              "numeric": true
+            }
+          ]
+        },
+        {
+          "id": "obiective",
+          "title": "Pentru ce ai vrea să economisești?",
+          "hint": "Poți alege mai multe.",
+          "options": [
+            {
+              "label": "Un fond de siguranță",
+              "selected": true
+            },
+            {
+              "label": "Un curs",
+              "selected": true
+            },
+            {
+              "label": "Echipament pentru facultate"
+            },
+            {
+              "label": "Erasmus sau o călătorie"
+            },
+            {
+              "label": "Nimic anume acum"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Ce curs?",
+              "value": "UX design"
+            },
+            {
+              "label": "Cât costă?",
+              "value": "900",
+              "suffix": "lei",
+              "numeric": true
+            },
+            {
+              "label": "Când începe?",
+              "type": "select",
+              "value": "Martie 2027",
+              "options": [
+                "Ianuarie 2027",
+                "Martie 2027",
+                "Octombrie 2027",
+                "Nu știu încă"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "idei",
+          "title": "Te interesează idei de dezvoltare?",
+          "hint": "Cel mult una pe săptămână. Le poți opri oricând din Profil.",
+          "options": [
+            {
+              "label": "Venituri suplimentare",
+              "selected": true
+            },
+            {
+              "label": "Cursuri și educație financiară",
+              "selected": true
+            },
+            {
+              "label": "Burse și oportunități",
+              "selected": true
+            },
+            {
+              "label": "Nu acum"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Ce ai putea face contra cost?",
+              "type": "textarea",
+              "value": "Meditații la matematică, marțea și joia după-amiaza."
+            }
+          ]
+        },
+        {
+          "id": "notificari",
+          "title": "Cât de des vrei să-ți scriu și când să nu te deranjez?",
+          "options": [
+            {
+              "label": "Doar când e important"
+            },
+            {
+              "label": "Cel mult o dată pe zi",
+              "selected": true
+            },
+            {
+              "label": "Doar rezumatul săptămânal"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Fără notificări de la",
+              "value": "23:00"
+            },
+            {
+              "label": "până la",
+              "value": "09:00"
+            },
+            {
+              "label": "Rezumatul săptămânal",
+              "type": "select",
+              "value": "Duminică, la 20:00",
+              "options": [
+                "Duminică, la 20:00",
+                "Luni, la 08:00",
+                "Vineri, la 18:00",
+                "Fără rezumat"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "servicii",
+          "title": "Vrei să-ți spun și când un serviciu Raiffeisen te-ar ajuta?",
+          "hint": "Îți spun de fiecare dată de ce și cât costă. Poți schimba oricând din Profil.",
+          "options": [
+            {
+              "label": "Da, cel mult o dată pe săptămână",
+              "selected": true
+            },
+            {
+              "label": "Nu, doar sfaturi"
+            }
+          ]
+        }
+      ],
+      "reserve": null,
+      "review": {
+        "id": "m13",
+        "title": "1 plată de verificat",
+        "text": "PLAYNET*STORE · 28 lei · sâmbătă, 7 nov."
+      },
+      "services": {
+        "on": true,
+        "hint": "Cel mult una pe săptămână, doar pentru nevoi pe care le-ai spus sau confirmat. Fără credite.",
+        "items": [
+          {
+            "icon": "card",
+            "kind": "Economisire la plata cu cardul",
+            "name": "Plătești și economisești",
+            "description": "La fiecare plată cu cardul de debit, 1%, 3%, 5% sau 10% din sumă se mută automat într-un cont de economii dedicat.",
+            "terms": [
+              {
+                "label": "Cost",
+                "value": "0 lei administrare"
+              },
+              {
+                "label": "Dobândă",
+                "value": "10,00% pe an pentru primii 5.000 lei, variabilă"
+              },
+              {
+                "label": "Condiție",
+                "value": "Contul se alimentează doar din plățile cu cardul"
+              }
+            ],
+            "link": {
+              "href": "https://www.raiffeisen.ro/ro/persoane-fizice/produsele-noastre/economii/cont-de-economii.html",
+              "label": "„Plătești și economisești” pe raiffeisen.ro"
+            },
+            "source": "raiffeisen.ro: cont de economii (30.06.2026)",
+            "id": "savingbox",
+            "state": "proposed",
+            "status": "Propunere",
+            "helps": "La 1%, din circa 1.500 lei plătiți lunar cu cardul, pui deoparte automat circa 15 lei pe lună. Până pe 30 noiembrie înseamnă circa 6 lei, deci nu simți diferența.",
+            "why": "Pe 28 octombrie ai întrebat cum poți economisi automat, din sume mici. Îți propun 1% cât timp banii nu îți ajung până la 1.",
+            "without": "Fără serviciu rămâne regula ta de 10% la fiecare încasare, pe care o confirmi de fiecare dată.",
+            "actions": [
+              "Setez în aplicație",
+              "Nu acum",
+              "Nu-mi mai propune"
+            ]
+          },
+          {
+            "icon": "wallet",
+            "kind": "Cont de economii",
+            "name": "Super Acces Plus",
+            "description": "Cont de economii în lei, cu dobândă variabilă, din care poți retrage banii oricând.",
+            "terms": [
+              {
+                "label": "Dobândă",
+                "value": "2,00% pe an, variabilă"
+              },
+              {
+                "label": "Impozit",
+                "value": "10% din dobândă"
+              },
+              {
+                "label": "Retrageri",
+                "value": "Oricând"
+              }
+            ],
+            "link": {
+              "href": "https://www.raiffeisen.ro/ro/persoane-fizice/produsele-noastre/economii/cont-de-economii.html",
+              "label": "Contul de economii pe raiffeisen.ro"
+            },
+            "source": "raiffeisen.ro: cont de economii (30.06.2026)",
+            "id": "savings",
+            "state": "active",
+            "status": "Activ",
+            "helps": "Aici stă fondul de siguranță: 650 din 1.200 lei. Banii sunt separați de cei de cheltuit, dar îi ai la îndemână dacă apare o urgență.",
+            "why": "Pe 28 octombrie ai spus că vrei un fond pentru situații neprevăzute.",
+            "without": "Fără cont de economii, fondul ar sta în contul curent, amestecat cu banii de cheltuit."
+          },
+          {
+            "icon": "card",
+            "kind": "Pachet de cont curent",
+            "name": "ZERO Simplu",
+            "description": "Pachetul de cont curent în lei, cu card de debit, Smart Mobile și plăți instant.",
+            "terms": [
+              {
+                "label": "Cost lunar",
+                "value": "0 lei între 18 și 24 de ani, fără condiții"
+              },
+              {
+                "label": "FixPay",
+                "value": "0 lei în pachet"
+              }
+            ],
+            "link": {
+              "href": "https://www.raiffeisen.ro/ro/persoane-fizice/produsele-noastre/conturi-si-pachete-de-cont-curent/pachetul-de-cont-curent-zero-simplu.html",
+              "label": "Pachetul ZERO Simplu pe raiffeisen.ro"
+            },
+            "source": "raiffeisen.ro: pachetul ZERO Simplu (16.10.2026)",
+            "id": "zero-simplu",
+            "state": "active",
+            "status": "Pachetul tău",
+            "helps": "Între 18 și 24 de ani nu plătești nimic lunar pentru cont și card, fără condiții. Banii de la familie și din meditații rămân întregi pentru tine.",
+            "whyLabel": "De ce îți arăt asta",
+            "why": "Îl ai deja. Îți arăt ce include, ca să nu plătești pentru ceva ce primești gratuit."
+          }
+        ]
+      },
+      "spending": {
+        "period": "1 – 12 noiembrie",
+        "title": "Cheltuieli variabile din 1 noiembrie",
+        "total": 611,
+        "fixed": 460,
+        "fixedNote": "căminul, transportul și abonamentele",
+        "compare": "Cu 85 lei mai mult față de aceeași perioadă din octombrie",
+        "parts": [
+          {
+            "id": "alimente",
+            "lei": 297
+          },
+          {
+            "id": "cafenele",
+            "lei": 40
+          },
+          {
+            "id": "livrari",
+            "lei": 86
+          },
+          {
+            "id": "iesiri",
+            "lei": 120
+          },
+          {
+            "id": "taxi",
+            "lei": 40
+          },
+          {
+            "id": "nesortat",
+            "lei": 28
+          }
+        ]
+      },
+      "statements": {
+        "lead": "Coach-ul lucrează cu extrasele tale de cont. Cu cât au mai multe luni, cu atât vede mai bine tiparele: ideal 12–24.",
+        "account": {
+          "name": "Cont curent RON",
+          "iban": "RO45 RZBR •••• 5678"
+        },
+        "periods": [
+          "Ultimele 12 luni (nov. 2025 – oct. 2026)",
+          "Ultimele 6 luni",
+          "Ultimele 3 luni"
+        ],
+        "imported": {
+          "title": "12 extrase lunare importate",
+          "meta": "nov. 2025 – oct. 2026 · 1.104 plăți · se actualizează lunar"
+        },
+        "attachHint": "Din anii trecuți sau de la altă bancă.",
+        "formats": "PDF, XLS sau CSV · până la 10 MB",
+        "files": [],
+        "howTo": [
+          "Deschide aplicația sau internet banking-ul băncii",
+          "Intră la cont și caută „Extras de cont”",
+          "Alege perioada cea mai lungă, în format PDF sau XLS",
+          "Salvează fișierul și atașează-l aici"
+        ],
+        "privacy": "Fișierele sunt criptate, nu devin publice și le vede doar coach-ul. Din extrase citesc data, suma, comerciantul și descrierea; transferurile către persoane apar doar ca „transfer către o persoană”. Poți șterge oricând un extras."
+      },
+      "tagSuggestions": [
+        "facultate",
+        "prieteni",
+        "weekend",
+        "cămin"
+      ],
+      "today": {
+        "label": "Joi, 12 noiembrie"
+      },
+      "unbudgeted": {
+        "total": 88,
+        "items": [
+          {
+            "name": "Abonamente",
+            "icon": "repeat",
+            "lei": 60,
+            "note": "LinguaPlus și MuzicaPlus Student"
+          },
+          {
+            "name": "Fără categorie",
+            "icon": "help",
+            "lei": 28,
+            "note": "O plată de clarificat"
+          }
+        ]
+      },
+      "week": {
+        "spent": 183,
+        "daysSoFar": 4,
+        "guidePerDay": 34,
+        "scaleMax": 120,
+        "days": [
+          {
+            "d": "L",
+            "name": "luni",
+            "lei": 26
+          },
+          {
+            "d": "Ma",
+            "name": "marți",
+            "lei": 107
+          },
+          {
+            "d": "Mi",
+            "name": "miercuri",
+            "lei": 42
+          },
+          {
+            "d": "J",
+            "name": "joi",
+            "lei": 8,
+            "today": true
+          },
+          {
+            "d": "V",
+            "name": "vineri"
+          },
+          {
+            "d": "S",
+            "name": "sâmbătă"
+          },
+          {
+            "d": "D",
+            "name": "duminică"
+          }
+        ]
+      },
+      "pages": [
+        "rezumat",
+        "cheltuieli",
+        "bugete",
+        "obiective",
+        "idei",
+        "profil"
+      ]
+    }
+  }
+}
