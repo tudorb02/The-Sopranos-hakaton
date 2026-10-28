@@ -1,5 +1,6 @@
 // The demo client whose data the coach shows: Daria (salary) or Matei (student, no stable income).
-// The sign-in sets it through #/intra/pf or #/intra/student; it is kept for the browser tab only.
+// The sign-in sets it through #/intra/pf or #/intra/student. On the web it is kept for the browser tab only;
+// on the phone, until the app is closed.
 
 import { createContext, useContext } from "react";
 
@@ -15,7 +16,7 @@ export function usePersona() {
 
 export function storedPersonaId() {
   try {
-    const id = window.sessionStorage.getItem(STORAGE_KEY);
+    const id = globalThis.sessionStorage?.getItem(STORAGE_KEY);
     return id in personas ? id : "pf";
   } catch {
     return "pf";
@@ -24,7 +25,7 @@ export function storedPersonaId() {
 
 export function storePersonaId(id) {
   try {
-    window.sessionStorage.setItem(STORAGE_KEY, id);
+    globalThis.sessionStorage?.setItem(STORAGE_KEY, id);
   } catch {
     // Storage can be blocked (private mode): the choice then lasts until the page reloads.
   }

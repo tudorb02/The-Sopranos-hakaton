@@ -1,64 +1,101 @@
 // Spending tracker: what was spent this budget period by category, what needs a look, and every payment by day.
 
+import { StyleSheet, TextInput, View } from "react-native";
+
+import { Eyebrow, Link, RowMain, RowName, RowNote, Rows, Small, T } from "../components/base.jsx";
 import { Icon } from "../components/icons.jsx";
 import { CategoryLegend, ShareBar, TxRow } from "../components/tracking.jsx";
-import { Amount, ChoiceChips, IconTile, Src } from "../components/ui.jsx";
+import { Amount, ChoiceChips, HeroCard, HeroLabel, HeroSub, IconTile, Split, Src } from "../components/ui.jsx";
 import { lei } from "../lib/format.js";
 import { usePersona } from "../persona.js";
+import { color, fontFamily, radius, space, text } from "../theme.js";
 
 export default function Tracking() {
   const { days, filters, review, spending } = usePersona();
   return (
     <>
-      <section className="card hero-card" aria-labelledby="tracking-title">
-        <p className="eyebrow">Cheltuieli · {spending.period}</p>
-        <h1 id="tracking-title" className="hero-label">
-          {spending.title}
-        </h1>
+      <HeroCard>
+        <Eyebrow style={{ marginBottom: space.xs }}>Cheltuieli · {spending.period}</Eyebrow>
+        <HeroLabel>{spending.title}</HeroLabel>
         <Amount value={spending.total} size="xl" />
-        <p className="hero-sub">
+        <HeroSub>
           {spending.compare} <Src kind="est" />
-        </p>
-        <div className="split">
+        </HeroSub>
+        <Split>
           <ShareBar parts={spending.parts} total={spending.total} />
           <CategoryLegend parts={spending.parts} total={spending.total} />
-          <p className="small muted">Plus {lei(spending.fixed)} cheltuieli fixe: {spending.fixedNote}.</p>
-        </div>
-      </section>
+          <Small muted>
+            Plus {lei(spending.fixed)} cheltuieli fixe: {spending.fixedNote}.
+          </Small>
+        </Split>
+      </HeroCard>
 
-      <a className="card review" href={`#/cheltuieli/${review.id}`}>
+      <Link href={`#/cheltuieli/${review.id}`} style={s.review} pressedStyle={{ backgroundColor: color.yellow }}>
         <IconTile icon="help" tone="yellow" />
-        <span className="row-main">
-          <span className="row-name">{review.title}</span>
-          <span className="row-note">{review.text}</span>
-        </span>
-        <Icon name="chevron" className="chevron" />
-      </a>
+        <RowMain>
+          <RowName>{review.title}</RowName>
+          <RowNote>{review.text}</RowNote>
+        </RowMain>
+        <Icon name="chevron" size={20} color={color.ink3} />
+      </Link>
 
-      <div className="search-row">
-        <label className="search">
-          <Icon name="search" />
-          <span className="sr-only">Caută în plăți</span>
-          <input type="search" placeholder="Caută comerciant, sumă sau etichetă" />
-        </label>
-        <ChoiceChips label="Filtre" options={filters} />
-      </div>
+      <View style={s.searchRow}>
+        <View style={s.search}>
+          <Icon name="search" color={color.ink3} />
+          <TextInput
+            accessibilityLabel="Caută în plăți"
+            placeholder="Caută comerciant, sumă sau etichetă"
+            placeholderTextColor={color.ink3}
+            returnKeyType="search"
+            style={s.searchInput}
+          />
+        </View>
+        <ChoiceChips label="Filtre" options={filters} scroll />
+      </View>
 
       {days.map((day) => (
-        <section key={day.date} className="section" aria-label={`${day.label}, ${day.date}`}>
-          <div className="day-head">
-            <span>
-              <b>{day.label}</b> · {day.date}
-            </span>
-            <span className="num">−{lei(day.total)}</span>
-          </div>
-          <ul className="card rows tx-list">
+        <View key={day.date} style={s.section} accessibilityLabel={`${day.label}, ${day.date}`}>
+          <View style={s.dayHead}>
+            <T style={s.dayText}>
+              <T style={s.dayLabel}>{day.label}</T> · {day.date}
+            </T>
+            <T style={[s.dayText, { fontVariant: ["tabular-nums"] }]}>−{lei(day.total)}</T>
+          </View>
+          <Rows>
             {day.items.map((tx) => (
               <TxRow key={tx.id} tx={tx} />
             ))}
-          </ul>
-        </section>
+          </Rows>
+        </View>
       ))}
     </>
   );
 }
+
+const s = StyleSheet.create({
+  review: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.sm,
+    padding: space.md,
+    borderRadius: radius.card,
+    backgroundColor: color.yellowSoft,
+  },
+  searchRow: { gap: space.sm },
+  search: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.xs,
+    minHeight: 46,
+    paddingHorizontal: space.md,
+    borderRadius: radius.pill,
+    backgroundColor: color.surface,
+    borderWidth: 1.5,
+    borderColor: color.line,
+  },
+  searchInput: { flex: 1, minWidth: 0, fontFamily: fontFamily[400], fontSize: text.md, color: color.ink, paddingVertical: 10, outlineStyle: "none" },
+  section: { gap: space.sm },
+  dayHead: { flexDirection: "row", justifyContent: "space-between", gap: space.sm, paddingHorizontal: space["2xs"] },
+  dayText: { fontSize: text.sm, color: color.ink3 },
+  dayLabel: { fontWeight: 600, color: color.ink },
+});

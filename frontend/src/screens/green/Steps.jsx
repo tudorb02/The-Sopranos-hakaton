@@ -1,12 +1,48 @@
 // The steps of the green-credit flow, the same for every area (design/pj-greenstruct.md §4), in the order of the
 // GreenStruct README §7. Each screen gets the area's pack (data/green/packs.js): its configuration and its dossier.
 
-import { DocumentRow, From, ModuleCard, OfferCompare, PaymentsChart, StatusSteps } from "../../components/green.jsx";
-import { Icon } from "../../components/icons.jsx";
+import { useState } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+
+import { Btn, Card, CardTitle, Eyebrow, Intro as PageIntro, Row, RowMain, RowName, RowNote, Rows, Small, Stack, Status, T } from "../../components/base.jsx";
+import { DocumentRow, From, ModuleGrid, OfferCompare, PaymentsChart, StatusSteps } from "../../components/green.jsx";
 import { ServiceCard } from "../../components/services.jsx";
-import { Amount, ChoiceChips, Disclaimer, Facts, Field, Group, IconTile, Meter, NoteCard, PrivacyPromise, Section, Src, Switch, Ticks, ValueRow } from "../../components/ui.jsx";
+import {
+  Amount,
+  Aside,
+  Check,
+  ChoiceChips,
+  Disclaimer,
+  Fact,
+  FactList,
+  Facts,
+  Field,
+  FixedRow,
+  Group,
+  GroupHint,
+  HeroAlert,
+  HeroCard,
+  HeroLabel,
+  HeroSub,
+  IconTile,
+  Meter,
+  NoteCard,
+  PrivacyPromise,
+  Section,
+  Src,
+  StateDot,
+  Switch,
+  Switches,
+  Ticks,
+  ValueRow,
+} from "../../components/ui.jsx";
 import { greenLegal } from "../../data/green/legal.js";
 import { eur } from "../../lib/format.js";
+import { color, space, text } from "../../theme.js";
+import { PhaseRow } from "../activation/Analysis.jsx";
+import { Welcome } from "../activation/Start.jsx";
+import { Steps } from "../activation/Statements.jsx";
+import { TotalRow } from "../Summary.jsx";
 import { Parcels } from "./agro/Parcels.jsx";
 
 const chosenModule = (pack) => pack.modules.find((module) => module.id === pack.selectedModule);
@@ -14,40 +50,22 @@ const chosenModule = (pack) => pack.modules.find((module) => module.id === pack.
 // The "where" step: each area brings its own variant.
 const LOCATION_VARIANTS = { parcels: Parcels };
 
-const CORRECT = (
-  <button type="button" className="btn btn--text btn--small">
+const Correct = () => (
+  <Btn variant="text" small style={{ minHeight: 32, marginVertical: -6 }}>
     Corectează
-  </button>
+  </Btn>
 );
 
-const CALCULATED = <Src kind="est" label="calculat de bancă" />;
+const Calculated = () => <Src kind="est" label="calculat de bancă" />;
 
 export function Intro({ pack }) {
   const { intro } = pack;
   return (
     <>
-      <section className="card card--yellow hero-card welcome" aria-labelledby="green-intro-title">
-        <IconTile icon="leaf" tone="ink" />
-        <p className="eyebrow">{pack.sectorName}</p>
-        <h1 id="green-intro-title" className="page-title">
-          {intro.title}
-        </h1>
-        <p className="lead-text">{intro.lead}</p>
-        <p className="pill-note">
-          <Icon name="clock" />
-          {intro.duration}
-        </p>
-      </section>
+      <Welcome icon="leaf" eyebrow={pack.sectorName} title={intro.title} lead={intro.lead} duration={intro.duration} />
 
       <Section title="Cum decurge">
-        <ol className="card steps">
-          {intro.steps.map((step, i) => (
-            <li key={step}>
-              <span className="step-num">{i + 1}</span>
-              <span>{step}</span>
-            </li>
-          ))}
-        </ol>
+        <Steps items={intro.steps} />
       </Section>
 
       <Section title="Ce face consultantul">
@@ -67,52 +85,41 @@ export function Company({ pack }) {
   const { company, consents } = pack;
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">Firma ta</h1>
-        <p className="small muted">Luăm datele din registrele publice și, cu acordul tău, de la APIA și din conturi. Tu doar confirmi.</p>
-      </header>
+      <PageIntro title="Firma ta">
+        <Small muted>Luăm datele din registrele publice și, cu acordul tău, de la APIA și din conturi. Tu doar confirmi.</Small>
+      </PageIntro>
 
-      <section className="card" aria-label="Firma">
-        <div className="row row--flush">
+      <Card accessibilityLabel="Firma">
+        <Row style={{ paddingVertical: 0, paddingHorizontal: 0 }}>
           <IconTile icon="bank" tone="yellow" />
-          <div className="row-main">
-            <span className="row-name">{company.name}</span>
-            <span className="row-note">{company.account}</span>
-          </div>
-        </div>
-      </section>
+          <RowMain>
+            <RowName>{company.name}</RowName>
+            <RowNote>{company.account}</RowNote>
+          </RowMain>
+        </Row>
+      </Card>
 
       <Group label="Acordurile tale">
-        <div className="card switches">
+        <Switches>
           {consents.map((item) =>
             item.fixed ? (
-              <div key={item.id} className="switch-row">
-                <p className="consent-fixed">
-                  <span>{item.label}</span>
-                  <span className="small muted">{item.hint}</span>
-                </p>
-                <span className="status">Public</span>
-              </div>
+              <FixedRow key={item.id} label={item.label} hint={item.hint} aside={<Status>Public</Status>} />
             ) : (
               <Switch key={item.id} label={item.label} hint={item.hint} defaultChecked={item.on} />
             ),
           )}
-        </div>
-        <p className="small muted group-hint">Fără Open Banking, poți atașa extrasele de cont ale firmei.</p>
+        </Switches>
+        <GroupHint>Fără Open Banking, poți atașa extrasele de cont ale firmei.</GroupHint>
       </Group>
 
       <PrivacyPromise legal={greenLegal} href="#/verde/informare" />
 
-      <Group label="Ce am găsit" action={CORRECT}>
-        <ul className="card facts">
+      <Group label="Ce am găsit" action={<Correct />}>
+        <FactList>
           {company.facts.map((fact) => (
-            <li key={fact.label}>
-              <span className="fact-label">{fact.label}</span>
-              <span className="fact-value">{fact.value}</span>
-              <From source={fact.src} />
-            </li>
+            <Fact key={fact.label} label={fact.label} value={fact.value} src={<From source={fact.src} />} />
           ))}
-        </ul>
+        </FactList>
       </Group>
     </>
   );
@@ -121,16 +128,11 @@ export function Company({ pack }) {
 export function Category({ pack }) {
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">Ce vrei să faci?</h1>
-        <p className="small muted">Alege categoria investiției. Pentru fiecare verificăm alt criteriu verde.</p>
-      </header>
+      <PageIntro title="Ce vrei să faci?">
+        <Small muted>Alege categoria investiției. Pentru fiecare verificăm alt criteriu verde.</Small>
+      </PageIntro>
 
-      <div className="module-grid" role="group" aria-label="Categoria investiției">
-        {pack.modules.map((module) => (
-          <ModuleCard key={module.id} module={module} selected={module.id === pack.selectedModule} />
-        ))}
-      </div>
+      <ModuleGrid modules={pack.modules} selected={pack.selectedModule} />
 
       <NoteCard icon="leaf">{chosenModule(pack).criterion}</NoteCard>
     </>
@@ -146,32 +148,30 @@ export function Documents({ pack }) {
   const module = chosenModule(pack);
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">Documente</h1>
-        <p className="small muted">
+      <PageIntro title="Documente">
+        <Small muted>
           Doar cele esențiale pentru categoria ta. Ce lipsește poți trimite și după: devine o condiție înainte de tragere, nu un motiv de respingere.
-        </p>
-      </header>
+        </Small>
+      </PageIntro>
 
-      <button type="button" className="btn btn--outline btn--small btn--start">
-        <Icon name="upload" />
+      <Btn variant="outline" small icon="upload">
         Încarcă dosarul demo
-      </button>
+      </Btn>
 
       <Group label="Pentru orice investiție">
-        <ul className="card rows">
+        <Rows>
           {pack.generalDocuments.map((doc) => (
             <DocumentRow key={doc.id} doc={doc} state={pack.documents[doc.id]} />
           ))}
-        </ul>
+        </Rows>
       </Group>
 
       <Group label={`Pentru ${module.name.toLowerCase()}`}>
-        <ul className="card rows">
+        <Rows>
           {module.documents.map((doc) => (
             <DocumentRow key={doc.id} doc={doc} state={pack.documents[doc.id]} />
           ))}
-        </ul>
+        </Rows>
       </Group>
 
       <NoteCard icon="lock">Documentele sunt criptate, nu devin publice și sunt folosite doar pentru acest dosar. Agenții citesc din ele doar datele tehnice.</NoteCard>
@@ -183,19 +183,22 @@ function Question({ question, answer = {} }) {
   const source = answer.src ? <From source={answer.src} /> : null;
   if (question.type === "text" || question.type === "textarea") {
     return (
-      <div className="question">
-        <Field field={{ label: question.label, type: question.type === "textarea" ? "textarea" : undefined, value: answer.value, suffix: question.suffix, numeric: question.numeric }} />
+      <View style={s.question}>
+        <Field
+          field={{ label: question.label, type: question.type === "textarea" ? "textarea" : undefined, value: answer.value, suffix: question.suffix, numeric: question.numeric }}
+          style={{ alignSelf: "stretch" }}
+        />
         {source}
-      </div>
+      </View>
     );
   }
   const selected = answer.selected ?? [];
   return (
-    <div className="question">
-      <p className="question-label">{question.label}</p>
+    <View style={s.question}>
+      <T style={s.questionLabel}>{question.label}</T>
       <ChoiceChips label={question.label} options={question.options.map((option) => ({ label: option, selected: selected.includes(option) }))} />
       {source}
-    </div>
+    </View>
   );
 }
 
@@ -207,57 +210,48 @@ export function Questions({ pack }) {
   ];
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">Câteva întrebări</h1>
-        <p className="small muted">Doar ce ne trebuie pentru calcul. Le-am completat din APIA unde am putut.</p>
-      </header>
+      <PageIntro title="Câteva întrebări">
+        <Small muted>Doar ce ne trebuie pentru calcul. Le-am completat din APIA unde am putut.</Small>
+      </PageIntro>
 
       {groups.map((group) => (
         <Group key={group.label} label={group.label}>
-          <div className="card questions">
+          <Card style={{ gap: space.lg }}>
             {group.items.map((question) => (
               <Question key={question.id} question={question} answer={pack.answers[question.id]} />
             ))}
-          </div>
+          </Card>
         </Group>
       ))}
     </>
   );
 }
 
+const FEED_TONES = { warn: { color: color.warn, fontWeight: 600 }, ok: { fontWeight: 700 } };
+
 export function Analysis({ pack }) {
   const { analysis } = pack;
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">{analysis.title}</h1>
-        <p className="small muted">{analysis.lead}</p>
-      </header>
+      <PageIntro title={analysis.title}>
+        <Small muted>{analysis.lead}</Small>
+      </PageIntro>
 
-      <ul className="card rows">
+      <Rows>
         {analysis.phases.map((phase) => (
-          <li key={phase.label} className="row">
-            <span className={`state state--${phase.state}`} aria-hidden="true">
-              {phase.state === "done" ? <Icon name="check" /> : null}
-            </span>
-            <div className="row-main">
-              <span className="row-name">{phase.label}</span>
-              <span className="row-note">{phase.note}</span>
-            </div>
-            {phase.state === "running" ? <Meter value={phase.progress} max={100} /> : null}
-          </li>
+          <PhaseRow key={phase.label} phase={phase} />
         ))}
-      </ul>
+      </Rows>
 
       <Section title="Ce am aflat">
-        <ol className="card rows feed">
+        <Rows>
           {analysis.messages.map((message) => (
-            <li key={message.text} className={message.tone ? `is-${message.tone}` : undefined}>
-              <span className="eyebrow">{message.phase}</span>
-              <p>{message.text}</p>
-            </li>
+            <View key={message.text} style={s.feedItem}>
+              <Eyebrow>{message.phase}</Eyebrow>
+              <T style={[{ fontSize: text.sm }, FEED_TONES[message.tone]]}>{message.text}</T>
+            </View>
           ))}
-        </ol>
+        </Rows>
       </Section>
 
       <NoteCard icon="shield">{analysis.note}</NoteCard>
@@ -269,43 +263,37 @@ export function Offers({ pack }) {
   const { offer } = pack;
   return (
     <>
-      <section className="card card--yellow hero-card" aria-labelledby="offer-title">
-        <p className="eyebrow">{offer.eyebrow}</p>
-        <h1 id="offer-title" className="hero-label">
-          {offer.headline.label}
-        </h1>
+      <HeroCard yellow>
+        <Eyebrow style={{ marginBottom: space.xs }}>{offer.eyebrow}</Eyebrow>
+        <HeroLabel>{offer.headline.label}</HeroLabel>
         <Amount value={offer.headline.eur} size="xl" currency="EUR" />
-        <p className="hero-sub">{CALCULATED}</p>
-        <p className="hero-alert">
-          <Icon name="leaf" />
-          <span>
-            <b>{offer.level.name}</b> · {offer.recommended}
-          </span>
-        </p>
-      </section>
+        <HeroSub>
+          <Calculated />
+        </HeroSub>
+        <HeroAlert icon="leaf">
+          <T style={{ fontWeight: 700 }}>{offer.level.name}</T> · {offer.recommended}
+        </HeroAlert>
+      </HeroCard>
 
-      <Section title="Creditul clasic și creditul verde" aside={CALCULATED}>
+      <Section title="Creditul clasic și creditul verde" aside={<Calculated />}>
         <OfferCompare columns={offer.columns} rows={offer.rows} />
-        <p className="small muted">{offer.difference}</p>
+        <Small muted>{offer.difference}</Small>
       </Section>
 
       <Section title={offer.rate.title}>
-        <ul className="card rows">
+        <Rows>
           {offer.rate.parts.map((part) => (
-            <ValueRow key={part.label} name={part.label} value={<span className="num">{part.pp}</span>} />
+            <ValueRow key={part.label} name={part.label} value={part.pp} />
           ))}
-          <li className="row row--total">
-            <span className="row-name">{offer.rate.total.label}</span>
-            <span className="row-value num">{offer.rate.total.pp}</span>
-          </li>
-        </ul>
-        <p className="small muted">{offer.rate.note}</p>
+          <TotalRow label={offer.rate.total.label} value={offer.rate.total.pp} />
+        </Rows>
+        <Small muted>{offer.rate.note}</Small>
       </Section>
 
       <Section title="Ratele, într-un an">
-        <div className="card">
+        <Card>
           <PaymentsChart payments={offer.payments} />
-        </div>
+        </Card>
       </Section>
 
       <Section title="Garanția din creditul verde">
@@ -321,32 +309,55 @@ export function Changes({ pack }) {
   const { changes, offer } = pack;
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">{changes.title}</h1>
-        <p className="small muted">{changes.lead}</p>
-      </header>
+      <PageIntro title={changes.title}>
+        <Small muted>{changes.lead}</Small>
+      </PageIntro>
 
-      <ul className="card rows">
+      <Rows>
         <ValueRow icon="file" name={changes.from.name} note={`Cerut · ${changes.from.note}`} value={eur(changes.from.eur)} />
         <ValueRow icon="drop" name={changes.to.name} note={`Propus · ${changes.to.note}`} value={eur(changes.to.eur)} />
-      </ul>
+      </Rows>
 
       <Facts items={changes.facts} />
 
       <NoteCard icon="leaf">
-        <b>{offer.level.name}.</b> {offer.level.text}
+        <T style={{ fontWeight: 700 }}>{offer.level.name}.</T> {offer.level.text}
       </NoteCard>
 
-      <Section title="Alte schimbări posibile" aside={<span className="small muted">din catalog</span>}>
-        <ul className="card rows">
+      <Section title="Alte schimbări posibile" aside={<Aside>din catalog</Aside>}>
+        <Rows>
           {changes.more.map((item) => (
-            <li key={item} className="row">
-              <span className="row-name">{item}</span>
-            </li>
+            <Row key={item}>
+              <RowName style={{ flex: 1 }}>{item}</RowName>
+            </Row>
           ))}
-        </ul>
+        </Rows>
       </Section>
     </>
+  );
+}
+
+// The variants of the credit as radio cards; a tap moves the choice, nothing is stored.
+function Variants({ variants }) {
+  const [chosen, setChosen] = useState(variants.find((variant) => variant.selected)?.id);
+  return (
+    <View style={{ gap: space.sm }} accessibilityRole="radiogroup" accessibilityLabel="Varianta de credit">
+      {variants.map((variant) => {
+        const on = variant.id === chosen;
+        return (
+          <Pressable key={variant.id} accessibilityRole="radio" accessibilityState={{ checked: on }} onPress={() => setChosen(variant.id)}>
+            <Card style={[s.variant, on && s.variantOn]}>
+              <Check checked={on} radio />
+              <RowMain>
+                <RowName>{variant.name}</RowName>
+                <RowNote>{variant.note}</RowNote>
+              </RowMain>
+              {variant.badge ? <Status tone="on">{variant.badge}</Status> : null}
+            </Card>
+          </Pressable>
+        );
+      })}
+    </View>
   );
 }
 
@@ -358,105 +369,91 @@ export function Request({ pack }) {
   const { readiness } = advice;
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">{advice.title}</h1>
-        <p className="small muted">{advice.lead}</p>
-      </header>
+      <PageIntro title={advice.title}>
+        <Small muted>{advice.lead}</Small>
+      </PageIntro>
 
       <Group label="Ce variantă trimiți">
-        <div className="variants" role="radiogroup" aria-label="Varianta de credit">
-          {advice.variants.map((variant) => (
-            <label key={variant.id} className="card variant">
-              <input type="radio" className="radio" name="variant" defaultChecked={variant.selected} />
-              <span className="row-main">
-                <span className="row-name">{variant.name}</span>
-                <span className="row-note">{variant.note}</span>
-              </span>
-              {variant.badge ? <span className="status is-on">{variant.badge}</span> : null}
-            </label>
-          ))}
-        </div>
+        <Variants variants={advice.variants} />
       </Group>
 
       <Section
         title={readiness.title}
         aside={
-          <span className="small num">
-            <b>{readiness.met}</b> din {readiness.total}
-          </span>
+          <T style={{ fontSize: text.sm, fontVariant: ["tabular-nums"] }}>
+            <T style={{ fontWeight: 600 }}>{readiness.met}</T> din {readiness.total}
+          </T>
         }
       >
-        <div className="card stack">
-          <Meter value={readiness.met} max={readiness.total} />
-          <p className="small muted">{readiness.summary}</p>
-        </div>
-        <ul className="card rows">
+        <Card>
+          <Stack>
+            <Meter value={readiness.met} max={readiness.total} />
+            <Small muted>{readiness.summary}</Small>
+          </Stack>
+        </Card>
+        <Rows>
           {readiness.items.map((item) => (
-            <li key={item.label} className="row">
-              <span className={`state state--${item.state}`} aria-hidden="true">
-                {item.state === "done" ? <Icon name="check" /> : "!"}
-              </span>
-              <div className="row-main">
-                <span className="row-name">{item.label}</span>
-                <span className="row-note">{item.note}</span>
-              </div>
-            </li>
+            <Row key={item.label}>
+              <StateDot state={item.state === "done" ? "done" : "warn"} />
+              <RowMain>
+                <RowName>{item.label}</RowName>
+                <RowNote>{item.note}</RowNote>
+              </RowMain>
+            </Row>
           ))}
-        </ul>
+        </Rows>
       </Section>
 
       <Section title="Ce mai poți îmbunătăți">
-        <ul className="card rows">
+        <Rows>
           {advice.actions.map((action) => (
-            <li key={action.title} className="row">
+            <Row key={action.title}>
               <IconTile icon={action.icon} tone="sand" />
-              <div className="row-main">
-                <span className="row-name">{action.title}</span>
-                <span className="row-note">{action.text}</span>
-              </div>
+              <RowMain>
+                <RowName>{action.title}</RowName>
+                <RowNote>{action.text}</RowNote>
+              </RowMain>
               {action.button ? (
-                <button type="button" className="btn btn--outline btn--small">
+                <Btn variant="outline" small>
                   {action.button}
-                </button>
+                </Btn>
               ) : null}
-            </li>
+            </Row>
           ))}
-        </ul>
+        </Rows>
       </Section>
 
       <Section title="Clauzele din oferta verde">
-        <ul className="card rows">
+        <Rows>
           {advice.clauses
             .filter((clause) => clause.status === "offer")
             .map((clause) => (
-              <li key={clause.title} className="row">
-                <div className="row-main">
-                  <span className="row-name">{clause.title}</span>
-                  <span className="row-note">{clause.text}</span>
-                  <span className="status is-on">În oferta verde</span>
-                </div>
-              </li>
+              <Row key={clause.title}>
+                <RowMain>
+                  <RowName>{clause.title}</RowName>
+                  <RowNote>{clause.text}</RowNote>
+                  <Status tone="on" style={{ marginTop: space["2xs"] }}>
+                    În oferta verde
+                  </Status>
+                </RowMain>
+              </Row>
             ))}
-        </ul>
+        </Rows>
       </Section>
 
       <Section title="Clauzele pe care le ceri">
-        <div className="card switches">
+        <Switches>
           {advice.clauses
             .filter((clause) => clause.status !== "offer")
             .map((clause) => (
               <Switch key={clause.title} label={clause.status === "proposal" ? `${clause.title} (propunere)` : clause.title} hint={clause.text} defaultChecked />
             ))}
-        </div>
-        <p className="small muted">Le adaugi acum în cerere. Banca le confirmă la aprobarea finală.</p>
+        </Switches>
+        <Small muted>Le adaugi acum în cerere. Banca le confirmă la aprobarea finală.</Small>
       </Section>
 
       <Section title="Ce te obligi să faci, cu creditul verde">
-        <ul className="card rows">
-          {advice.obligations.map((item) => (
-            <ValueRow key={item.what} name={item.what} note={item.note} value={<span className="status">{item.when}</span>} />
-          ))}
-        </ul>
+        <Obligations items={advice.obligations} />
       </Section>
 
       <NoteCard icon="shield">{advice.note}</NoteCard>
@@ -464,17 +461,25 @@ export function Request({ pack }) {
   );
 }
 
+function Obligations({ items }) {
+  return (
+    <Rows>
+      {items.map((item) => (
+        <ValueRow key={item.what} name={item.what} note={item.note} value={<Status>{item.when}</Status>} />
+      ))}
+    </Rows>
+  );
+}
+
 export function Dossier({ pack }) {
   const { advice, dossier } = pack;
   return (
     <>
-      <section className="card hero-card" aria-labelledby="dossier-title">
-        <p className="eyebrow">{dossier.eyebrow}</p>
-        <h1 id="dossier-title" className="card-title">
-          {dossier.title}
-        </h1>
-        <p className="hero-sub">{dossier.text}</p>
-      </section>
+      <HeroCard>
+        <Eyebrow style={{ marginBottom: space.xs }}>{dossier.eyebrow}</Eyebrow>
+        <CardTitle>{dossier.title}</CardTitle>
+        <HeroSub>{dossier.text}</HeroSub>
+      </HeroCard>
 
       <StatusSteps steps={dossier.steps} />
 
@@ -483,19 +488,24 @@ export function Dossier({ pack }) {
       </Group>
 
       <Group label="După aprobare, ce trimiți și când">
-        <ul className="card rows">
-          {advice.obligations.map((item) => (
-            <ValueRow key={item.what} name={item.what} note={item.note} value={<span className="status">{item.when}</span>} />
-          ))}
-        </ul>
+        <Obligations items={advice.obligations} />
       </Group>
 
-      <div className="deactivate">
-        <button type="button" className="btn btn--text btn--danger">
-          Retrage cererea
-        </button>
-        <p className="small muted">Documentele încărcate și răspunsurile tale se șterg. Contul firmei nu este afectat.</p>
-      </div>
+      <View style={s.withdraw}>
+        <Btn variant="danger">Retrage cererea</Btn>
+        <Small muted style={{ textAlign: "center" }}>
+          Documentele încărcate și răspunsurile tale se șterg. Contul firmei nu este afectat.
+        </Small>
+      </View>
     </>
   );
 }
+
+const s = StyleSheet.create({
+  question: { alignItems: "flex-start", gap: space.xs },
+  questionLabel: { fontSize: text.sm, fontWeight: 600 },
+  feedItem: { gap: 2, paddingVertical: space.sm, paddingHorizontal: space.md },
+  variant: { flexDirection: "row", alignItems: "center", gap: space.sm, borderWidth: 2, borderColor: "transparent" },
+  variantOn: { backgroundColor: color.yellowSoft, borderColor: color.ink },
+  withdraw: { alignItems: "center", gap: space["2xs"] },
+});

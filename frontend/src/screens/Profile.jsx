@@ -1,13 +1,17 @@
+import { StyleSheet, View } from "react-native";
+
+import { Btn, Card, Intro, Row, RowMain, RowName, RowNote, RowValue, Rows, Small, Stack, Status, T, TextLink } from "../components/base.jsx";
 import { ServiceCard } from "../components/services.jsx";
-import { Disclaimer, Facts, Group, Meter, Src, Switch, ValueRow } from "../components/ui.jsx";
+import { Chips, Disclaimer, Facts, Group, Meter, Src, Switch, Switches, ValueRow } from "../components/ui.jsx";
 import { legal } from "../data/legal.js";
 import { lei } from "../lib/format.js";
 import { usePersona } from "../persona.js";
+import { color, space, text } from "../theme.js";
 
-const CORRECT = (
-  <button type="button" className="btn btn--text btn--small">
+const Correct = () => (
+  <Btn variant="text" small style={s.groupBtn}>
     Corectează
-  </button>
+  </Btn>
 );
 
 export default function Profile() {
@@ -15,58 +19,57 @@ export default function Profile() {
   const top = Math.max(...profile.spending.map((item) => item.lei));
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">Ce știu despre tine</h1>
-        <p className="small muted">
+      <Intro title="Ce știu despre tine">
+        <Small muted>
           Corectează sau șterge orice rând. Aceste date nu sunt folosite pentru evaluarea creditelor sau în scop de marketing.{" "}
-          <a className="link" href="#/informare">
-            Cine îți vede datele
-          </a>
-        </p>
-        <p className="src-legend">
+          <TextLink href="#/informare">Cine îți vede datele</TextLink>
+        </Small>
+        <View style={s.legend}>
           <Src kind="obs" label="observat în tranzacții" />
           <Src kind="said" label="spus de tine" />
           <Src kind="agreed" label="stabilit împreună" />
           <Src kind="est" label="estimat" />
-        </p>
-      </header>
+        </View>
+      </Intro>
 
       <Group
         label="Extrasele tale"
         action={
-          <a className="btn btn--text btn--small" href="#/extrase">
+          <Btn href="#/extrase" variant="text" small style={s.groupBtn}>
             Gestionează
-          </a>
+          </Btn>
         }
       >
-        <ul className="card rows">
+        <Rows>
           {profile.statements.map((source) => (
-            <ValueRow key={source.name} icon={source.icon} name={source.name} note={source.note} value={<span className="status is-on">{source.status}</span>} />
+            <ValueRow key={source.name} icon={source.icon} name={source.name} note={source.note} value={<Status tone="on">{source.status}</Status>} />
           ))}
-        </ul>
+        </Rows>
       </Group>
 
-      <Group label="Despre tine" action={CORRECT}>
+      <Group label="Despre tine" action={<Correct />}>
         <Facts items={profile.about} />
       </Group>
 
-      <Group label="Banii tăi" action={CORRECT}>
+      <Group label="Banii tăi" action={<Correct />}>
         <Facts items={profile.money} />
       </Group>
 
       <Group label="Unde se duc banii · media pe lună">
-        <ul className="card rows">
+        <Rows>
           {profile.spending.map((item) => (
-            <li key={item.name} className="row row--bar">
-              <div className="row-main">
-                <span className="row-name">{item.name}</span>
-                {item.note ? <span className="row-note">{item.note}</span> : null}
-              </div>
-              <span className="row-value">{lei(item.lei)}</span>
+            <View key={item.name} style={s.barRow}>
+              <View style={s.barTop}>
+                <RowMain>
+                  <RowName>{item.name}</RowName>
+                  {item.note ? <RowNote>{item.note}</RowNote> : null}
+                </RowMain>
+                <RowValue>{lei(item.lei)}</RowValue>
+              </View>
               <Meter value={item.lei} max={top} />
-            </li>
+            </View>
           ))}
-        </ul>
+        </Rows>
       </Group>
 
       <Group label="Ce am observat">
@@ -74,79 +77,85 @@ export default function Profile() {
       </Group>
 
       <Group label="Abonamente">
-        <ul className="card rows">
+        <Rows>
           {profile.subscriptions.map((sub) => (
-            <li key={sub.name} className="row">
-              <div className="row-main">
-                <span className="row-name">{sub.name}</span>
-                {sub.note ? <span className="row-note">{sub.note}</span> : null}
+            <Row key={sub.name}>
+              <RowMain>
+                <RowName>{sub.name}</RowName>
+                {sub.note ? <RowNote>{sub.note}</RowNote> : null}
                 {sub.status ? (
-                  <span className="row-status">
+                  <T style={s.status}>
                     {sub.status} <Src kind="agreed" />
-                  </span>
+                  </T>
                 ) : null}
-              </div>
-              <span className="row-value">
+              </RowMain>
+              <RowValue>
                 {lei(sub.lei)}
-                <span className="of"> / lună</span>
-              </span>
-            </li>
+                <T style={s.of}> / lună</T>
+              </RowValue>
+            </Row>
           ))}
-        </ul>
+        </Rows>
       </Group>
 
-      <Group label="Cum comunicăm" action={CORRECT}>
+      <Group label="Cum comunicăm" action={<Correct />}>
         <Facts items={profile.talk} />
       </Group>
 
       <Group label="Confidențialitate">
-        <div className="card switches">
+        <Switches>
           {legal.screenPrivacy.map((item) => (
             <Switch key={item.id} label={item.label} hint={item.hint} defaultChecked={item.on} />
           ))}
-        </div>
+        </Switches>
       </Group>
 
       <Group label="Permisiuni">
-        <div className="card switches">
+        <Switches>
           {profile.permissions.map((item) => (
             <Switch key={item.id} label={item.label} hint={item.hint} defaultChecked={item.on} />
           ))}
-        </div>
+        </Switches>
       </Group>
 
       <Group label="Servicii care te-ar ajuta">
-        <div className="card switches">
+        <Switches>
           <Switch label="Sugestii din serviciile băncii" hint={services.hint} defaultChecked={services.on} />
-        </div>
-        <div className="service-list">
+        </Switches>
+        <View style={{ gap: space.sm }}>
           {services.items.map((service) => (
             <ServiceCard key={service.id} service={service} compact />
           ))}
-        </div>
+        </View>
       </Group>
 
       <Group label="Ce nu știu încă">
-        <div className="card stack">
-          <div className="chips">
-            {profile.unknown.map((topic) => (
-              <button key={topic} type="button" className="chip">
-                {topic}
-              </button>
-            ))}
-          </div>
-          <p className="small muted">Te întreb doar dacă vrei. Alege un subiect și vorbim.</p>
-        </div>
+        <Card>
+          <Stack>
+            <Chips items={profile.unknown} />
+            <Small muted>Te întreb doar dacă vrei. Alege un subiect și vorbim.</Small>
+          </Stack>
+        </Card>
       </Group>
 
       <Disclaimer legal={legal} link />
 
-      <div className="deactivate">
-        <button type="button" className="btn btn--text btn--danger">
-          Dezactivează coach-ul
-        </button>
-        <p className="small muted">Extrasele importate și răspunsurile tale se șterg. Contul și cardurile nu sunt afectate.</p>
-      </div>
+      <View style={s.deactivate}>
+        <Btn variant="danger">Dezactivează coach-ul</Btn>
+        <Small muted style={{ textAlign: "center" }}>
+          Extrasele importate și răspunsurile tale se șterg. Contul și cardurile nu sunt afectate.
+        </Small>
+      </View>
     </>
   );
 }
+
+const s = StyleSheet.create({
+  legend: { flexDirection: "row", flexWrap: "wrap", columnGap: space.md, rowGap: space["2xs"] },
+  groupBtn: { minHeight: 32, marginVertical: -6 },
+  barRow: { gap: space.xs, paddingVertical: space.sm, paddingHorizontal: space.md },
+  barTop: { flexDirection: "row", alignItems: "center", gap: space.sm },
+  status: { fontSize: text.sm, color: color.ink2 },
+  of: { fontWeight: 400, color: color.ink3 },
+  deactivate: { alignItems: "center", gap: space["2xs"] },
+});

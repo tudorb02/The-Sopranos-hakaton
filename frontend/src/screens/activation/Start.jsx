@@ -1,23 +1,33 @@
+import { StyleSheet, View } from "react-native";
+
+import { Btn, Card, Intro as PageIntro, PageTitle, Row, RowMain, RowNote, Rows, Small, T } from "../../components/base.jsx";
 import { Icon } from "../../components/icons.jsx";
 import { Disclaimer, IconTile, InfoCard, PrivacyPromise, Section, Src, Ticks } from "../../components/ui.jsx";
 import { legal } from "../../data/legal.js";
 import { usePersona } from "../../persona.js";
+import { color, radius, space, text } from "../../theme.js";
+
+// The yellow welcome of a flow: icon, title, lead, how long it takes.
+export function Welcome({ icon, eyebrow, title, lead, duration }) {
+  return (
+    <Card yellow style={s.welcome}>
+      <IconTile icon={icon} tone="ink" />
+      {eyebrow ? <T style={s.eyebrow}>{eyebrow}</T> : null}
+      <PageTitle>{title}</PageTitle>
+      <T style={{ color: color.ink2 }}>{lead}</T>
+      <View style={s.pill}>
+        <Icon name="clock" size={18} />
+        <T style={s.pillText}>{duration}</T>
+      </View>
+    </Card>
+  );
+}
 
 export function Intro() {
   const { intro } = usePersona();
   return (
     <>
-      <section className="card card--yellow hero-card welcome" aria-labelledby="intro-title">
-        <IconTile icon="compass" tone="ink" />
-        <h1 id="intro-title" className="page-title">
-          {intro.title}
-        </h1>
-        <p className="lead-text">{intro.lead}</p>
-        <p className="pill-note">
-          <Icon name="clock" />
-          {intro.duration}
-        </p>
-      </section>
+      <Welcome icon="compass" title={intro.title} lead={intro.lead} duration={intro.duration} />
 
       <Section title="Ce fac">
         <Ticks yes={intro.does} />
@@ -35,30 +45,43 @@ export function Done() {
   const { firstStep } = findings;
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">Ce am găsit</h1>
-        <p className="small muted">{findings.lead}</p>
-      </header>
+      <PageIntro title="Ce am găsit">
+        <Small muted>{findings.lead}</Small>
+      </PageIntro>
 
-      <ul className="card rows">
+      <Rows>
         {findings.items.map((item) => (
-          <li key={item.text} className="row">
-            <div className="row-main">
-              <span>{item.text}</span>
-              {item.note ? <span className="row-note">{item.note}</span> : null}
-            </div>
-            <span className="row-value">
-              <Src kind={item.src} label={item.label} />
-            </span>
-          </li>
+          <Row key={item.text}>
+            <RowMain>
+              <T>{item.text}</T>
+              {item.note ? <RowNote>{item.note}</RowNote> : null}
+            </RowMain>
+            <Src kind={item.src} label={item.label} />
+          </Row>
         ))}
-      </ul>
+      </Rows>
 
       <InfoCard icon={firstStep.icon} title={firstStep.title} text={firstStep.text}>
-        <a className="btn btn--small" href={firstStep.href}>
+        <Btn href={firstStep.href} small>
           {firstStep.action}
-        </a>
+        </Btn>
       </InfoCard>
     </>
   );
 }
+
+const s = StyleSheet.create({
+  welcome: { gap: space.sm, paddingTop: space.lg, alignItems: "flex-start" },
+  eyebrow: { fontSize: text.cap, fontWeight: 600, color: color.ink2, textTransform: "uppercase", letterSpacing: 0.72 },
+  pill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingVertical: 4,
+    paddingLeft: 8,
+    paddingRight: 12,
+    borderRadius: radius.pill,
+    backgroundColor: color.surface,
+  },
+  pillText: { fontSize: text.sm, fontWeight: 600 },
+});

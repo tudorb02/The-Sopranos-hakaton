@@ -1,6 +1,7 @@
 # Busola · frontend persoane fizice
 
 Ecranele statice ale coach-ului financiar, gândit ca funcție opțională în aplicația Smart Mobile.
+Aplicația e scrisă în React Native (Expo SDK 58) și rulează pe iOS, Android și în browser.
 Coach-ul apare în tabul Produse și se activează doar dacă utilizatorul vrea. Nu face parte din onboarding-ul aplicației.
 Doar interfață: datele sunt fictive și nu există logică de business. Singurul comportament este navigarea între ecrane.
 
@@ -12,17 +13,23 @@ Contul de persoană juridică, Legume Bărăgan SRL (o fermă de legume), deschi
 
 ## Pornire
 
-Necesită Node.js 20.19 sau mai nou (testat cu Node 24).
+Necesită Node.js 20.19 sau mai nou (testat cu Node 26).
 
 ```bash
 cd frontend
 npm install
-npm run dev
+npm start          # serverul Expo; scanezi codul QR cu Expo Go (SDK 58) pe telefon
+npm run ios        # simulatorul iOS (necesită Xcode)
+npm run android    # emulatorul Android (necesită Android Studio)
+npm run web        # în browser, la http://localhost:8081
 ```
 
-Deschide http://localhost:5173. `npm run build` produce versiunea statică în `frontend/dist`.
+`npm run export:web` produce versiunea statică în `frontend/dist`. `npm run lint` verifică codul.
+Pe telefon e nevoie de Expo Go 58; o versiune mai veche nu deschide proiectul.
 
 ## Ecrane
+
+Rutele sunt aceleași ca în versiunea web. În browser apar în URL (`#/bugete`), iar butonul Înapoi al browserului funcționează; pe telefon, butonul Înapoi de pe Android revine la ecranul anterior.
 
 | Rută | Ecran |
 |---|---|
@@ -97,14 +104,21 @@ Un serviciu Raiffeisen apare doar pentru o nevoie spusă sau confirmată de clie
 - ce este serviciul, pe scurt;
 - „Cum te ajută”, pe fond galben: exact ce face pentru acest client, cu sumele lui;
 - costurile și condițiile, varianta fără serviciu și motivul pentru care apare;
-- linkul către pagina serviciului pe raiffeisen.ro (se deschide într-o filă nouă) și data informațiilor.
+- linkul către pagina serviciului pe raiffeisen.ro (se deschide în browser) și data informațiilor.
 
 Cardurile apar în Obiective, în Profil și în discuție, în varianta completă sau compactă. Faptele despre servicii stau în `src/data/bank.js`; partea personală stă în datele fiecărui client. Studentului nu i se propun credite, overdraft sau rate.
 
 ## Structură
 
 ```
+index.js                punctul de intrare Expo
+app.json                numele, iconițele și setările aplicației
+assets/                 iconițele, generate din public/favicon.svg
 src/
+  App.jsx               rutele: ce ecran și ce cadru deschide fiecare
+  router.jsx            navigarea între rute (#/bugete), istoricul și butonul Înapoi
+  theme.js              tokenurile de design: culori, fonturi, spații, raze
+  motion.js             animațiile: blocurile urcă în pagină, barele cresc, starea „în lucru” se rotește
   data/demo.js          datele fictive ale Dariei pentru coach; de înlocuit cu apeluri API
   data/student.js       datele fictive ale lui Matei, cu aceleași forme ca fișierele Dariei
   data/personas.js      cei doi clienți demo; ecranele îl citesc pe cel activ cu usePersona()
@@ -116,14 +130,14 @@ src/
                         (agro/: modulele, documentele, întrebările și dosarul demo; packs.js le leagă)
   persona.js            clientul activ, ales la login
   data/legal.js         textul informării
-  components/           layout (Produse, coach, fluxuri), ui, grafice, iconițe, cardul de serviciu,
-                        piesele creditului verde (green.jsx) și harta parcelelor (parcels.jsx)
+  components/           base (text, linkuri, carduri, rânduri, butoane), layout (Produse, coach, fluxuri), ui,
+                        grafice, iconițe SVG, cardul de serviciu, piesele creditului verde (green.jsx)
+                        și harta parcelelor (parcels.jsx)
   screens/              ecranele coach-ului și tabul Produse
   screens/activation/   pașii de activare și rutele lor (routes.js)
   screens/green/        alegerea domeniului, pașii creditului verde (comuni tuturor domeniilor) și rutele lor;
                         agro/ are doar ce e specific agriculturii (parcelele)
-  lib/format.js         formatare în lei (ro-RO)
-  styles.css            tokenuri de design și stiluri
+  lib/format.js         formatare în lei (ro-RO), la fel pe telefon și în browser
 ```
 
 ## Design
@@ -136,13 +150,14 @@ src/
   - cardurile principale și tabul activ;
   - barele de progres, pașii parcurși și răspunsurile alese;
   - bifele și statusurile active.
-- Culorile observate pe raiffeisen.ro sunt definite în OKLCH în `styles.css`: galben #FEE600, text #2B2D33, teal #037080, fundal #F1EDE6.
+- Culorile observate pe raiffeisen.ro sunt în `src/theme.js` (convertite din OKLCH-ul versiunii web): galben #FEE600, text #2B2D33, teal #017080, fundal #F1EDE6.
 - Ecranul de cheltuieli preia tiparele aplicațiilor mari de finanțe personale:
   - din Revolut: căutare, filtre și listă pe zile;
   - din Monzo: culori pe categorii;
   - din Copilot Money: plăți de verificat și reguli pe comerciant.
 - Culorile categoriilor sunt validate pentru daltonism și au ordine fixă pe categorie: albastru Alimente, portocaliu Cafenele, verde Livrări de mâncare, violet Restaurante, roz Taxi, gri Fără categorie. Galbenul de brand nu e folosit ca și culoare de categorie.
-- Fontul este Hanken Grotesk (licență OFL, inclus prin npm), în locul fontului proprietar al băncii. Funcționează și fără internet.
+- Fontul este Hanken Grotesk (licență OFL, inclus prin `@expo-google-fonts/hanken-grotesk`), în locul fontului proprietar al băncii. Fișierele fontului sunt în aplicație, deci funcționează și fără internet.
+- Pe un ecran lat, în browser, aplicația stă într-un cadru de telefon; pe telefon ocupă tot ecranul și respectă zonele sigure (notch, bara de jos).
 - Nu folosim logo-ul, ilustrațiile sau fontul Raiffeisen.
 - Celelalte taburi din bara de jos (Acasă, Plăți, Carduri) sunt doar decor.
 
@@ -152,5 +167,5 @@ src/
 - Cifrele ofertei vin, în implementarea reală, din motorul financiar (README-ul GreenStruct). Calculul valorilor demo e scris în comentariul din `src/data/green/agro/scenario.js`.
 
 - Înlocuiți datele din `src/data/` cu date din API, păstrând formele din `demo.js` și `student.js`. Ecranele citesc clientul activ prin `usePersona()`.
-- Butoanele (Importă extrasele, Conectează, Aprob, opțiunile din întrebări, comutatoarele) nu au încă acțiuni.
-- Barele și indicatorii primesc procentul prin variabila CSS `--p`.
+- Butoanele (Importă extrasele, Conectează, Aprob) nu au încă acțiuni. Opțiunile din întrebări, comutatoarele, categoriile și variantele se pot alege, dar nimic nu se salvează.
+- Barele și indicatorii primesc procentul ca lățime sau înălțime (`pct()` din `lib/format.js`).

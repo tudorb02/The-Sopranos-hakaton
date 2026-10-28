@@ -2,98 +2,115 @@
 // stated or confirmed. The card says what the service is, exactly how it helps this client, what it costs,
 // the way without it, and links to the bank's own page. Nothing is set up from here.
 
-import { useId } from "react";
+import { StyleSheet, View } from "react-native";
 
+import { caps, color, radius, space, text } from "../theme.js";
+import { B, Btn, BtnRow, Card, Eyebrow, Link, RowName, Small, Status, T } from "./base.jsx";
 import { Icon } from "./icons.jsx";
-import { IconTile } from "./ui.jsx";
+import { Disclosure, IconTile } from "./ui.jsx";
 
 // state: "active", "proposed", "later" or "howto" (a feature the client already has).
-const STATUS_CLASS = { active: "status is-on", proposed: "status status--outline", later: "status", howto: "status" };
+const STATUS_TONE = { active: "on", proposed: "outline", later: undefined, howto: undefined };
 
-// A link to raiffeisen.ro, opened in a new tab.
+// A link to raiffeisen.ro, opened in the browser.
 export function ExternalLink({ link }) {
   return (
-    <a className="ext-link" href={link.href} target="_blank" rel="noopener noreferrer">
-      <span>{link.label}</span>
-      <Icon name="external" />
-      <span className="sr-only"> (se deschide într-o filă nouă)</span>
-    </a>
+    <Link href={link.href} style={s.ext} accessibilityLabel={`${link.label} (se deschide în browser)`}>
+      <T style={s.extText}>{link.label}</T>
+      <Icon name="external" size={16} color={color.teal} />
+    </Link>
   );
 }
 
 function Details({ service }) {
   return (
     <>
-      <dl className="terms">
+      <View style={s.terms}>
         {service.terms.map((term) => (
-          <div key={term.label}>
-            <dt>{term.label}</dt>
-            <dd>{term.value}</dd>
-          </div>
+          <View key={term.label} style={s.term}>
+            <T style={[s.termText, s.termLabel]}>{term.label}</T>
+            <T style={[s.termText, s.flex]}>{term.value}</T>
+          </View>
         ))}
-      </dl>
-      {service.without ? <p className="small muted">{service.without}</p> : null}
+      </View>
+      {service.without ? <Small muted>{service.without}</Small> : null}
     </>
   );
 }
 
 // compact: the costs and the reason fold under "Costuri și detalii" (Profil, chat).
 export function ServiceCard({ service, compact = false }) {
-  const id = useId();
+  const whyLabel = service.whyLabel ?? "De ce îți propun asta";
   return (
-    <article className={compact ? "card service service--compact" : "card service"} aria-labelledby={id}>
-      <div className="service-top">
+    <Card style={s.service} accessibilityLabel={service.name}>
+      <View style={s.top}>
         <IconTile icon={service.icon} tone={service.state === "active" ? "yellow" : "sand"} />
-        <div className="service-name">
-          <p className="eyebrow">{service.kind}</p>
-          <p id={id} className="row-name">
-            {service.name}
-          </p>
-        </div>
-        <span className={STATUS_CLASS[service.state]}>{service.status}</span>
-      </div>
+        <View style={s.name}>
+          <Eyebrow>{service.kind}</Eyebrow>
+          <RowName>{service.name}</RowName>
+        </View>
+        <Status tone={STATUS_TONE[service.state]} style={{ alignSelf: "flex-start" }}>
+          {service.status}
+        </Status>
+      </View>
 
-      <p className="small">{service.description}</p>
+      <Small>{service.description}</Small>
 
-      <div className="service-helps">
-        <p className="service-helps-label">Cum te ajută</p>
-        <p>{service.helps}</p>
-      </div>
+      <View style={s.helps}>
+        <T style={s.helpsLabel}>Cum te ajută</T>
+        <Small>{service.helps}</Small>
+      </View>
 
       {compact ? (
-        <details className="why">
-          <summary>Costuri și detalii</summary>
-          <div className="service-more">
-            <p>
-              <b>{service.whyLabel ?? "De ce îți propun asta"}:</b> {service.why}
-            </p>
+        <Disclosure variant="why" summary="Costuri și detalii">
+          <View style={s.more}>
+            <T style={s.smallInk2}>
+              <B>{whyLabel}:</B> {service.why}
+            </T>
             <Details service={service} />
-          </div>
-        </details>
+          </View>
+        </Disclosure>
       ) : (
         <>
           <Details service={service} />
-          <details className="why">
-            <summary>{service.whyLabel ?? "De ce îți propun asta"}</summary>
-            <p>{service.why}</p>
-          </details>
+          <Disclosure variant="why" summary={whyLabel}>
+            {service.why}
+          </Disclosure>
         </>
       )}
 
-      <div className="service-foot">
+      <View style={s.foot}>
         <ExternalLink link={service.link} />
-        <p className="small muted">Sursa: {service.source}</p>
-      </div>
+        <Small muted>Sursa: {service.source}</Small>
+      </View>
 
       {service.actions ? (
-        <div className="btn-row">
+        <BtnRow>
           {service.actions.map((action, i) => (
-            <button key={action} type="button" className={i === 0 ? "btn btn--small" : "btn btn--text btn--small"}>
+            <Btn key={action} small variant={i === 0 ? "yellow" : "text"}>
               {action}
-            </button>
+            </Btn>
           ))}
-        </div>
+        </BtnRow>
       ) : null}
-    </article>
+    </Card>
   );
 }
+
+const s = StyleSheet.create({
+  flex: { flex: 1, minWidth: 0 },
+  ext: { flexDirection: "row", alignItems: "center", gap: space["2xs"], alignSelf: "flex-start" },
+  extText: { color: color.teal, fontSize: text.sm, fontWeight: 600, textDecorationLine: "underline", flexShrink: 1 },
+  terms: { gap: space.xs },
+  term: { flexDirection: "row", gap: space.sm },
+  termText: { fontSize: text.sm },
+  termLabel: { width: 112, color: color.ink3 },
+  service: { gap: space.sm },
+  top: { flexDirection: "row", alignItems: "center", gap: space.sm },
+  name: { flex: 1, minWidth: 0, gap: 2 },
+  helps: { gap: space["2xs"], paddingVertical: space.sm, paddingHorizontal: space.md, borderRadius: radius.tile, backgroundColor: color.yellowSoft },
+  helpsLabel: { fontSize: text.cap, fontWeight: 700, ...caps() },
+  more: { gap: space.sm },
+  smallInk2: { fontSize: text.sm, color: color.ink2 },
+  foot: { gap: 2, paddingTop: space.sm, borderTopWidth: 1, borderTopColor: color.line },
+});

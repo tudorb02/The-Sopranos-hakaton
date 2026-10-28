@@ -1,9 +1,17 @@
-// Static screens only: the hash (#/bugete) picks the screen. No data loading or business logic yet.
+// Static screens only: the route (#/bugete) picks the screen. No data loading or business logic yet.
 // The demo starts at a simulated sign-in. Each personal account opens the same optional Coach in Produse
 // with its own client's data (Daria, salary; Matei, student); the business account opens the green credit
 // for investments, agriculture first (design/pj-greenstruct.md).
 
-import { useEffect, useState } from "react";
+import { HankenGrotesk_400Regular } from "@expo-google-fonts/hanken-grotesk/400Regular";
+import { HankenGrotesk_500Medium } from "@expo-google-fonts/hanken-grotesk/500Medium";
+import { HankenGrotesk_600SemiBold } from "@expo-google-fonts/hanken-grotesk/600SemiBold";
+import { HankenGrotesk_700Bold } from "@expo-google-fonts/hanken-grotesk/700Bold";
+import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
+import { useCallback, useState } from "react";
+import { View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { BareFrame, FlowActions, FlowFrame, ProductsFrame, SectionFrame } from "./components/layout.jsx";
 import { DisclaimerStrip } from "./components/ui.jsx";
@@ -12,11 +20,12 @@ import { greenLegal } from "./data/green/legal.js";
 import { greenPacks } from "./data/green/packs.js";
 import { personas } from "./data/personas.js";
 import { PersonaContext, storePersonaId, storedPersonaId, usePersona } from "./persona.js";
+import { RouterProvider, useRouter } from "./router.jsx";
 import { ACTIVATION_STEPS, activationRoutes } from "./screens/activation/routes.js";
 import { Statements } from "./screens/activation/Statements.jsx";
 import Budgets from "./screens/Budgets.jsx";
 import Business from "./screens/Business.jsx";
-import Chat from "./screens/Chat.jsx";
+import Chat, { Composer } from "./screens/Chat.jsx";
 import Goals from "./screens/Goals.jsx";
 import { GREEN_STEPS, greenRoutes } from "./screens/green/routes.js";
 import { Sectors } from "./screens/green/Sectors.jsx";
@@ -28,6 +37,7 @@ import Profile from "./screens/Profile.jsx";
 import Summary from "./screens/Summary.jsx";
 import Tracking from "./screens/Tracking.jsx";
 import TransactionDetail from "./screens/TransactionDetail.jsx";
+import { color } from "./theme.js";
 
 // Pages of the Coach; each client sees the ones in its `pages`. The chat, a payment's details,
 // the statements and the notice open full screen.
@@ -35,58 +45,52 @@ const SECTION_SCREENS = { rezumat: Summary, cheltuieli: Tracking, bugete: Budget
 const OTHER_ROUTES = ["login", "login/pj", "produse", "firma", "chat", "extrase", "informare", "verde", "verde/informare"];
 const PAYMENT_PREFIX = "cheltuieli/";
 const ACTIVATION_PREFIX = "activare";
-// #/verde/<area>/<step>: the green-credit flow of one area of the platform.
+// verde/<area>/<step>: the green-credit flow of one area of the platform.
 const GREEN_PREFIX = "verde/";
-// #/intra/<id> signs in as that demo client, then opens Produse.
+// intra/<id> signs in as that demo client, then opens Produse.
 const ENTRY_PREFIX = "intra/";
 
-function hashKey() {
-  return window.location.hash.replace(/^#\/?/, "");
-}
-
-function routeFromHash() {
-  const key = hashKey();
-  if (OTHER_ROUTES.includes(key) || key in SECTION_SCREENS || key.startsWith(ACTIVATION_PREFIX) || key.startsWith(PAYMENT_PREFIX) || key.startsWith(GREEN_PREFIX)) return key;
-  return "login";
+function isRoute(key) {
+  return OTHER_ROUTES.includes(key) || key in SECTION_SCREENS || key.startsWith(ACTIVATION_PREFIX) || key.startsWith(PAYMENT_PREFIX) || key.startsWith(GREEN_PREFIX);
 }
 
 export default function App() {
-  const [route, setRoute] = useState(routeFromHash);
+  const [fontsLoaded] = useFonts({ HankenGrotesk_400Regular, HankenGrotesk_500Medium, HankenGrotesk_600SemiBold, HankenGrotesk_700Bold });
   const [personaId, setPersonaId] = useState(storedPersonaId);
 
-  useEffect(() => {
-    const onHashChange = () => {
-      const key = hashKey();
-      if (key.startsWith(ENTRY_PREFIX)) {
-        const id = key.slice(ENTRY_PREFIX.length);
-        if (id in personas) {
-          setPersonaId(id);
-          storePersonaId(id);
-        }
-        window.location.replace("#/produse");
-        return;
+  const resolve = useCallback((key) => {
+    if (key.startsWith(ENTRY_PREFIX)) {
+      const id = key.slice(ENTRY_PREFIX.length);
+      if (id in personas) {
+        setPersonaId(id);
+        storePersonaId(id);
       }
-      setRoute(routeFromHash());
-      window.scrollTo(0, 0);
-    };
-    onHashChange();
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
+      return { redirect: "#/produse" };
+    }
+    return { route: isRoute(key) ? key : "login" };
   }, []);
 
+  if (!fontsLoaded) return <View style={{ flex: 1, backgroundColor: color.sand }} />;
+
   return (
-    <PersonaContext.Provider value={personas[personaId]}>
-      <Screens route={route} />
-    </PersonaContext.Provider>
+    <SafeAreaProvider>
+      <StatusBar style="dark" />
+      <PersonaContext.Provider value={personas[personaId]}>
+        <RouterProvider resolve={resolve}>
+          <Screens />
+        </RouterProvider>
+      </PersonaContext.Provider>
+    </SafeAreaProvider>
   );
 }
 
-function Screens({ route }) {
+function Screens() {
+  const { route } = useRouter();
   const persona = usePersona();
 
   if (route === "login" || route === "login/pj") {
     return (
-      <BareFrame key={route}>
+      <BareFrame>
         <Login type={route === "login" ? "pf" : "pj"} />
       </BareFrame>
     );
@@ -110,7 +114,7 @@ function Screens({ route }) {
 
   if (route === "chat") {
     return (
-      <FlowFrame title="Coach" closeHref="#/rezumat">
+      <FlowFrame title="Coach" closeHref="#/rezumat" footer={<Composer />} bare>
         <Chat />
       </FlowFrame>
     );
@@ -118,7 +122,7 @@ function Screens({ route }) {
 
   if (route === "extrase") {
     return (
-      <FlowFrame title="Extrase de cont" titleAs="p" closeHref="#/profil" footer={<FlowActions next="#/profil" nextLabel="Gata" />}>
+      <FlowFrame title="Extrase de cont" closeHref="#/profil" footer={<FlowActions next="#/profil" nextLabel="Gata" />}>
         <Statements />
       </FlowFrame>
     );
@@ -127,14 +131,12 @@ function Screens({ route }) {
   if (route.startsWith(PAYMENT_PREFIX)) {
     return (
       <FlowFrame
-        key={route}
         title="Detalii tranzacție"
-        titleAs="p"
         backHref="#/cheltuieli"
         closeHref="#/cheltuieli"
         footer={<FlowActions next="#/cheltuieli" nextLabel="Salvează" skip="#/cheltuieli" skipLabel="Anulează" />}
       >
-        <TransactionDetail id={route.slice(PAYMENT_PREFIX.length)} />
+        <TransactionDetail key={route} id={route.slice(PAYMENT_PREFIX.length)} />
       </FlowFrame>
     );
   }
@@ -158,11 +160,11 @@ function Screens({ route }) {
   if (route === "verde" || route.startsWith(GREEN_PREFIX)) {
     const sector = route.split("/")[1];
     const steps = sector in greenPacks ? greenRoutes(sector) : {};
-    const strip = <DisclaimerStrip legal={greenLegal} href="#/verde/informare" className="disclaimer-strip--card" />;
+    const strip = <DisclaimerStrip legal={greenLegal} href="#/verde/informare" card />;
     // The area picker, also for an area that is not available yet.
     if (!(route in steps)) {
       return (
-        <FlowFrame title="Credit verde" titleAs="p" backHref="#/firma" closeHref="#/firma" footer={strip}>
+        <FlowFrame title="Credit verde" backHref="#/firma" closeHref="#/firma" footer={strip}>
           <Sectors />
         </FlowFrame>
       );
@@ -170,20 +172,18 @@ function Screens({ route }) {
     const { Screen, back, step, footer, title = "Credit verde" } = steps[route];
     return (
       <FlowFrame
-        key={route}
         title={title}
-        titleAs="p"
         closeHref="#/firma"
         backHref={back}
         progress={step ? { steps: GREEN_STEPS, current: step } : null}
         footer={
           <>
-            {strip}
+            <View style={{ marginBottom: 4 }}>{strip}</View>
             <FlowActions {...footer} />
           </>
         }
       >
-        <Screen pack={greenPacks[sector]} />
+        <Screen key={route} pack={greenPacks[sector]} />
       </FlowFrame>
     );
   }
@@ -194,15 +194,13 @@ function Screens({ route }) {
     const { Screen, props, back, step, note, footer } = activation[key];
     return (
       <FlowFrame
-        key={key}
         title="Coach financiar"
-        titleAs="p"
         closeHref="#/produse"
         backHref={back}
         progress={step ? { steps: ACTIVATION_STEPS, current: step, note } : null}
         footer={<FlowActions {...footer} />}
       >
-        <Screen {...props} />
+        <Screen key={key} {...props} />
       </FlowFrame>
     );
   }

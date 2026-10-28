@@ -1,8 +1,27 @@
+import { StyleSheet } from "react-native";
+
+import { Card, Eyebrow, Row, RowName, RowValue, Rows, Status, T, TextLink } from "../components/base.jsx";
 import { WeekStrip } from "../components/charts.jsx";
-import { Icon } from "../components/icons.jsx";
-import { Agenda, Amount, BudgetRow, InfoCard, NoteCard, QuickActions, Section, Src, ValueRow } from "../components/ui.jsx";
+import {
+  Agenda,
+  Amount,
+  Aside,
+  BudgetRow,
+  HeroAlert,
+  HeroCard,
+  HeroLabel,
+  HeroSub,
+  InfoCard,
+  Marker,
+  NoteCard,
+  QuickActions,
+  Section,
+  Src,
+  ValueRow,
+} from "../components/ui.jsx";
 import { lei } from "../lib/format.js";
 import { usePersona } from "../persona.js";
+import { color, radius, space, text } from "../theme.js";
 
 const SHORTCUTS = [
   { href: "#/cheltuieli", icon: "receipt", label: "Cheltuieli" },
@@ -10,25 +29,32 @@ const SHORTCUTS = [
   { href: "#/chat", icon: "chat", label: "Întreabă" },
 ];
 
+// The last row of a list, on yellow: what is left.
+export function TotalRow({ label, value }) {
+  return (
+    <Row style={s.total}>
+      <RowName style={s.totalText}>{label}</RowName>
+      <RowValue style={s.totalValue}>{value}</RowValue>
+    </Row>
+  );
+}
+
 // Without a stable income (Matei), the necessary expenses come right after the main figure.
 function Essentials({ essentials }) {
   return (
-    <Section title={essentials.title} aside={<span className="small muted num">{lei(essentials.total)}</span>}>
-      <ul className="card rows">
+    <Section title={essentials.title} aside={<Aside>{lei(essentials.total)}</Aside>}>
+      <Rows>
         {essentials.items.map((item) => (
           <ValueRow
             key={item.name}
             icon={item.icon}
             name={item.name}
             note={item.note}
-            value={item.status ? <span className="status is-on">{item.status}</span> : lei(item.lei)}
+            value={item.status ? <Status tone="on">{item.status}</Status> : lei(item.lei)}
           />
         ))}
-        <li className="row row--total">
-          <span className="row-name">{essentials.rest.label}</span>
-          <span className="row-value">{lei(essentials.rest.lei)}</span>
-        </li>
-      </ul>
+        <TotalRow label={essentials.rest.label} value={lei(essentials.rest.lei)} />
+      </Rows>
       <NoteCard icon="clock">{essentials.pending}</NoteCard>
     </Section>
   );
@@ -38,60 +64,59 @@ export default function Summary() {
   const { agenda, budgets, cycle, essentials, insight, lastMessage, today, week } = usePersona();
   return (
     <>
-      <section className="card card--yellow hero-card" aria-labelledby="summary-title">
-        <p className="eyebrow">{today.label}</p>
-        <h1 id="summary-title" className="hero-label">
-          Disponibil până pe {cycle.endsOn}
-        </h1>
+      <HeroCard yellow>
+        <Eyebrow style={{ marginBottom: space.xs }}>{today.label}</Eyebrow>
+        <HeroLabel>Disponibil până pe {cycle.endsOn}</HeroLabel>
         <Amount value={cycle.left} size="xl" />
-        <p className="hero-sub">
+        <HeroSub>
           Circa {cycle.perDay} lei pe zi, pentru următoarele {cycle.daysLeftLabel}. {cycle.basis} <Src kind="est" />
-        </p>
-        {cycle.pace ? (
-          <p className="hero-alert">
-            <Icon name="clock" />
-            <span>{cycle.pace}</span>
-          </p>
-        ) : null}
+        </HeroSub>
+        {cycle.pace ? <HeroAlert icon="clock">{cycle.pace}</HeroAlert> : null}
         <QuickActions items={SHORTCUTS} primaryTone="ink" />
-      </section>
+      </HeroCard>
 
       {essentials ? <Essentials essentials={essentials} /> : null}
 
       <InfoCard icon={lastMessage.icon} meta={lastMessage.meta} title={lastMessage.title} text={lastMessage.text} />
 
-      <Section title="Săptămâna aceasta" aside={<span className="small muted num">{lei(week.spent)} în {week.daysSoFar} zile</span>}>
-        <div className="card">
+      <Section title="Săptămâna aceasta" aside={<Aside>{`${lei(week.spent)} în ${week.daysSoFar} zile`}</Aside>}>
+        <Card>
           <WeekStrip week={week} />
-        </div>
+        </Card>
       </Section>
 
-      <Section title="Bugete" aside={<a className="link" href="#/bugete">Vezi toate</a>}>
-        <ul className="card rows">
+      <Section title="Bugete" aside={<TextLink href="#/bugete">Vezi toate</TextLink>}>
+        <Rows>
           {budgets
             .filter((budget) => budget.onHome)
             .map((budget) => (
               <BudgetRow key={budget.id} budget={budget} />
             ))}
-        </ul>
+        </Rows>
       </Section>
 
       <Section title="Ce am observat">
-        <div className="card insight">
-          <p className="insight-figure num">
-            <span className="marker">{insight.figure}</span>
-          </p>
-          <p>
+        <Card style={s.insight}>
+          <Marker style={s.figure}>{insight.figure}</Marker>
+          <T style={{ flex: 1 }}>
             {insight.text} <Src kind="obs" />
-          </p>
-        </div>
+          </T>
+        </Card>
       </Section>
 
       <Section title="Ce urmează">
-        <div className="card">
+        <Card>
           <Agenda items={agenda} />
-        </div>
+        </Card>
       </Section>
     </>
   );
 }
+
+const s = StyleSheet.create({
+  total: { backgroundColor: color.yellowSoft, borderBottomLeftRadius: radius.card, borderBottomRightRadius: radius.card },
+  totalText: { flex: 1, fontWeight: 700 },
+  totalValue: { fontWeight: 700 },
+  insight: { flexDirection: "row", alignItems: "flex-start", gap: space.md },
+  figure: { fontSize: text.xl, fontWeight: 700, lineHeight: 32, letterSpacing: -0.56, fontVariant: ["tabular-nums"] },
+});

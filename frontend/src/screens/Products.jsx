@@ -1,44 +1,51 @@
 // The app's Produse tab, shown only as the place where the optional Coach is offered.
 
+import { Btn, BtnRow, Card, Row, RowName, Rows, Small, Status } from "../components/base.jsx";
 import { Icon } from "../components/icons.jsx";
-import { Group, IconTile } from "../components/ui.jsx";
+import { GoalHead, Group, IconTile } from "../components/ui.jsx";
 import { entry, products } from "../data/activation.js";
+import { color, space } from "../theme.js";
+
+// The yellow card that opens an optional feature from Produse (the Coach, the green credit).
+export function EntryCard({ icon, entry: card, start, startLabel, example }) {
+  return (
+    <Card yellow style={{ gap: space.sm, paddingTop: space.lg }}>
+      <GoalHead icon={icon} tone="ink" title={card.title} sub={card.subtitle} aside={<Status tone="ink">{card.badge}</Status>} />
+      <Small>{card.text}</Small>
+      <BtnRow>
+        <Btn href={start} variant="ink" small>
+          {startLabel}
+        </Btn>
+        <Btn href={example} variant="text" small onYellow>
+          Vezi un exemplu
+        </Btn>
+      </BtnRow>
+    </Card>
+  );
+}
+
+// The client's existing products: icon, name, chevron (placeholders).
+export function ProductRows({ items }) {
+  return (
+    <Rows>
+      {items.map((product) => (
+        <Row key={product.name}>
+          <IconTile icon={product.icon} tone="sand" />
+          <RowName style={{ flex: 1 }}>{product.name}</RowName>
+          <Icon name="chevron" size={20} color={color.ink3} />
+        </Row>
+      ))}
+    </Rows>
+  );
+}
 
 export default function Products() {
   return (
     <>
-      <section className="card card--yellow coach-entry" aria-labelledby="coach-entry-title">
-        <div className="goal-head">
-          <IconTile icon="compass" tone="ink" />
-          <div>
-            <h2 id="coach-entry-title" className="card-title">
-              {entry.title}
-            </h2>
-            <p className="small">{entry.subtitle}</p>
-          </div>
-          <span className="status status--ink">{entry.badge}</span>
-        </div>
-        <p className="small">{entry.text}</p>
-        <div className="btn-row">
-          <a className="btn btn--ink btn--small" href="#/activare">
-            Activează
-          </a>
-          <a className="btn btn--text btn--small btn--on-yellow" href="#/rezumat">
-            Vezi un exemplu
-          </a>
-        </div>
-      </section>
+      <EntryCard icon="compass" entry={entry} start="#/activare" startLabel="Activează" example="#/rezumat" />
 
       <Group label="Produsele tale">
-        <ul className="card rows">
-          {products.map((product) => (
-            <li key={product.name} className="row">
-              <IconTile icon={product.icon} tone="sand" />
-              <span className="row-name">{product.name}</span>
-              <Icon name="chevron" className="chevron" />
-            </li>
-          ))}
-        </ul>
+        <ProductRows items={products} />
       </Group>
     </>
   );

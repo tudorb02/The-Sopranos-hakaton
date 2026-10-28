@@ -1,8 +1,12 @@
+import { StyleSheet, View } from "react-native";
+
+import { Btn, Card, CardTitle, RowValue, Rows, Small, Stack, T, TextLink } from "../components/base.jsx";
 import { PlanChart } from "../components/charts.jsx";
 import { ServiceCard } from "../components/services.jsx";
-import { Amount, IconTile, Meter, Section, Src, ValueRow } from "../components/ui.jsx";
+import { Amount, Aside, GoalHead, HeroCard, HeroLabel, HeroSub, Meter, Section, Src, ValueRow } from "../components/ui.jsx";
 import { lei } from "../lib/format.js";
 import { usePersona } from "../persona.js";
+import { color, radius, space } from "../theme.js";
 
 export default function Goals() {
   const { goal, nextGoals, pots, reserve, services } = usePersona();
@@ -10,60 +14,44 @@ export default function Goals() {
   const suggestion = goal.suggestion ? serviceById(goal.suggestion) : null;
   return (
     <>
-      <section className="card hero-card" aria-labelledby="goal-title">
-        <div className="goal-head">
-          <IconTile icon={goal.icon} tone="yellow" />
-          <div>
-            <h1 id="goal-title" className="card-title">
-              {goal.name}
-            </h1>
-            <p className="small muted">{goal.note}</p>
-          </div>
-          <Src kind="agreed" />
-        </div>
-        <p className="hero-label">Economisit până acum</p>
-        <p className="amount-line">
+      <HeroCard>
+        <GoalHead icon={goal.icon} title={goal.name} sub={goal.note} aside={<Src kind="agreed" />} style={{ marginBottom: space.md }} />
+        <HeroLabel>Economisit până acum</HeroLabel>
+        <View style={s.amountLine}>
           <Amount value={goal.saved} size="lg" />
-          <span className="muted"> din {lei(goal.amount)}</span>
-        </p>
-        <Meter value={goal.saved} max={goal.amount} />
-        <p className="hero-sub">
-          {goal.due.label} <b>{goal.due.date}</b> · {goal.due.note}
-        </p>
-      </section>
+          <T style={{ color: color.ink3 }}> din {lei(goal.amount)}</T>
+        </View>
+        <Meter value={goal.saved} max={goal.amount} style={{ marginVertical: space.xs }} />
+        <HeroSub>
+          {goal.due.label} <T style={{ fontWeight: 600, color: color.ink }}>{goal.due.date}</T> · {goal.due.note}
+        </HeroSub>
+      </HeroCard>
 
       <Section title="Planul lunar">
-        <div className="card stack">
-          <PlanChart plan={goal.plan} total={goal.amount} />
-          <p className="small muted">{goal.reason}</p>
-        </div>
+        <Card>
+          <Stack>
+            <PlanChart plan={goal.plan} total={goal.amount} />
+            <Small muted>{goal.reason}</Small>
+          </Stack>
+        </Card>
       </Section>
 
       <Section title="Din ce economisești" aside={<Src kind="est" label={goal.fundingLabel} />}>
-        <ul className="card rows">
+        <Rows>
           {goal.funding.map((item) => (
             <ValueRow key={item.name} name={item.name} value={`aprox. ${lei(item.lei)}`} />
           ))}
-        </ul>
+        </Rows>
       </Section>
 
       {nextGoals.length ? (
         <Section title="Următorul obiectiv">
           {nextGoals.map((item) => (
-            <div key={item.name} className="card stack">
-              <div className="goal-head goal-head--flush">
-                <IconTile icon={item.icon} tone="sand" />
-                <div>
-                  <p className="row-name">{item.name}</p>
-                  <p className="small muted">{item.when}</p>
-                </div>
-                <span className="row-value">{lei(item.amount)}</span>
-              </div>
-              <p className="small">{item.text}</p>
-              <a className="link" href={item.href}>
-                {item.action}
-              </a>
-            </div>
+            <Card key={item.name} style={{ gap: space.md }}>
+              <GoalHead icon={item.icon} tone="sand" title={item.name} sub={item.when} small aside={<RowValue>{lei(item.amount)}</RowValue>} />
+              <Small>{item.text}</Small>
+              <TextLink href={item.href}>{item.action}</TextLink>
+            </Card>
           ))}
         </Section>
       ) : null}
@@ -73,32 +61,43 @@ export default function Goals() {
       </Section>
 
       {suggestion ? (
-        <Section title="Sugestie din serviciile băncii" aside={<span className="small muted">cel mult una pe săptămână</span>}>
+        <Section title="Sugestie din serviciile băncii" aside={<Aside>cel mult una pe săptămână</Aside>}>
           <ServiceCard service={suggestion} />
         </Section>
       ) : null}
 
       {pots.length ? (
         <Section title="Bani puși deoparte">
-          <ul className="card rows">
+          <Rows>
             {pots.map((pot) => (
               <ValueRow key={pot.name} icon={pot.icon} name={pot.name} note={pot.note} value={lei(pot.lei)} />
             ))}
-          </ul>
+          </Rows>
         </Section>
       ) : null}
 
       {reserve ? (
-        <section className="card empty" aria-labelledby="reserve-title">
-          <h2 id="reserve-title" className="card-title">
-            {reserve.title}
-          </h2>
-          <p className="small muted">{reserve.text}</p>
-          <a className="btn btn--outline" href={reserve.href}>
+        <View style={s.empty}>
+          <CardTitle>{reserve.title}</CardTitle>
+          <Small muted>{reserve.text}</Small>
+          <Btn href={reserve.href} variant="outline">
             {reserve.action}
-          </a>
-        </section>
+          </Btn>
+        </View>
       ) : null}
     </>
   );
 }
+
+const s = StyleSheet.create({
+  amountLine: { flexDirection: "row", alignItems: "baseline", flexWrap: "wrap", gap: space["2xs"] },
+  empty: {
+    alignItems: "flex-start",
+    gap: space.sm,
+    padding: space.md,
+    borderRadius: radius.card,
+    borderWidth: 1.5,
+    borderStyle: "dashed",
+    borderColor: color.ink3,
+  },
+});

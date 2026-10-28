@@ -1,66 +1,67 @@
 // Development ideas for a client without a stable income (design/coach-students.md §6): more income,
 // free money education from the bank, opportunities. Each idea starts from a goal or interest the client stated.
 
+import { StyleSheet, View } from "react-native";
+
+import { Btn, BtnRow, Card, Intro, Row, RowMain, RowName, RowNote, Rows, Small, Status, T } from "../components/base.jsx";
 import { ExternalLink } from "../components/services.jsx";
-import { IconTile, NoteCard, Section, Src } from "../components/ui.jsx";
+import { Aside, Disclosure, GoalHead, IconTile, NoteCard, Section, Src } from "../components/ui.jsx";
 import { usePersona } from "../persona.js";
+import { space, text } from "../theme.js";
 
 export default function Ideas() {
   const { ideas } = usePersona();
   const { featured } = ideas;
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">{ideas.title}</h1>
-        <p className="small muted">{ideas.lead}</p>
-      </header>
+      <Intro title={ideas.title}>
+        <Small muted>{ideas.lead}</Small>
+      </Intro>
 
-      <section className="card card--yellow idea-featured" aria-labelledby="idea-title">
-        <div className="goal-head">
-          <IconTile icon={featured.icon} tone="ink" />
-          <div>
-            <p className="eyebrow">{featured.eyebrow}</p>
-            <h2 id="idea-title" className="card-title">
-              {featured.title}
-            </h2>
-          </div>
-        </div>
-        <p className="small">
+      <Card yellow style={{ gap: space.sm }}>
+        <GoalHead icon={featured.icon} tone="ink" eyebrow={featured.eyebrow} title={featured.title} />
+        <Small>
           {featured.text} <Src kind="est" />
-        </p>
-        <ul className="idea-effects">
+        </Small>
+        <View style={s.effects}>
           {featured.effects.map((effect) => (
-            <li key={effect}>{effect}</li>
+            <View key={effect} style={s.effect}>
+              <T style={s.effectText}>•</T>
+              <T style={[s.effectText, { flex: 1 }]}>{effect}</T>
+            </View>
           ))}
-        </ul>
-        <details className="why">
-          <summary>De ce îți propun asta</summary>
-          <p>{featured.why}</p>
-        </details>
-        <div className="btn-row">
+        </View>
+        <Disclosure variant="why" summary="De ce îți propun asta">
+          {featured.why}
+        </Disclosure>
+        <BtnRow>
           {featured.actions.map((action, i) => (
-            <button key={action} type="button" className={i === 0 ? "btn btn--ink btn--small" : "btn btn--text btn--small btn--on-yellow"}>
+            <Btn key={action} small variant={i === 0 ? "ink" : "text"} onYellow={i > 0}>
               {action}
-            </button>
+            </Btn>
           ))}
-        </div>
-      </section>
+        </BtnRow>
+      </Card>
 
       {ideas.groups.map((group) => (
-        <Section key={group.title} title={group.title} aside={group.note ? <span className="small muted">{group.note}</span> : null}>
-          <ul className="card rows">
+        <Section key={group.title} title={group.title} aside={group.note ? <Aside>{group.note}</Aside> : null}>
+          <Rows>
             {group.items.map((item) => (
-              <li key={item.title} className="row idea-row">
+              <Row key={item.title} style={{ alignItems: "flex-start" }}>
                 <IconTile icon={item.icon} tone="sand" />
-                <div className="row-main">
-                  <span className="row-name">{item.title}</span>
-                  <span className="row-note">{item.text}</span>
-                  {item.link ? <ExternalLink link={item.link} /> : null}
-                  {item.status ? <span className="status">{item.status}</span> : null}
-                </div>
-              </li>
+                <RowMain>
+                  <RowName>{item.title}</RowName>
+                  <RowNote>{item.text}</RowNote>
+                  {item.link ? (
+                    <View style={{ marginTop: space["2xs"] }}>
+                      <ExternalLink link={item.link} />
+                    </View>
+                  ) : null}
+                  {item.status ? <Status style={{ marginTop: space["2xs"] }}>{item.status}</Status> : null}
+                </RowMain>
+              </Row>
             ))}
-          </ul>
+          </Rows>
         </Section>
       ))}
 
@@ -68,3 +69,9 @@ export default function Ideas() {
     </>
   );
 }
+
+const s = StyleSheet.create({
+  effects: { gap: space["2xs"], paddingLeft: space["2xs"] },
+  effect: { flexDirection: "row", gap: space.xs },
+  effectText: { fontSize: text.sm, fontWeight: 600 },
+});

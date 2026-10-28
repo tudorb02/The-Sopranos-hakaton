@@ -1,24 +1,34 @@
 {
   "name": "busola-frontend-personal",
   "private": true,
-  "version": "0.1.0",
-  "description": "Busola: ecranele statice ale coach-ului financiar, gândit ca extensie Smart Mobile pentru persoane fizice (prototip de hackathon, date fictive).",
-  "type": "module",
+  "version": "0.2.0",
+  "description": "Busola: ecranele statice ale coach-ului financiar, gândit ca extensie Smart Mobile pentru persoane fizice (prototip de hackathon, date fictive). Aplicație React Native (Expo).",
+  "main": "index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "export:web": "expo export --platform web",
+    "lint": "eslint src index.js"
   },
   "dependencies": {
-    "@fontsource/hanken-grotesk": "^5.3.0",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^6.1.2",
-    "vite": "^8.3.5"
+    "@expo-google-fonts/hanken-grotesk": "^0.4.3",
+    "expo": "~58.0.20",
+    "expo-font": "~58.0.10",
+    "expo-status-bar": "~58.0.4",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.0",
+    "react-native-safe-area-context": "~5.10.1",
+    "react-native-svg": "15.16.0",
+    "react-native-web": "^0.21.4"
   },
   "engines": {
     "node": ">=20.19"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~58.0.4"
   }
 }

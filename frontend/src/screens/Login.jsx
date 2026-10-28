@@ -1,48 +1,68 @@
 // Simulated sign-in for the demo: pick a personal or the business account. Nothing is typed or checked.
 
+import { StyleSheet, View } from "react-native";
+
+import { Btn, Card, Link, PageTitle, Row, RowMain, RowName, RowNote, T } from "../components/base.jsx";
 import { IconTile, NoteCard } from "../components/ui.jsx";
 import { accounts, login } from "../data/accounts.js";
+import { color, radius, shadowCard, space, text } from "../theme.js";
+
+const TYPES = [
+  { id: "pf", label: "Persoană fizică", href: "#/login" },
+  { id: "pj", label: "Persoană juridică", href: "#/login/pj" },
+];
 
 export default function Login({ type }) {
   return (
     <>
-      <section className="card card--yellow hero-card welcome" aria-labelledby="login-title">
+      <Card yellow style={s.welcome}>
         <IconTile icon="lock" tone="ink" />
-        <h1 id="login-title" className="page-title">
-          {login.title}
-        </h1>
-        <p className="lead-text">{login.lead}</p>
-      </section>
+        <PageTitle>{login.title}</PageTitle>
+        <T style={{ color: color.ink2 }}>{login.lead}</T>
+      </Card>
 
-      <nav className="segmented" aria-label="Tipul contului">
-        <a href="#/login" aria-current={type === "pf" ? "page" : undefined}>
-          Persoană fizică
-        </a>
-        <a href="#/login/pj" aria-current={type === "pj" ? "page" : undefined}>
-          Persoană juridică
-        </a>
-      </nav>
+      <View style={[s.segmented, shadowCard]} accessibilityLabel="Tipul contului">
+        {TYPES.map((item) => {
+          const on = item.id === type;
+          return (
+            <Link key={item.id} href={item.href} accessibilityState={{ selected: on }} style={[s.segment, on && s.segmentOn]}>
+              <T style={[s.segmentText, on && { color: color.ink }]}>{item.label}</T>
+            </Link>
+          );
+        })}
+      </View>
 
       {accounts[type].map((account) => (
-        <section key={account.id} className="card account-card" aria-label={`Cont demo: ${account.name}`}>
-          <div className="row row--flush">
-            <span className="tile tile--yellow avatar-tile" aria-hidden="true">
-              {account.initial}
-            </span>
-            <div className="row-main">
-              <span className="row-name">{account.name}</span>
-              <span className="row-note">
+        <Card key={account.id} style={s.account} accessibilityLabel={`Cont demo: ${account.name}`}>
+          <Row style={s.flush}>
+            <IconTile tone="yellow" round>
+              <T style={s.initial}>{account.initial}</T>
+            </IconTile>
+            <RowMain>
+              <RowName>{account.name}</RowName>
+              <RowNote>
                 {account.profile} · {account.detail}
-              </span>
-            </div>
-          </div>
-          <a className="btn btn--block" href={account.href}>
+              </RowNote>
+            </RowMain>
+          </Row>
+          <Btn href={account.href} block>
             Intră în cont
-          </a>
-        </section>
+          </Btn>
+        </Card>
       ))}
 
       <NoteCard icon="lock">{login.note}</NoteCard>
     </>
   );
 }
+
+const s = StyleSheet.create({
+  welcome: { gap: space.sm, paddingTop: space.lg, alignItems: "flex-start" },
+  segmented: { flexDirection: "row", gap: 4, padding: 4, borderRadius: radius.pill, backgroundColor: color.surface },
+  segment: { flex: 1, minHeight: 42, alignItems: "center", justifyContent: "center", borderRadius: radius.pill },
+  segmentOn: { backgroundColor: color.yellow },
+  segmentText: { fontSize: text.sm, fontWeight: 600, color: color.ink2 },
+  account: { gap: space.md },
+  flush: { padding: 0, paddingVertical: 0, paddingHorizontal: 0 },
+  initial: { fontSize: text.lg, fontWeight: 700 },
+});

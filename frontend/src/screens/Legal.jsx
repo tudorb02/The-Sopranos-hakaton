@@ -1,20 +1,21 @@
-import { Disclaimer, Group, IconTile, NoteCard, Ticks, ValueRow } from "../components/ui.jsx";
+import { Card, Row, RowMain, RowName, RowNote, Rows, Small } from "../components/base.jsx";
+import { Disclaimer, Group, GroupHint, IconTile, NoteCard, Ticks, ValueRow } from "../components/ui.jsx";
 import { legal as coachLegal } from "../data/legal.js";
 
 // Icon, title and text, for who sees the data, how it is protected and what to do if something happens.
 function InfoRows({ items }) {
   return (
-    <ul className="card rows">
+    <Rows>
       {items.map((item) => (
-        <li key={item.title} className="row">
+        <Row key={item.title}>
           <IconTile icon={item.icon} tone="sand" />
-          <div className="row-main">
-            <span className="row-name">{item.title}</span>
-            <span className="row-note">{item.text}</span>
-          </div>
-        </li>
+          <RowMain>
+            <RowName>{item.title}</RowName>
+            <RowNote>{item.text}</RowNote>
+          </RowMain>
+        </Row>
       ))}
-    </ul>
+    </Rows>
   );
 }
 
@@ -41,20 +42,20 @@ export default function Legal({ legal = coachLegal }) {
       </Group>
 
       <Group label={legal.dataTitle}>
-        <ul className="card rows">
+        <Rows>
           {legal.data.map((item) => (
             <ValueRow key={item.name} name={item.name} note={item.note} />
           ))}
-        </ul>
+        </Rows>
       </Group>
 
       <Group label={legal.log.title}>
-        <ul className="card rows">
+        <Rows>
           {legal.log.items.map((item) => (
-            <ValueRow key={item.when} name={item.who} note={item.what} value={<span className="small muted">{item.when}</span>} />
+            <ValueRow key={item.when} name={item.who} note={item.what} value={<Small muted>{item.when}</Small>} />
           ))}
-        </ul>
-        {legal.log.note ? <p className="small muted group-hint">{legal.log.note}</p> : null}
+        </Rows>
+        {legal.log.note ? <GroupHint>{legal.log.note}</GroupHint> : null}
       </Group>
 
       <Group label={legal.incident.title}>
@@ -62,9 +63,9 @@ export default function Legal({ legal = coachLegal }) {
       </Group>
 
       <Group label="Cum îți ștergi datele">
-        <div className="card">
-          <p className="small">{legal.erase}</p>
-        </div>
+        <Card>
+          <Small>{legal.erase}</Small>
+        </Card>
       </Group>
 
       <NoteCard icon="chat">{legal.contact}</NoteCard>

@@ -1,36 +1,35 @@
+import { View } from "react-native";
+
+import { Btn, Card, Intro, Row, RowMain, RowName, RowNote, Small, Status, T } from "../../components/base.jsx";
 import { Agenda, ChoiceChips, Group, IconTile, NoteCard, Section, Src, Ticks } from "../../components/ui.jsx";
 import { usePersona } from "../../persona.js";
+import { color, space, text } from "../../theme.js";
+import { CoachQuestion } from "./Question.jsx";
 
 export function Calendar() {
   const { calendar } = usePersona();
   return (
     <>
-      <header className="intro">
-        <p className="eyebrow">Opțional</p>
-        <h1 className="page-title">Ce urmează în calendarul tău</h1>
-        <p className="small muted">Zilele de naștere și evenimentele mari intră în buget. Îți spun din timp când vine o lună încărcată.</p>
-      </header>
+      <Intro eyebrow="Opțional" title="Ce urmează în calendarul tău">
+        <Small muted>Zilele de naștere și evenimentele mari intră în buget. Îți spun din timp când vine o lună încărcată.</Small>
+      </Intro>
 
-      <ul className="options">
+      <View style={{ gap: space.sm }}>
         {calendar.options.map((option, i) => (
-          <li key={option.id} className="card row">
-            <IconTile icon={option.icon} tone={i === 0 ? "yellow" : "sand"} />
-            <div className="row-main">
-              <span className="row-name">{option.title}</span>
-              <span className="row-note">{option.note}</span>
-            </div>
-            {option.href ? (
-              <a className="btn btn--small" href={option.href}>
+          <Card key={option.id} style={{ padding: 0 }}>
+            <Row>
+              <IconTile icon={option.icon} tone={i === 0 ? "yellow" : "sand"} />
+              <RowMain>
+                <RowName>{option.title}</RowName>
+                <RowNote>{option.note}</RowNote>
+              </RowMain>
+              <Btn href={option.href} variant={option.href ? "yellow" : "outline"} small>
                 {option.action}
-              </a>
-            ) : (
-              <button type="button" className="btn btn--outline btn--small">
-                {option.action}
-              </button>
-            )}
-          </li>
+              </Btn>
+            </Row>
+          </Card>
         ))}
-      </ul>
+      </View>
 
       <Group label="Ce citesc și ce nu">
         <Ticks yes={calendar.reads} no={calendar.doesNotRead} />
@@ -42,45 +41,41 @@ export function Calendar() {
 }
 
 export function CalendarConnected() {
+  const { calendar } = usePersona();
   const { gift } = calendar;
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">Calendarul e conectat</h1>
-      </header>
+      <Intro title="Calendarul e conectat" />
 
-      <div className="card row">
-        <IconTile icon="calendar" tone="yellow" />
-        <div className="row-main">
-          <span className="row-name">Google Calendar</span>
-          <span className="row-note">Doar citire · zilele de naștere și evenimentele marcate</span>
-        </div>
-        <span className="status is-on">Conectat</span>
-      </div>
+      <Card style={{ padding: 0 }}>
+        <Row>
+          <IconTile icon="calendar" tone="yellow" />
+          <RowMain>
+            <RowName>Google Calendar</RowName>
+            <RowNote>Doar citire · zilele de naștere și evenimentele marcate</RowNote>
+          </RowMain>
+          <Status tone="on">Conectat</Status>
+        </Row>
+      </Card>
 
       <Section title="Ce am găsit în lunile următoare">
-        <div className="card">
+        <Card>
           <Agenda items={calendar.found} />
-        </div>
+        </Card>
       </Section>
 
-      <section className="section" aria-labelledby="gift-question">
-        <div className="coach-q">
-          <IconTile icon="compass" tone="yellow" />
-          <h2 id="gift-question" className="msg msg--coach question-title">
-            {gift.question}
-          </h2>
-        </div>
+      <View style={{ gap: space.sm }}>
+        <CoachQuestion>{gift.question}</CoachQuestion>
         {gift.groups.map((group) => (
-          <div key={group.label} className="field">
-            <p className="field-label">{group.label}</p>
+          <View key={group.label} style={{ gap: space["2xs"] }}>
+            <T style={{ fontSize: text.sm, fontWeight: 600, color: color.ink2 }}>{group.label}</T>
             <ChoiceChips label={group.label} options={group.options.map((label) => ({ label, selected: label === group.selected }))} />
-          </div>
+          </View>
         ))}
-        <p className="small">
+        <Small>
           {gift.result} <Src kind="est" />
-        </p>
-      </section>
+        </Small>
+      </View>
     </>
   );
 }

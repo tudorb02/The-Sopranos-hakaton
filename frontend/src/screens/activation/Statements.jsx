@@ -1,82 +1,108 @@
 // Statement sources for the coach: import from the current account, or attach earlier statements.
 // Used in the activation flow and from Profil → Extrasele tale.
 
-import { Icon } from "../../components/icons.jsx";
-import { Field, Group, IconTile, Meter, NoteCard } from "../../components/ui.jsx";
+import { Pressable, StyleSheet, View } from "react-native";
+
+import { Btn, Card, Intro, Row, RowMain, RowName, RowNote, Rows, Small, Stack, Status, T } from "../../components/base.jsx";
+import { Field, Group, GroupHint, IconTile, Meter, NoteCard, RowWithBelow, StateDot } from "../../components/ui.jsx";
 import { usePersona } from "../../persona.js";
+import { color, radius, space, text } from "../../theme.js";
+
+const flush = { paddingVertical: 0, paddingHorizontal: 0 };
+
+// Numbered steps in a card, one per row.
+export function Steps({ items }) {
+  return (
+    <Rows>
+      {items.map((step, i) => (
+        <Row key={step}>
+          <View style={s.num}>
+            <T style={s.numText}>{i + 1}</T>
+          </View>
+          <T style={{ flex: 1 }}>{step}</T>
+        </Row>
+      ))}
+    </Rows>
+  );
+}
 
 export function Statements() {
   const { statements } = usePersona();
   return (
     <>
-      <header className="intro">
-        <h1 className="page-title">Extrasele tale de cont</h1>
-        <p className="small muted">{statements.lead}</p>
-      </header>
+      <Intro title="Extrasele tale de cont">
+        <Small muted>{statements.lead}</Small>
+      </Intro>
 
       <Group label="Din contul curent">
-        <div className="card stack">
-          <div className="row row--flush">
-            <IconTile icon="card" tone="yellow" />
-            <div className="row-main">
-              <span className="row-name">{statements.account.name}</span>
-              <span className="row-note num">{statements.account.iban}</span>
-            </div>
-            <span className="status is-on">Selectat</span>
-          </div>
-          <Field field={{ label: "Perioada", type: "select", value: statements.periods[0], options: statements.periods }} />
-          <button type="button" className="btn btn--block">
-            Importă extrasele
-          </button>
-          <div className="row row--flush done-row">
-            <span className="state state--done" aria-hidden="true">
-              <Icon name="check" />
-            </span>
-            <div className="row-main">
-              <span className="row-name">{statements.imported.title}</span>
-              <span className="row-note">{statements.imported.meta}</span>
-            </div>
-          </div>
-        </div>
+        <Card>
+          <Stack>
+            <Row style={flush}>
+              <IconTile icon="card" tone="yellow" />
+              <RowMain>
+                <RowName>{statements.account.name}</RowName>
+                <RowNote style={{ fontVariant: ["tabular-nums"] }}>{statements.account.iban}</RowNote>
+              </RowMain>
+              <Status tone="on">Selectat</Status>
+            </Row>
+            <Field field={{ label: "Perioada", type: "select", value: statements.periods[0], options: statements.periods }} />
+            <Btn block>Importă extrasele</Btn>
+            <Row style={flush}>
+              <StateDot state="done" />
+              <RowMain>
+                <RowName>{statements.imported.title}</RowName>
+                <RowNote>{statements.imported.meta}</RowNote>
+              </RowMain>
+            </Row>
+          </Stack>
+        </Card>
       </Group>
 
       <Group label="Atașează extrase anterioare">
-        <p className="small muted group-hint">{statements.attachHint}</p>
-        <label className="dropzone">
+        <GroupHint>{statements.attachHint}</GroupHint>
+        <Pressable accessibilityRole="button" accessibilityHint="PDF, XLS sau CSV" style={({ pressed }) => [s.dropzone, pressed && { backgroundColor: color.yellowSoft }]}>
           <IconTile icon="upload" tone="yellow" />
-          <span className="row-name">Alege fișierele</span>
-          <span className="small muted">{statements.formats}</span>
-          <input type="file" className="sr-only" accept=".pdf,.xls,.xlsx,.csv" multiple />
-        </label>
+          <RowName>Alege fișierele</RowName>
+          <Small muted>{statements.formats}</Small>
+        </Pressable>
         {statements.files.length ? (
-          <ul className="card rows">
+          <Rows>
             {statements.files.map((file) => (
-              <li key={file.name} className="row">
+              <RowWithBelow key={file.name} indent={40} below={file.state === "reading" ? <Meter value={file.progress} max={100} /> : null}>
                 <IconTile icon="file" tone="sand" />
-                <div className="row-main">
-                  <span className="row-name file-name">{file.name}</span>
-                  <span className="row-note">{file.meta}</span>
-                </div>
-                <span className={file.state === "done" ? "status is-on" : "status"}>{file.state === "done" ? "Procesat" : "Se procesează"}</span>
-                {file.state === "reading" ? <Meter value={file.progress} max={100} /> : null}
-              </li>
+                <RowMain>
+                  <RowName style={s.fileName}>{file.name}</RowName>
+                  <RowNote>{file.meta}</RowNote>
+                </RowMain>
+                <Status tone={file.state === "done" ? "on" : undefined}>{file.state === "done" ? "Procesat" : "Se procesează"}</Status>
+              </RowWithBelow>
             ))}
-          </ul>
+          </Rows>
         ) : null}
       </Group>
 
       <Group label="Cum exporți un extras de la altă bancă">
-        <ol className="card steps">
-          {statements.howTo.map((step, i) => (
-            <li key={step}>
-              <span className="step-num">{i + 1}</span>
-              <span>{step}</span>
-            </li>
-          ))}
-        </ol>
+        <Steps items={statements.howTo} />
       </Group>
 
       <NoteCard icon="lock">{statements.privacy}</NoteCard>
     </>
   );
 }
+
+const s = StyleSheet.create({
+  dropzone: {
+    alignItems: "center",
+    gap: space.xs,
+    paddingVertical: space.xl,
+    paddingHorizontal: space.md,
+    borderWidth: 1.5,
+    borderStyle: "dashed",
+    borderColor: color.ink3,
+    borderRadius: radius.card,
+    backgroundColor: color.surface,
+  },
+  fileName: { wordBreak: "break-all" },
+  num: { width: 26, height: 26, alignItems: "center", justifyContent: "center", borderRadius: 13, backgroundColor: color.yellow },
+  numText: { fontSize: text.cap, fontWeight: 700, lineHeight: 16 },
+});
