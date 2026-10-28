@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: greenstruct-agro
+  threads:
+    virtual:
+      enabled: true
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
+  jackson:
+    generator:
+      write-bigdecimal-as-plain: true
+
+server:
+  port: 8080
+
+greenstruct:
+  # Fix the analysis date for the demo so DR-12 stays "open" whatever day we present; empty = today.
+  analysis-date: ${GREENSTRUCT_ANALYSIS_DATE:}
+  mode: ${GREENSTRUCT_MODE:HYBRID}
+  bedrock:
+    region: eu-central-1
+    agent-model-id: ${GREENSTRUCT_AGENT_MODEL_ID:}
+    extraction-model-id: ${GREENSTRUCT_EXTRACTION_MODEL_ID:}
+  # Real ANAF lookup for any CUI that is not a demo farm; false = everything from data/demo/farms (offline demo).
+  anaf:
+    enabled: ${GREENSTRUCT_ANAF_ENABLED:true}
+    base-url: https://webservicesp.anaf.ro
+    connect-timeout: 3s
+    read-timeout: 8s
+    min-interval: 1s
+    cache-ttl: 12h
+  paths:
+    config: ../config
+    data: ../data
+    uploads: ${java.io.tmpdir}/greenstruct-agro-uploads
+  agents:
+    timeout: 90s
+  cors:
+    allowed-origins:
+      - http://localhost:5173
+      - http://localhost:8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

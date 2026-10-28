@@ -1,0 +1,354 @@
+{
+  "summary": "Fermă de cereale, 400 ha, Călărași",
+  "value": {
+    "cui": "38264019",
+    "company": {
+      "cui": "38264019",
+      "name": "Agro Câmpia Bărăganului SRL",
+      "legalForm": "SRL",
+      "caen": "0111",
+      "caenLabelRo": "Cultivarea cerealelor (exclusiv orez), plantelor leguminoase și a plantelor producătoare de semințe oleaginoase",
+      "county": "Călărași",
+      "locality": "Dragalina",
+      "registeredAt": "2023-02-20",
+      "employees": 9,
+      "turnoverEur": 612000,
+      "netProfitEur": 88000,
+      "financialYear": 2025,
+      "vatPayer": true,
+      "manager": {
+        "age": 38,
+        "installedAt": "2023-02-20"
+      }
+    },
+    "farm": {
+      "totalHa": 400,
+      "standardOutputEur": 236000,
+      "irrigatedNow": false,
+      "currentIrrigation": "NU",
+      "crops": [
+        {
+          "year": 2026,
+          "crop": "grâu",
+          "ha": 100,
+          "yieldTPerHa": 6.1
+        },
+        {
+          "year": 2026,
+          "crop": "porumb",
+          "ha": 100,
+          "yieldTPerHa": 7.4
+        },
+        {
+          "year": 2026,
+          "crop": "floarea-soarelui",
+          "ha": 100,
+          "yieldTPerHa": 2.8
+        },
+        {
+          "year": 2026,
+          "crop": "rapiță",
+          "ha": 100,
+          "yieldTPerHa": 3.2
+        }
+      ],
+      "livestock": [],
+      "apiaSubsidiesEur": 98000
+    },
+    "parcels": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "id": "cl_1001",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  27.302,
+                  44.301
+                ],
+                [
+                  27.3146,
+                  44.301
+                ],
+                [
+                  27.3146,
+                  44.31
+                ],
+                [
+                  27.302,
+                  44.31
+                ],
+                [
+                  27.302,
+                  44.301
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "cl_1001",
+            "blockId": "BF-1001",
+            "areaHa": 100,
+            "crop": "grâu",
+            "natura2000": false,
+            "nitrateVulnerable": false,
+            "droughtRisk": "MEDIUM",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "MEDIUM"
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "cl_1002",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  27.3146,
+                  44.301
+                ],
+                [
+                  27.3272,
+                  44.301
+                ],
+                [
+                  27.3272,
+                  44.31
+                ],
+                [
+                  27.3146,
+                  44.31
+                ],
+                [
+                  27.3146,
+                  44.301
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "cl_1002",
+            "blockId": "BF-1002",
+            "areaHa": 100,
+            "crop": "porumb",
+            "natura2000": false,
+            "nitrateVulnerable": false,
+            "droughtRisk": "MEDIUM",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "MEDIUM"
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "cl_1003",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  27.302,
+                  44.31
+                ],
+                [
+                  27.3146,
+                  44.31
+                ],
+                [
+                  27.3146,
+                  44.319
+                ],
+                [
+                  27.302,
+                  44.319
+                ],
+                [
+                  27.302,
+                  44.31
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "cl_1003",
+            "blockId": "BF-1003",
+            "areaHa": 100,
+            "crop": "floarea-soarelui",
+            "natura2000": false,
+            "nitrateVulnerable": false,
+            "droughtRisk": "MEDIUM",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "MEDIUM"
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "cl_1004",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  27.3146,
+                  44.31
+                ],
+                [
+                  27.3272,
+                  44.31
+                ],
+                [
+                  27.3272,
+                  44.319
+                ],
+                [
+                  27.3146,
+                  44.319
+                ],
+                [
+                  27.3146,
+                  44.31
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "cl_1004",
+            "blockId": "BF-1004",
+            "areaHa": 100,
+            "crop": "rapiță",
+            "natura2000": false,
+            "nitrateVulnerable": false,
+            "droughtRisk": "MEDIUM",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "MEDIUM"
+          }
+        }
+      ]
+    },
+    "cashflow": {
+      "months": [
+        {
+          "month": "2025-10",
+          "inflowEur": 61000,
+          "outflowEur": 15000,
+          "netEur": 46000
+        },
+        {
+          "month": "2025-11",
+          "inflowEur": 37000,
+          "outflowEur": 15000,
+          "netEur": 22000
+        },
+        {
+          "month": "2025-12",
+          "inflowEur": 34000,
+          "outflowEur": 15000,
+          "netEur": 19000
+        },
+        {
+          "month": "2026-01",
+          "inflowEur": 15000,
+          "outflowEur": 23000,
+          "netEur": -8000
+        },
+        {
+          "month": "2026-02",
+          "inflowEur": 15000,
+          "outflowEur": 24000,
+          "netEur": -9000
+        },
+        {
+          "month": "2026-03",
+          "inflowEur": 15000,
+          "outflowEur": 29000,
+          "netEur": -14000
+        },
+        {
+          "month": "2026-04",
+          "inflowEur": 15000,
+          "outflowEur": 27000,
+          "netEur": -12000
+        },
+        {
+          "month": "2026-05",
+          "inflowEur": 15000,
+          "outflowEur": 21000,
+          "netEur": -6000
+        },
+        {
+          "month": "2026-06",
+          "inflowEur": 19000,
+          "outflowEur": 15000,
+          "netEur": 4000
+        },
+        {
+          "month": "2026-07",
+          "inflowEur": 93000,
+          "outflowEur": 15000,
+          "netEur": 78000
+        },
+        {
+          "month": "2026-08",
+          "inflowEur": 67000,
+          "outflowEur": 15000,
+          "netEur": 52000
+        },
+        {
+          "month": "2026-09",
+          "inflowEur": 53000,
+          "outflowEur": 15000,
+          "netEur": 38000
+        }
+      ],
+      "annualNetEur": 210000,
+      "avgMonthlyNetEur": 17500,
+      "peakMonths": [
+        "JUL",
+        "AUG",
+        "SEP",
+        "OCT"
+      ],
+      "source": "OPEN_BANKING",
+      "mode": "MOCK"
+    },
+    "dataSources": [
+      {
+        "source": "ANAF",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:00Z"
+      },
+      {
+        "source": "APIA",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:00Z"
+      },
+      {
+        "source": "OPEN_BANKING",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:01Z"
+      },
+      {
+        "source": "COPERNICUS",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:01Z"
+      },
+      {
+        "source": "NATURA_2000",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:01Z"
+      },
+      {
+        "source": "NITRATES",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T10:15:01Z"
+      }
+    ]
+  }
+}

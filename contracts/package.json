@@ -1,0 +1,22 @@
+{
+  "name": "greenstruct-agro-contracts",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Contracts between frontend, backend and Bedrock tool schemas (OpenAPI, JSON Schema, SSE events, fixtures)",
+  "type": "module",
+  "scripts": {
+    "gen": "node tools/gen-fixtures.mjs",
+    "validate": "node tools/validate.mjs",
+    "lint": "redocly lint openapi.yaml",
+    "check": "npm run lint && npm run validate",
+    "mock": "prism mock openapi.yaml --port 4010",
+    "validate:samples": "node tools/validate-samples.mjs"
+  },
+  "devDependencies": {
+    "@redocly/cli": "2.62.1",
+    "@stoplight/prism-cli": "5.16.0",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "yaml": "2.9.1"
+  }
+}

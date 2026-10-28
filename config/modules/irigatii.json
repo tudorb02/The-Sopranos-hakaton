@@ -1,0 +1,322 @@
+{
+  "moduleId": "irigatii",
+  "nameRo": "Irigații",
+  "icon": "💧",
+  "status": "DEMO_READY",
+  "descriptionRo": "Picurare, aspersie cu senzori, pompe solare.",
+  "examplesRo": [
+    "picurare",
+    "aspersie cu senzori"
+  ],
+  "indicator": "WATER_SAVING_PCT",
+  "threshold": {
+    "kind": "MIN_PCT",
+    "value": 25,
+    "unit": "PCT",
+    "sourceRo": "config/modules/irigatii.json (propunere, de confirmat cu Raiffeisen)",
+    "demo": true
+  },
+  "requiredDocs": [
+    {
+      "docType": "OFFER",
+      "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+      "required": true
+    },
+    {
+      "docType": "CURRENT_EQUIPMENT",
+      "labelRo": "Ce se înlocuiește: fișă tehnică, poză cu eticheta sau descriere",
+      "required": false
+    },
+    {
+      "docType": "WATER_PERMIT_ANAR",
+      "labelRo": "Autorizația de gospodărire a apelor (ANAR)",
+      "required": true
+    },
+    {
+      "docType": "ENERGY_INVOICES",
+      "labelRo": "Consumul actual de apă sau energia de pompare (12 luni)",
+      "required": true
+    }
+  ],
+  "questionnaire": [
+    {
+      "questionId": "crops_main",
+      "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
+      "type": "TEXT",
+      "prefillFrom": "APIA",
+      "required": true
+    },
+    {
+      "questionId": "nitrogen_kg_ha",
+      "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)?",
+      "type": "NUMBER",
+      "unit": "KG_N_PER_HA",
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "tillage",
+      "labelRo": "Cum lucrați solul?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "ARATURA",
+          "labelRo": "arătură"
+        },
+        {
+          "value": "MINIMA",
+          "labelRo": "lucrare minimă"
+        },
+        {
+          "value": "NO_TILL",
+          "labelRo": "no-till"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "cover_crops",
+      "labelRo": "Folosiți culturi de acoperire sau rotație?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "DA",
+          "labelRo": "da"
+        },
+        {
+          "value": "ROTATIE",
+          "labelRo": "doar rotație"
+        },
+        {
+          "value": "NU",
+          "labelRo": "nu"
+        }
+      ],
+      "prefillFrom": "APIA",
+      "required": false
+    },
+    {
+      "questionId": "irrigation_current",
+      "labelRo": "Irigați acum? Cu ce sistem?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "NU",
+          "labelRo": "nu irig"
+        },
+        {
+          "value": "ASPERSIE_VECHE",
+          "labelRo": "aspersie veche"
+        },
+        {
+          "value": "ASPERSIE",
+          "labelRo": "aspersie"
+        },
+        {
+          "value": "PICURARE",
+          "labelRo": "picurare"
+        },
+        {
+          "value": "BRAZDE",
+          "labelRo": "pe brazde"
+        }
+      ],
+      "prefillFrom": "APIA",
+      "required": true
+    },
+    {
+      "questionId": "crop_insurance",
+      "labelRo": "Aveți asigurare pentru culturi?",
+      "type": "BOOLEAN",
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "certifications",
+      "labelRo": "Aveți certificări?",
+      "type": "MULTI_CHOICE",
+      "options": [
+        {
+          "value": "ECOLOGIC",
+          "labelRo": "ecologic"
+        },
+        {
+          "value": "GLOBALGAP",
+          "labelRo": "GlobalGAP"
+        },
+        {
+          "value": "NICIUNA",
+          "labelRo": "niciuna"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": false
+    },
+    {
+      "questionId": "offtake_contracts",
+      "labelRo": "Aveți contracte de vânzare cu procesatori sau retaileri?",
+      "type": "BOOLEAN",
+      "prefillFrom": "NONE",
+      "required": false
+    },
+    {
+      "questionId": "cashin_months",
+      "labelRo": "În ce luni încasați cel mai mult?",
+      "type": "MONTHS",
+      "prefillFrom": "OPEN_BANKING",
+      "required": true
+    },
+    {
+      "questionId": "old_equipment_fate",
+      "labelRo": "Ce faceți cu utilajul vechi și cu deșeurile (ambalaje, folie)?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "CASARE",
+          "labelRo": "casare"
+        },
+        {
+          "value": "VANZARE",
+          "labelRo": "vânzare"
+        },
+        {
+          "value": "REZERVA",
+          "labelRo": "îl păstrez ca rezervă"
+        },
+        {
+          "value": "NU_E_CAZUL",
+          "labelRo": "nu e cazul"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "water_source",
+      "labelRo": "De unde luați apa?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "ANIF",
+          "labelRo": "rețeaua ANIF"
+        },
+        {
+          "value": "PUT",
+          "labelRo": "puț propriu"
+        },
+        {
+          "value": "RAU_LAC",
+          "labelRo": "râu sau lac"
+        },
+        {
+          "value": "BAZIN",
+          "labelRo": "bazin de acumulare"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": true
+    }
+  ],
+  "calculator": "irrigation",
+  "catalog": "catalog/irigatii.json",
+  "dnsh": [
+    {
+      "objective": "CLIMATE_MITIGATION",
+      "checkRo": "Pompa solară și economia de apă reduc energia de pompare.",
+      "evidence": "PUMPING_ENERGY"
+    },
+    {
+      "objective": "CLIMATE_ADAPTATION",
+      "checkRo": "Parcelele cu risc de secetă sunt irigate mai eficient.",
+      "evidence": "PARCEL_RISK"
+    },
+    {
+      "objective": "CIRCULAR_ECONOMY",
+      "checkRo": "Echipamentul vechi e vândut sau predat unui colector autorizat.",
+      "evidence": "OLD_EQUIPMENT_FATE"
+    },
+    {
+      "objective": "POLLUTION_PREVENTION",
+      "checkRo": "Fertirigarea respectă planul de fertilizare în zonele vulnerabile la nitrați.",
+      "evidence": "NITRATE_PARCELS"
+    },
+    {
+      "objective": "BIODIVERSITY",
+      "checkRo": "Parcelele nu sunt în arii Natura 2000 sau există aviz de mediu.",
+      "evidence": "NATURA_2000_PARCELS"
+    }
+  ],
+  "fundingPrograms": [
+    "DR_26",
+    "DR_16",
+    "DR_12",
+    "FM_PV",
+    "INVESTEU_FEI"
+  ],
+  "labels": {
+    "IRRIGATION_DRIP": {
+      "label": "MARKET_GREEN",
+      "when": "CONFIG_PASSES"
+    },
+    "IRRIGATION_SPRINKLER": {
+      "label": "MARKET_GREEN",
+      "when": "CONFIG_PASSES"
+    },
+    "SOIL_MOISTURE_SENSORS": {
+      "label": "MARKET_GREEN",
+      "when": "CONFIG_PASSES"
+    },
+    "WATER_METER": {
+      "label": "MARKET_GREEN",
+      "when": "CONFIG_PASSES"
+    },
+    "SOLAR_PUMP": {
+      "label": "TAXONOMY_ALIGNED",
+      "taxonomyActivity": "4.1",
+      "when": "ALWAYS"
+    },
+    "PUMP": {
+      "label": "NONE",
+      "when": "ALWAYS"
+    }
+  },
+  "parameters": {
+    "netNeedM3PerHa": {
+      "value": 3800,
+      "sourceRo": "Necesar net legume în câmp, sud-est; Estimare echipă, de validat cu mentorii"
+    },
+    "currentEfficiencyPct": {
+      "value": {
+        "ASPERSIE_VECHE": 65,
+        "ASPERSIE": 75,
+        "PICURARE": 88,
+        "BRAZDE": 50
+      },
+      "sourceRo": "Eficiențe tipice de aplicare (FAO); Estimare echipă, de validat cu mentorii"
+    },
+    "pumpingKwhPerM3Fallback": {
+      "value": 0.45,
+      "sourceRo": "Folosit doar fără facturi de energie; Estimare echipă, de validat cu mentorii"
+    },
+    "waterPriceEurPerM3": {
+      "value": 0.12,
+      "sourceRo": "Tarif apă ANIF + transport; Estimare echipă, de validat cu mentorii"
+    },
+    "pvYieldKwhPerKwp": {
+      "value": 1280,
+      "sourceRo": "PVGIS 5.3, sud-est, valoare conservatoare"
+    },
+    "safetyMarginPct": {
+      "value": 2,
+      "sourceRo": "Marja peste prag cerută de echipă"
+    }
+  },
+  "substantialContribution": "WATER_MARINE_RESOURCES",
+  "financing": {
+    "termMonths": 60,
+    "horizonYears": 5,
+    "standardLine": "rbro.invest.standard",
+    "greenLine": "rbro.agri.green_investeu"
+  }
+}

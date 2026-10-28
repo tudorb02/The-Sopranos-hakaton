@@ -1,0 +1,391 @@
+{
+  "summary": "Fermă de legume, 40 ha, Constanța",
+  "value": {
+    "cui": "45871203",
+    "company": {
+      "cui": "45871203",
+      "name": "Legume Dobrogea Verde SRL",
+      "legalForm": "SRL",
+      "caen": "0113",
+      "caenLabelRo": "Cultivarea legumelor, a pepenilor, a rădăcinoaselor și tuberculilor",
+      "county": "Constanța",
+      "locality": "Valu lui Traian",
+      "registeredAt": "2014-03-12",
+      "employees": 14,
+      "turnoverEur": 486000,
+      "netProfitEur": 61000,
+      "financialYear": 2025,
+      "vatPayer": true,
+      "manager": {
+        "age": 52,
+        "installedAt": "2014-03-12"
+      }
+    },
+    "farm": {
+      "totalHa": 40,
+      "standardOutputEur": 412000,
+      "irrigatedNow": true,
+      "currentIrrigation": "ASPERSIE_VECHE",
+      "crops": [
+        {
+          "year": 2026,
+          "crop": "legume în câmp",
+          "ha": 40,
+          "yieldTPerHa": 38
+        },
+        {
+          "year": 2025,
+          "crop": "legume în câmp",
+          "ha": 40,
+          "yieldTPerHa": 35
+        },
+        {
+          "year": 2024,
+          "crop": "legume în câmp",
+          "ha": 38,
+          "yieldTPerHa": 31
+        }
+      ],
+      "livestock": [],
+      "apiaSubsidiesEur": 9800
+    },
+    "parcels": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "id": "ct_0412_01",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  28.452,
+                  44.168
+                ],
+                [
+                  28.4555,
+                  44.168
+                ],
+                [
+                  28.4555,
+                  44.1716
+                ],
+                [
+                  28.452,
+                  44.1716
+                ],
+                [
+                  28.452,
+                  44.168
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "ct_0412_01",
+            "blockId": "BF-0412",
+            "areaHa": 8,
+            "crop": "tomate",
+            "natura2000": false,
+            "nitrateVulnerable": false,
+            "droughtRisk": "HIGH",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "HIGH"
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "ct_0412_02",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  28.4555,
+                  44.168
+                ],
+                [
+                  28.459,
+                  44.168
+                ],
+                [
+                  28.459,
+                  44.1716
+                ],
+                [
+                  28.4555,
+                  44.1716
+                ],
+                [
+                  28.4555,
+                  44.168
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "ct_0412_02",
+            "blockId": "BF-0412",
+            "areaHa": 8,
+            "crop": "ardei",
+            "natura2000": false,
+            "nitrateVulnerable": false,
+            "droughtRisk": "HIGH",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "HIGH"
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "ct_0412_03",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  28.459,
+                  44.168
+                ],
+                [
+                  28.4625,
+                  44.168
+                ],
+                [
+                  28.4625,
+                  44.1716
+                ],
+                [
+                  28.459,
+                  44.1716
+                ],
+                [
+                  28.459,
+                  44.168
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "ct_0412_03",
+            "blockId": "BF-0412",
+            "areaHa": 8,
+            "crop": "castraveți",
+            "natura2000": false,
+            "nitrateVulnerable": false,
+            "droughtRisk": "HIGH",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "HIGH"
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "ct_0415_01",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  28.452,
+                  44.1725
+                ],
+                [
+                  28.4555,
+                  44.1725
+                ],
+                [
+                  28.4555,
+                  44.1761
+                ],
+                [
+                  28.452,
+                  44.1761
+                ],
+                [
+                  28.452,
+                  44.1725
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "ct_0415_01",
+            "blockId": "BF-0415",
+            "areaHa": 8,
+            "crop": "varză",
+            "natura2000": false,
+            "nitrateVulnerable": true,
+            "droughtRisk": "HIGH",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "HIGH"
+          }
+        },
+        {
+          "type": "Feature",
+          "id": "ct_0415_02",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  28.4555,
+                  44.1725
+                ],
+                [
+                  28.459,
+                  44.1725
+                ],
+                [
+                  28.459,
+                  44.1761
+                ],
+                [
+                  28.4555,
+                  44.1761
+                ],
+                [
+                  28.4555,
+                  44.1725
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "parcelId": "ct_0415_02",
+            "blockId": "BF-0415",
+            "areaHa": 8,
+            "crop": "ceapă",
+            "natura2000": false,
+            "nitrateVulnerable": true,
+            "droughtRisk": "HIGH",
+            "hailRisk": "MEDIUM",
+            "floodRisk": "LOW",
+            "waterStress": "HIGH"
+          }
+        }
+      ]
+    },
+    "cashflow": {
+      "months": [
+        {
+          "month": "2025-10",
+          "inflowEur": 24000,
+          "outflowEur": 6000,
+          "netEur": 18000
+        },
+        {
+          "month": "2025-11",
+          "inflowEur": 15000,
+          "outflowEur": 6000,
+          "netEur": 9000
+        },
+        {
+          "month": "2025-12",
+          "inflowEur": 16900,
+          "outflowEur": 6000,
+          "netEur": 10900
+        },
+        {
+          "month": "2026-01",
+          "inflowEur": 6000,
+          "outflowEur": 10000,
+          "netEur": -4000
+        },
+        {
+          "month": "2026-02",
+          "inflowEur": 6000,
+          "outflowEur": 11500,
+          "netEur": -5500
+        },
+        {
+          "month": "2026-03",
+          "inflowEur": 6000,
+          "outflowEur": 13000,
+          "netEur": -7000
+        },
+        {
+          "month": "2026-04",
+          "inflowEur": 6000,
+          "outflowEur": 12000,
+          "netEur": -6000
+        },
+        {
+          "month": "2026-05",
+          "inflowEur": 8000,
+          "outflowEur": 6000,
+          "netEur": 2000
+        },
+        {
+          "month": "2026-06",
+          "inflowEur": 15000,
+          "outflowEur": 6000,
+          "netEur": 9000
+        },
+        {
+          "month": "2026-07",
+          "inflowEur": 28000,
+          "outflowEur": 6000,
+          "netEur": 22000
+        },
+        {
+          "month": "2026-08",
+          "inflowEur": 32000,
+          "outflowEur": 6000,
+          "netEur": 26000
+        },
+        {
+          "month": "2026-09",
+          "inflowEur": 30000,
+          "outflowEur": 6000,
+          "netEur": 24000
+        }
+      ],
+      "annualNetEur": 98400,
+      "avgMonthlyNetEur": 8200,
+      "peakMonths": [
+        "JUL",
+        "AUG",
+        "SEP",
+        "OCT"
+      ],
+      "source": "OPEN_BANKING",
+      "mode": "MOCK"
+    },
+    "dataSources": [
+      {
+        "source": "ANAF",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:00Z"
+      },
+      {
+        "source": "APIA",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:00Z"
+      },
+      {
+        "source": "OPEN_BANKING",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:01Z"
+      },
+      {
+        "source": "COPERNICUS",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:01Z"
+      },
+      {
+        "source": "NATURA_2000",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:01Z"
+      },
+      {
+        "source": "NITRATES",
+        "mode": "MOCK",
+        "fetchedAt": "2026-10-28T09:30:01Z"
+      }
+    ]
+  }
+}

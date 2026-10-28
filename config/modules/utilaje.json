@@ -1,0 +1,351 @@
+{
+  "moduleId": "utilaje",
+  "nameRo": "Utilaje & precizie",
+  "icon": "🚜",
+  "status": "DEMO_READY",
+  "descriptionRo": "Tractoare eficiente, GPS, dozare variabilă.",
+  "examplesRo": [
+    "tractoare eficiente",
+    "ghidaj GPS",
+    "doză variabilă"
+  ],
+  "indicator": "FUEL_SAVING_PCT",
+  "threshold": {
+    "kind": "MIN_PCT",
+    "value": 20,
+    "unit": "PCT",
+    "sourceRo": "config/modules/utilaje.json (propunere; −20% motorină sau îngrășăminte / ha)",
+    "demo": true
+  },
+  "requiredDocs": [
+    {
+      "docType": "OFFER",
+      "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+      "required": true
+    },
+    {
+      "docType": "CURRENT_EQUIPMENT",
+      "labelRo": "Ce se înlocuiește: fișă tehnică, poză cu eticheta sau descriere",
+      "required": false
+    },
+    {
+      "docType": "FUEL_INVOICES",
+      "labelRo": "Facturile de motorină pe 12 luni",
+      "required": true
+    },
+    {
+      "docType": "FERTILIZER_INVOICES",
+      "labelRo": "Facturile de îngrășăminte pe 12 luni",
+      "required": false
+    }
+  ],
+  "questionnaire": [
+    {
+      "questionId": "crops_main",
+      "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
+      "type": "TEXT",
+      "prefillFrom": "APIA",
+      "required": true
+    },
+    {
+      "questionId": "nitrogen_kg_ha",
+      "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)?",
+      "type": "NUMBER",
+      "unit": "KG_N_PER_HA",
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "tillage",
+      "labelRo": "Cum lucrați solul?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "ARATURA",
+          "labelRo": "arătură"
+        },
+        {
+          "value": "MINIMA",
+          "labelRo": "lucrare minimă"
+        },
+        {
+          "value": "NO_TILL",
+          "labelRo": "no-till"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "cover_crops",
+      "labelRo": "Folosiți culturi de acoperire sau rotație?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "DA",
+          "labelRo": "da"
+        },
+        {
+          "value": "ROTATIE",
+          "labelRo": "doar rotație"
+        },
+        {
+          "value": "NU",
+          "labelRo": "nu"
+        }
+      ],
+      "prefillFrom": "APIA",
+      "required": false
+    },
+    {
+      "questionId": "crop_insurance",
+      "labelRo": "Aveți asigurare pentru culturi?",
+      "type": "BOOLEAN",
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "certifications",
+      "labelRo": "Aveți certificări?",
+      "type": "MULTI_CHOICE",
+      "options": [
+        {
+          "value": "ECOLOGIC",
+          "labelRo": "ecologic"
+        },
+        {
+          "value": "GLOBALGAP",
+          "labelRo": "GlobalGAP"
+        },
+        {
+          "value": "NICIUNA",
+          "labelRo": "niciuna"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": false
+    },
+    {
+      "questionId": "cashin_months",
+      "labelRo": "În ce luni încasați cel mai mult?",
+      "type": "MONTHS",
+      "prefillFrom": "OPEN_BANKING",
+      "required": true
+    },
+    {
+      "questionId": "old_equipment_fate",
+      "labelRo": "Ce faceți cu utilajul vechi și cu deșeurile (ambalaje, folie)?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "CASARE",
+          "labelRo": "casare"
+        },
+        {
+          "value": "VANZARE",
+          "labelRo": "vânzare"
+        },
+        {
+          "value": "REZERVA",
+          "labelRo": "îl păstrez ca rezervă"
+        },
+        {
+          "value": "NU_E_CAZUL",
+          "labelRo": "nu e cazul"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "manager_competences",
+      "labelRo": "Administratorul are studii sau un curs de calificare în agricultură?",
+      "type": "BOOLEAN",
+      "prefillFrom": "NONE",
+      "required": false
+    },
+    {
+      "questionId": "current_tractors",
+      "labelRo": "Câte tractoare aveți acum în fermă?",
+      "type": "NUMBER",
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "replaced_tractors",
+      "labelRo": "Câte dintre ele scoateți din fermă după investiție? (0 = doar extindeți flota)",
+      "type": "NUMBER",
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "replaced_fleet_age",
+      "labelRo": "Ce vechime au tractoarele pe care le scoateți?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "ANI_0_7",
+          "labelRo": "sub 8 ani"
+        },
+        {
+          "value": "ANI_8_15",
+          "labelRo": "8–15 ani"
+        },
+        {
+          "value": "PESTE_15_ANI",
+          "labelRo": "peste 15 ani"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "loan_term",
+      "labelRo": "Pe câți ani vreți creditul?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "ANI_3",
+          "labelRo": "3 ani"
+        },
+        {
+          "value": "ANI_5",
+          "labelRo": "5 ani"
+        },
+        {
+          "value": "ANI_7",
+          "labelRo": "7 ani"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": true
+    }
+  ],
+  "calculator": "machinery",
+  "catalog": "catalog/utilaje.json",
+  "dnsh": [
+    {
+      "objective": "CLIMATE_ADAPTATION",
+      "checkRo": "Utilajele permit lucrări de conservare a solului.",
+      "evidence": "TILLAGE"
+    },
+    {
+      "objective": "WATER_MARINE_RESOURCES",
+      "checkRo": "Doza variabilă de azot reduce scurgerea de nutrienți.",
+      "evidence": "NITRATE_PARCELS"
+    },
+    {
+      "objective": "CIRCULAR_ECONOMY",
+      "checkRo": "Tractoarele vechi sunt casate la un colector autorizat sau vândute.",
+      "evidence": "OLD_EQUIPMENT_FATE"
+    },
+    {
+      "objective": "POLLUTION_PREVENTION",
+      "checkRo": "Motoare Stage V (minimum legal).",
+      "evidence": "EMISSION_STAGE"
+    },
+    {
+      "objective": "BIODIVERSITY",
+      "checkRo": "Section control reduce pesticidele la marginea parcelelor; fără Natura 2000.",
+      "evidence": "NATURA_2000_PARCELS"
+    }
+  ],
+  "fundingPrograms": [
+    "DR_12",
+    "FGCR",
+    "INVESTEU_FEI",
+    "RABLA_AGRI"
+  ],
+  "labels": {
+    "TRACTOR": {
+      "label": "TRANSITION",
+      "when": "ALWAYS",
+      "usedLabel": "NONE"
+    },
+    "COMBINE": {
+      "label": "TRANSITION",
+      "when": "ALWAYS",
+      "usedLabel": "NONE"
+    },
+    "PRECISION_PACKAGE": {
+      "label": "MARKET_GREEN",
+      "when": "ALWAYS"
+    },
+    "PRECISION_GUIDANCE": {
+      "label": "MARKET_GREEN",
+      "when": "ALWAYS"
+    },
+    "PRECISION_SECTION_CONTROL": {
+      "label": "MARKET_GREEN",
+      "when": "ALWAYS"
+    },
+    "PRECISION_VARIABLE_RATE": {
+      "label": "MARKET_GREEN",
+      "when": "ALWAYS"
+    }
+  },
+  "parameters": {
+    "baselineLitresPerHa": {
+      "value": 90,
+      "sourceRo": "Toate lucrările la cereale; INRAE: ~125 l/ha la o fermă europeană medie; Estimare echipă, de validat cu mentorii"
+    },
+    "maxHpPerHa": {
+      "value": 2.5,
+      "sourceRo": "Placeholder pentru Anexa 6 a ghidului DR-12"
+    },
+    "nitrogenKgPerHaDefault": {
+      "value": 150,
+      "sourceRo": "Estimare echipă, de validat cu mentorii"
+    },
+    "inputsEurPerHa": {
+      "value": 250,
+      "sourceRo": "Sămânță + îngrășăminte + pesticide; Estimare echipă, de validat cu mentorii"
+    },
+    "invoiceToleranceRatio": {
+      "value": 0.05,
+      "sourceRo": "Abaterea maximă dintre normă și facturi acceptată fără semnalare"
+    },
+    "specificFuelByAge": {
+      "value": [
+        {
+          "maxAgeYears": 2,
+          "gPerKwh": 246
+        },
+        {
+          "maxAgeYears": 7,
+          "gPerKwh": 252
+        },
+        {
+          "maxAgeYears": 15,
+          "gPerKwh": 265
+        },
+        {
+          "maxAgeYears": 99,
+          "gPerKwh": 280
+        }
+      ],
+      "sourceRo": "Consum specific la lucrări de câmp după vechimea tractorului: nou 246 g/kWh (DLG PowerMix 2018+, 235–256); 3–7 ani 252, 8–15 ani 265 (estimări echipă); peste 15 ani 280 (~+14%, Nebraska/UNL). De validat."
+    },
+    "fleetAgeYears": {
+      "value": {
+        "ANI_0_7": 5,
+        "ANI_8_15": 12,
+        "PESTE_15_ANI": 20
+      },
+      "sourceRo": "Vârsta reprezentativă pentru fiecare variantă de răspuns din chestionar"
+    },
+    "usedAgeYearsDefault": {
+      "value": 5,
+      "sourceRo": "Vârsta presupusă a unui utilaj second-hand fără an de fabricație în ofertă"
+    }
+  },
+  "substantialContribution": "CLIMATE_MITIGATION",
+  "financing": {
+    "termMonths": 84,
+    "horizonYears": 7,
+    "standardLine": "rbro.invest.machinery",
+    "greenLine": "rbro.agri.green_investeu",
+    "cofinancingLine": "rbro.agri.cofinancing_fgcr",
+    "bridgeLine": "rbro.agri.bridge_afir"
+  }
+}

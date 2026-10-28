@@ -1,0 +1,49 @@
+{
+  "id": "irigatii",
+  "cui": "45871203",
+  "moduleId": "irigatii",
+  "parcelIds": [
+    "ct_0412_01",
+    "ct_0412_02",
+    "ct_0412_03",
+    "ct_0415_01",
+    "ct_0415_02"
+  ],
+  "questionnaire": {
+    "crops_main": "tomate, ardei, castraveți, varză, ceapă; 35-38 t/ha",
+    "nitrogen_kg_ha": 180,
+    "tillage": "MINIMA",
+    "cover_crops": "ROTATIE",
+    "irrigation_current": "ASPERSIE_VECHE",
+    "crop_insurance": false,
+    "certifications": [
+      "GLOBALGAP"
+    ],
+    "offtake_contracts": true,
+    "cashin_months": [
+      "JUL",
+      "AUG",
+      "SEP",
+      "OCT"
+    ],
+    "old_equipment_fate": "VANZARE",
+    "water_source": "ANIF"
+  },
+  "documents": [
+    {
+      "documentId": "doc_oferta_aspersie",
+      "docType": "OFFER",
+      "file": "docs/oferta-aquaflux-aspersie.pdf"
+    },
+    {
+      "documentId": "doc_aviz_anar",
+      "docType": "WATER_PERMIT_ANAR",
+      "file": "docs/aviz-anar-312-2024.pdf"
+    },
+    {
+      "documentId": "doc_facturi_energie",
+      "docType": "ENERGY_INVOICES",
+      "file": "docs/facturi-energie-12-luni.pdf"
+    }
+  ]
+}

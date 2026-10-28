@@ -1,0 +1,57 @@
+{
+  "module": "irigatii",
+  "note": "Prețuri pentru 40 ha, de verificat în Baza de prețuri de referință AFIR. role: INDICATOR schimbă economia de apă, COMPLIANCE e cerut de DNSH/AFIR, ENERGY schimbă doar energia.",
+  "items": [
+    {
+      "catalogId": "irg.drip.surface_veg",
+      "category": "IRRIGATION_DRIP",
+      "nameRo": "Irigare prin picurare la suprafață pentru legume (cu conducte și montaj)",
+      "role": "INDICATOR",
+      "costEur": 90800,
+      "effect": {
+        "efficiencyPct": 88,
+        "pumpingKwhPerM3": 0.25
+      },
+      "sourceRo": "Eficiență FAO ~88–90%; preț estimativ echipă",
+      "replacesCategories": [
+        "IRRIGATION_SPRINKLER",
+        "PIPES",
+        "INSTALLATION_WORKS"
+      ]
+    },
+    {
+      "catalogId": "irg.sensors.soil_moisture",
+      "category": "SOIL_MOISTURE_SENSORS",
+      "nameRo": "Senzori de umiditate în sol + programare automată",
+      "role": "INDICATOR",
+      "costEur": 6500,
+      "effect": {
+        "demandReductionPct": 8
+      },
+      "sourceRo": "Estimare echipă, de validat"
+    },
+    {
+      "catalogId": "irg.meter.electromagnetic",
+      "category": "WATER_METER",
+      "nameRo": "Contor electromagnetic pentru apă",
+      "role": "COMPLIANCE",
+      "costEur": 1200,
+      "effect": {},
+      "sourceRo": "Contorizarea e obligatorie (art. 74 Reg. UE 2021/2115, ghid DR-12/DR-26)"
+    },
+    {
+      "catalogId": "irg.pump.solar_25kwp",
+      "category": "SOLAR_PUMP",
+      "nameRo": "Pompă solară 25 kWp",
+      "role": "ENERGY",
+      "costEur": 26500,
+      "effect": {
+        "pvKwp": 25
+      },
+      "sourceRo": "Estimare echipă (~1.060 EUR/kWp cu pompă), de validat",
+      "replacesCategories": [
+        "PUMP"
+      ]
+    }
+  ]
+}

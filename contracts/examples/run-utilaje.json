@@ -1,0 +1,3972 @@
+{
+  "summary": "Dosarul demo de utilaje, gata pentru ofițer (din fixtures/utilaje.ndjson)",
+  "value": {
+    "runId": "run_utl3m8vz2c6h",
+    "cui": "38264019",
+    "moduleId": "utilaje",
+    "scenario": "utilaje",
+    "state": "GATA",
+    "mode": "LIVE",
+    "createdAt": "2026-10-28T10:15:00.000Z",
+    "updatedAt": "2026-10-28T10:15:55.896Z",
+    "lastEventSeq": 53,
+    "farm": {
+      "cui": "38264019",
+      "company": {
+        "cui": "38264019",
+        "name": "Agro Câmpia Bărăganului SRL",
+        "legalForm": "SRL",
+        "caen": "0111",
+        "caenLabelRo": "Cultivarea cerealelor (exclusiv orez), plantelor leguminoase și a plantelor producătoare de semințe oleaginoase",
+        "county": "Călărași",
+        "locality": "Dragalina",
+        "registeredAt": "2023-02-20",
+        "employees": 9,
+        "turnoverEur": 612000,
+        "netProfitEur": 88000,
+        "financialYear": 2025,
+        "vatPayer": true,
+        "manager": {
+          "age": 38,
+          "installedAt": "2023-02-20"
+        }
+      },
+      "farm": {
+        "totalHa": 400,
+        "standardOutputEur": 236000,
+        "irrigatedNow": false,
+        "currentIrrigation": "NU",
+        "crops": [
+          {
+            "year": 2026,
+            "crop": "grâu",
+            "ha": 100,
+            "yieldTPerHa": 6.1
+          },
+          {
+            "year": 2026,
+            "crop": "porumb",
+            "ha": 100,
+            "yieldTPerHa": 7.4
+          },
+          {
+            "year": 2026,
+            "crop": "floarea-soarelui",
+            "ha": 100,
+            "yieldTPerHa": 2.8
+          },
+          {
+            "year": 2026,
+            "crop": "rapiță",
+            "ha": 100,
+            "yieldTPerHa": 3.2
+          }
+        ],
+        "livestock": [],
+        "apiaSubsidiesEur": 98000
+      },
+      "parcels": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "id": "cl_1001",
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [
+                    27.302,
+                    44.301
+                  ],
+                  [
+                    27.3146,
+                    44.301
+                  ],
+                  [
+                    27.3146,
+                    44.31
+                  ],
+                  [
+                    27.302,
+                    44.31
+                  ],
+                  [
+                    27.302,
+                    44.301
+                  ]
+                ]
+              ]
+            },
+            "properties": {
+              "parcelId": "cl_1001",
+              "blockId": "BF-1001",
+              "areaHa": 100,
+              "crop": "grâu",
+              "natura2000": false,
+              "nitrateVulnerable": false,
+              "droughtRisk": "MEDIUM",
+              "hailRisk": "MEDIUM",
+              "floodRisk": "LOW",
+              "waterStress": "MEDIUM"
+            }
+          },
+          {
+            "type": "Feature",
+            "id": "cl_1002",
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [
+                    27.3146,
+                    44.301
+                  ],
+                  [
+                    27.3272,
+                    44.301
+                  ],
+                  [
+                    27.3272,
+                    44.31
+                  ],
+                  [
+                    27.3146,
+                    44.31
+                  ],
+                  [
+                    27.3146,
+                    44.301
+                  ]
+                ]
+              ]
+            },
+            "properties": {
+              "parcelId": "cl_1002",
+              "blockId": "BF-1002",
+              "areaHa": 100,
+              "crop": "porumb",
+              "natura2000": false,
+              "nitrateVulnerable": false,
+              "droughtRisk": "MEDIUM",
+              "hailRisk": "MEDIUM",
+              "floodRisk": "LOW",
+              "waterStress": "MEDIUM"
+            }
+          },
+          {
+            "type": "Feature",
+            "id": "cl_1003",
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [
+                    27.302,
+                    44.31
+                  ],
+                  [
+                    27.3146,
+                    44.31
+                  ],
+                  [
+                    27.3146,
+                    44.319
+                  ],
+                  [
+                    27.302,
+                    44.319
+                  ],
+                  [
+                    27.302,
+                    44.31
+                  ]
+                ]
+              ]
+            },
+            "properties": {
+              "parcelId": "cl_1003",
+              "blockId": "BF-1003",
+              "areaHa": 100,
+              "crop": "floarea-soarelui",
+              "natura2000": false,
+              "nitrateVulnerable": false,
+              "droughtRisk": "MEDIUM",
+              "hailRisk": "MEDIUM",
+              "floodRisk": "LOW",
+              "waterStress": "MEDIUM"
+            }
+          },
+          {
+            "type": "Feature",
+            "id": "cl_1004",
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [
+                    27.3146,
+                    44.31
+                  ],
+                  [
+                    27.3272,
+                    44.31
+                  ],
+                  [
+                    27.3272,
+                    44.319
+                  ],
+                  [
+                    27.3146,
+                    44.319
+                  ],
+                  [
+                    27.3146,
+                    44.31
+                  ]
+                ]
+              ]
+            },
+            "properties": {
+              "parcelId": "cl_1004",
+              "blockId": "BF-1004",
+              "areaHa": 100,
+              "crop": "rapiță",
+              "natura2000": false,
+              "nitrateVulnerable": false,
+              "droughtRisk": "MEDIUM",
+              "hailRisk": "MEDIUM",
+              "floodRisk": "LOW",
+              "waterStress": "MEDIUM"
+            }
+          }
+        ]
+      },
+      "cashflow": {
+        "months": [
+          {
+            "month": "2025-10",
+            "inflowEur": 61000,
+            "outflowEur": 15000,
+            "netEur": 46000
+          },
+          {
+            "month": "2025-11",
+            "inflowEur": 37000,
+            "outflowEur": 15000,
+            "netEur": 22000
+          },
+          {
+            "month": "2025-12",
+            "inflowEur": 34000,
+            "outflowEur": 15000,
+            "netEur": 19000
+          },
+          {
+            "month": "2026-01",
+            "inflowEur": 15000,
+            "outflowEur": 23000,
+            "netEur": -8000
+          },
+          {
+            "month": "2026-02",
+            "inflowEur": 15000,
+            "outflowEur": 24000,
+            "netEur": -9000
+          },
+          {
+            "month": "2026-03",
+            "inflowEur": 15000,
+            "outflowEur": 29000,
+            "netEur": -14000
+          },
+          {
+            "month": "2026-04",
+            "inflowEur": 15000,
+            "outflowEur": 27000,
+            "netEur": -12000
+          },
+          {
+            "month": "2026-05",
+            "inflowEur": 15000,
+            "outflowEur": 21000,
+            "netEur": -6000
+          },
+          {
+            "month": "2026-06",
+            "inflowEur": 19000,
+            "outflowEur": 15000,
+            "netEur": 4000
+          },
+          {
+            "month": "2026-07",
+            "inflowEur": 93000,
+            "outflowEur": 15000,
+            "netEur": 78000
+          },
+          {
+            "month": "2026-08",
+            "inflowEur": 67000,
+            "outflowEur": 15000,
+            "netEur": 52000
+          },
+          {
+            "month": "2026-09",
+            "inflowEur": 53000,
+            "outflowEur": 15000,
+            "netEur": 38000
+          }
+        ],
+        "annualNetEur": 210000,
+        "avgMonthlyNetEur": 17500,
+        "peakMonths": [
+          "JUL",
+          "AUG",
+          "SEP",
+          "OCT"
+        ],
+        "source": "OPEN_BANKING",
+        "mode": "MOCK"
+      },
+      "dataSources": [
+        {
+          "source": "ANAF",
+          "mode": "MOCK",
+          "fetchedAt": "2026-10-28T10:15:00Z"
+        },
+        {
+          "source": "APIA",
+          "mode": "MOCK",
+          "fetchedAt": "2026-10-28T10:15:00Z"
+        },
+        {
+          "source": "OPEN_BANKING",
+          "mode": "MOCK",
+          "fetchedAt": "2026-10-28T10:15:01Z"
+        },
+        {
+          "source": "COPERNICUS",
+          "mode": "MOCK",
+          "fetchedAt": "2026-10-28T10:15:01Z"
+        },
+        {
+          "source": "NATURA_2000",
+          "mode": "MOCK",
+          "fetchedAt": "2026-10-28T10:15:01Z"
+        },
+        {
+          "source": "NITRATES",
+          "mode": "MOCK",
+          "fetchedAt": "2026-10-28T10:15:01Z"
+        }
+      ]
+    },
+    "parcelIds": [
+      "cl_1001",
+      "cl_1002",
+      "cl_1003",
+      "cl_1004"
+    ],
+    "documents": [
+      {
+        "documentId": "doc_oferta_tractoare",
+        "docType": "OFFER",
+        "fileName": "oferta-agrotrac-tractoare.pdf",
+        "sizeBytes": 655302
+      },
+      {
+        "documentId": "doc_facturi_motorina",
+        "docType": "FUEL_INVOICES",
+        "fileName": "facturi-motorina-12-luni.pdf",
+        "sizeBytes": 988120
+      }
+    ],
+    "questionnaire": {
+      "crops_main": "grâu 6,1 t/ha; porumb 7,4 t/ha; floarea-soarelui 2,8 t/ha; rapiță 3,2 t/ha",
+      "nitrogen_kg_ha": 150,
+      "tillage": "ARATURA",
+      "cover_crops": "ROTATIE",
+      "irrigation_current": "NU",
+      "crop_insurance": true,
+      "certifications": [
+        "NICIUNA"
+      ],
+      "offtake_contracts": true,
+      "cashin_months": [
+        "JUL",
+        "AUG",
+        "SEP",
+        "OCT"
+      ],
+      "old_equipment_fate": "CASARE",
+      "hours_per_year": 650,
+      "manager_competences": false
+    },
+    "agentStatus": [
+      {
+        "agent": "TECHNICAL_AUDITOR",
+        "status": "COMPLETED",
+        "source": "LIVE",
+        "startedAt": "2026-10-28T10:15:01.650Z",
+        "completedAt": "2026-10-28T10:15:24.701Z"
+      },
+      {
+        "agent": "FUNDING_OPTIMIZER",
+        "status": "COMPLETED",
+        "source": "LIVE",
+        "startedAt": "2026-10-28T10:15:25.251Z",
+        "completedAt": "2026-10-28T10:15:43.369Z"
+      },
+      {
+        "agent": "GREEN_UNDERWRITER",
+        "status": "DEGRADED",
+        "source": "RETRY",
+        "startedAt": "2026-10-28T10:15:43.919Z",
+        "completedAt": "2026-10-28T10:15:55.396Z"
+      }
+    ],
+    "agents": {
+      "extractions": [
+        {
+          "documentId": "doc_oferta_tractoare",
+          "documentType": "OFFER",
+          "moduleId": "utilaje",
+          "currency": "EUR",
+          "supplierName": "AgroTrac Distribuție SRL",
+          "documentFields": [
+            {
+              "key": "SUPPLIER_NAME",
+              "rawValue": "AgroTrac Distribuție SRL",
+              "unit": "TEXT",
+              "page": 1,
+              "confidence": "HIGH"
+            },
+            {
+              "key": "DOCUMENT_NUMBER",
+              "rawValue": "OF-T-0921",
+              "unit": "TEXT",
+              "page": 1,
+              "confidence": "HIGH"
+            },
+            {
+              "key": "DOCUMENT_DATE",
+              "rawValue": "09.10.2026",
+              "unit": "DATE",
+              "page": 1,
+              "confidence": "HIGH"
+            },
+            {
+              "key": "TOTAL_NET",
+              "rawValue": "440.000,00 EUR",
+              "unit": "EUR",
+              "page": 2,
+              "confidence": "HIGH"
+            },
+            {
+              "key": "VAT_AMOUNT",
+              "rawValue": "92.400,00 EUR",
+              "unit": "EUR",
+              "page": 2,
+              "confidence": "HIGH"
+            },
+            {
+              "key": "TOTAL_GROSS",
+              "rawValue": "532.400,00 EUR",
+              "unit": "EUR",
+              "page": 2,
+              "confidence": "HIGH"
+            },
+            {
+              "key": "PRECISION_FEATURES",
+              "rawValue": "pregătire ISOBUS; ghidaj RTK și section control: opțional, necomandate",
+              "unit": "TEXT",
+              "page": 3,
+              "confidence": "MEDIUM"
+            }
+          ],
+          "lineItems": [
+            {
+              "lineId": "ln_1",
+              "category": "TRACTOR",
+              "descriptionRo": "Tractor 240 CP, Stage V, nou, 2 buc.",
+              "fields": [
+                {
+                  "key": "QUANTITY",
+                  "rawValue": "2 buc.",
+                  "unit": "PCS",
+                  "page": 2,
+                  "confidence": "HIGH"
+                },
+                {
+                  "key": "ENGINE_POWER_HP",
+                  "rawValue": "240 CP",
+                  "unit": "HP",
+                  "page": 3,
+                  "confidence": "HIGH"
+                },
+                {
+                  "key": "EMISSION_STAGE",
+                  "rawValue": "Stage V",
+                  "unit": "TEXT",
+                  "page": 3,
+                  "confidence": "HIGH"
+                },
+                {
+                  "key": "CONDITION",
+                  "rawValue": "nou",
+                  "unit": "TEXT",
+                  "page": 2,
+                  "confidence": "HIGH"
+                },
+                {
+                  "key": "MANUFACTURE_YEAR",
+                  "rawValue": "2026",
+                  "unit": "YEAR",
+                  "page": 3,
+                  "confidence": "HIGH"
+                },
+                {
+                  "key": "SPECIFIC_FUEL_CONSUMPTION_G_KWH",
+                  "rawValue": "238 g/kWh",
+                  "unit": "G_KWH",
+                  "page": 3,
+                  "confidence": "MEDIUM"
+                },
+                {
+                  "key": "LINE_PRICE_NET",
+                  "rawValue": "250.000,00 EUR",
+                  "unit": "EUR",
+                  "page": 2,
+                  "confidence": "HIGH"
+                }
+              ]
+            },
+            {
+              "lineId": "ln_2",
+              "category": "TRACTOR",
+              "descriptionRo": "Tractor 180 CP, Stage V, nou, 2 buc.",
+              "fields": [
+                {
+                  "key": "QUANTITY",
+                  "rawValue": "2 buc.",
+                  "unit": "PCS",
+                  "page": 2,
+                  "confidence": "HIGH"
+                },
+                {
+                  "key": "ENGINE_POWER_HP",
+                  "rawValue": "180 CP",
+                  "unit": "HP",
+                  "page": 4,
+                  "confidence": "HIGH"
+                },
+                {
+                  "key": "EMISSION_STAGE",
+                  "rawValue": "Stage V",
+                  "unit": "TEXT",
+                  "page": 4,
+                  "confidence": "HIGH"
+                },
+                {
+                  "key": "CONDITION",
+                  "rawValue": "nou",
+                  "unit": "TEXT",
+                  "page": 2,
+                  "confidence": "HIGH"
+                },
+                {
+                  "key": "MANUFACTURE_YEAR",
+                  "rawValue": "2026",
+                  "unit": "YEAR",
+                  "page": 4,
+                  "confidence": "HIGH"
+                },
+                {
+                  "key": "LINE_PRICE_NET",
+                  "rawValue": "190.000,00 EUR",
+                  "unit": "EUR",
+                  "page": 2,
+                  "confidence": "HIGH"
+                }
+              ]
+            }
+          ],
+          "missingFields": [],
+          "warnings": [
+            "Oferta nu include ghidaj RTK, section control sau doză variabilă."
+          ]
+        },
+        {
+          "documentId": "doc_facturi_motorina",
+          "documentType": "FUEL_INVOICES",
+          "moduleId": "utilaje",
+          "currency": "RON",
+          "supplierName": "Distribuitor carburanți (demo)",
+          "documentFields": [
+            {
+              "key": "PERIOD_FROM",
+              "rawValue": "01.10.2025",
+              "unit": "DATE",
+              "page": 1,
+              "confidence": "HIGH"
+            },
+            {
+              "key": "PERIOD_TO",
+              "rawValue": "30.09.2026",
+              "unit": "DATE",
+              "page": 9,
+              "confidence": "HIGH"
+            },
+            {
+              "key": "FUEL_LITRES",
+              "rawValue": "36.180 l",
+              "unit": "L",
+              "page": 10,
+              "confidence": "HIGH"
+            },
+            {
+              "key": "FUEL_COST",
+              "rawValue": "372.654,00 lei",
+              "unit": "RON",
+              "page": 10,
+              "confidence": "HIGH"
+            }
+          ],
+          "lineItems": [],
+          "missingFields": [
+            {
+              "key": "FERTILIZER_KG_N",
+              "reasonRo": "Facturile de îngrășăminte nu au fost încărcate; folosesc doza declarată în chestionar."
+            }
+          ],
+          "warnings": []
+        }
+      ],
+      "technicalAssessment": {
+        "moduleId": "utilaje",
+        "indicator": "FUEL_SAVING_PCT",
+        "threshold": {
+          "thresholdCalcId": "calc_4a9a618d4641",
+          "sourceRo": "config/modules/utilaje.json: economie de motorină ≥ 20% față de baseline (model BERD GEFF; propunere, de confirmat cu Raiffeisen)"
+        },
+        "baseline": {
+          "descriptionRo": "4 tractoare de peste 20 de ani pe 400 ha de cereale. Motorina e calculată din normă și confirmată de facturile pe 12 luni.",
+          "dataSource": "MIXED",
+          "metrics": [
+            {
+              "metric": "AREA_HA",
+              "calcId": "calc_19420c654a3b"
+            },
+            {
+              "metric": "FUEL_USE_L",
+              "calcId": "calc_486911cf6705"
+            },
+            {
+              "metric": "NITROGEN_USE_KG",
+              "calcId": "calc_7707d777702f"
+            },
+            {
+              "metric": "CO2_EMITTED_T",
+              "calcId": "calc_ccb22df15877"
+            }
+          ]
+        },
+        "configurations": [
+          {
+            "configId": "cfg_initial",
+            "role": "INITIAL",
+            "titleRo": "4 tractoare Stage V (oferta AgroTrac)",
+            "components": [
+              {
+                "componentId": "cmp_tractors_240",
+                "category": "TRACTOR",
+                "nameRo": "2 tractoare 240 CP, Stage V",
+                "source": "OFFER",
+                "costCalcId": "calc_42d2fdf50645"
+              },
+              {
+                "componentId": "cmp_tractors_180",
+                "category": "TRACTOR",
+                "nameRo": "2 tractoare 180 CP, Stage V",
+                "source": "OFFER",
+                "costCalcId": "calc_dc3fbbc766a8"
+              }
+            ],
+            "totalCostCalcId": "calc_a60e64f02a5f",
+            "indicatorCalcId": "calc_296816e087b1",
+            "thresholdResult": "FAIL",
+            "impacts": [
+              {
+                "metric": "FUEL_SAVING_PCT",
+                "calcId": "calc_296816e087b1"
+              },
+              {
+                "metric": "FUEL_SAVED_L",
+                "calcId": "calc_2fbd0fd8db8e"
+              },
+              {
+                "metric": "CO2_AVOIDED_T",
+                "calcId": "calc_fd25bb9d4a35"
+              }
+            ]
+          },
+          {
+            "configId": "cfg_recommended",
+            "role": "RECOMMENDED",
+            "titleRo": "4 tractoare Stage V + pachet de precizie",
+            "components": [
+              {
+                "componentId": "cmp_tractors_240",
+                "category": "TRACTOR",
+                "nameRo": "2 tractoare 240 CP, Stage V",
+                "source": "OFFER",
+                "costCalcId": "calc_42d2fdf50645"
+              },
+              {
+                "componentId": "cmp_tractors_180",
+                "category": "TRACTOR",
+                "nameRo": "2 tractoare 180 CP, Stage V",
+                "source": "OFFER",
+                "costCalcId": "calc_dc3fbbc766a8"
+              },
+              {
+                "componentId": "cmp_precision",
+                "category": "PRECISION_PACKAGE",
+                "nameRo": "Pachet de precizie: ghidaj RTK, section control, doză variabilă",
+                "source": "CATALOG_UPGRADE",
+                "catalogId": "utl.precision.rtk_sc_vra",
+                "costCalcId": "calc_9b6b33cfe360"
+              }
+            ],
+            "totalCostCalcId": "calc_eb7d3671db5b",
+            "upgradeCostCalcId": "calc_9b6b33cfe360",
+            "indicatorCalcId": "calc_6e0fc7810cf2",
+            "thresholdResult": "PASS",
+            "impacts": [
+              {
+                "metric": "FUEL_SAVING_PCT",
+                "calcId": "calc_6e0fc7810cf2"
+              },
+              {
+                "metric": "FUEL_SAVED_L",
+                "calcId": "calc_f77159831377"
+              },
+              {
+                "metric": "NITROGEN_SAVED_KG",
+                "calcId": "calc_d766a1282331"
+              },
+              {
+                "metric": "INPUTS_COST_SAVED_EUR",
+                "calcId": "calc_4e9979f6ebd7"
+              },
+              {
+                "metric": "CO2_AVOIDED_T",
+                "calcId": "calc_78b6030c059d"
+              },
+              {
+                "metric": "PRECISION_SHARE_PCT",
+                "calcId": "calc_6c0016b1b1d1"
+              }
+            ],
+            "noteRo": "Precizia depășește 10% din valoarea eligibilă: +15 puncte la DR-12."
+          }
+        ],
+        "initialConfigId": "cfg_initial",
+        "recommendedConfigId": "cfg_recommended",
+        "recommendationType": "UPGRADE_TO_PASS",
+        "dnshChecks": [
+          {
+            "objective": "CIRCULAR_ECONOMY",
+            "status": "PASS_WITH_CONDITIONS",
+            "evidence": [],
+            "noteRo": "Fermierul declară casarea tractoarelor vechi; e nevoie de certificatul de dezmembrare."
+          },
+          {
+            "objective": "POLLUTION_PREVENTION",
+            "status": "PASS",
+            "evidence": [
+              "TECHNICAL_SHEET"
+            ],
+            "noteRo": "Motoare Stage V; doza variabilă reduce excesul de azot."
+          },
+          {
+            "objective": "BIODIVERSITY",
+            "status": "PASS",
+            "evidence": [],
+            "noteRo": "Nicio parcelă în Natura 2000."
+          }
+        ],
+        "sizingCheck": {
+          "status": "PASS",
+          "calcId": "calc_1cb3a68d23e9",
+          "noteRo": "2,10 CP/ha, sub limita de 2,50 CP/ha (valoare demo, de verificat în Anexa 6 DR-12)."
+        },
+        "missingFields": [
+          {
+            "fieldKey": "fertilizer_invoices",
+            "labelRo": "Facturile de îngrășăminte pe 12 luni",
+            "requiredFor": "GREEN_ELIGIBILITY",
+            "docType": "FERTILIZER_INVOICES",
+            "blocking": false
+          },
+          {
+            "fieldKey": "scrapping_certificate",
+            "labelRo": "Certificatul de dezmembrare pentru tractoarele vechi",
+            "requiredFor": "DNSH",
+            "docType": "SCRAPPING_CERTIFICATE",
+            "blocking": false
+          }
+        ],
+        "summaryRo": "Cele 4 tractoare Stage V (440.000 EUR) economisesc 12,0% motorină, sub pragul de 20%: sunt investiție de tranziție. Cu pachetul de precizie (52.000 EUR) economia ajunge la 20,8%, adică 7.488 l/an și 19,9 t CO₂/an, plus 3.000 kg N/an. Precizia reprezintă 10,6% din valoarea eligibilă, deci aduce +15 puncte la DR-12. Dimensionarea e în limită (2,10 CP/ha).",
+        "farmerMessageRo": "Tractoarele noi economisesc 12% motorină. Cu un pachet de precizie (GPS RTK, oprire pe secțiuni, doză variabilă) ajungi la 21% și primești puncte în plus la grantul AFIR."
+      },
+      "fundingRecommendation": {
+        "options": [
+          {
+            "optionId": "A",
+            "kind": "STANDARD",
+            "configId": "cfg_initial",
+            "titleRo": "Credit standard pentru 4 tractoare",
+            "investmentCalcId": "calc_a60e64f02a5f",
+            "fundingStack": [
+              {
+                "itemId": "fs_a_loan",
+                "type": "STANDARD_LOAN",
+                "productId": "STANDARD_INVEST",
+                "amountCalcId": "calc_416be863f78c",
+                "rateCalcId": "calc_fcff21aaab2c",
+                "termCalcId": "calc_9de17537c086",
+                "repayment": {
+                  "scheduleType": "EQUAL_MONTHLY",
+                  "installmentCalcId": "calc_19d8a2b0d048",
+                  "scheduleCalcId": "calc_7bf806101c6c"
+                },
+                "status": "AVAILABLE",
+                "noteRo": "Gaj pe tractoare și ipotecă."
+              }
+            ],
+            "headlineInstallmentCalcId": "calc_19d8a2b0d048",
+            "collateral": [
+              "PLEDGE_EQUIPMENT",
+              "MORTGAGE"
+            ],
+            "totals": {
+              "totalPaymentsCalcId": "calc_e9dc083ca686",
+              "totalInterestCalcId": "calc_95a65324fc8c",
+              "savingsOverHorizonCalcId": "calc_065bd332f1b1",
+              "netCostCalcId": "calc_ace4c3fa8131"
+            },
+            "annualSavings": [
+              {
+                "metric": "FUEL_COST_SAVED_EUR",
+                "calcId": "calc_88aac8b2954e"
+              }
+            ],
+            "affordability": {
+              "status": "PASS_WITH_WARNING",
+              "ratioCalcId": "calc_47de5d2cb9e0",
+              "limitCalcId": "calc_37d57ccd1156",
+              "noteRo": "Încape, dar e aproape de limita de 40%."
+            },
+            "greenEligible": false
+          },
+          {
+            "optionId": "B",
+            "kind": "GREEN_PACKAGE_WITH_GRANT",
+            "configId": "cfg_recommended",
+            "titleRo": "Grant DR-12 + credit de cofinanțare cu garanție FGCR + punte",
+            "investmentCalcId": "calc_eb7d3671db5b",
+            "fundingStack": [
+              {
+                "itemId": "fs_b_grant",
+                "type": "GRANT",
+                "productId": "DR-12",
+                "programCode": "DR_12",
+                "amountCalcId": "calc_f2e9b78e2e84",
+                "status": "OPEN_CALL",
+                "noteRo": "Cerere de finanțare la AFIR până la 02.12.2026, ora 16:00."
+              },
+              {
+                "itemId": "fs_b_cofinancing",
+                "type": "CO_FINANCING_LOAN",
+                "productId": "GREEN_AGRI",
+                "amountCalcId": "calc_7ac0a504505e",
+                "rateCalcId": "calc_a82503ea6481",
+                "termCalcId": "calc_9de17537c086",
+                "repayment": {
+                  "scheduleType": "EQUAL_MONTHLY",
+                  "installmentCalcId": "calc_340271272546",
+                  "scheduleCalcId": "calc_c6545aa88dcf"
+                },
+                "status": "TO_CONFIRM",
+                "noteRo": "Finanțarea cofinanțării AFIR de către Raiffeisen se confirmă cu mentorii."
+              },
+              {
+                "itemId": "fs_b_guarantee",
+                "type": "GUARANTEE",
+                "productId": "FGCR",
+                "programCode": "FGCR",
+                "amountCalcId": "calc_fa13a6d5a010",
+                "coverageCalcId": "calc_d5f30aaaed99",
+                "guaranteesItemId": "fs_b_cofinancing",
+                "status": "AVAILABLE",
+                "noteRo": "Garanție FGCR pentru creditul de cofinanțare."
+              },
+              {
+                "itemId": "fs_b_bridge",
+                "type": "BRIDGE_LOAN",
+                "productId": "BRIDGE_AFIR",
+                "amountCalcId": "calc_d1bab2c80fa6",
+                "rateCalcId": "calc_57232ad07b88",
+                "termCalcId": "calc_103c3347fefc",
+                "repayment": {
+                  "scheduleType": "BULLET",
+                  "installmentCalcId": "calc_2355dfabd5ca",
+                  "scheduleCalcId": "calc_2355dfabd5ca"
+                },
+                "status": "TO_CONFIRM",
+                "noteRo": "Se rambursează din grant, la plata AFIR."
+              }
+            ],
+            "headlineInstallmentCalcId": "calc_340271272546",
+            "collateral": [
+              "GUARANTEE_FGCR",
+              "PLEDGE_EQUIPMENT",
+              "GRANT_ASSIGNMENT"
+            ],
+            "totals": {
+              "totalPaymentsCalcId": "calc_bd50183a4744",
+              "totalInterestCalcId": "calc_88cd42d8d487",
+              "savingsOverHorizonCalcId": "calc_ab9bd8c1e3f4",
+              "netCostCalcId": "calc_ee7cbac521c4"
+            },
+            "annualSavings": [
+              {
+                "metric": "FUEL_COST_SAVED_EUR",
+                "calcId": "calc_797ed2e2220b"
+              },
+              {
+                "metric": "INPUTS_COST_SAVED_EUR",
+                "calcId": "calc_578aeafa5515"
+              }
+            ],
+            "affordability": {
+              "status": "PASS",
+              "ratioCalcId": "calc_188b575a43fc",
+              "limitCalcId": "calc_37d57ccd1156",
+              "noteRo": "Rata de cofinanțare încape confortabil; puntea se închide din grant."
+            },
+            "greenEligible": true
+          }
+        ],
+        "recommendedOptionId": "B",
+        "recommendationBasis": {
+          "greenEligible": true,
+          "netAdvantagePositive": true,
+          "affordabilityPassed": true
+        },
+        "programChecks": [
+          {
+            "programCode": "DR_12",
+            "result": "ELIGIBLE",
+            "session": "OPEN",
+            "deadline": "2026-12-02T16:00:00+02:00",
+            "checkedAt": "2026-10-28",
+            "sourceUrl": "https://www.afir.ro/domenii-de-interventie/detalii-si-anexe-dr-12/",
+            "criteria": [
+              {
+                "criterion": "LEGAL_FORM",
+                "result": "PASS",
+                "noteRo": "SRL înregistrat în APIA."
+              },
+              {
+                "criterion": "FARM_SIZE_SO",
+                "result": "PASS",
+                "noteRo": "Fermă medie, peste 12.000 EUR SO."
+              },
+              {
+                "criterion": "MANAGER_AGE",
+                "result": "PASS",
+                "calcId": "calc_5b2a63373a4e"
+              },
+              {
+                "criterion": "INSTALLATION_DATE",
+                "result": "PASS",
+                "noteRo": "Instalat în 2023, sub 5 ani."
+              },
+              {
+                "criterion": "PROFESSIONAL_COMPETENCES",
+                "result": "UNKNOWN",
+                "noteRo": "Fără dovadă: intensitate 65% în loc de 80%."
+              },
+              {
+                "criterion": "NEW_EQUIPMENT_ONLY",
+                "result": "PASS"
+              },
+              {
+                "criterion": "POWER_TO_AREA",
+                "result": "PASS",
+                "calcId": "calc_1cb3a68d23e9"
+              },
+              {
+                "criterion": "PRECISION_SHARE",
+                "result": "PASS",
+                "calcId": "calc_6c0016b1b1d1",
+                "noteRo": "+15 puncte."
+              },
+              {
+                "criterion": "GRANT_CAP",
+                "result": "PASS",
+                "calcId": "calc_2a650c5b566d"
+              },
+              {
+                "criterion": "NO_SPENDING_BEFORE_APPLICATION",
+                "result": "PASS",
+                "noteRo": "Nicio comandă fermă până acum."
+              }
+            ],
+            "noteRo": "Sesiune deschisă 06.10–02.12.2026."
+          },
+          {
+            "programCode": "FGCR",
+            "result": "ELIGIBLE",
+            "session": "PERMANENT",
+            "checkedAt": "2026-10-28",
+            "sourceUrl": "https://www.fgcr.ro/",
+            "criteria": [
+              {
+                "criterion": "SECTOR_ELIGIBLE",
+                "result": "PASS"
+              },
+              {
+                "criterion": "NO_DOUBLE_FUNDING",
+                "result": "PASS",
+                "noteRo": "Garanția acoperă creditul, nu aceleași costuri ca grantul."
+              }
+            ],
+            "noteRo": "Garantează creditul de cofinanțare PS PAC până la 80%."
+          },
+          {
+            "programCode": "INVESTEU_FEI",
+            "result": "ELIGIBLE",
+            "session": "PERMANENT",
+            "checkedAt": "2026-10-28",
+            "sourceUrl": "https://www.eif.org/press/all/romania-eif-and-leading-romanian-banks-join-forces-to-empower-smes-for-sustainable-growth",
+            "criteria": [
+              {
+                "criterion": "SME_STATUS",
+                "result": "PASS"
+              }
+            ],
+            "noteRo": "Alternativă la FGCR dacă garanția FGCR nu se aprobă."
+          },
+          {
+            "programCode": "RABLA_AGRI",
+            "result": "UNKNOWN",
+            "session": "NO_BUDGET",
+            "checkedAt": "2026-10-28",
+            "sourceUrl": "https://www.afm.ro/",
+            "criteria": [
+              {
+                "criterion": "SESSION_OPEN",
+                "result": "FAIL"
+              }
+            ],
+            "noteRo": "Fără buget în 2026."
+          }
+        ],
+        "grantOutlook": {
+          "status": "GRANT_IN_STACK",
+          "programCode": "DR_12",
+          "messageRo": "DR-12 e deschis până la 02.12.2026, ora 16:00. Ferma e eligibilă: 65% din valoare, plafonat la 200.000 EUR. Nu semna contracte și nu plăti avansuri înainte de depunerea cererii.",
+          "checkedAt": "2026-10-28",
+          "sourceUrl": "https://www.afir.ro/domenii-de-interventie/detalii-si-anexe-dr-12/"
+        },
+        "comparison": {
+          "horizonCalcId": "calc_f803b072e077",
+          "netAdvantageCalcId": "calc_ee6d061aa8c3",
+          "upgradePaybackCalcId": "calc_7905b118c671",
+          "drivers": [
+            {
+              "driver": "GRANT",
+              "calcId": "calc_388a136afb9d"
+            },
+            {
+              "driver": "INVESTMENT_DELTA",
+              "calcId": "calc_af7d949e43a3"
+            },
+            {
+              "driver": "INTEREST",
+              "calcId": "calc_d54f28a4f5f5"
+            },
+            {
+              "driver": "OPERATING_SAVINGS",
+              "calcId": "calc_38f9c1960e29"
+            }
+          ]
+        },
+        "farmerExplanationRo": "Investiția crește cu 52.000 EUR pentru pachetul de precizie, dar primești un grant de 200.000 EUR, iar rata scade de la 6.749 EUR/lună la 4.266 EUR/lună. Câștigi 241.532 EUR în 7 ani. Cea mai mare parte vine din grant; precizia te ajută să-l obții și se plătește singură în 32,6 luni.",
+        "officerNotesRo": "Structură B: grant DR-12 200.000 EUR (65%, plafonat), credit de cofinanțare 292.000 EUR la 6,0% pe 84 de luni cu garanție FGCR 80%, punte 200.000 EUR pe 12 luni la 7,0%, rambursată din grant. Riscul principal: întârzierea sau respingerea grantului. Dobânzile sunt valori demo."
+      },
+      "underwritingReport": {
+        "decision": "ELIGIBLE_WITH_CONDITIONS",
+        "moduleId": "utilaje",
+        "recommendedOptionId": "B",
+        "criterion": {
+          "indicator": "FUEL_SAVING_PCT",
+          "valueCalcId": "calc_6e0fc7810cf2",
+          "thresholdCalcId": "calc_4a9a618d4641",
+          "result": "PASS",
+          "sourceRo": "config/modules/utilaje.json: economie de motorină ≥ 20% față de baseline (model BERD GEFF; propunere, de confirmat cu Raiffeisen). Stage V e doar minimul legal."
+        },
+        "componentLabels": [
+          {
+            "componentId": "cmp_tractors_240",
+            "label": "TRANSITION",
+            "basis": "MEASURABLE_SAVING_NO_LABEL",
+            "amountCalcId": "calc_42d2fdf50645",
+            "rationaleRo": "Tractor diesel Stage V care înlocuiește unul de peste 20 de ani: economie măsurabilă, dar echipamentele pe combustibil fosil sunt excluse din cadrul RBI 2025."
+          },
+          {
+            "componentId": "cmp_tractors_180",
+            "label": "TRANSITION",
+            "basis": "MEASURABLE_SAVING_NO_LABEL",
+            "amountCalcId": "calc_dc3fbbc766a8",
+            "rationaleRo": "Ca mai sus."
+          },
+          {
+            "componentId": "cmp_precision",
+            "label": "MARKET_GREEN",
+            "basis": "LMA_GREEN_LOAN_PRINCIPLES",
+            "amountCalcId": "calc_9b6b33cfe360",
+            "rationaleRo": "Ghidajul RTK, section control și doza variabilă reduc motorina și azotul; împreună cu tractoarele noi trec pragul de 20%."
+          }
+        ],
+        "greenShare": {
+          "greenAmountCalcId": "calc_7153b7543f33",
+          "transitionAmountCalcId": "calc_6b45a9079882",
+          "greenSharePctCalcId": "calc_a117323eb6e6"
+        },
+        "greenBond": {
+          "category": "AGRICULTURE_FORESTRY",
+          "status": "TO_CONFIRM",
+          "eligibleAmountCalcId": "calc_7153b7543f33",
+          "noteRo": "Doar pachetul de precizie poate intra în portofoliul verde; tractoarele diesel sunt excluse. Categoria agricultură trebuie confirmată cu echipa Green Bonds (cadrul RBI 2025)."
+        },
+        "substantialContribution": "CLIMATE_MITIGATION",
+        "dnsh": [
+          {
+            "objective": "CLIMATE_ADAPTATION",
+            "status": "PASS",
+            "justificationRo": "Investiția nu crește expunerea fermei la riscuri climatice.",
+            "evidence": []
+          },
+          {
+            "objective": "WATER_MARINE_RESOURCES",
+            "status": "PASS",
+            "justificationRo": "Doza variabilă reduce scurgerile de azot în apele de suprafață.",
+            "evidence": []
+          },
+          {
+            "objective": "CIRCULAR_ECONOMY",
+            "status": "PASS_WITH_CONDITIONS",
+            "justificationRo": "Tractoarele vechi trebuie casate, nu vândute mai departe, ca emisiile să nu se mute în altă fermă.",
+            "evidence": [],
+            "conditionId": "cp_scrapping"
+          },
+          {
+            "objective": "POLLUTION_PREVENTION",
+            "status": "PASS",
+            "justificationRo": "Motoare Stage V, emisii de particule și NOx mult mai mici decât la tractoarele înlocuite.",
+            "evidence": [
+              "TECHNICAL_SHEET"
+            ]
+          },
+          {
+            "objective": "BIODIVERSITY",
+            "status": "PASS",
+            "justificationRo": "Nicio parcelă nu se suprapune cu situri Natura 2000.",
+            "evidence": []
+          }
+        ],
+        "impact": [
+          {
+            "metric": "FUEL_SAVED_L",
+            "calcId": "calc_f77159831377",
+            "period": "ANNUAL"
+          },
+          {
+            "metric": "FUEL_SAVING_PCT",
+            "calcId": "calc_6e0fc7810cf2",
+            "period": "ANNUAL"
+          },
+          {
+            "metric": "NITROGEN_SAVED_KG",
+            "calcId": "calc_d766a1282331",
+            "period": "ANNUAL"
+          },
+          {
+            "metric": "CO2_AVOIDED_T",
+            "calcId": "calc_78b6030c059d",
+            "period": "ANNUAL"
+          },
+          {
+            "metric": "FUEL_SAVED_L",
+            "calcId": "calc_0e0707db267b",
+            "period": "HORIZON"
+          },
+          {
+            "metric": "CO2_AVOIDED_T",
+            "calcId": "calc_9b6fae67d882",
+            "period": "HORIZON"
+          }
+        ],
+        "conditionsPrecedent": [
+          {
+            "conditionId": "cp_no_spending",
+            "type": "OTHER",
+            "documentType": "OTHER",
+            "descriptionRo": "Nicio comandă fermă și niciun avans plătit înainte de depunerea cererii AFIR.",
+            "timing": "BEFORE_SIGNING",
+            "blocking": true
+          },
+          {
+            "conditionId": "cp_afir_application",
+            "type": "GRANT_APPROVAL",
+            "documentType": "AFIR_APPLICATION",
+            "descriptionRo": "Cererea de finanțare DR-12 depusă la AFIR.",
+            "timing": "BEFORE_SIGNING",
+            "dueDate": "2026-12-02",
+            "blocking": true
+          },
+          {
+            "conditionId": "cp_fgcr",
+            "type": "GUARANTEE_APPROVAL",
+            "documentType": "GUARANTEE_APPROVAL",
+            "descriptionRo": "Aprobarea garanției FGCR pentru creditul de cofinanțare.",
+            "timing": "BEFORE_SIGNING",
+            "blocking": true
+          },
+          {
+            "conditionId": "cp_competences",
+            "type": "DOCUMENT",
+            "documentType": "OTHER",
+            "descriptionRo": "Dovada competențelor profesionale ale administratorului (ar ridica intensitatea la 80%; plafonul rămâne 200.000 EUR).",
+            "timing": "BEFORE_SIGNING",
+            "blocking": false
+          },
+          {
+            "conditionId": "cp_afir_contract",
+            "type": "GRANT_APPROVAL",
+            "documentType": "AFIR_FINANCING_CONTRACT",
+            "descriptionRo": "Contractul de finanțare AFIR semnat (pentru tragerea din punte).",
+            "timing": "BEFORE_FIRST_DISBURSEMENT",
+            "blocking": true
+          },
+          {
+            "conditionId": "cp_final_invoice",
+            "type": "INVOICE_MATCH",
+            "documentType": "FINAL_INVOICE",
+            "descriptionRo": "Factura finală include tractoarele și pachetul de precizie aprobat (RTK, section control, doză variabilă).",
+            "timing": "BEFORE_FINAL_DISBURSEMENT",
+            "blocking": true
+          },
+          {
+            "conditionId": "cp_scrapping",
+            "type": "DOCUMENT",
+            "documentType": "SCRAPPING_CERTIFICATE",
+            "descriptionRo": "Certificatele de dezmembrare pentru cele 4 tractoare vechi.",
+            "timing": "AFTER_INSTALLATION",
+            "blocking": false
+          }
+        ],
+        "monitoringKpis": [
+          {
+            "kpiId": "kpi_fuel_use",
+            "metric": "FUEL_USE_L",
+            "targetCalcId": "calc_3915659c1290",
+            "frequency": "ANNUAL",
+            "firstDue": "MONTH_12",
+            "dataSource": "OPEN_BANKING",
+            "descriptionRo": "Motorina cumpărată, din tranzacții și facturi, comparată cu estimarea."
+          },
+          {
+            "kpiId": "kpi_nitrogen_use",
+            "metric": "NITROGEN_USE_KG",
+            "targetCalcId": "calc_bf77cb49d1a0",
+            "frequency": "ANNUAL",
+            "firstDue": "MONTH_12",
+            "dataSource": "INVOICES",
+            "descriptionRo": "Azotul cumpărat, din facturile de îngrășăminte."
+          },
+          {
+            "kpiId": "kpi_precision_use",
+            "metric": "AREA_HA",
+            "targetCalcId": "calc_19420c654a3b",
+            "frequency": "ANNUAL",
+            "firstDue": "MONTH_12",
+            "dataSource": "TELEMATICS",
+            "descriptionRo": "Hectarele lucrate cu ghidaj RTK, din jurnalul terminalului."
+          },
+          {
+            "kpiId": "kpi_satellite",
+            "metric": "AREA_HA",
+            "targetCalcId": "calc_19420c654a3b",
+            "frequency": "SEMIANNUAL",
+            "firstDue": "MONTH_6",
+            "dataSource": "SATELLITE",
+            "descriptionRo": "Parcelele sunt cultivate (Sentinel-2)."
+          }
+        ],
+        "risks": [
+          {
+            "category": "GRANT_TIMING",
+            "severity": "MEDIUM",
+            "descriptionRo": "Puntea se rambursează din grant; o plată AFIR întârziată prelungește puntea.",
+            "mitigationRo": "Cesiunea grantului către bancă; puntea se poate prelungi o dată."
+          },
+          {
+            "category": "GRANT_REJECTION",
+            "severity": "MEDIUM",
+            "descriptionRo": "Proiectul poate cădea sub pragul de selecție de 80 de puncte.",
+            "mitigationRo": "Precizia aduce +15 puncte; varianta de rezervă e creditul cu garanție FGCR pentru toată suma."
+          },
+          {
+            "category": "GREENWASHING",
+            "severity": "LOW",
+            "descriptionRo": "Tractoarele diesel ar putea fi raportate greșit ca verzi.",
+            "mitigationRo": "Etichetare pe componente: tractoarele sunt tranziție, doar precizia e verde."
+          },
+          {
+            "category": "AFFORDABILITY",
+            "severity": "LOW",
+            "descriptionRo": "Opțiunea B folosește 24,4% din cashflow-ul net.",
+            "mitigationRo": "Marjă confortabilă sub limita de 40%."
+          }
+        ],
+        "committeeSummaryRo": "Fermă de cereale, 400 ha, administrator de 38 de ani. Cererea inițială (4 tractoare Stage V, 440.000 EUR) economisea 12,0% motorină, sub pragul de 20%. Cu pachetul de precizie (52.000 EUR) economia ajunge la 20,8%: 7.488 l/an, 3.000 kg N/an, 19,9 t CO₂/an. Etichete: tractoarele sunt tranziție (440.000 EUR), precizia e verde de piață (52.000 EUR, 10,6%). Structură: grant DR-12 200.000 EUR, credit de cofinanțare 292.000 EUR cu FGCR 80%, punte 200.000 EUR rambursată din grant. Rata scade de la 6.749 EUR/lună la 4.266 EUR/lună; avantaj net 241.532 EUR pe 7 ani. Recomandare: eligibil cu condiții (depunerea DR-12 până la 02.12.2026).",
+        "farmerNextSteps": [
+          {
+            "stepRo": "Nu semna contractul cu dealerul și nu plăti avans până nu depui cererea la AFIR.",
+            "conditionId": "cp_no_spending"
+          },
+          {
+            "stepRo": "Depune cererea DR-12 la AFIR.",
+            "dueDate": "2026-12-02",
+            "conditionId": "cp_afir_application"
+          },
+          {
+            "stepRo": "Trimite dovada competențelor profesionale, dacă o ai.",
+            "conditionId": "cp_competences"
+          },
+          {
+            "stepRo": "Cere dealerului oferta care include pachetul de precizie."
+          },
+          {
+            "stepRo": "După livrare: certificatele de dezmembrare pentru tractoarele vechi.",
+            "conditionId": "cp_scrapping"
+          }
+        ]
+      }
+    },
+    "calcs": {
+      "calc_9c13f2b84410": {
+        "calcId": "calc_9c13f2b84410",
+        "tool": "extract_document",
+        "key": "doc.offer.total_net",
+        "labelRo": "Valoare ofertă tractoare (fără TVA)",
+        "value": 440000,
+        "unit": "EUR",
+        "display": "440.000 EUR",
+        "sourceRo": "Oferta AgroTrac OF-T-0921, pag. 2"
+      },
+      "calc_42d2fdf50645": {
+        "calcId": "calc_42d2fdf50645",
+        "tool": "extract_document",
+        "key": "doc.offer.line.tractor_240",
+        "labelRo": "2 tractoare 240 CP, Stage V",
+        "value": 250000,
+        "unit": "EUR",
+        "display": "250.000 EUR",
+        "sourceRo": "Oferta AgroTrac, poziția 1"
+      },
+      "calc_dc3fbbc766a8": {
+        "calcId": "calc_dc3fbbc766a8",
+        "tool": "extract_document",
+        "key": "doc.offer.line.tractor_180",
+        "labelRo": "2 tractoare 180 CP, Stage V",
+        "value": 190000,
+        "unit": "EUR",
+        "display": "190.000 EUR",
+        "sourceRo": "Oferta AgroTrac, poziția 2"
+      },
+      "calc_7ff5ca615a36": {
+        "calcId": "calc_7ff5ca615a36",
+        "tool": "extract_document",
+        "key": "doc.offer.quantity",
+        "labelRo": "Număr tractoare",
+        "value": 4,
+        "unit": "COUNT",
+        "display": "4 buc",
+        "sourceRo": "Oferta AgroTrac"
+      },
+      "calc_60f2c4a23f36": {
+        "calcId": "calc_60f2c4a23f36",
+        "tool": "extract_document",
+        "key": "doc.offer.power_total",
+        "labelRo": "Putere totală tractoare noi",
+        "value": 840,
+        "unit": "HP",
+        "display": "840 CP",
+        "formula": "2 × 240 CP + 2 × 180 CP",
+        "sourceRo": "Oferta AgroTrac, fișe tehnice"
+      },
+      "calc_fbc4ee05ecfc": {
+        "calcId": "calc_fbc4ee05ecfc",
+        "tool": "extract_document",
+        "key": "doc.fuel.litres_12m",
+        "labelRo": "Motorină facturată (12 luni)",
+        "value": 36180,
+        "unit": "L_PER_YEAR",
+        "display": "36.180 l/an",
+        "sourceRo": "Facturi motorină 10.2025–09.2026"
+      },
+      "calc_4a9a618d4641": {
+        "calcId": "calc_4a9a618d4641",
+        "tool": "get_module_rules",
+        "key": "rules.threshold.fuel_saving",
+        "labelRo": "Prag verde: economie de motorină",
+        "value": 20,
+        "unit": "PCT",
+        "display": "20,0%",
+        "sourceRo": "config/modules/utilaje.json (propunere; modelul BERD GEFF, de confirmat cu Raiffeisen)"
+      },
+      "calc_0d0204a7ebde": {
+        "calcId": "calc_0d0204a7ebde",
+        "tool": "get_module_rules",
+        "key": "rules.norm.l_per_ha",
+        "labelRo": "Normă motorină, cereale, lucrări convenționale",
+        "value": 90,
+        "unit": "L_PER_HA",
+        "display": "90 l/ha",
+        "sourceRo": "config/modules/utilaje.json (demo)"
+      },
+      "calc_8189241ebde1": {
+        "calcId": "calc_8189241ebde1",
+        "tool": "get_module_rules",
+        "key": "rules.saving.new_tractor",
+        "labelRo": "Economie tractor nou vs. tractor de peste 20 de ani",
+        "value": 12,
+        "unit": "PCT",
+        "display": "12,0%",
+        "sourceRo": "data/catalog/utilaje.json (Nebraska/UNL + estimare)"
+      },
+      "calc_6cf5dfc3c4aa": {
+        "calcId": "calc_6cf5dfc3c4aa",
+        "tool": "get_module_rules",
+        "key": "rules.saving.precision_fuel",
+        "labelRo": "Economie motorină prin ghidaj RTK",
+        "value": 10,
+        "unit": "PCT",
+        "display": "10,0%",
+        "sourceRo": "data/catalog/utilaje.json (Haapala et al., 2025)"
+      },
+      "calc_525238a0f84c": {
+        "calcId": "calc_525238a0f84c",
+        "tool": "get_module_rules",
+        "key": "rules.saving.precision_inputs",
+        "labelRo": "Economie inputuri prin section control",
+        "value": 3,
+        "unit": "PCT",
+        "display": "3,0%",
+        "sourceRo": "data/catalog/utilaje.json (PAMI, Iowa State)"
+      },
+      "calc_7fae6d3748f4": {
+        "calcId": "calc_7fae6d3748f4",
+        "tool": "get_module_rules",
+        "key": "rules.saving.vra_n",
+        "labelRo": "Economie azot prin doză variabilă",
+        "value": 5,
+        "unit": "PCT",
+        "display": "5,0%",
+        "sourceRo": "data/catalog/utilaje.json (CEMEPE)"
+      },
+      "calc_f25d3e914fc5": {
+        "calcId": "calc_f25d3e914fc5",
+        "tool": "get_module_rules",
+        "key": "rules.price.fuel_net",
+        "labelRo": "Cost net motorină (fără TVA, după rambursarea accizei)",
+        "value": 1.17,
+        "unit": "EUR_PER_L",
+        "display": "1,170 EUR/l",
+        "formula": "(10,3 lei / 1,21 − 2,697 lei) / 4,97",
+        "sourceRo": "config/prices.json; acciză APIA 2026"
+      },
+      "calc_bd69a78f1ecf": {
+        "calcId": "calc_bd69a78f1ecf",
+        "tool": "get_module_rules",
+        "key": "rules.factor.diesel",
+        "labelRo": "Factor CO₂ motorină",
+        "value": 2.66,
+        "unit": "KG_CO2_PER_L",
+        "display": "2,66 kg CO₂/l",
+        "sourceRo": "config/factors.json (IPCC 2006)"
+      },
+      "calc_4172be44ee62": {
+        "calcId": "calc_4172be44ee62",
+        "tool": "get_module_rules",
+        "key": "rules.sizing.max_hp_ha",
+        "labelRo": "Putere maximă admisă pe hectar (cereale)",
+        "value": 2.5,
+        "unit": "HP_PER_HA",
+        "display": "2,50 CP/ha",
+        "sourceRo": "config/modules/utilaje.json (valoare demo, de verificat în Anexa 6 DR-12)"
+      },
+      "calc_19420c654a3b": {
+        "calcId": "calc_19420c654a3b",
+        "tool": "compute_baseline",
+        "key": "baseline.area",
+        "labelRo": "Suprafață lucrată",
+        "value": 400,
+        "unit": "HA",
+        "display": "400 ha",
+        "sourceRo": "APIA 2026"
+      },
+      "calc_486911cf6705": {
+        "calcId": "calc_486911cf6705",
+        "tool": "compute_baseline",
+        "key": "baseline.fuel",
+        "labelRo": "Motorină consumată azi",
+        "value": 36000,
+        "unit": "L_PER_YEAR",
+        "display": "36.000 l/an",
+        "formula": "ha × l/ha (confirmat de facturi: 36.180 l, abatere 0,5%)",
+        "dependsOn": [
+          "calc_19420c654a3b",
+          "calc_0d0204a7ebde",
+          "calc_fbc4ee05ecfc"
+        ]
+      },
+      "calc_7707d777702f": {
+        "calcId": "calc_7707d777702f",
+        "tool": "compute_baseline",
+        "key": "baseline.nitrogen",
+        "labelRo": "Azot aplicat azi",
+        "value": 60000,
+        "unit": "KG_N_PER_YEAR",
+        "display": "60.000 kg N/an",
+        "formula": "ha × kg N/ha (chestionar)",
+        "dependsOn": [
+          "calc_19420c654a3b"
+        ]
+      },
+      "calc_ccb22df15877": {
+        "calcId": "calc_ccb22df15877",
+        "tool": "compute_baseline",
+        "key": "baseline.co2",
+        "labelRo": "CO₂ din motorină azi",
+        "value": 95.76,
+        "unit": "T_CO2_PER_YEAR",
+        "display": "95,8 t CO₂/an",
+        "dependsOn": [
+          "calc_486911cf6705",
+          "calc_bd69a78f1ecf"
+        ]
+      },
+      "calc_a60e64f02a5f": {
+        "calcId": "calc_a60e64f02a5f",
+        "tool": "compute_indicator",
+        "key": "cfg_initial.total_cost",
+        "labelRo": "Cost configurație inițială",
+        "value": 440000,
+        "unit": "EUR",
+        "display": "440.000 EUR",
+        "dependsOn": [
+          "calc_9c13f2b84410"
+        ]
+      },
+      "calc_296816e087b1": {
+        "calcId": "calc_296816e087b1",
+        "tool": "compute_indicator",
+        "key": "cfg_initial.fuel_saving_pct",
+        "labelRo": "Economie de motorină: doar tractoare noi",
+        "value": 12,
+        "unit": "PCT",
+        "display": "12,0%",
+        "dependsOn": [
+          "calc_8189241ebde1"
+        ]
+      },
+      "calc_2fbd0fd8db8e": {
+        "calcId": "calc_2fbd0fd8db8e",
+        "tool": "compute_indicator",
+        "key": "cfg_initial.fuel_saved",
+        "labelRo": "Motorină economisită: doar tractoare noi",
+        "value": 4320,
+        "unit": "L_PER_YEAR",
+        "display": "4.320 l/an",
+        "dependsOn": [
+          "calc_486911cf6705",
+          "calc_8189241ebde1"
+        ]
+      },
+      "calc_fd25bb9d4a35": {
+        "calcId": "calc_fd25bb9d4a35",
+        "tool": "compute_indicator",
+        "key": "cfg_initial.co2_avoided",
+        "labelRo": "CO₂ evitat: doar tractoare noi",
+        "value": 11.49,
+        "unit": "T_CO2_PER_YEAR",
+        "display": "11,5 t CO₂/an",
+        "dependsOn": [
+          "calc_2fbd0fd8db8e",
+          "calc_bd69a78f1ecf"
+        ]
+      },
+      "calc_1cb3a68d23e9": {
+        "calcId": "calc_1cb3a68d23e9",
+        "tool": "compute_indicator",
+        "key": "cfg_initial.hp_per_ha",
+        "labelRo": "Putere pe hectar",
+        "value": 2.1,
+        "unit": "HP_PER_HA",
+        "display": "2,10 CP/ha",
+        "formula": "CP total / ha",
+        "dependsOn": [
+          "calc_60f2c4a23f36",
+          "calc_19420c654a3b"
+        ]
+      },
+      "calc_eb7d3671db5b": {
+        "calcId": "calc_eb7d3671db5b",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.total_cost",
+        "labelRo": "Cost configurație recomandată",
+        "value": 492000,
+        "unit": "EUR",
+        "display": "492.000 EUR"
+      },
+      "calc_9b6b33cfe360": {
+        "calcId": "calc_9b6b33cfe360",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.upgrade_cost",
+        "labelRo": "Cost pachet de precizie",
+        "value": 52000,
+        "unit": "EUR",
+        "display": "52.000 EUR",
+        "sourceRo": "data/catalog/utilaje.json: utl.precision.rtk_sc_vra"
+      },
+      "calc_6e0fc7810cf2": {
+        "calcId": "calc_6e0fc7810cf2",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.fuel_saving_pct",
+        "labelRo": "Economie de motorină: tractoare + precizie",
+        "value": 20.8,
+        "unit": "PCT",
+        "display": "20,8%",
+        "formula": "1 − (1 − s_tractor) × (1 − s_precizie)",
+        "dependsOn": [
+          "calc_8189241ebde1",
+          "calc_6cf5dfc3c4aa"
+        ]
+      },
+      "calc_f77159831377": {
+        "calcId": "calc_f77159831377",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.fuel_saved",
+        "labelRo": "Motorină economisită: tractoare + precizie",
+        "value": 7488,
+        "unit": "L_PER_YEAR",
+        "display": "7.488 l/an",
+        "dependsOn": [
+          "calc_486911cf6705",
+          "calc_6e0fc7810cf2"
+        ]
+      },
+      "calc_3915659c1290": {
+        "calcId": "calc_3915659c1290",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.fuel_use",
+        "labelRo": "Motorină consumată după investiție",
+        "value": 28512,
+        "unit": "L_PER_YEAR",
+        "display": "28.512 l/an",
+        "dependsOn": [
+          "calc_486911cf6705",
+          "calc_f77159831377"
+        ]
+      },
+      "calc_d766a1282331": {
+        "calcId": "calc_d766a1282331",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.nitrogen_saved",
+        "labelRo": "Azot economisit prin doză variabilă",
+        "value": 3000,
+        "unit": "KG_N_PER_YEAR",
+        "display": "3.000 kg N/an",
+        "formula": "ha × kg N/ha × s_doză_variabilă",
+        "dependsOn": [
+          "calc_7707d777702f",
+          "calc_7fae6d3748f4"
+        ]
+      },
+      "calc_bf77cb49d1a0": {
+        "calcId": "calc_bf77cb49d1a0",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.nitrogen_use",
+        "labelRo": "Azot aplicat după investiție",
+        "value": 57000,
+        "unit": "KG_N_PER_YEAR",
+        "display": "57.000 kg N/an",
+        "dependsOn": [
+          "calc_7707d777702f",
+          "calc_d766a1282331"
+        ]
+      },
+      "calc_4e9979f6ebd7": {
+        "calcId": "calc_4e9979f6ebd7",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.inputs_saved",
+        "labelRo": "Inputuri economisite (îngrășăminte, sămânță)",
+        "value": 3000,
+        "unit": "EUR_PER_YEAR",
+        "display": "3.000 EUR/an",
+        "formula": "ha × 250 EUR/ha × 3%",
+        "dependsOn": [
+          "calc_19420c654a3b",
+          "calc_525238a0f84c"
+        ]
+      },
+      "calc_78b6030c059d": {
+        "calcId": "calc_78b6030c059d",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.co2_avoided",
+        "labelRo": "CO₂ evitat: tractoare + precizie",
+        "value": 19.92,
+        "unit": "T_CO2_PER_YEAR",
+        "display": "19,9 t CO₂/an",
+        "dependsOn": [
+          "calc_f77159831377",
+          "calc_bd69a78f1ecf"
+        ]
+      },
+      "calc_6c0016b1b1d1": {
+        "calcId": "calc_6c0016b1b1d1",
+        "tool": "simulate_upgrade_package",
+        "key": "cfg_recommended.precision_share",
+        "labelRo": "Pondere precizie în valoarea eligibilă",
+        "value": 10.57,
+        "unit": "PCT",
+        "display": "10,6%",
+        "formula": "cost precizie / total eligibil",
+        "dependsOn": [
+          "calc_9b6b33cfe360",
+          "calc_eb7d3671db5b"
+        ]
+      },
+      "calc_fcff21aaab2c": {
+        "calcId": "calc_fcff21aaab2c",
+        "tool": "list_financing_lines",
+        "key": "line.standard.rate",
+        "labelRo": "Dobândă credit standard",
+        "value": 7.5,
+        "unit": "PCT",
+        "display": "7,5%",
+        "sourceRo": "config/financing-lines.json: STANDARD_INVEST (demo)"
+      },
+      "calc_a82503ea6481": {
+        "calcId": "calc_a82503ea6481",
+        "tool": "list_financing_lines",
+        "key": "line.cofinancing.rate",
+        "labelRo": "Dobândă credit de cofinanțare cu garanție FGCR",
+        "value": 6,
+        "unit": "PCT",
+        "display": "6,0%",
+        "sourceRo": "config/financing-lines.json: GREEN_AGRI (demo, de confirmat)"
+      },
+      "calc_57232ad07b88": {
+        "calcId": "calc_57232ad07b88",
+        "tool": "list_financing_lines",
+        "key": "line.bridge.rate",
+        "labelRo": "Dobândă credit-punte",
+        "value": 7,
+        "unit": "PCT",
+        "display": "7,0%",
+        "sourceRo": "config/financing-lines.json: BRIDGE_AFIR (demo)"
+      },
+      "calc_9de17537c086": {
+        "calcId": "calc_9de17537c086",
+        "tool": "list_financing_lines",
+        "key": "line.term",
+        "labelRo": "Durată credit",
+        "value": 84,
+        "unit": "MONTHS",
+        "display": "84 luni",
+        "sourceRo": "config/financing-lines.json"
+      },
+      "calc_103c3347fefc": {
+        "calcId": "calc_103c3347fefc",
+        "tool": "list_financing_lines",
+        "key": "line.bridge.term",
+        "labelRo": "Durată credit-punte",
+        "value": 12,
+        "unit": "MONTHS",
+        "display": "12 luni",
+        "sourceRo": "config/financing-lines.json"
+      },
+      "calc_d5f30aaaed99": {
+        "calcId": "calc_d5f30aaaed99",
+        "tool": "list_financing_lines",
+        "key": "line.fgcr.coverage",
+        "labelRo": "Acoperire garanție FGCR",
+        "value": 80,
+        "unit": "PCT",
+        "display": "80,0%",
+        "sourceRo": "config/financing-lines.json: FGCR"
+      },
+      "calc_f803b072e077": {
+        "calcId": "calc_f803b072e077",
+        "tool": "list_financing_lines",
+        "key": "line.horizon",
+        "labelRo": "Orizont de comparație",
+        "value": 7,
+        "unit": "YEARS",
+        "display": "7 ani",
+        "sourceRo": "config/modules/utilaje.json"
+      },
+      "calc_37d57ccd1156": {
+        "calcId": "calc_37d57ccd1156",
+        "tool": "list_financing_lines",
+        "key": "line.affordability_limit",
+        "labelRo": "Limită serviciu datorie / cashflow net",
+        "value": 40,
+        "unit": "PCT",
+        "display": "40,0%",
+        "sourceRo": "config/financing-lines.json (demo)"
+      },
+      "calc_653b5d04bd88": {
+        "calcId": "calc_653b5d04bd88",
+        "tool": "check_program_eligibility",
+        "key": "dr12.intensity",
+        "labelRo": "Intensitate grant DR-12",
+        "value": 65,
+        "unit": "PCT",
+        "display": "65,0%",
+        "sourceRo": "config/funding-programs.json: DR-12 (≤45 ani: 65%; ≤40 ani + competențe: 80%)"
+      },
+      "calc_2a650c5b566d": {
+        "calcId": "calc_2a650c5b566d",
+        "tool": "check_program_eligibility",
+        "key": "dr12.cap",
+        "labelRo": "Plafon grant DR-12",
+        "value": 200000,
+        "unit": "EUR",
+        "display": "200.000 EUR",
+        "sourceRo": "Ghidul solicitantului DR-12, 18.09.2026"
+      },
+      "calc_0e26c9739196": {
+        "calcId": "calc_0e26c9739196",
+        "tool": "check_program_eligibility",
+        "key": "dr12.precision_points",
+        "labelRo": "Punctaj pentru precizie ≥ 10%",
+        "value": 15,
+        "unit": "POINTS",
+        "display": "15 puncte",
+        "sourceRo": "Ghidul DR-12, criteriile de selecție",
+        "dependsOn": [
+          "calc_6c0016b1b1d1"
+        ]
+      },
+      "calc_5b2a63373a4e": {
+        "calcId": "calc_5b2a63373a4e",
+        "tool": "check_program_eligibility",
+        "key": "dr12.manager_age",
+        "labelRo": "Vârsta administratorului",
+        "value": 38,
+        "unit": "YEARS",
+        "display": "38 ani",
+        "sourceRo": "ONRC (mock)"
+      },
+      "calc_f2e9b78e2e84": {
+        "calcId": "calc_f2e9b78e2e84",
+        "tool": "build_funding_stack",
+        "key": "option_b.grant.amount",
+        "labelRo": "Grant DR-12",
+        "value": 200000,
+        "unit": "EUR",
+        "display": "200.000 EUR",
+        "formula": "min(intensitate × valoare eligibilă, plafon)",
+        "dependsOn": [
+          "calc_653b5d04bd88",
+          "calc_eb7d3671db5b",
+          "calc_2a650c5b566d"
+        ]
+      },
+      "calc_7ac0a504505e": {
+        "calcId": "calc_7ac0a504505e",
+        "tool": "build_funding_stack",
+        "key": "option_b.cofinancing.amount",
+        "labelRo": "Credit de cofinanțare",
+        "value": 292000,
+        "unit": "EUR",
+        "display": "292.000 EUR",
+        "formula": "valoare eligibilă − grant",
+        "dependsOn": [
+          "calc_eb7d3671db5b",
+          "calc_f2e9b78e2e84"
+        ]
+      },
+      "calc_fa13a6d5a010": {
+        "calcId": "calc_fa13a6d5a010",
+        "tool": "build_funding_stack",
+        "key": "option_b.guarantee.amount",
+        "labelRo": "Sumă acoperită de garanția FGCR",
+        "value": 233600,
+        "unit": "EUR",
+        "display": "233.600 EUR",
+        "dependsOn": [
+          "calc_7ac0a504505e",
+          "calc_d5f30aaaed99"
+        ]
+      },
+      "calc_d1bab2c80fa6": {
+        "calcId": "calc_d1bab2c80fa6",
+        "tool": "build_funding_stack",
+        "key": "option_b.bridge.amount",
+        "labelRo": "Credit-punte până la plata grantului",
+        "value": 200000,
+        "unit": "EUR",
+        "display": "200.000 EUR",
+        "dependsOn": [
+          "calc_f2e9b78e2e84"
+        ]
+      },
+      "calc_416be863f78c": {
+        "calcId": "calc_416be863f78c",
+        "tool": "build_funding_stack",
+        "key": "option_a.loan.amount",
+        "labelRo": "Credit standard",
+        "value": 440000,
+        "unit": "EUR",
+        "display": "440.000 EUR",
+        "dependsOn": [
+          "calc_a60e64f02a5f"
+        ]
+      },
+      "calc_19d8a2b0d048": {
+        "calcId": "calc_19d8a2b0d048",
+        "tool": "build_scenario",
+        "key": "option_a.installment",
+        "labelRo": "Rată lunară A",
+        "value": 6748.84,
+        "unit": "EUR_PER_MONTH",
+        "display": "6.749 EUR/lună",
+        "formula": "PMT = P · r / (1 − (1 + r)^−n)",
+        "dependsOn": [
+          "calc_416be863f78c",
+          "calc_fcff21aaab2c",
+          "calc_9de17537c086"
+        ]
+      },
+      "calc_7bf806101c6c": {
+        "calcId": "calc_7bf806101c6c",
+        "tool": "build_scenario",
+        "key": "option_a.schedule",
+        "labelRo": "Grafic rambursare A (total plăți)",
+        "value": 566902.68,
+        "unit": "EUR",
+        "display": "566.903 EUR",
+        "dependsOn": [
+          "calc_19d8a2b0d048"
+        ],
+        "series": [
+          {
+            "period": "2027-04",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2750,
+              "principal": 3998.84,
+              "balance": 436001.16
+            }
+          },
+          {
+            "period": "2027-05",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2725.01,
+              "principal": 4023.83,
+              "balance": 431977.32
+            }
+          },
+          {
+            "period": "2027-06",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2699.86,
+              "principal": 4048.98,
+              "balance": 427928.34
+            }
+          },
+          {
+            "period": "2027-07",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2674.55,
+              "principal": 4074.29,
+              "balance": 423854.05
+            }
+          },
+          {
+            "period": "2027-08",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2649.09,
+              "principal": 4099.75,
+              "balance": 419754.3
+            }
+          },
+          {
+            "period": "2027-09",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2623.46,
+              "principal": 4125.38,
+              "balance": 415628.92
+            }
+          },
+          {
+            "period": "2027-10",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2597.68,
+              "principal": 4151.16,
+              "balance": 411477.76
+            }
+          },
+          {
+            "period": "2027-11",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2571.74,
+              "principal": 4177.11,
+              "balance": 407300.66
+            }
+          },
+          {
+            "period": "2027-12",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2545.63,
+              "principal": 4203.21,
+              "balance": 403097.44
+            }
+          },
+          {
+            "period": "2028-01",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2519.36,
+              "principal": 4229.48,
+              "balance": 398867.96
+            }
+          },
+          {
+            "period": "2028-02",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2492.92,
+              "principal": 4255.92,
+              "balance": 394612.04
+            }
+          },
+          {
+            "period": "2028-03",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2466.33,
+              "principal": 4282.52,
+              "balance": 390329.53
+            }
+          },
+          {
+            "period": "2028-04",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2439.56,
+              "principal": 4309.28,
+              "balance": 386020.25
+            }
+          },
+          {
+            "period": "2028-05",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2412.63,
+              "principal": 4336.21,
+              "balance": 381684.03
+            }
+          },
+          {
+            "period": "2028-06",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2385.53,
+              "principal": 4363.32,
+              "balance": 377320.72
+            }
+          },
+          {
+            "period": "2028-07",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2358.25,
+              "principal": 4390.59,
+              "balance": 372930.13
+            }
+          },
+          {
+            "period": "2028-08",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2330.81,
+              "principal": 4418.03,
+              "balance": 368512.1
+            }
+          },
+          {
+            "period": "2028-09",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2303.2,
+              "principal": 4445.64,
+              "balance": 364066.46
+            }
+          },
+          {
+            "period": "2028-10",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2275.42,
+              "principal": 4473.43,
+              "balance": 359593.03
+            }
+          },
+          {
+            "period": "2028-11",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2247.46,
+              "principal": 4501.38,
+              "balance": 355091.65
+            }
+          },
+          {
+            "period": "2028-12",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2219.32,
+              "principal": 4529.52,
+              "balance": 350562.13
+            }
+          },
+          {
+            "period": "2029-01",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2191.01,
+              "principal": 4557.83,
+              "balance": 346004.3
+            }
+          },
+          {
+            "period": "2029-02",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2162.53,
+              "principal": 4586.31,
+              "balance": 341417.99
+            }
+          },
+          {
+            "period": "2029-03",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2133.86,
+              "principal": 4614.98,
+              "balance": 336803.01
+            }
+          },
+          {
+            "period": "2029-04",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2105.02,
+              "principal": 4643.82,
+              "balance": 332159.19
+            }
+          },
+          {
+            "period": "2029-05",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2075.99,
+              "principal": 4672.85,
+              "balance": 327486.34
+            }
+          },
+          {
+            "period": "2029-06",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2046.79,
+              "principal": 4702.05,
+              "balance": 322784.29
+            }
+          },
+          {
+            "period": "2029-07",
+            "values": {
+              "payment": 6748.84,
+              "interest": 2017.4,
+              "principal": 4731.44,
+              "balance": 318052.85
+            }
+          },
+          {
+            "period": "2029-08",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1987.83,
+              "principal": 4761.01,
+              "balance": 313291.84
+            }
+          },
+          {
+            "period": "2029-09",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1958.07,
+              "principal": 4790.77,
+              "balance": 308501.07
+            }
+          },
+          {
+            "period": "2029-10",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1928.13,
+              "principal": 4820.71,
+              "balance": 303680.36
+            }
+          },
+          {
+            "period": "2029-11",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1898,
+              "principal": 4850.84,
+              "balance": 298829.52
+            }
+          },
+          {
+            "period": "2029-12",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1867.68,
+              "principal": 4881.16,
+              "balance": 293948.36
+            }
+          },
+          {
+            "period": "2030-01",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1837.18,
+              "principal": 4911.66,
+              "balance": 289036.7
+            }
+          },
+          {
+            "period": "2030-02",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1806.48,
+              "principal": 4942.36,
+              "balance": 284094.34
+            }
+          },
+          {
+            "period": "2030-03",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1775.59,
+              "principal": 4973.25,
+              "balance": 279121.09
+            }
+          },
+          {
+            "period": "2030-04",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1744.51,
+              "principal": 5004.33,
+              "balance": 274116.75
+            }
+          },
+          {
+            "period": "2030-05",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1713.23,
+              "principal": 5035.61,
+              "balance": 269081.14
+            }
+          },
+          {
+            "period": "2030-06",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1681.76,
+              "principal": 5067.08,
+              "balance": 264014.06
+            }
+          },
+          {
+            "period": "2030-07",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1650.09,
+              "principal": 5098.75,
+              "balance": 258915.3
+            }
+          },
+          {
+            "period": "2030-08",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1618.22,
+              "principal": 5130.62,
+              "balance": 253784.68
+            }
+          },
+          {
+            "period": "2030-09",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1586.15,
+              "principal": 5162.69,
+              "balance": 248621.99
+            }
+          },
+          {
+            "period": "2030-10",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1553.89,
+              "principal": 5194.95,
+              "balance": 243427.04
+            }
+          },
+          {
+            "period": "2030-11",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1521.42,
+              "principal": 5227.42,
+              "balance": 238199.62
+            }
+          },
+          {
+            "period": "2030-12",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1488.75,
+              "principal": 5260.09,
+              "balance": 232939.52
+            }
+          },
+          {
+            "period": "2031-01",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1455.87,
+              "principal": 5292.97,
+              "balance": 227646.56
+            }
+          },
+          {
+            "period": "2031-02",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1422.79,
+              "principal": 5326.05,
+              "balance": 222320.5
+            }
+          },
+          {
+            "period": "2031-03",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1389.5,
+              "principal": 5359.34,
+              "balance": 216961.17
+            }
+          },
+          {
+            "period": "2031-04",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1356.01,
+              "principal": 5392.83,
+              "balance": 211568.33
+            }
+          },
+          {
+            "period": "2031-05",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1322.3,
+              "principal": 5426.54,
+              "balance": 206141.79
+            }
+          },
+          {
+            "period": "2031-06",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1288.39,
+              "principal": 5460.46,
+              "balance": 200681.34
+            }
+          },
+          {
+            "period": "2031-07",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1254.26,
+              "principal": 5494.58,
+              "balance": 195186.75
+            }
+          },
+          {
+            "period": "2031-08",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1219.92,
+              "principal": 5528.92,
+              "balance": 189657.83
+            }
+          },
+          {
+            "period": "2031-09",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1185.36,
+              "principal": 5563.48,
+              "balance": 184094.35
+            }
+          },
+          {
+            "period": "2031-10",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1150.59,
+              "principal": 5598.25,
+              "balance": 178496.1
+            }
+          },
+          {
+            "period": "2031-11",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1115.6,
+              "principal": 5633.24,
+              "balance": 172862.86
+            }
+          },
+          {
+            "period": "2031-12",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1080.39,
+              "principal": 5668.45,
+              "balance": 167194.41
+            }
+          },
+          {
+            "period": "2032-01",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1044.97,
+              "principal": 5703.88,
+              "balance": 161490.53
+            }
+          },
+          {
+            "period": "2032-02",
+            "values": {
+              "payment": 6748.84,
+              "interest": 1009.32,
+              "principal": 5739.53,
+              "balance": 155751.01
+            }
+          },
+          {
+            "period": "2032-03",
+            "values": {
+              "payment": 6748.84,
+              "interest": 973.44,
+              "principal": 5775.4,
+              "balance": 149975.61
+            }
+          },
+          {
+            "period": "2032-04",
+            "values": {
+              "payment": 6748.84,
+              "interest": 937.35,
+              "principal": 5811.49,
+              "balance": 144164.12
+            }
+          },
+          {
+            "period": "2032-05",
+            "values": {
+              "payment": 6748.84,
+              "interest": 901.03,
+              "principal": 5847.82,
+              "balance": 138316.3
+            }
+          },
+          {
+            "period": "2032-06",
+            "values": {
+              "payment": 6748.84,
+              "interest": 864.48,
+              "principal": 5884.36,
+              "balance": 132431.94
+            }
+          },
+          {
+            "period": "2032-07",
+            "values": {
+              "payment": 6748.84,
+              "interest": 827.7,
+              "principal": 5921.14,
+              "balance": 126510.79
+            }
+          },
+          {
+            "period": "2032-08",
+            "values": {
+              "payment": 6748.84,
+              "interest": 790.69,
+              "principal": 5958.15,
+              "balance": 120552.65
+            }
+          },
+          {
+            "period": "2032-09",
+            "values": {
+              "payment": 6748.84,
+              "interest": 753.45,
+              "principal": 5995.39,
+              "balance": 114557.26
+            }
+          },
+          {
+            "period": "2032-10",
+            "values": {
+              "payment": 6748.84,
+              "interest": 715.98,
+              "principal": 6032.86,
+              "balance": 108524.4
+            }
+          },
+          {
+            "period": "2032-11",
+            "values": {
+              "payment": 6748.84,
+              "interest": 678.28,
+              "principal": 6070.56,
+              "balance": 102453.84
+            }
+          },
+          {
+            "period": "2032-12",
+            "values": {
+              "payment": 6748.84,
+              "interest": 640.34,
+              "principal": 6108.5,
+              "balance": 96345.33
+            }
+          },
+          {
+            "period": "2033-01",
+            "values": {
+              "payment": 6748.84,
+              "interest": 602.16,
+              "principal": 6146.68,
+              "balance": 90198.65
+            }
+          },
+          {
+            "period": "2033-02",
+            "values": {
+              "payment": 6748.84,
+              "interest": 563.74,
+              "principal": 6185.1,
+              "balance": 84013.55
+            }
+          },
+          {
+            "period": "2033-03",
+            "values": {
+              "payment": 6748.84,
+              "interest": 525.08,
+              "principal": 6223.76,
+              "balance": 77789.79
+            }
+          },
+          {
+            "period": "2033-04",
+            "values": {
+              "payment": 6748.84,
+              "interest": 486.19,
+              "principal": 6262.66,
+              "balance": 71527.14
+            }
+          },
+          {
+            "period": "2033-05",
+            "values": {
+              "payment": 6748.84,
+              "interest": 447.04,
+              "principal": 6301.8,
+              "balance": 65225.34
+            }
+          },
+          {
+            "period": "2033-06",
+            "values": {
+              "payment": 6748.84,
+              "interest": 407.66,
+              "principal": 6341.18,
+              "balance": 58884.16
+            }
+          },
+          {
+            "period": "2033-07",
+            "values": {
+              "payment": 6748.84,
+              "interest": 368.03,
+              "principal": 6380.82,
+              "balance": 52503.34
+            }
+          },
+          {
+            "period": "2033-08",
+            "values": {
+              "payment": 6748.84,
+              "interest": 328.15,
+              "principal": 6420.7,
+              "balance": 46082.65
+            }
+          },
+          {
+            "period": "2033-09",
+            "values": {
+              "payment": 6748.84,
+              "interest": 288.02,
+              "principal": 6460.82,
+              "balance": 39621.82
+            }
+          },
+          {
+            "period": "2033-10",
+            "values": {
+              "payment": 6748.84,
+              "interest": 247.64,
+              "principal": 6501.2,
+              "balance": 33120.62
+            }
+          },
+          {
+            "period": "2033-11",
+            "values": {
+              "payment": 6748.84,
+              "interest": 207,
+              "principal": 6541.84,
+              "balance": 26578.78
+            }
+          },
+          {
+            "period": "2033-12",
+            "values": {
+              "payment": 6748.84,
+              "interest": 166.12,
+              "principal": 6582.72,
+              "balance": 19996.05
+            }
+          },
+          {
+            "period": "2034-01",
+            "values": {
+              "payment": 6748.84,
+              "interest": 124.98,
+              "principal": 6623.87,
+              "balance": 13372.19
+            }
+          },
+          {
+            "period": "2034-02",
+            "values": {
+              "payment": 6748.84,
+              "interest": 83.58,
+              "principal": 6665.27,
+              "balance": 6706.92
+            }
+          },
+          {
+            "period": "2034-03",
+            "values": {
+              "payment": 6748.84,
+              "interest": 41.92,
+              "principal": 6706.92,
+              "balance": 0
+            }
+          }
+        ]
+      },
+      "calc_e9dc083ca686": {
+        "calcId": "calc_e9dc083ca686",
+        "tool": "build_scenario",
+        "key": "option_a.total_payments",
+        "labelRo": "Total plăți A",
+        "value": 566902.68,
+        "unit": "EUR",
+        "display": "566.903 EUR",
+        "dependsOn": [
+          "calc_19d8a2b0d048",
+          "calc_9de17537c086"
+        ]
+      },
+      "calc_95a65324fc8c": {
+        "calcId": "calc_95a65324fc8c",
+        "tool": "build_scenario",
+        "key": "option_a.total_interest",
+        "labelRo": "Dobânzi totale A",
+        "value": 126902.68,
+        "unit": "EUR",
+        "display": "126.903 EUR",
+        "dependsOn": [
+          "calc_e9dc083ca686",
+          "calc_416be863f78c"
+        ]
+      },
+      "calc_88aac8b2954e": {
+        "calcId": "calc_88aac8b2954e",
+        "tool": "build_scenario",
+        "key": "option_a.savings.fuel_eur",
+        "labelRo": "Economie la motorină A",
+        "value": 5054.83,
+        "unit": "EUR_PER_YEAR",
+        "display": "5.055 EUR/an",
+        "dependsOn": [
+          "calc_2fbd0fd8db8e",
+          "calc_f25d3e914fc5"
+        ]
+      },
+      "calc_065bd332f1b1": {
+        "calcId": "calc_065bd332f1b1",
+        "tool": "build_scenario",
+        "key": "option_a.savings_horizon",
+        "labelRo": "Economii A pe 7 ani",
+        "value": 35383.82,
+        "unit": "EUR",
+        "display": "35.384 EUR",
+        "dependsOn": [
+          "calc_88aac8b2954e",
+          "calc_f803b072e077"
+        ]
+      },
+      "calc_ace4c3fa8131": {
+        "calcId": "calc_ace4c3fa8131",
+        "tool": "build_scenario",
+        "key": "option_a.net_cost",
+        "labelRo": "Cost net A pe 7 ani",
+        "value": 531518.85,
+        "unit": "EUR",
+        "display": "531.519 EUR",
+        "formula": "plăți + costuri garanții − grant − economii",
+        "dependsOn": [
+          "calc_e9dc083ca686",
+          "calc_065bd332f1b1"
+        ]
+      },
+      "calc_340271272546": {
+        "calcId": "calc_340271272546",
+        "tool": "build_scenario",
+        "key": "option_b.installment",
+        "labelRo": "Rată lunară B (cofinanțare)",
+        "value": 4265.7,
+        "unit": "EUR_PER_MONTH",
+        "display": "4.266 EUR/lună",
+        "formula": "PMT = P · r / (1 − (1 + r)^−n)",
+        "dependsOn": [
+          "calc_7ac0a504505e",
+          "calc_a82503ea6481",
+          "calc_9de17537c086"
+        ]
+      },
+      "calc_c6545aa88dcf": {
+        "calcId": "calc_c6545aa88dcf",
+        "tool": "build_scenario",
+        "key": "option_b.schedule",
+        "labelRo": "Grafic rambursare B (total plăți cofinanțare)",
+        "value": 358318.62,
+        "unit": "EUR",
+        "display": "358.319 EUR",
+        "dependsOn": [
+          "calc_340271272546"
+        ],
+        "series": [
+          {
+            "period": "2027-04",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1460,
+              "principal": 2805.7,
+              "balance": 289194.3
+            }
+          },
+          {
+            "period": "2027-05",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1445.97,
+              "principal": 2819.73,
+              "balance": 286374.58
+            }
+          },
+          {
+            "period": "2027-06",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1431.87,
+              "principal": 2833.83,
+              "balance": 283540.75
+            }
+          },
+          {
+            "period": "2027-07",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1417.7,
+              "principal": 2847.99,
+              "balance": 280692.76
+            }
+          },
+          {
+            "period": "2027-08",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1403.46,
+              "principal": 2862.23,
+              "balance": 277830.52
+            }
+          },
+          {
+            "period": "2027-09",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1389.15,
+              "principal": 2876.55,
+              "balance": 274953.98
+            }
+          },
+          {
+            "period": "2027-10",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1374.77,
+              "principal": 2890.93,
+              "balance": 272063.05
+            }
+          },
+          {
+            "period": "2027-11",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1360.32,
+              "principal": 2905.38,
+              "balance": 269157.67
+            }
+          },
+          {
+            "period": "2027-12",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1345.79,
+              "principal": 2919.91,
+              "balance": 266237.76
+            }
+          },
+          {
+            "period": "2028-01",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1331.19,
+              "principal": 2934.51,
+              "balance": 263303.25
+            }
+          },
+          {
+            "period": "2028-02",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1316.52,
+              "principal": 2949.18,
+              "balance": 260354.07
+            }
+          },
+          {
+            "period": "2028-03",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1301.77,
+              "principal": 2963.93,
+              "balance": 257390.14
+            }
+          },
+          {
+            "period": "2028-04",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1286.95,
+              "principal": 2978.75,
+              "balance": 254411.39
+            }
+          },
+          {
+            "period": "2028-05",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1272.06,
+              "principal": 2993.64,
+              "balance": 251417.75
+            }
+          },
+          {
+            "period": "2028-06",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1257.09,
+              "principal": 3008.61,
+              "balance": 248409.14
+            }
+          },
+          {
+            "period": "2028-07",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1242.05,
+              "principal": 3023.65,
+              "balance": 245385.49
+            }
+          },
+          {
+            "period": "2028-08",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1226.93,
+              "principal": 3038.77,
+              "balance": 242346.72
+            }
+          },
+          {
+            "period": "2028-09",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1211.73,
+              "principal": 3053.96,
+              "balance": 239292.75
+            }
+          },
+          {
+            "period": "2028-10",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1196.46,
+              "principal": 3069.23,
+              "balance": 236223.52
+            }
+          },
+          {
+            "period": "2028-11",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1181.12,
+              "principal": 3084.58,
+              "balance": 233138.94
+            }
+          },
+          {
+            "period": "2028-12",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1165.69,
+              "principal": 3100,
+              "balance": 230038.94
+            }
+          },
+          {
+            "period": "2029-01",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1150.19,
+              "principal": 3115.5,
+              "balance": 226923.43
+            }
+          },
+          {
+            "period": "2029-02",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1134.62,
+              "principal": 3131.08,
+              "balance": 223792.35
+            }
+          },
+          {
+            "period": "2029-03",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1118.96,
+              "principal": 3146.74,
+              "balance": 220645.62
+            }
+          },
+          {
+            "period": "2029-04",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1103.23,
+              "principal": 3162.47,
+              "balance": 217483.15
+            }
+          },
+          {
+            "period": "2029-05",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1087.42,
+              "principal": 3178.28,
+              "balance": 214304.86
+            }
+          },
+          {
+            "period": "2029-06",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1071.52,
+              "principal": 3194.17,
+              "balance": 211110.69
+            }
+          },
+          {
+            "period": "2029-07",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1055.55,
+              "principal": 3210.14,
+              "balance": 207900.55
+            }
+          },
+          {
+            "period": "2029-08",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1039.5,
+              "principal": 3226.2,
+              "balance": 204674.35
+            }
+          },
+          {
+            "period": "2029-09",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1023.37,
+              "principal": 3242.33,
+              "balance": 201432.02
+            }
+          },
+          {
+            "period": "2029-10",
+            "values": {
+              "payment": 4265.7,
+              "interest": 1007.16,
+              "principal": 3258.54,
+              "balance": 198173.49
+            }
+          },
+          {
+            "period": "2029-11",
+            "values": {
+              "payment": 4265.7,
+              "interest": 990.87,
+              "principal": 3274.83,
+              "balance": 194898.66
+            }
+          },
+          {
+            "period": "2029-12",
+            "values": {
+              "payment": 4265.7,
+              "interest": 974.49,
+              "principal": 3291.2,
+              "balance": 191607.45
+            }
+          },
+          {
+            "period": "2030-01",
+            "values": {
+              "payment": 4265.7,
+              "interest": 958.04,
+              "principal": 3307.66,
+              "balance": 188299.79
+            }
+          },
+          {
+            "period": "2030-02",
+            "values": {
+              "payment": 4265.7,
+              "interest": 941.5,
+              "principal": 3324.2,
+              "balance": 184975.59
+            }
+          },
+          {
+            "period": "2030-03",
+            "values": {
+              "payment": 4265.7,
+              "interest": 924.88,
+              "principal": 3340.82,
+              "balance": 181634.77
+            }
+          },
+          {
+            "period": "2030-04",
+            "values": {
+              "payment": 4265.7,
+              "interest": 908.17,
+              "principal": 3357.52,
+              "balance": 178277.25
+            }
+          },
+          {
+            "period": "2030-05",
+            "values": {
+              "payment": 4265.7,
+              "interest": 891.39,
+              "principal": 3374.31,
+              "balance": 174902.94
+            }
+          },
+          {
+            "period": "2030-06",
+            "values": {
+              "payment": 4265.7,
+              "interest": 874.51,
+              "principal": 3391.18,
+              "balance": 171511.75
+            }
+          },
+          {
+            "period": "2030-07",
+            "values": {
+              "payment": 4265.7,
+              "interest": 857.56,
+              "principal": 3408.14,
+              "balance": 168103.61
+            }
+          },
+          {
+            "period": "2030-08",
+            "values": {
+              "payment": 4265.7,
+              "interest": 840.52,
+              "principal": 3425.18,
+              "balance": 164678.43
+            }
+          },
+          {
+            "period": "2030-09",
+            "values": {
+              "payment": 4265.7,
+              "interest": 823.39,
+              "principal": 3442.31,
+              "balance": 161236.13
+            }
+          },
+          {
+            "period": "2030-10",
+            "values": {
+              "payment": 4265.7,
+              "interest": 806.18,
+              "principal": 3459.52,
+              "balance": 157776.61
+            }
+          },
+          {
+            "period": "2030-11",
+            "values": {
+              "payment": 4265.7,
+              "interest": 788.88,
+              "principal": 3476.81,
+              "balance": 154299.8
+            }
+          },
+          {
+            "period": "2030-12",
+            "values": {
+              "payment": 4265.7,
+              "interest": 771.5,
+              "principal": 3494.2,
+              "balance": 150805.6
+            }
+          },
+          {
+            "period": "2031-01",
+            "values": {
+              "payment": 4265.7,
+              "interest": 754.03,
+              "principal": 3511.67,
+              "balance": 147293.93
+            }
+          },
+          {
+            "period": "2031-02",
+            "values": {
+              "payment": 4265.7,
+              "interest": 736.47,
+              "principal": 3529.23,
+              "balance": 143764.7
+            }
+          },
+          {
+            "period": "2031-03",
+            "values": {
+              "payment": 4265.7,
+              "interest": 718.82,
+              "principal": 3546.87,
+              "balance": 140217.83
+            }
+          },
+          {
+            "period": "2031-04",
+            "values": {
+              "payment": 4265.7,
+              "interest": 701.09,
+              "principal": 3564.61,
+              "balance": 136653.22
+            }
+          },
+          {
+            "period": "2031-05",
+            "values": {
+              "payment": 4265.7,
+              "interest": 683.27,
+              "principal": 3582.43,
+              "balance": 133070.78
+            }
+          },
+          {
+            "period": "2031-06",
+            "values": {
+              "payment": 4265.7,
+              "interest": 665.35,
+              "principal": 3600.34,
+              "balance": 129470.44
+            }
+          },
+          {
+            "period": "2031-07",
+            "values": {
+              "payment": 4265.7,
+              "interest": 647.35,
+              "principal": 3618.35,
+              "balance": 125852.09
+            }
+          },
+          {
+            "period": "2031-08",
+            "values": {
+              "payment": 4265.7,
+              "interest": 629.26,
+              "principal": 3636.44,
+              "balance": 122215.66
+            }
+          },
+          {
+            "period": "2031-09",
+            "values": {
+              "payment": 4265.7,
+              "interest": 611.08,
+              "principal": 3654.62,
+              "balance": 118561.04
+            }
+          },
+          {
+            "period": "2031-10",
+            "values": {
+              "payment": 4265.7,
+              "interest": 592.81,
+              "principal": 3672.89,
+              "balance": 114888.15
+            }
+          },
+          {
+            "period": "2031-11",
+            "values": {
+              "payment": 4265.7,
+              "interest": 574.44,
+              "principal": 3691.26,
+              "balance": 111196.89
+            }
+          },
+          {
+            "period": "2031-12",
+            "values": {
+              "payment": 4265.7,
+              "interest": 555.98,
+              "principal": 3709.71,
+              "balance": 107487.17
+            }
+          },
+          {
+            "period": "2032-01",
+            "values": {
+              "payment": 4265.7,
+              "interest": 537.44,
+              "principal": 3728.26,
+              "balance": 103758.91
+            }
+          },
+          {
+            "period": "2032-02",
+            "values": {
+              "payment": 4265.7,
+              "interest": 518.79,
+              "principal": 3746.9,
+              "balance": 100012.01
+            }
+          },
+          {
+            "period": "2032-03",
+            "values": {
+              "payment": 4265.7,
+              "interest": 500.06,
+              "principal": 3765.64,
+              "balance": 96246.37
+            }
+          },
+          {
+            "period": "2032-04",
+            "values": {
+              "payment": 4265.7,
+              "interest": 481.23,
+              "principal": 3784.47,
+              "balance": 92461.91
+            }
+          },
+          {
+            "period": "2032-05",
+            "values": {
+              "payment": 4265.7,
+              "interest": 462.31,
+              "principal": 3803.39,
+              "balance": 88658.52
+            }
+          },
+          {
+            "period": "2032-06",
+            "values": {
+              "payment": 4265.7,
+              "interest": 443.29,
+              "principal": 3822.41,
+              "balance": 84836.11
+            }
+          },
+          {
+            "period": "2032-07",
+            "values": {
+              "payment": 4265.7,
+              "interest": 424.18,
+              "principal": 3841.52,
+              "balance": 80994.59
+            }
+          },
+          {
+            "period": "2032-08",
+            "values": {
+              "payment": 4265.7,
+              "interest": 404.97,
+              "principal": 3860.72,
+              "balance": 77133.87
+            }
+          },
+          {
+            "period": "2032-09",
+            "values": {
+              "payment": 4265.7,
+              "interest": 385.67,
+              "principal": 3880.03,
+              "balance": 73253.84
+            }
+          },
+          {
+            "period": "2032-10",
+            "values": {
+              "payment": 4265.7,
+              "interest": 366.27,
+              "principal": 3899.43,
+              "balance": 69354.41
+            }
+          },
+          {
+            "period": "2032-11",
+            "values": {
+              "payment": 4265.7,
+              "interest": 346.77,
+              "principal": 3918.93,
+              "balance": 65435.49
+            }
+          },
+          {
+            "period": "2032-12",
+            "values": {
+              "payment": 4265.7,
+              "interest": 327.18,
+              "principal": 3938.52,
+              "balance": 61496.97
+            }
+          },
+          {
+            "period": "2033-01",
+            "values": {
+              "payment": 4265.7,
+              "interest": 307.48,
+              "principal": 3958.21,
+              "balance": 57538.75
+            }
+          },
+          {
+            "period": "2033-02",
+            "values": {
+              "payment": 4265.7,
+              "interest": 287.69,
+              "principal": 3978,
+              "balance": 53560.75
+            }
+          },
+          {
+            "period": "2033-03",
+            "values": {
+              "payment": 4265.7,
+              "interest": 267.8,
+              "principal": 3997.89,
+              "balance": 49562.85
+            }
+          },
+          {
+            "period": "2033-04",
+            "values": {
+              "payment": 4265.7,
+              "interest": 247.81,
+              "principal": 4017.88,
+              "balance": 45544.97
+            }
+          },
+          {
+            "period": "2033-05",
+            "values": {
+              "payment": 4265.7,
+              "interest": 227.72,
+              "principal": 4037.97,
+              "balance": 41507
+            }
+          },
+          {
+            "period": "2033-06",
+            "values": {
+              "payment": 4265.7,
+              "interest": 207.53,
+              "principal": 4058.16,
+              "balance": 37448.83
+            }
+          },
+          {
+            "period": "2033-07",
+            "values": {
+              "payment": 4265.7,
+              "interest": 187.24,
+              "principal": 4078.45,
+              "balance": 33370.38
+            }
+          },
+          {
+            "period": "2033-08",
+            "values": {
+              "payment": 4265.7,
+              "interest": 166.85,
+              "principal": 4098.85,
+              "balance": 29271.53
+            }
+          },
+          {
+            "period": "2033-09",
+            "values": {
+              "payment": 4265.7,
+              "interest": 146.36,
+              "principal": 4119.34,
+              "balance": 25152.19
+            }
+          },
+          {
+            "period": "2033-10",
+            "values": {
+              "payment": 4265.7,
+              "interest": 125.76,
+              "principal": 4139.94,
+              "balance": 21012.26
+            }
+          },
+          {
+            "period": "2033-11",
+            "values": {
+              "payment": 4265.7,
+              "interest": 105.06,
+              "principal": 4160.64,
+              "balance": 16851.62
+            }
+          },
+          {
+            "period": "2033-12",
+            "values": {
+              "payment": 4265.7,
+              "interest": 84.26,
+              "principal": 4181.44,
+              "balance": 12670.18
+            }
+          },
+          {
+            "period": "2034-01",
+            "values": {
+              "payment": 4265.7,
+              "interest": 63.35,
+              "principal": 4202.35,
+              "balance": 8467.83
+            }
+          },
+          {
+            "period": "2034-02",
+            "values": {
+              "payment": 4265.7,
+              "interest": 42.34,
+              "principal": 4223.36,
+              "balance": 4244.48
+            }
+          },
+          {
+            "period": "2034-03",
+            "values": {
+              "payment": 4265.7,
+              "interest": 21.22,
+              "principal": 4244.48,
+              "balance": 0
+            }
+          }
+        ]
+      },
+      "calc_2355dfabd5ca": {
+        "calcId": "calc_2355dfabd5ca",
+        "tool": "build_scenario",
+        "key": "option_b.bridge.schedule",
+        "labelRo": "Grafic credit-punte (rambursat din grant)",
+        "value": 214000,
+        "unit": "EUR",
+        "display": "214.000 EUR",
+        "dependsOn": [
+          "calc_d1bab2c80fa6",
+          "calc_57232ad07b88",
+          "calc_103c3347fefc"
+        ],
+        "series": [
+          {
+            "period": "2027-04",
+            "values": {
+              "payment": 0,
+              "interest": 1166.67,
+              "balance": 201166.67
+            }
+          },
+          {
+            "period": "2027-05",
+            "values": {
+              "payment": 0,
+              "interest": 1166.67,
+              "balance": 202333.33
+            }
+          },
+          {
+            "period": "2027-06",
+            "values": {
+              "payment": 0,
+              "interest": 1166.67,
+              "balance": 203500
+            }
+          },
+          {
+            "period": "2027-07",
+            "values": {
+              "payment": 0,
+              "interest": 1166.67,
+              "balance": 204666.67
+            }
+          },
+          {
+            "period": "2027-08",
+            "values": {
+              "payment": 0,
+              "interest": 1166.67,
+              "balance": 205833.33
+            }
+          },
+          {
+            "period": "2027-09",
+            "values": {
+              "payment": 0,
+              "interest": 1166.67,
+              "balance": 207000
+            }
+          },
+          {
+            "period": "2027-10",
+            "values": {
+              "payment": 0,
+              "interest": 1166.67,
+              "balance": 208166.67
+            }
+          },
+          {
+            "period": "2027-11",
+            "values": {
+              "payment": 0,
+              "interest": 1166.67,
+              "balance": 209333.33
+            }
+          },
+          {
+            "period": "2027-12",
+            "values": {
+              "payment": 0,
+              "interest": 1166.67,
+              "balance": 210500
+            }
+          },
+          {
+            "period": "2028-01",
+            "values": {
+              "payment": 0,
+              "interest": 1166.67,
+              "balance": 211666.67
+            }
+          },
+          {
+            "period": "2028-02",
+            "values": {
+              "payment": 0,
+              "interest": 1166.67,
+              "balance": 212833.33
+            }
+          },
+          {
+            "period": "2028-03",
+            "values": {
+              "payment": 214000,
+              "interest": 1166.67,
+              "balance": 0
+            }
+          }
+        ]
+      },
+      "calc_74c1b1da2826": {
+        "calcId": "calc_74c1b1da2826",
+        "tool": "build_scenario",
+        "key": "option_b.bridge.interest",
+        "labelRo": "Dobândă credit-punte",
+        "value": 14000,
+        "unit": "EUR",
+        "display": "14.000 EUR",
+        "formula": "punte × dobândă × luni / 12",
+        "dependsOn": [
+          "calc_d1bab2c80fa6",
+          "calc_57232ad07b88",
+          "calc_103c3347fefc"
+        ]
+      },
+      "calc_bd50183a4744": {
+        "calcId": "calc_bd50183a4744",
+        "tool": "build_scenario",
+        "key": "option_b.total_payments",
+        "labelRo": "Total plăți B (cofinanțare + punte)",
+        "value": 572318.62,
+        "unit": "EUR",
+        "display": "572.319 EUR",
+        "dependsOn": [
+          "calc_c6545aa88dcf",
+          "calc_2355dfabd5ca"
+        ]
+      },
+      "calc_88cd42d8d487": {
+        "calcId": "calc_88cd42d8d487",
+        "tool": "build_scenario",
+        "key": "option_b.total_interest",
+        "labelRo": "Dobânzi totale B (cofinanțare + punte)",
+        "value": 80318.62,
+        "unit": "EUR",
+        "display": "80.319 EUR",
+        "dependsOn": [
+          "calc_c6545aa88dcf",
+          "calc_74c1b1da2826"
+        ]
+      },
+      "calc_797ed2e2220b": {
+        "calcId": "calc_797ed2e2220b",
+        "tool": "build_scenario",
+        "key": "option_b.savings.fuel_eur",
+        "labelRo": "Economie la motorină B",
+        "value": 8761.71,
+        "unit": "EUR_PER_YEAR",
+        "display": "8.762 EUR/an",
+        "dependsOn": [
+          "calc_f77159831377",
+          "calc_f25d3e914fc5"
+        ]
+      },
+      "calc_578aeafa5515": {
+        "calcId": "calc_578aeafa5515",
+        "tool": "build_scenario",
+        "key": "option_b.savings.inputs_eur",
+        "labelRo": "Economie la inputuri B",
+        "value": 3000,
+        "unit": "EUR_PER_YEAR",
+        "display": "3.000 EUR/an",
+        "dependsOn": [
+          "calc_4e9979f6ebd7"
+        ]
+      },
+      "calc_ab9bd8c1e3f4": {
+        "calcId": "calc_ab9bd8c1e3f4",
+        "tool": "build_scenario",
+        "key": "option_b.savings_horizon",
+        "labelRo": "Economii B pe 7 ani",
+        "value": 82331.96,
+        "unit": "EUR",
+        "display": "82.332 EUR",
+        "dependsOn": [
+          "calc_797ed2e2220b",
+          "calc_578aeafa5515",
+          "calc_f803b072e077"
+        ]
+      },
+      "calc_ee7cbac521c4": {
+        "calcId": "calc_ee7cbac521c4",
+        "tool": "build_scenario",
+        "key": "option_b.net_cost",
+        "labelRo": "Cost net B pe 7 ani",
+        "value": 289986.67,
+        "unit": "EUR",
+        "display": "289.987 EUR",
+        "formula": "plăți + costuri garanții − grant − economii",
+        "dependsOn": [
+          "calc_bd50183a4744",
+          "calc_f2e9b78e2e84",
+          "calc_ab9bd8c1e3f4"
+        ]
+      },
+      "calc_ee6d061aa8c3": {
+        "calcId": "calc_ee6d061aa8c3",
+        "tool": "compare_scenarios",
+        "key": "compare.net_advantage",
+        "labelRo": "Avantaj net B față de A pe 7 ani",
+        "value": 241532.18,
+        "unit": "EUR",
+        "display": "241.532 EUR",
+        "formula": "(economii B − plăți B − costuri B + grant) − (economii A − plăți A − costuri A)",
+        "dependsOn": [
+          "calc_ace4c3fa8131",
+          "calc_ee7cbac521c4"
+        ]
+      },
+      "calc_388a136afb9d": {
+        "calcId": "calc_388a136afb9d",
+        "tool": "compare_scenarios",
+        "key": "compare.driver.grant",
+        "labelRo": "Grant DR-12",
+        "value": 200000,
+        "unit": "EUR",
+        "display": "200.000 EUR",
+        "dependsOn": [
+          "calc_f2e9b78e2e84"
+        ]
+      },
+      "calc_af7d949e43a3": {
+        "calcId": "calc_af7d949e43a3",
+        "tool": "compare_scenarios",
+        "key": "compare.driver.investment",
+        "labelRo": "Investiție mai mare (precizie)",
+        "value": -52000,
+        "unit": "EUR",
+        "display": "-52.000 EUR",
+        "dependsOn": [
+          "calc_9b6b33cfe360"
+        ]
+      },
+      "calc_d54f28a4f5f5": {
+        "calcId": "calc_d54f28a4f5f5",
+        "tool": "compare_scenarios",
+        "key": "compare.driver.interest",
+        "labelRo": "Dobânzi mai mici (inclusiv puntea)",
+        "value": 46584.05,
+        "unit": "EUR",
+        "display": "46.584 EUR",
+        "dependsOn": [
+          "calc_95a65324fc8c",
+          "calc_88cd42d8d487"
+        ]
+      },
+      "calc_38f9c1960e29": {
+        "calcId": "calc_38f9c1960e29",
+        "tool": "compare_scenarios",
+        "key": "compare.driver.savings",
+        "labelRo": "Motorină și inputuri economisite în plus",
+        "value": 46948.14,
+        "unit": "EUR",
+        "display": "46.948 EUR",
+        "dependsOn": [
+          "calc_065bd332f1b1",
+          "calc_ab9bd8c1e3f4"
+        ]
+      },
+      "calc_7905b118c671": {
+        "calcId": "calc_7905b118c671",
+        "tool": "compare_scenarios",
+        "key": "compare.upgrade_payback",
+        "labelRo": "Amortizarea pachetului de precizie după grant",
+        "value": 32.56,
+        "unit": "MONTHS",
+        "display": "32,6 luni",
+        "formula": "cost precizie × (1 − intensitate grant) / economie lunară suplimentară",
+        "dependsOn": [
+          "calc_9b6b33cfe360",
+          "calc_653b5d04bd88",
+          "calc_38f9c1960e29"
+        ]
+      },
+      "calc_47de5d2cb9e0": {
+        "calcId": "calc_47de5d2cb9e0",
+        "tool": "check_affordability",
+        "key": "option_a.affordability_ratio",
+        "labelRo": "Serviciu anual datorie / cashflow net anual, A",
+        "value": 38.56,
+        "unit": "PCT",
+        "display": "38,6%",
+        "dependsOn": [
+          "calc_19d8a2b0d048"
+        ]
+      },
+      "calc_188b575a43fc": {
+        "calcId": "calc_188b575a43fc",
+        "tool": "check_affordability",
+        "key": "option_b.affordability_ratio",
+        "labelRo": "Serviciu anual datorie / cashflow net anual, B",
+        "value": 24.38,
+        "unit": "PCT",
+        "display": "24,4%",
+        "formula": "rate cofinanțare pe 12 luni / cashflow net (puntea se închide din grant)",
+        "dependsOn": [
+          "calc_340271272546"
+        ]
+      },
+      "calc_7153b7543f33": {
+        "calcId": "calc_7153b7543f33",
+        "tool": "calculate_impact",
+        "key": "label.green_amount",
+        "labelRo": "Sumă etichetată verde (pachet de precizie)",
+        "value": 52000,
+        "unit": "EUR",
+        "display": "52.000 EUR",
+        "dependsOn": [
+          "calc_9b6b33cfe360"
+        ]
+      },
+      "calc_6b45a9079882": {
+        "calcId": "calc_6b45a9079882",
+        "tool": "calculate_impact",
+        "key": "label.transition_amount",
+        "labelRo": "Sumă etichetată tranziție (tractoare)",
+        "value": 440000,
+        "unit": "EUR",
+        "display": "440.000 EUR",
+        "dependsOn": [
+          "calc_42d2fdf50645",
+          "calc_dc3fbbc766a8"
+        ]
+      },
+      "calc_a117323eb6e6": {
+        "calcId": "calc_a117323eb6e6",
+        "tool": "calculate_impact",
+        "key": "label.green_share",
+        "labelRo": "Pondere verde în investiție",
+        "value": 10.57,
+        "unit": "PCT",
+        "display": "10,6%",
+        "dependsOn": [
+          "calc_7153b7543f33",
+          "calc_eb7d3671db5b"
+        ]
+      },
+      "calc_0e0707db267b": {
+        "calcId": "calc_0e0707db267b",
+        "tool": "calculate_impact",
+        "key": "impact.fuel_horizon",
+        "labelRo": "Motorină economisită pe 7 ani",
+        "value": 52416,
+        "unit": "L",
+        "display": "52.416 l",
+        "dependsOn": [
+          "calc_f77159831377",
+          "calc_f803b072e077"
+        ]
+      },
+      "calc_9b6fae67d882": {
+        "calcId": "calc_9b6fae67d882",
+        "tool": "calculate_impact",
+        "key": "impact.co2_horizon",
+        "labelRo": "CO₂ evitat pe 7 ani",
+        "value": 139.43,
+        "unit": "T_CO2",
+        "display": "139,4 t CO₂",
+        "dependsOn": [
+          "calc_78b6030c059d",
+          "calc_f803b072e077"
+        ]
+      }
+    },
+    "officerActions": [],
+    "pendingDocuments": [],
+    "error": null
+  }
+}

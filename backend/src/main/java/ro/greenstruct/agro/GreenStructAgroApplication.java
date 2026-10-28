@@ -1,0 +1,14 @@
+package ro.greenstruct.agro;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+
+@SpringBootApplication
+@ConfigurationPropertiesScan
+public class GreenStructAgroApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(GreenStructAgroApplication.class, args);
+    }
+}

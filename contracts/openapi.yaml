@@ -1,0 +1,1135 @@
+openapi: 3.1.0
+info:
+  title: GreenStruct Agro API
+  version: 0.1.0
+  summary: Contractul dintre frontend (React) și backend (Spring Boot) pentru GreenStruct Agro.
+  description: |
+    Fermierul descrie o investiție, 3 agenți AI pe AWS Bedrock o analizează, iar ofițerul Raiffeisen primește
+    raportul de credit verde.
+
+    Reguli:
+    - Toate cifrele vin din motorul determinist. Output-urile agenților referă cifrele prin `calcId`;
+      `RunView.calcs` le rezolvă (valoare, unitate, text formatat, formulă, sursă).
+    - Textele vizibile pentru utilizator sunt în română; cheile și identificatorii în engleză.
+    - Evenimentele live (SSE) sunt descrise în `events.md` și `schemas/event.json`.
+    - Output-urile agenților sunt în `schemas/submit_*.json` (aceleași scheme se trimit la Bedrock ca unelte).
+    - Erorile au mereu forma `{ "error": { "code", "message" } }`.
+  license:
+    name: Proprietary (hackathon demo)
+    identifier: LicenseRef-Proprietary
+servers:
+  - url: /
+    description: Același origin. Local, Vite face proxy către backend (localhost:8080) sau către Prism (localhost:4010, npm run mock).
+security: []
+tags:
+  - name: modules
+    description: Cele 6 module de investiții (carduri, documente, întrebări).
+  - name: farms
+    description: Profilul fermei din ANAF, APIA și Open Banking (mock în demo).
+  - name: runs
+    description: Dosarele analizate de agenți.
+  - name: officer
+    description: Acțiunile ofițerului de credit.
+  - name: health
+    description: Starea serviciilor externe înainte de demo.
+
+paths:
+  /api/modules:
+    get:
+      tags: [modules]
+      operationId: listModules
+      summary: Lista modulelor
+      description: Cele 6 carduri, cu documentele cerute și chestionarul fiecărui modul. Doar `irigatii` și `utilaje` sunt `DEMO_READY`.
+      responses:
+        '200':
+          description: Modulele.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleList'
+              examples:
+                toate:
+                  $ref: './examples/modules.json'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/farms/{cui}:
+    get:
+      tags: [farms]
+      operationId: getFarm
+      summary: Profilul fermei după CUI
+      description: Date firmă (ANAF/ONRC), parcele APIA ca GeoJSON cu straturile de risc, rezumatul cashflow-ului din Open Banking.
+      parameters:
+        - $ref: '#/components/parameters/Cui'
+      responses:
+        '200':
+          description: Profilul fermei.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FarmProfile'
+              examples:
+                irigatii:
+                  $ref: './examples/farm-irigatii.json'
+                utilaje:
+                  $ref: './examples/farm-utilaje.json'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/UpstreamError'
+
+  /api/runs:
+    post:
+      tags: [runs]
+      operationId: createRun
+      summary: Creează un dosar și pornește analiza
+      description: |
+        Multipart: CUI, modul, parcele, chestionar (JSON) și documente. Analiza pornește asincron;
+        progresul se urmărește pe `GET /api/runs/{id}/events`.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateRunForm'
+            encoding:
+              parcelIds:
+                contentType: application/json
+              questionnaire:
+                contentType: application/json
+              documentManifest:
+                contentType: application/json
+              documents:
+                contentType: application/pdf, image/jpeg, image/png
+      responses:
+        '202':
+          $ref: '#/components/responses/RunCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '413':
+          $ref: '#/components/responses/PayloadTooLarge'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+
+  /api/runs/demo/{scenario}:
+    post:
+      tags: [runs]
+      operationId: createDemoRun
+      summary: Încarcă dosarul demo
+      description: Butonul „Încarcă dosarul demo”. Folosește documentele și datele fixe din `data/demo/`. Modul de rulare (LIVE, HYBRID, REPLAY) vine din configurația serverului.
+      parameters:
+        - name: scenario
+          in: path
+          required: true
+          description: Scenariul demo.
+          schema:
+            $ref: '#/components/schemas/DemoScenario'
+      responses:
+        '202':
+          $ref: '#/components/responses/RunCreated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/runs/{id}:
+    get:
+      tags: [runs]
+      operationId: getRun
+      summary: Starea completă a dosarului
+      description: Output-urile agenților și toate cifrele rezolvate (`calcs`). Se poate cere oricând; câmpurile agenților sunt `null` până termină agentul respectiv.
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Dosarul.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunView'
+              examples:
+                irigatii:
+                  $ref: './examples/run-irigatii.json'
+                utilaje:
+                  $ref: './examples/run-utilaje.json'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/runs/{id}/events:
+    get:
+      tags: [runs]
+      operationId: streamRunEvents
+      summary: Fluxul live de evenimente (SSE)
+      description: |
+        Server-Sent Events. Trimite întâi istoricul (de la `Last-Event-ID` + 1 sau de la `after` + 1), apoi evenimentele live.
+        Fiecare eveniment e un mesaj nenumit (`message`) cu `id: <seq>` și `data: <RunEvent JSON>`.
+        Fluxul se închide după `run.completed` sau `run.failed`, iar după aprobare se trimit și tranzițiile
+        `GATA → APROBAT → MONITORIZARE`. Catalogul complet e în `events.md`.
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+        - name: Last-Event-ID
+          in: header
+          required: false
+          description: Ultimul `seq` primit (trimis automat de EventSource la reconectare).
+          schema:
+            type: integer
+            minimum: 0
+        - name: after
+          in: query
+          required: false
+          description: Alternativă la header pentru prima conectare (EventSource nu poate seta header-e).
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        '200':
+          description: Flux SSE.
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: Linii SSE; fiecare câmp `data` conține un RunEvent serializat JSON.
+                contentMediaType: application/json
+                contentSchema:
+                  $ref: '#/components/schemas/RunEvent'
+              example: |
+                id: 1
+                data: {"seq":1,"runId":"run_irg7k2xq4m9p","type":"state.transition","agent":null,"at":"2026-10-28T09:30:00.000Z","message":"Dosar creat: irigații, 40 ha, 3 documente încărcate","data":{"from":null,"to":"CREAT","actor":"FARMER"}}
+
+                id: 2
+                data: {"seq":2,"runId":"run_irg7k2xq4m9p","type":"state.transition","agent":null,"at":"2026-10-28T09:30:01.200Z","message":"Am preluat datele firmei: ANAF, APIA, Open Banking, risc climatic","data":{"from":"CREAT","to":"DATE_FIRMA","actor":"SYSTEM"}}
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/runs/{id}/approve:
+    post:
+      tags: [officer]
+      operationId: approveRun
+      summary: Ofițerul aprobă dosarul
+      description: Doar din starea `GATA`. Mută dosarul în `APROBAT` și emite `state.transition`.
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApproveRequest'
+      responses:
+        '200':
+          description: Dosarul actualizat.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunView'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /api/runs/{id}/request-documents:
+    post:
+      tags: [officer]
+      operationId: requestDocuments
+      summary: Ofițerul cere documente
+      description: Doar din starea `GATA`. Starea rămâne `GATA`; documentele cerute apar în `RunView.pendingDocuments` și la fermier.
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestDocumentsRequest'
+      responses:
+        '200':
+          description: Dosarul actualizat.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunView'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /api/health/bedrock:
+    get:
+      tags: [health]
+      operationId: getBedrockHealth
+      summary: Starea AWS Bedrock
+      description: Indicatorul verde/roșu dinainte de demo. Răspunde mereu 200; starea e în corp.
+      responses:
+        '200':
+          description: Starea Bedrock și a fallback-ului.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BedrockHealth'
+              example:
+                status: UP
+                region: eu-central-1
+                mode: LIVE
+                checkedAt: '2026-10-28T09:25:00Z'
+                goldenRunsAvailable: [irigatii, utilaje]
+                models:
+                  - role: AGENT
+                    modelId: eu.anthropic.claude-sonnet-4-5-20250929-v1:0
+                    status: UP
+                    latencyMs: 820
+                  - role: EXTRACTION
+                    modelId: eu.anthropic.claude-haiku-4-5-20251001-v1:0
+                    status: UP
+                    latencyMs: 410
+
+components:
+  parameters:
+    Cui:
+      name: cui
+      in: path
+      required: true
+      description: Codul unic de înregistrare, cu sau fără prefixul RO.
+      schema:
+        $ref: '#/components/schemas/Cui'
+    RunId:
+      name: id
+      in: path
+      required: true
+      description: Id-ul dosarului.
+      schema:
+        $ref: '#/components/schemas/RunId'
+
+  responses:
+    RunCreated:
+      description: Dosar creat; analiza rulează asincron.
+      headers:
+        Location:
+          description: URL-ul dosarului.
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RunCreated'
+          example:
+            runId: run_irg7k2xq4m9p
+            state: CREAT
+            runUrl: /api/runs/run_irg7k2xq4m9p
+            eventsUrl: /api/runs/run_irg7k2xq4m9p/events
+    BadRequest:
+      description: Cerere invalidă.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: VALIDATION_ERROR
+              message: Câmpul moduleId lipsește.
+    NotFound:
+      description: Resursa nu există.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: NOT_FOUND
+              message: Dosarul nu există.
+    Conflict:
+      description: Acțiunea nu e permisă în starea curentă.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: INVALID_STATE
+              message: Dosarul poate fi aprobat doar din starea GATA.
+    PayloadTooLarge:
+      description: Fișier prea mare.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: FILE_TOO_LARGE
+              message: Fiecare document poate avea cel mult 20 MB.
+    Unprocessable:
+      description: Cererea e validă ca formă, dar nu se poate procesa (ex. modul neconfigurat).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: MODULE_NOT_READY
+              message: Modulul zootehnie nu este încă disponibil pentru analiză completă.
+    UpstreamError:
+      description: Un serviciu extern (ANAF, APIA, Open Banking) nu răspunde și nu există date în cache.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: UPSTREAM_UNAVAILABLE
+              message: APIA nu răspunde. Reîncearcă în câteva minute.
+    InternalError:
+      description: Eroare internă.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: INTERNAL
+              message: A apărut o eroare. Reîncearcă.
+
+  schemas:
+    # ---------- primitives ----------
+    Cui:
+      type: string
+      pattern: '^(RO)?[0-9]{2,10}$'
+    RunId:
+      type: string
+      pattern: '^run_[0-9a-z]{12}$'
+    ModuleId:
+      type: string
+      enum: [irigatii, energie, utilaje, zootehnie, post_recolta, ecologic]
+    DemoScenario:
+      type: string
+      enum: [irigatii, utilaje]
+    RunState:
+      $ref: './schemas/event.json#/$defs/runState'
+    RunMode:
+      type: string
+      description: LIVE = Bedrock real; HYBRID = live cu fallback pe cache/golden; REPLAY = rulare înregistrată, cifrele recalculate live.
+      enum: [LIVE, HYBRID, REPLAY]
+    Month:
+      type: string
+      enum: [JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC]
+    DocType:
+      $ref: './schemas/submit_offer_extraction.json#/$defs/docType'
+    CalcResult:
+      $ref: './schemas/event.json#/$defs/calcResult'
+    RunEvent:
+      $ref: './schemas/event.json'
+
+    Error:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              description: Cod stabil, în engleză, pentru frontend.
+              enum: [VALIDATION_ERROR, NOT_FOUND, INVALID_STATE, FILE_TOO_LARGE, UNSUPPORTED_FILE_TYPE, MODULE_NOT_READY, UPSTREAM_UNAVAILABLE, BEDROCK_UNAVAILABLE, INTERNAL]
+            message:
+              type: string
+              description: Mesaj în română, gata de afișat.
+              maxLength: 300
+            details:
+              type: array
+              maxItems: 20
+              items:
+                type: object
+                additionalProperties: false
+                required: [field, message]
+                properties:
+                  field:
+                    type: string
+                  message:
+                    type: string
+                    maxLength: 200
+
+    # ---------- modules ----------
+    ModuleList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Module'
+    Module:
+      type: object
+      additionalProperties: false
+      required: [moduleId, nameRo, icon, status, descriptionRo, examplesRo, indicator, threshold, requiredDocs, questionnaire]
+      properties:
+        moduleId:
+          $ref: '#/components/schemas/ModuleId'
+        nameRo:
+          type: string
+          maxLength: 60
+        icon:
+          type: string
+          maxLength: 8
+        status:
+          type: string
+          description: DEMO_READY = config + catalog + calculator complet; CONFIG_ONLY = card și config, calculator generic.
+          enum: [DEMO_READY, CONFIG_ONLY]
+        descriptionRo:
+          type: string
+          maxLength: 200
+        examplesRo:
+          type: array
+          items:
+            type: string
+            maxLength: 60
+        indicator:
+          $ref: './schemas/submit_technical_assessment.json#/$defs/indicator'
+        threshold:
+          type: object
+          additionalProperties: false
+          required: [kind, value, unit, sourceRo, demo]
+          properties:
+            kind:
+              type: string
+              enum: [MIN_PCT, BY_NATURE, CERTIFICATION]
+            value:
+              type: [number, 'null']
+            unit:
+              type: [string, 'null']
+              enum: [PCT, HA, null]
+            sourceRo:
+              type: string
+              maxLength: 240
+            demo:
+              type: boolean
+              description: true = prag propus, de confirmat cu Raiffeisen.
+        requiredDocs:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required: [docType, labelRo, required]
+            properties:
+              docType:
+                $ref: '#/components/schemas/DocType'
+              labelRo:
+                type: string
+                maxLength: 160
+              required:
+                type: boolean
+        questionnaire:
+          type: array
+          maxItems: 15
+          items:
+            $ref: '#/components/schemas/Question'
+    Question:
+      type: object
+      additionalProperties: false
+      required: [questionId, labelRo, type, prefillFrom, required]
+      properties:
+        questionId:
+          type: string
+          pattern: '^[a-z][a-z0-9_]{2,40}$'
+        labelRo:
+          type: string
+          maxLength: 200
+        type:
+          type: string
+          enum: [TEXT, NUMBER, BOOLEAN, SINGLE_CHOICE, MULTI_CHOICE, MONTHS]
+        unit:
+          type: string
+          enum: [KG_N_PER_HA, T_PER_HA, HA, HOURS, EUR]
+        options:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required: [value, labelRo]
+            properties:
+              value:
+                type: string
+                pattern: '^[A-Z][A-Z0-9_]{1,40}$'
+              labelRo:
+                type: string
+                maxLength: 80
+        prefillFrom:
+          type: string
+          enum: [APIA, ANAF, OPEN_BANKING, NONE]
+        required:
+          type: boolean
+
+    # ---------- farm ----------
+    FarmProfile:
+      type: object
+      additionalProperties: false
+      required: [cui, company, farm, parcels, cashflow, dataSources]
+      properties:
+        cui:
+          $ref: '#/components/schemas/Cui'
+        company:
+          $ref: '#/components/schemas/Company'
+        farm:
+          $ref: '#/components/schemas/Farm'
+        parcels:
+          $ref: '#/components/schemas/ParcelCollection'
+        cashflow:
+          $ref: '#/components/schemas/CashflowSummary'
+        dataSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataSourceStatus'
+    Company:
+      type: object
+      additionalProperties: false
+      required: [cui, name, legalForm, caen, caenLabelRo, county, registeredAt, employees, turnoverEur, financialYear, vatPayer, manager]
+      properties:
+        cui:
+          $ref: '#/components/schemas/Cui'
+        name:
+          type: string
+          maxLength: 160
+        legalForm:
+          type: string
+          enum: [SRL, SA, PFA, II, IF, COOPERATIVA]
+        caen:
+          type: string
+          pattern: '^[0-9]{4}$'
+        caenLabelRo:
+          type: string
+          maxLength: 200
+        county:
+          type: string
+          maxLength: 40
+        locality:
+          type: string
+          maxLength: 80
+        registeredAt:
+          type: string
+          format: date
+        employees:
+          type: integer
+          minimum: 0
+        turnoverEur:
+          type: number
+        netProfitEur:
+          type: number
+        financialYear:
+          type: integer
+        vatPayer:
+          type: boolean
+        manager:
+          type: object
+          additionalProperties: false
+          description: Doar ce trebuie pentru eligibilitate (DR-12); fără nume sau CNP.
+          required: [age, installedAt]
+          properties:
+            age:
+              type: integer
+              minimum: 18
+              maximum: 100
+            installedAt:
+              type: string
+              format: date
+    Farm:
+      type: object
+      additionalProperties: false
+      required: [totalHa, standardOutputEur, irrigatedNow, crops, livestock]
+      properties:
+        totalHa:
+          type: number
+        standardOutputEur:
+          type: number
+          description: Producția standard (SO), pentru eligibilitatea AFIR.
+        irrigatedNow:
+          type: boolean
+        currentIrrigation:
+          type: string
+          enum: [NU, ASPERSIE_VECHE, ASPERSIE, PICURARE, BRAZDE]
+        crops:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required: [year, crop, ha]
+            properties:
+              year:
+                type: integer
+              crop:
+                type: string
+                maxLength: 60
+              ha:
+                type: number
+              yieldTPerHa:
+                type: number
+        livestock:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required: [species, heads]
+            properties:
+              species:
+                type: string
+                enum: [BOVINE, OVINE, CAPRINE, PORCINE, PASARI]
+              heads:
+                type: integer
+                minimum: 0
+        apiaSubsidiesEur:
+          type: number
+    ParcelCollection:
+      type: object
+      description: GeoJSON FeatureCollection (RFC 7946), coordonate WGS84 [lon, lat].
+      additionalProperties: false
+      required: [type, features]
+      properties:
+        type:
+          const: FeatureCollection
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParcelFeature'
+    ParcelFeature:
+      type: object
+      additionalProperties: false
+      required: [type, id, geometry, properties]
+      properties:
+        type:
+          const: Feature
+        id:
+          type: string
+          pattern: '^[a-z]{2}_[0-9a-z_]{2,20}$'
+        geometry:
+          type: object
+          additionalProperties: false
+          required: [type, coordinates]
+          properties:
+            type:
+              type: string
+              enum: [Polygon, MultiPolygon]
+            coordinates:
+              type: array
+              minItems: 1
+              items:
+                type: array
+        properties:
+          type: object
+          additionalProperties: false
+          required: [parcelId, blockId, areaHa, crop, natura2000, nitrateVulnerable, droughtRisk, hailRisk, floodRisk, waterStress]
+          properties:
+            parcelId:
+              type: string
+            blockId:
+              type: string
+              description: Blocul fizic APIA.
+            areaHa:
+              type: number
+            crop:
+              type: string
+              maxLength: 60
+            natura2000:
+              type: boolean
+            nitrateVulnerable:
+              type: boolean
+            droughtRisk:
+              $ref: '#/components/schemas/RiskLevel'
+            hailRisk:
+              $ref: '#/components/schemas/RiskLevel'
+            floodRisk:
+              $ref: '#/components/schemas/RiskLevel'
+            waterStress:
+              $ref: '#/components/schemas/RiskLevel'
+    RiskLevel:
+      type: string
+      enum: [LOW, MEDIUM, HIGH]
+    CashflowSummary:
+      type: object
+      additionalProperties: false
+      required: [months, annualNetEur, avgMonthlyNetEur, peakMonths, source, mode]
+      properties:
+        months:
+          type: array
+          maxItems: 24
+          items:
+            type: object
+            additionalProperties: false
+            required: [month, inflowEur, outflowEur, netEur]
+            properties:
+              month:
+                type: string
+                pattern: '^[0-9]{4}-(0[1-9]|1[0-2])$'
+              inflowEur:
+                type: number
+              outflowEur:
+                type: number
+              netEur:
+                type: number
+        annualNetEur:
+          type: number
+        avgMonthlyNetEur:
+          type: number
+        peakMonths:
+          type: array
+          items:
+            $ref: '#/components/schemas/Month'
+        source:
+          const: OPEN_BANKING
+        mode:
+          $ref: '#/components/schemas/SourceMode'
+    DataSourceStatus:
+      type: object
+      additionalProperties: false
+      required: [source, mode, fetchedAt]
+      properties:
+        source:
+          type: string
+          enum: [ANAF, APIA, ANSVSA, OPEN_BANKING, COPERNICUS, NATURA_2000, NITRATES]
+        mode:
+          $ref: '#/components/schemas/SourceMode'
+        fetchedAt:
+          type: string
+          format: date-time
+    SourceMode:
+      type: string
+      enum: [LIVE, MOCK, CACHE]
+
+    # ---------- runs ----------
+    CreateRunForm:
+      type: object
+      additionalProperties: false
+      required: [cui, moduleId, parcelIds, questionnaire, documentManifest, documents]
+      properties:
+        cui:
+          $ref: '#/components/schemas/Cui'
+        moduleId:
+          $ref: '#/components/schemas/ModuleId'
+        parcelIds:
+          type: array
+          minItems: 1
+          items:
+            type: string
+        questionnaire:
+          $ref: '#/components/schemas/QuestionnaireAnswers'
+        documentManifest:
+          type: array
+          description: Un element per fișier din `documents`, în aceeași ordine.
+          minItems: 1
+          maxItems: 10
+          items:
+            type: object
+            additionalProperties: false
+            required: [fileName, docType]
+            properties:
+              fileName:
+                type: string
+                maxLength: 200
+              docType:
+                $ref: '#/components/schemas/DocType'
+        documents:
+          type: array
+          minItems: 1
+          maxItems: 10
+          items:
+            type: string
+            contentMediaType: application/octet-stream
+        consents:
+          type: object
+          additionalProperties: false
+          properties:
+            apia:
+              type: boolean
+            openBanking:
+              type: boolean
+    QuestionnaireAnswers:
+      type: object
+      description: Răspunsurile, cheie = `questionId` din `GET /api/modules`.
+      propertyNames:
+        pattern: '^[a-z][a-z0-9_]{2,40}$'
+      additionalProperties:
+        type: [string, number, boolean, array]
+        items:
+          type: string
+    RunCreated:
+      type: object
+      additionalProperties: false
+      required: [runId, state, runUrl, eventsUrl]
+      properties:
+        runId:
+          $ref: '#/components/schemas/RunId'
+        state:
+          $ref: '#/components/schemas/RunState'
+        runUrl:
+          type: string
+        eventsUrl:
+          type: string
+    RunView:
+      type: object
+      additionalProperties: false
+      required: [runId, cui, moduleId, scenario, state, mode, createdAt, updatedAt, lastEventSeq, farm, parcelIds, documents, questionnaire, agentStatus, agents, calcs, officerActions, pendingDocuments, error]
+      properties:
+        runId:
+          $ref: '#/components/schemas/RunId'
+        cui:
+          $ref: '#/components/schemas/Cui'
+        moduleId:
+          $ref: '#/components/schemas/ModuleId'
+        scenario:
+          description: Scenariul demo, dacă dosarul a fost creat cu `POST /api/runs/demo/{scenario}`.
+          anyOf:
+            - $ref: '#/components/schemas/DemoScenario'
+            - type: 'null'
+        state:
+          $ref: '#/components/schemas/RunState'
+        mode:
+          $ref: '#/components/schemas/RunMode'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        lastEventSeq:
+          type: integer
+          minimum: 0
+          description: Ultimul `seq` emis; frontend-ul se poate abona la SSE cu `after=lastEventSeq`.
+        farm:
+          $ref: '#/components/schemas/FarmProfile'
+        parcelIds:
+          type: array
+          items:
+            type: string
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/RunDocument'
+        questionnaire:
+          $ref: '#/components/schemas/QuestionnaireAnswers'
+        agentStatus:
+          type: array
+          maxItems: 3
+          items:
+            $ref: '#/components/schemas/AgentStatus'
+        agents:
+          type: object
+          additionalProperties: false
+          required: [extractions, technicalAssessment, fundingRecommendation, underwritingReport]
+          properties:
+            extractions:
+              type: array
+              items:
+                $ref: './schemas/submit_offer_extraction.json'
+            technicalAssessment:
+              anyOf:
+                - $ref: './schemas/submit_technical_assessment.json'
+                - type: 'null'
+            fundingRecommendation:
+              anyOf:
+                - $ref: './schemas/submit_funding_recommendation.json'
+                - type: 'null'
+            underwritingReport:
+              anyOf:
+                - $ref: './schemas/submit_underwriting_report.json'
+                - type: 'null'
+        calcs:
+          type: object
+          description: Toate cifrele dosarului, cheie = calcId. Rezolvă orice `*CalcId` din output-urile agenților.
+          propertyNames:
+            pattern: '^calc_[a-f0-9]{12}$'
+          additionalProperties:
+            $ref: '#/components/schemas/CalcResult'
+        officerActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/OfficerAction'
+        pendingDocuments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PendingDocument'
+        error:
+          description: Doar în starea ESUAT.
+          anyOf:
+            - $ref: '#/components/schemas/RunError'
+            - type: 'null'
+    RunDocument:
+      type: object
+      additionalProperties: false
+      required: [documentId, docType, fileName, sizeBytes]
+      properties:
+        documentId:
+          type: string
+          pattern: '^doc_[a-z0-9_]{3,40}$'
+        docType:
+          $ref: '#/components/schemas/DocType'
+        fileName:
+          type: string
+          maxLength: 200
+        sizeBytes:
+          type: integer
+          minimum: 0
+    AgentStatus:
+      type: object
+      additionalProperties: false
+      required: [agent, status]
+      properties:
+        agent:
+          $ref: './schemas/event.json#/$defs/agent'
+        status:
+          type: string
+          enum: [PENDING, RUNNING, COMPLETED, DEGRADED, FAILED]
+        source:
+          $ref: './schemas/event.json#/$defs/source'
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+    OfficerAction:
+      type: object
+      additionalProperties: false
+      required: [action, at, officerId]
+      properties:
+        action:
+          type: string
+          enum: [APPROVE, REQUEST_DOCUMENTS]
+        at:
+          type: string
+          format: date-time
+        officerId:
+          type: string
+          maxLength: 60
+        commentRo:
+          type: string
+          maxLength: 1000
+    PendingDocument:
+      type: object
+      additionalProperties: false
+      required: [docType, labelRo, requestedAt]
+      properties:
+        docType:
+          $ref: '#/components/schemas/DocType'
+        labelRo:
+          type: string
+          maxLength: 200
+        conditionId:
+          type: string
+          pattern: '^cp_[a-z0-9_]{2,40}$'
+        dueDate:
+          type: string
+          format: date
+        requestedAt:
+          type: string
+          format: date-time
+    RunError:
+      type: object
+      additionalProperties: false
+      required: [code, message, failedStep]
+      properties:
+        code:
+          $ref: './schemas/event.json#/$defs/runFailedData/properties/errorCode'
+        message:
+          type: string
+          maxLength: 300
+        failedStep:
+          type: string
+          enum: [DATE_FIRMA, AGENT_1, AGENT_2, AGENT_3]
+
+    # ---------- officer ----------
+    ApproveRequest:
+      type: object
+      additionalProperties: false
+      required: [officerId]
+      properties:
+        officerId:
+          type: string
+          maxLength: 60
+        commentRo:
+          type: string
+          maxLength: 1000
+        acceptedConditionIds:
+          type: array
+          description: Condițiile din raport pe care ofițerul le păstrează. Lipsă = toate.
+          items:
+            type: string
+            pattern: '^cp_[a-z0-9_]{2,40}$'
+    RequestDocumentsRequest:
+      type: object
+      additionalProperties: false
+      required: [officerId, documents]
+      properties:
+        officerId:
+          type: string
+          maxLength: 60
+        messageRo:
+          type: string
+          maxLength: 1000
+          description: Mesajul afișat fermierului.
+        documents:
+          type: array
+          minItems: 1
+          maxItems: 10
+          items:
+            type: object
+            additionalProperties: false
+            required: [docType, labelRo]
+            properties:
+              docType:
+                $ref: '#/components/schemas/DocType'
+              labelRo:
+                type: string
+                maxLength: 200
+              conditionId:
+                type: string
+                pattern: '^cp_[a-z0-9_]{2,40}$'
+              dueDate:
+                type: string
+                format: date
+
+    # ---------- health ----------
+    BedrockHealth:
+      type: object
+      additionalProperties: false
+      required: [status, region, mode, checkedAt, models, goldenRunsAvailable]
+      properties:
+        status:
+          type: string
+          description: UP = toate modelele răspund; DEGRADED = merge cu retry sau model de rezervă; DOWN = doar REPLAY.
+          enum: [UP, DEGRADED, DOWN]
+        region:
+          type: string
+          maxLength: 30
+        mode:
+          $ref: '#/components/schemas/RunMode'
+        checkedAt:
+          type: string
+          format: date-time
+        models:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required: [role, modelId, status]
+            properties:
+              role:
+                type: string
+                enum: [AGENT, EXTRACTION, FALLBACK]
+              modelId:
+                type: string
+                maxLength: 120
+              status:
+                type: string
+                enum: [UP, DOWN]
+              latencyMs:
+                type: integer
+                minimum: 0
+              errorRo:
+                type: string
+                maxLength: 300
+        goldenRunsAvailable:
+          type: array
+          description: Scenariile demo pentru care există o rulare înregistrată (fallback nivelul 4).
+          items:
+            $ref: '#/components/schemas/DemoScenario'

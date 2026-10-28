@@ -1,0 +1,940 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.greenstruct.ro/schemas/event.json",
+  "title": "RunEvent",
+  "description": "Plicul unui eveniment SSE (GET /api/runs/{id}/events) și al unei linii din fixtures/*.ndjson. Vezi contracts/events.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "seq",
+    "runId",
+    "type",
+    "agent",
+    "at",
+    "message",
+    "data"
+  ],
+  "properties": {
+    "seq": {
+      "description": "Număr de ordine per dosar, începe de la 1, fără goluri. Trimis și ca `id:` în SSE.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "runId": {
+      "$ref": "#/$defs/runId"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "state.transition",
+        "agent.started",
+        "agent.thought",
+        "agent.tool_call",
+        "agent.tool_result",
+        "agent.completed",
+        "agent.degraded",
+        "run.completed",
+        "run.failed"
+      ]
+    },
+    "agent": {
+      "description": "null pentru state.transition și run.*.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/agent"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "message": {
+      "description": "Linia din timeline, în română, gata de afișat.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "data": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "state.transition"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "agent": {
+            "type": "null"
+          },
+          "data": {
+            "$ref": "#/$defs/stateTransitionData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.started"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "agent": {
+            "$ref": "#/$defs/agent"
+          },
+          "data": {
+            "$ref": "#/$defs/agentStartedData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.thought"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "agent": {
+            "$ref": "#/$defs/agent"
+          },
+          "data": {
+            "$ref": "#/$defs/agentThoughtData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.tool_call"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "agent": {
+            "$ref": "#/$defs/agent"
+          },
+          "data": {
+            "$ref": "#/$defs/toolCallData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.tool_result"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "agent": {
+            "$ref": "#/$defs/agent"
+          },
+          "data": {
+            "$ref": "#/$defs/toolResultData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.completed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "agent": {
+            "$ref": "#/$defs/agent"
+          },
+          "data": {
+            "$ref": "#/$defs/agentCompletedData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.degraded"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "agent": {
+            "$ref": "#/$defs/agent"
+          },
+          "data": {
+            "$ref": "#/$defs/agentDegradedData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "run.completed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "agent": {
+            "type": "null"
+          },
+          "data": {
+            "$ref": "#/$defs/runCompletedData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "run.failed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "agent": {
+            "type": "null"
+          },
+          "data": {
+            "$ref": "#/$defs/runFailedData"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "runId": {
+      "type": "string",
+      "pattern": "^run_[0-9a-z]{12}$"
+    },
+    "calcRef": {
+      "type": "string",
+      "pattern": "^calc_[a-f0-9]{12}$"
+    },
+    "agent": {
+      "type": "string",
+      "enum": [
+        "TECHNICAL_AUDITOR",
+        "FUNDING_OPTIMIZER",
+        "GREEN_UNDERWRITER"
+      ]
+    },
+    "runState": {
+      "type": "string",
+      "enum": [
+        "CREAT",
+        "DATE_FIRMA",
+        "AGENT_1",
+        "AGENT_2",
+        "AGENT_3",
+        "GATA",
+        "APROBAT",
+        "MONITORIZARE",
+        "ESUAT"
+      ]
+    },
+    "source": {
+      "description": "De unde vine output-ul agentului (badge-ul live / cache / fallback).",
+      "type": "string",
+      "enum": [
+        "LIVE",
+        "RETRY",
+        "FALLBACK_MODEL",
+        "CACHE",
+        "GOLDEN"
+      ]
+    },
+    "toolName": {
+      "type": "string",
+      "enum": [
+        "get_module_rules",
+        "extract_document",
+        "compute_baseline",
+        "compute_indicator",
+        "search_upgrades",
+        "simulate_upgrade_package",
+        "check_dnsh_inputs",
+        "list_financing_lines",
+        "check_program_eligibility",
+        "build_funding_stack",
+        "build_scenario",
+        "compare_scenarios",
+        "check_affordability",
+        "get_labeling_rules",
+        "get_dnsh_criteria",
+        "calculate_impact",
+        "submit_technical_assessment",
+        "submit_funding_recommendation",
+        "submit_underwriting_report"
+      ]
+    },
+    "toolUseId": {
+      "type": "string",
+      "pattern": "^tooluse_[A-Za-z0-9_-]{6,64}$"
+    },
+    "calcResult": {
+      "description": "O cifră produsă de motorul determinist. Singurul loc unde apar numere; agenții le referă prin calcId.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calcId",
+        "tool",
+        "key",
+        "labelRo",
+        "value",
+        "unit",
+        "display"
+      ],
+      "properties": {
+        "calcId": {
+          "$ref": "#/$defs/calcRef"
+        },
+        "tool": {
+          "$ref": "#/$defs/toolName"
+        },
+        "key": {
+          "description": "Cheie stabilă, lizibilă (ex. option_b.installment).",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.]{2,80}$"
+        },
+        "labelRo": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "EUR",
+            "EUR_PER_MONTH",
+            "EUR_PER_YEAR",
+            "EUR_PER_L",
+            "EUR_PER_M3",
+            "EUR_PER_KWH",
+            "EUR_PER_HA",
+            "PCT",
+            "RATIO",
+            "M3",
+            "M3_PER_YEAR",
+            "M3_PER_HA",
+            "KWH",
+            "KWH_PER_YEAR",
+            "KWH_PER_M3",
+            "KWH_PER_KWP",
+            "L",
+            "L_PER_YEAR",
+            "L_PER_HA",
+            "KG_N_PER_YEAR",
+            "KG_N_PER_HA",
+            "T_CO2",
+            "T_CO2_PER_YEAR",
+            "KG_CO2_PER_L",
+            "KG_CO2_PER_KWH",
+            "HA",
+            "HP",
+            "HP_PER_HA",
+            "KW",
+            "KWP",
+            "MONTHS",
+            "YEARS",
+            "COUNT",
+            "POINTS"
+          ]
+        },
+        "display": {
+          "description": "Valoarea formatată românește (ex. \"85.000 EUR\", \"15,0%\").",
+          "type": "string",
+          "maxLength": 60
+        },
+        "formula": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "sourceRo": {
+          "description": "Sursa parametrului (config, document, catalog).",
+          "type": "string",
+          "maxLength": 240
+        },
+        "dependsOn": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "$ref": "#/$defs/calcRef"
+          }
+        },
+        "series": {
+          "description": "Serie lunară (ex. graficul de rambursare). Doar pentru calc-urile de tip schedule.",
+          "type": "array",
+          "maxItems": 120,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "period",
+              "values"
+            ],
+            "properties": {
+              "period": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+              },
+              "values": {
+                "type": "object",
+                "propertyNames": {
+                  "enum": [
+                    "payment",
+                    "interest",
+                    "principal",
+                    "balance",
+                    "savings"
+                  ]
+                },
+                "additionalProperties": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "stateTransitionData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to",
+        "actor"
+      ],
+      "properties": {
+        "from": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/runState"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "to": {
+          "$ref": "#/$defs/runState"
+        },
+        "actor": {
+          "type": "string",
+          "enum": [
+            "SYSTEM",
+            "FARMER",
+            "OFFICER"
+          ]
+        },
+        "reasonRo": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "dataSources": {
+          "description": "Doar la DATE_FIRMA: de unde au venit datele firmei.",
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source",
+              "mode"
+            ],
+            "properties": {
+              "source": {
+                "type": "string",
+                "enum": [
+                  "ANAF",
+                  "APIA",
+                  "ANSVSA",
+                  "OPEN_BANKING",
+                  "COPERNICUS",
+                  "NATURA_2000",
+                  "NITRATES"
+                ]
+              },
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "LIVE",
+                  "MOCK",
+                  "CACHE"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "agentStartedData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step",
+        "modelId",
+        "mode",
+        "attempt"
+      ],
+      "properties": {
+        "step": {
+          "type": "string",
+          "enum": [
+            "AGENT_1",
+            "AGENT_2",
+            "AGENT_3"
+          ]
+        },
+        "modelId": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "LIVE",
+            "HYBRID",
+            "REPLAY"
+          ]
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        }
+      }
+    },
+    "agentThoughtData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "iteration": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        }
+      }
+    },
+    "toolCallData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "toolUseId",
+        "tool",
+        "iteration",
+        "input"
+      ],
+      "properties": {
+        "toolUseId": {
+          "$ref": "#/$defs/toolUseId"
+        },
+        "tool": {
+          "$ref": "#/$defs/toolName"
+        },
+        "iteration": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "input": {
+          "description": "Input-ul cerut de model. Referă id-uri (config, catalog, calcId), nu cifre.",
+          "type": "object"
+        }
+      }
+    },
+    "toolResultData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "toolUseId",
+        "tool",
+        "status",
+        "durationMs",
+        "calcs",
+        "result"
+      ],
+      "properties": {
+        "toolUseId": {
+          "$ref": "#/$defs/toolUseId"
+        },
+        "tool": {
+          "$ref": "#/$defs/toolName"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "ERROR"
+          ]
+        },
+        "durationMs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "calcs": {
+          "description": "Cifrele noi produse de unealtă.",
+          "type": "array",
+          "maxItems": 60,
+          "items": {
+            "$ref": "#/$defs/calcResult"
+          }
+        },
+        "result": {
+          "description": "Rezultatul structurat, fără cifre (verdicte, id-uri). La extract_document conține `extraction`.",
+          "type": "object"
+        },
+        "errors": {
+          "description": "Doar la status ERROR (ex. submit_* respins de validarea schemei).",
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "messageRo"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "messageRo": {
+                "type": "string",
+                "maxLength": 300
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "tool": {
+                "const": "extract_document"
+              },
+              "status": {
+                "const": "OK"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "type": "object",
+                "required": [
+                  "extraction"
+                ],
+                "properties": {
+                  "extraction": {
+                    "$ref": "submit_offer_extraction.json"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ERROR"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "errors": {
+                "type": "array",
+                "minItems": 1
+              }
+            },
+            "required": [
+              "errors"
+            ]
+          }
+        }
+      ]
+    },
+    "agentCompletedData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "submitTool",
+        "source",
+        "iterations",
+        "durationMs",
+        "output"
+      ],
+      "properties": {
+        "submitTool": {
+          "type": "string",
+          "enum": [
+            "submit_technical_assessment",
+            "submit_funding_recommendation",
+            "submit_underwriting_report"
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "iterations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "durationMs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "output": {
+          "type": "object"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "submitTool": {
+                "const": "submit_technical_assessment"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "output": {
+                "$ref": "submit_technical_assessment.json"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "submitTool": {
+                "const": "submit_funding_recommendation"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "output": {
+                "$ref": "submit_funding_recommendation.json"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "submitTool": {
+                "const": "submit_underwriting_report"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "output": {
+                "$ref": "submit_underwriting_report.json"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "agentDegradedData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "reason",
+        "attempt"
+      ],
+      "properties": {
+        "level": {
+          "description": "Nivelul de fallback la care s-a trecut.",
+          "type": "string",
+          "enum": [
+            "RETRY",
+            "FALLBACK_MODEL",
+            "CACHE",
+            "GOLDEN"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "TIMEOUT",
+            "THROTTLED",
+            "INVALID_OUTPUT",
+            "MAX_ITERATIONS",
+            "UNAVAILABLE",
+            "NO_NETWORK"
+          ]
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "modelId": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "detailRo": {
+          "type": "string",
+          "maxLength": 300
+        }
+      }
+    },
+    "runCompletedData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "durationMs",
+        "decision",
+        "recommendedOptionId",
+        "netAdvantageCalcId",
+        "sources"
+      ],
+      "properties": {
+        "state": {
+          "const": "GATA"
+        },
+        "durationMs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "ELIGIBLE_GREEN",
+            "ELIGIBLE_WITH_CONDITIONS",
+            "NOT_ELIGIBLE"
+          ]
+        },
+        "recommendedOptionId": {
+          "type": "string",
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "netAdvantageCalcId": {
+          "$ref": "#/$defs/calcRef"
+        },
+        "sources": {
+          "description": "Sursa output-ului pentru fiecare agent (pentru badge).",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "TECHNICAL_AUDITOR",
+            "FUNDING_OPTIMIZER",
+            "GREEN_UNDERWRITER"
+          ],
+          "properties": {
+            "TECHNICAL_AUDITOR": {
+              "$ref": "#/$defs/source"
+            },
+            "FUNDING_OPTIMIZER": {
+              "$ref": "#/$defs/source"
+            },
+            "GREEN_UNDERWRITER": {
+              "$ref": "#/$defs/source"
+            }
+          }
+        }
+      }
+    },
+    "runFailedData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "failedStep",
+        "errorCode",
+        "messageRo"
+      ],
+      "properties": {
+        "state": {
+          "const": "ESUAT"
+        },
+        "failedStep": {
+          "type": "string",
+          "enum": [
+            "DATE_FIRMA",
+            "AGENT_1",
+            "AGENT_2",
+            "AGENT_3"
+          ]
+        },
+        "errorCode": {
+          "type": "string",
+          "enum": [
+            "FARM_DATA_UNAVAILABLE",
+            "DOCUMENT_UNREADABLE",
+            "AGENT_INVALID_OUTPUT",
+            "AGENT_MAX_ITERATIONS",
+            "BEDROCK_UNAVAILABLE",
+            "UNKNOWN_CALC_ID",
+            "INTERNAL"
+          ]
+        },
+        "messageRo": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

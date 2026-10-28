@@ -1,0 +1,7 @@
+{
+  "version": "2026-10-28",
+  "dieselKgCo2PerLitre": { "value": 2.66, "sourceRo": "IPCC 2006, 74.100 kg/TJ, emisii la ardere" },
+  "gridKgCo2PerKwh": { "value": 0.23, "sourceRo": "Nowtricity, România 2024; de confirmat cu EEA/ANRE" },
+  "ronPerEur": { "value": 4.97, "sourceRo": "Curs de demo; de înlocuit cu cursul BNR din ziua analizei", "demo": true },
+  "vatPct": { "value": 21, "sourceRo": "Cod fiscal, cota standard TVA" }
+}

@@ -1,0 +1,110 @@
+{
+  "version": "2026-10-demo",
+  "note": "Toate condițiile sunt valori de demo, de confirmat cu mentorii Raiffeisen.",
+  "defaults": {
+    "firstInstallmentOffsetMonths": 4,
+    "affordabilityLimitPct": 40,
+    "sourceRo": "Prima rată la 4 luni după luna analizei; limita: ratele pe 12 luni ≤ 40% din cashflow-ul net anual; utilajele second-hand: vechimea la ultima rată ≤ 12 ani (regulă de demo, de confirmat)",
+    "maxEquipmentAgeAtMaturityYears": 12
+  },
+  "lines": [
+    {
+      "lineId": "rbro.invest.standard",
+      "nameRo": "Credit standard de investiții",
+      "kind": "STANDARD_LOAN",
+      "green": false,
+      "annualRatePct": 8.9,
+      "collateral": "MORTGAGE",
+      "collateralUpfrontEur": 1450,
+      "collateralAnnualEur": 380,
+      "collateralNoteRo": "evaluare + notar/CF; asigurare imobil anuală",
+      "repayment": [
+        "EQUAL_MONTHLY"
+      ],
+      "demo": true,
+      "maxTermMonths": 84
+    },
+    {
+      "lineId": "rbro.invest.machinery",
+      "nameRo": "Credit standard pentru utilaje (gaj pe utilaj)",
+      "kind": "STANDARD_LOAN",
+      "green": false,
+      "annualRatePct": 7.5,
+      "collateral": "ASSET_PLEDGE",
+      "collateralUpfrontEur": 0,
+      "collateralAnnualEur": 0,
+      "repayment": [
+        "EQUAL_MONTHLY"
+      ],
+      "demo": true,
+      "maxTermMonths": 84
+    },
+    {
+      "lineId": "rbro.agri.green_investeu",
+      "nameRo": "Credit verde Raiffeisen pentru agricultură, garantat InvestEU",
+      "kind": "GREEN_LOAN",
+      "green": true,
+      "annualRatePct": 6.4,
+      "collateral": "GUARANTEE",
+      "guaranteeId": "eif.investeu.sustainability",
+      "collateralUpfrontEur": 0,
+      "collateralAnnualEur": 0,
+      "repayment": [
+        "EQUAL_MONTHLY",
+        "SEASONAL"
+      ],
+      "requiresRo": "Configurația finanțată trece pragul verde al modulului",
+      "demo": true,
+      "maxTermMonths": 84
+    },
+    {
+      "lineId": "rbro.agri.cofinancing_fgcr",
+      "nameRo": "Credit de cofinanțare pentru proiecte AFIR, garantat FGCR",
+      "kind": "CO_FINANCING_LOAN",
+      "green": false,
+      "annualRatePct": 6.0,
+      "collateral": "GUARANTEE",
+      "guaranteeId": "fgcr.cofinancing",
+      "collateralUpfrontEur": 0,
+      "collateralAnnualEur": 0,
+      "repayment": [
+        "EQUAL_MONTHLY",
+        "SEASONAL"
+      ],
+      "demo": true,
+      "maxTermMonths": 84
+    },
+    {
+      "lineId": "rbro.agri.bridge_afir",
+      "nameRo": "Credit-punte până la încasarea grantului AFIR",
+      "kind": "BRIDGE_LOAN",
+      "green": false,
+      "annualRatePct": 7.0,
+      "termMonths": 12,
+      "collateral": "GRANT_ASSIGNMENT",
+      "collateralUpfrontEur": 0,
+      "collateralAnnualEur": 0,
+      "repayment": [
+        "BULLET"
+      ],
+      "demo": true,
+      "maxTermMonths": 24
+    }
+  ],
+  "guarantees": [
+    {
+      "guaranteeId": "eif.investeu.sustainability",
+      "nameRo": "Garanție FEI – InvestEU Sustainability",
+      "coveragePct": 70,
+      "sourceRo": "Acord FEI cu Raiffeisen, 25.10.2023; procentul pentru 2026 e de confirmat",
+      "demo": true
+    },
+    {
+      "guaranteeId": "fgcr.cofinancing",
+      "nameRo": "Garanție FGCR pentru cofinanțarea proiectelor PS PAC",
+      "coveragePct": 80,
+      "sourceRo": "fgcr.ro (max. 80%)",
+      "demo": true
+    }
+  ]
+}

@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.greenstruct.ro/schemas/submit_underwriting_report.json",
+  "title": "submit_underwriting_report",
+  "description": "Output-ul final al Agentului 3 (underwriter verde): raportul de conformitate pentru comitetul de credit. Etichete pe fiecare componentă, DNSH pe cele 5 obiective, impact, condiții înainte de tragere, KPI-uri de monitorizare. Toate cifrele prin calcId.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision", "moduleId", "recommendedOptionId", "criterion", "componentLabels", "greenShare", "greenBond",
+    "substantialContribution", "dnsh", "impact", "conditionsPrecedent", "monitoringKpis", "risks",
+    "committeeSummaryRo", "farmerNextSteps"
+  ],
+  "properties": {
+    "decision": { "type": "string", "enum": ["ELIGIBLE_GREEN", "ELIGIBLE_WITH_CONDITIONS", "NOT_ELIGIBLE"] },
+    "moduleId": { "$ref": "#/$defs/moduleId" },
+    "recommendedOptionId": { "type": "string", "enum": ["A", "B", "C"] },
+    "criterion": {
+      "description": "Criteriul verde folosit, valoarea atinsă față de prag și sursa pragului.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["indicator", "valueCalcId", "thresholdCalcId", "result", "sourceRo"],
+      "properties": {
+        "indicator": { "$ref": "#/$defs/indicator" },
+        "valueCalcId": { "$ref": "#/$defs/calcRef" },
+        "thresholdCalcId": { "$ref": "#/$defs/calcRef" },
+        "result": { "type": "string", "enum": ["PASS", "FAIL"] },
+        "sourceRo": { "type": "string", "maxLength": 300 }
+      }
+    },
+    "componentLabels": {
+      "description": "Eticheta fiecărei componente din configurația recomandată.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["componentId", "label", "basis", "amountCalcId", "rationaleRo"],
+        "properties": {
+          "componentId": { "type": "string", "pattern": "^cmp_[a-z0-9_]{2,40}$" },
+          "label": { "type": "string", "enum": ["TAXONOMY_ALIGNED", "MARKET_GREEN", "TRANSITION", "NONE"] },
+          "basis": {
+            "type": "string",
+            "enum": [
+              "EU_TAXONOMY_ACTIVITY", "LMA_GREEN_LOAN_PRINCIPLES", "BANK_GREEN_FRAMEWORK", "EBRD_GEFF_THRESHOLD",
+              "MEASURABLE_SAVING_NO_LABEL", "LEGAL_MINIMUM_ONLY", "NONE"
+            ]
+          },
+          "taxonomyActivity": { "description": "Doar pentru TAXONOMY_ALIGNED, ex. \"4.1\".", "type": "string", "pattern": "^[0-9]{1,2}\\.[0-9]{1,2}$" },
+          "amountCalcId": { "$ref": "#/$defs/calcRef" },
+          "rationaleRo": { "type": "string", "maxLength": 400 }
+        }
+      }
+    },
+    "greenShare": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["greenAmountCalcId", "transitionAmountCalcId", "greenSharePctCalcId"],
+      "properties": {
+        "greenAmountCalcId": { "description": "TAXONOMY_ALIGNED + MARKET_GREEN.", "$ref": "#/$defs/calcRef" },
+        "transitionAmountCalcId": { "$ref": "#/$defs/calcRef" },
+        "greenSharePctCalcId": { "$ref": "#/$defs/calcRef" }
+      }
+    },
+    "greenBond": {
+      "description": "Încadrarea în portofoliul de obligațiuni verzi. Categoria agricultură trebuie confirmată cu mentorii (cadrul RBI 2025).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["category", "status", "noteRo"],
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": ["AGRICULTURE_FORESTRY", "RENEWABLE_ENERGY", "ENERGY_EFFICIENCY", "SUSTAINABLE_WATER_MANAGEMENT", "NONE"]
+        },
+        "status": { "type": "string", "enum": ["ELIGIBLE", "TO_CONFIRM", "NOT_ELIGIBLE"] },
+        "eligibleAmountCalcId": { "$ref": "#/$defs/calcRef" },
+        "noteRo": { "type": "string", "maxLength": 400 }
+      }
+    },
+    "substantialContribution": {
+      "description": "Obiectivul de mediu la care investiția contribuie substanțial. DNSH se verifică pe celelalte 5.",
+      "$ref": "#/$defs/objective"
+    },
+    "dnsh": {
+      "description": "Exact 5 rânduri: cele 5 obiective diferite de substantialContribution.",
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["objective", "status", "justificationRo", "evidence"],
+        "properties": {
+          "objective": { "$ref": "#/$defs/objective" },
+          "status": { "type": "string", "enum": ["PASS", "PASS_WITH_CONDITIONS", "FAIL", "MISSING_DATA"] },
+          "justificationRo": { "type": "string", "maxLength": 500 },
+          "evidence": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/docType" } },
+          "conditionId": { "$ref": "#/$defs/conditionId" }
+        }
+      }
+    },
+    "impact": {
+      "description": "Impactul de mediu pe an (m³, kWh, litri, kg N, t CO₂).",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["metric", "calcId", "period"],
+        "properties": {
+          "metric": { "$ref": "#/$defs/metric" },
+          "calcId": { "$ref": "#/$defs/calcRef" },
+          "period": { "type": "string", "enum": ["ANNUAL", "HORIZON"] }
+        }
+      }
+    },
+    "conditionsPrecedent": {
+      "description": "Orice informație lipsă devine condiție, nu motiv de respingere.",
+      "type": "array",
+      "maxItems": 15,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["conditionId", "type", "documentType", "descriptionRo", "timing", "blocking"],
+        "properties": {
+          "conditionId": { "$ref": "#/$defs/conditionId" },
+          "type": {
+            "type": "string",
+            "enum": ["DOCUMENT", "PERMIT", "INVOICE_MATCH", "GRANT_APPROVAL", "GUARANTEE_APPROVAL", "INSURANCE", "TECHNICAL_SPEC", "OTHER"]
+          },
+          "documentType": { "$ref": "#/$defs/docType" },
+          "descriptionRo": { "type": "string", "maxLength": 400 },
+          "timing": { "type": "string", "enum": ["BEFORE_SIGNING", "BEFORE_FIRST_DISBURSEMENT", "BEFORE_FINAL_DISBURSEMENT", "AFTER_INSTALLATION"] },
+          "dueDate": { "type": "string", "format": "date" },
+          "blocking": { "type": "boolean" }
+        }
+      }
+    },
+    "monitoringKpis": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kpiId", "metric", "targetCalcId", "frequency", "firstDue", "dataSource", "descriptionRo"],
+        "properties": {
+          "kpiId": { "type": "string", "pattern": "^kpi_[a-z0-9_]{2,40}$" },
+          "metric": { "$ref": "#/$defs/metric" },
+          "targetCalcId": { "$ref": "#/$defs/calcRef" },
+          "frequency": { "type": "string", "enum": ["ONCE", "QUARTERLY", "SEMIANNUAL", "ANNUAL"] },
+          "firstDue": { "type": "string", "enum": ["AT_DISBURSEMENT", "AFTER_INSTALLATION", "MONTH_6", "MONTH_12", "MONTH_24"] },
+          "dataSource": {
+            "type": "string",
+            "enum": ["SMART_METER", "WATER_METER", "INVOICES", "OPEN_BANKING", "SATELLITE", "COMMISSIONING_REPORT", "GEOTAGGED_PHOTOS", "APIA", "TELEMATICS"]
+          },
+          "descriptionRo": { "type": "string", "maxLength": 300 }
+        }
+      }
+    },
+    "risks": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["category", "severity", "descriptionRo", "mitigationRo"],
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "CLIMATE_DROUGHT", "CLIMATE_HAIL", "FLOOD", "WATER_AVAILABILITY", "NATURA_2000", "NITRATE_ZONE",
+              "GRANT_TIMING", "GRANT_REJECTION", "PRICE", "AFFORDABILITY", "TECHNOLOGY", "GREENWASHING", "DATA_QUALITY"
+            ]
+          },
+          "severity": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH"] },
+          "descriptionRo": { "type": "string", "maxLength": 300 },
+          "mitigationRo": { "type": "string", "maxLength": 300 }
+        }
+      }
+    },
+    "committeeSummaryRo": { "description": "Rezumatul pentru comitetul de credit.", "type": "string", "maxLength": 1500 },
+    "farmerNextSteps": {
+      "description": "Lista de pași pentru fermier (ecranul „După aprobare”).",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stepRo"],
+        "properties": {
+          "stepRo": { "type": "string", "maxLength": 240 },
+          "dueDate": { "type": "string", "format": "date" },
+          "conditionId": { "$ref": "#/$defs/conditionId" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "calcRef": { "type": "string", "pattern": "^calc_[a-f0-9]{12}$" },
+    "conditionId": { "type": "string", "pattern": "^cp_[a-z0-9_]{2,40}$" },
+    "moduleId": { "type": "string", "enum": ["irigatii", "energie", "utilaje", "zootehnie", "post_recolta", "ecologic"] },
+    "indicator": {
+      "type": "string",
+      "enum": [
+        "WATER_SAVING_PCT", "FUEL_SAVING_PCT", "FERTILIZER_SAVING_PCT", "ENERGY_SAVING_PCT",
+        "RENEWABLE_GENERATION", "EMISSION_REDUCTION_PCT", "CERTIFIED_AREA_HA"
+      ]
+    },
+    "metric": {
+      "type": "string",
+      "enum": [
+        "WATER_USE_M3", "WATER_SAVING_PCT", "WATER_SAVED_M3", "PUMPING_ENERGY_KWH", "ENERGY_SAVED_KWH",
+        "GRID_ENERGY_REPLACED_KWH", "RENEWABLE_KWH", "FUEL_USE_L", "FUEL_SAVING_PCT", "FUEL_SAVED_L",
+        "NITROGEN_USE_KG", "NITROGEN_SAVED_KG", "AREA_HA", "FLEET_POWER_HP", "PRECISION_SHARE_PCT",
+        "CO2_EMITTED_T", "CO2_AVOIDED_T", "WATER_COST_SAVED_EUR", "ENERGY_COST_SAVED_EUR",
+        "FUEL_COST_SAVED_EUR", "INPUTS_COST_SAVED_EUR", "CERTIFIED_AREA_HA"
+      ]
+    },
+    "objective": {
+      "type": "string",
+      "enum": [
+        "CLIMATE_MITIGATION", "CLIMATE_ADAPTATION", "WATER_MARINE_RESOURCES",
+        "CIRCULAR_ECONOMY", "POLLUTION_PREVENTION", "BIODIVERSITY"
+      ]
+    },
+    "docType": {
+      "type": "string",
+      "enum": [
+        "OFFER", "TECHNICAL_SHEET", "CURRENT_EQUIPMENT", "WATER_PERMIT_ANAR", "WATER_CONSUMPTION", "ENERGY_INVOICES",
+        "FUEL_INVOICES", "FERTILIZER_INVOICES", "BUSINESS_PLAN", "ENVIRONMENTAL_PERMIT", "CERTIFICATION_CONTRACT",
+        "FINAL_INVOICE", "COMMISSIONING_REPORT", "GEOTAGGED_PHOTOS", "AFIR_APPLICATION", "AFIR_FINANCING_CONTRACT",
+        "GUARANTEE_APPROVAL", "CROP_INSURANCE", "SCRAPPING_CERTIFICATE", "WATER_METER_CERTIFICATE", "OTHER"
+      ]
+    }
+  }
+}

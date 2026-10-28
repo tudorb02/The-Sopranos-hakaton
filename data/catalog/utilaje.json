@@ -1,0 +1,29 @@
+{
+  "module": "utilaje",
+  "note": "Prețuri de verificat în Baza de prețuri de referință AFIR. Pachetul de precizie se montează pe fiecare tractor. role ALTERNATIVE înlocuiește tractoarele ofertate cu tractoare noi de aceeași putere.",
+  "items": [
+    {
+      "catalogId": "utl.precision.rtk_sc_vra",
+      "category": "PRECISION_PACKAGE",
+      "nameRo": "Pachet de precizie: ghidaj RTK, section control, doză variabilă de azot",
+      "role": "INDICATOR",
+      "costEurPerTractor": 13000,
+      "effect": {
+        "fuelSavingPct": 10,
+        "inputSavingPct": 3,
+        "nitrogenSavingPct": 5
+      },
+      "sourceRo": "Motorină: Haapala et al., Agronomy Research 23(1), 2025 (−20% la semănat; 10% conservator). Inputuri: PAMI/Iowa State. Azot: studiu CEMEPE (−4,8…8,8%)"
+    },
+    {
+      "catalogId": "utl.tractor.new_stage_v",
+      "category": "TRACTOR",
+      "nameRo": "Tractoare noi Stage V, aceeași putere și același număr ca în ofertă",
+      "role": "ALTERNATIVE",
+      "mirrorsCategory": "TRACTOR",
+      "costEurPerHp": 525,
+      "effect": {},
+      "sourceRo": "≈ 520–530 EUR/CP în ofertele demo; cercetare: 600–1.000 EUR/CP la mărci premium. De verificat în Baza de prețuri AFIR."
+    }
+  ]
+}

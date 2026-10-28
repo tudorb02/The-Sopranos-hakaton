@@ -1,0 +1,197 @@
+{
+  "moduleId": "zootehnie",
+  "nameRo": "Zootehnie & biogaz",
+  "icon": "🐄",
+  "status": "CONFIG_ONLY",
+  "descriptionRo": "Digestor, stocarea gunoiului de grajd.",
+  "examplesRo": [
+    "digestor",
+    "stocare gunoi de grajd"
+  ],
+  "indicator": "EMISSION_REDUCTION_PCT",
+  "threshold": {
+    "kind": "MIN_PCT",
+    "value": 20,
+    "unit": "PCT",
+    "sourceRo": "reducere emisii + valorificare deșeuri (demo)",
+    "demo": true
+  },
+  "requiredDocs": [
+    {
+      "docType": "OFFER",
+      "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+      "required": true
+    },
+    {
+      "docType": "CURRENT_EQUIPMENT",
+      "labelRo": "Ce se înlocuiește: fișă tehnică, poză cu eticheta sau descriere",
+      "required": false
+    },
+    {
+      "docType": "CURRENT_EQUIPMENT",
+      "labelRo": "Sistemul actual de stocare a gunoiului de grajd",
+      "required": true
+    },
+    {
+      "docType": "ENVIRONMENTAL_PERMIT",
+      "labelRo": "Autorizația de mediu",
+      "required": true
+    }
+  ],
+  "questionnaire": [
+    {
+      "questionId": "crops_main",
+      "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
+      "type": "TEXT",
+      "prefillFrom": "APIA",
+      "required": true
+    },
+    {
+      "questionId": "nitrogen_kg_ha",
+      "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)?",
+      "type": "NUMBER",
+      "unit": "KG_N_PER_HA",
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "tillage",
+      "labelRo": "Cum lucrați solul?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "ARATURA",
+          "labelRo": "arătură"
+        },
+        {
+          "value": "MINIMA",
+          "labelRo": "lucrare minimă"
+        },
+        {
+          "value": "NO_TILL",
+          "labelRo": "no-till"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "cover_crops",
+      "labelRo": "Folosiți culturi de acoperire sau rotație?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "DA",
+          "labelRo": "da"
+        },
+        {
+          "value": "ROTATIE",
+          "labelRo": "doar rotație"
+        },
+        {
+          "value": "NU",
+          "labelRo": "nu"
+        }
+      ],
+      "prefillFrom": "APIA",
+      "required": false
+    },
+    {
+      "questionId": "irrigation_current",
+      "labelRo": "Irigați acum? Cu ce sistem?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "NU",
+          "labelRo": "nu irig"
+        },
+        {
+          "value": "ASPERSIE_VECHE",
+          "labelRo": "aspersie veche"
+        },
+        {
+          "value": "ASPERSIE",
+          "labelRo": "aspersie"
+        },
+        {
+          "value": "PICURARE",
+          "labelRo": "picurare"
+        },
+        {
+          "value": "BRAZDE",
+          "labelRo": "pe brazde"
+        }
+      ],
+      "prefillFrom": "APIA",
+      "required": true
+    },
+    {
+      "questionId": "crop_insurance",
+      "labelRo": "Aveți asigurare pentru culturi?",
+      "type": "BOOLEAN",
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "certifications",
+      "labelRo": "Aveți certificări?",
+      "type": "MULTI_CHOICE",
+      "options": [
+        {
+          "value": "ECOLOGIC",
+          "labelRo": "ecologic"
+        },
+        {
+          "value": "GLOBALGAP",
+          "labelRo": "GlobalGAP"
+        },
+        {
+          "value": "NICIUNA",
+          "labelRo": "niciuna"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": false
+    },
+    {
+      "questionId": "offtake_contracts",
+      "labelRo": "Aveți contracte de vânzare cu procesatori sau retaileri?",
+      "type": "BOOLEAN",
+      "prefillFrom": "NONE",
+      "required": false
+    },
+    {
+      "questionId": "cashin_months",
+      "labelRo": "În ce luni încasați cel mai mult?",
+      "type": "MONTHS",
+      "prefillFrom": "OPEN_BANKING",
+      "required": true
+    },
+    {
+      "questionId": "old_equipment_fate",
+      "labelRo": "Ce faceți cu utilajul vechi și cu deșeurile (ambalaje, folie)?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "CASARE",
+          "labelRo": "casare"
+        },
+        {
+          "value": "VANZARE",
+          "labelRo": "vânzare"
+        },
+        {
+          "value": "REZERVA",
+          "labelRo": "îl păstrez ca rezervă"
+        },
+        {
+          "value": "NU_E_CAZUL",
+          "labelRo": "nu e cazul"
+        }
+      ],
+      "prefillFrom": "NONE",
+      "required": true
+    }
+  ],
+  "calculator": null
+}

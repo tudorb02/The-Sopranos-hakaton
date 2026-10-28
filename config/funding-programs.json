@@ -1,0 +1,167 @@
+{
+  "version": "2026-10-28",
+  "deMinimisAgriCeilingEur": {
+    "value": 50000,
+    "sourceRo": "Reg. UE 2024/3118, 3 ani glisant"
+  },
+  "programs": [
+    {
+      "programCode": "DR_12",
+      "nameRo": "DR-12: consolidarea exploatațiilor tinerilor fermieri și a fermierilor de max. 45 de ani",
+      "type": "GRANT",
+      "session": {
+        "status": "OPEN",
+        "opens": "2026-10-06",
+        "closes": "2026-12-02"
+      },
+      "capEur": 200000,
+      "intensity": [
+        {
+          "maxManagerAge": 40,
+          "requiresCompetences": true,
+          "intensityPct": 80
+        },
+        {
+          "maxManagerAge": 45,
+          "requiresCompetences": false,
+          "intensityPct": 65
+        }
+      ],
+      "eligibility": {
+        "legalForms": [
+          "PFA",
+          "II",
+          "IF",
+          "SRL"
+        ],
+        "maxManagerAge": 45,
+        "maxYearsSinceInstallation": 5,
+        "minStandardOutputEur": 12000,
+        "maxStandardOutputEur": 250000,
+        "newEquipmentOnly": true
+      },
+      "scoring": {
+        "precisionMinSharePct": 10,
+        "precisionPoints": 15,
+        "thresholdFirstMonth": 80,
+        "thresholdAfter": 45
+      },
+      "monthsUntilPaid": 12,
+      "sourceRo": "Ghidul solicitantului DR-12, versiunea 18.09.2026, afir.ro"
+    },
+    {
+      "programCode": "DR_26",
+      "nameRo": "DR-26: înființarea sistemelor de irigații",
+      "type": "GRANT",
+      "session": {
+        "status": "NOT_OPEN",
+        "noteRo": "Ghid publicat (14.12.2023), nicio sesiune anunțată în 2026"
+      },
+      "capEur": 500000,
+      "intensity": [
+        {
+          "intensityPct": 65
+        }
+      ],
+      "eligibility": {
+        "legalForms": [
+          "PFA",
+          "II",
+          "IF",
+          "SRL"
+        ],
+        "requiresWaterMeter": true
+      },
+      "sourceRo": "afir.ro, fișa DR-26"
+    },
+    {
+      "programCode": "DR_16",
+      "nameRo": "DR-16: investiții în exploatații de legume și/sau cartofi",
+      "type": "GRANT",
+      "session": {
+        "status": "NOT_OPEN",
+        "noteRo": "Ghid din 23.12.2025; sesiune neconfirmată"
+      },
+      "capEur": 2000000,
+      "intensity": [
+        {
+          "intensityPct": 65
+        }
+      ],
+      "eligibility": {
+        "legalForms": [
+          "PFA",
+          "II",
+          "IF",
+          "SRL"
+        ],
+        "caenAnyOf": [
+          "0113"
+        ]
+      },
+      "sourceRo": "afir.ro, fișa DR-16"
+    },
+    {
+      "programCode": "FM_PV",
+      "nameRo": "Fondul pentru Modernizare: fotovoltaice pentru fermieri",
+      "type": "GRANT",
+      "session": {
+        "status": "CLOSED",
+        "closed": "2026-08-14",
+        "noteRo": "O sesiune nouă nu a fost anunțată"
+      },
+      "intensity": [
+        {
+          "intensityPct": 100
+        }
+      ],
+      "eligibility": {
+        "requiresComponentAnyOf": [
+          "SOLAR_PUMP",
+          "PV_SYSTEM"
+        ]
+      },
+      "sourceRo": "Economedia, 09.06.2026"
+    },
+    {
+      "programCode": "INVESTEU_FEI",
+      "nameRo": "Garanție FEI – InvestEU prin Raiffeisen",
+      "type": "GUARANTEE",
+      "session": {
+        "status": "PERMANENT"
+      },
+      "eligibility": {
+        "requiresGreenConfig": true
+      },
+      "sourceRo": "Acord FEI cu Raiffeisen, 25.10.2023"
+    },
+    {
+      "programCode": "FGCR",
+      "nameRo": "Garanție FGCR pentru credite de investiții și cofinanțare",
+      "type": "GUARANTEE",
+      "session": {
+        "status": "PERMANENT"
+      },
+      "eligibility": {
+        "legalForms": [
+          "PFA",
+          "II",
+          "IF",
+          "SRL"
+        ]
+      },
+      "sourceRo": "fgcr.ro"
+    },
+    {
+      "programCode": "RABLA_AGRI",
+      "nameRo": "Rabla pentru tractoare (AFM)",
+      "type": "GRANT",
+      "session": {
+        "status": "NO_BUDGET",
+        "noteRo": "Proiectul de buget AFM pentru 2026 nu prevede bani pentru program"
+      },
+      "eligibility": {},
+      "sourceRo": "agrointel.ro, 21.05.2026"
+    }
+  ]
+}

@@ -1,0 +1,475 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.greenstruct.ro/schemas/submit_technical_assessment.json",
+  "title": "submit_technical_assessment",
+  "description": "Output-ul final al Agentului 1 (auditor tehnic). Toate cifrele sunt referite prin calcId, obținut din uneltele deterministe. Nu conține numere.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "moduleId",
+    "indicator",
+    "threshold",
+    "baseline",
+    "configurations",
+    "initialConfigId",
+    "recommendedConfigId",
+    "recommendationType",
+    "dnshChecks",
+    "sizingCheck",
+    "missingFields",
+    "summaryRo",
+    "farmerMessageRo"
+  ],
+  "properties": {
+    "moduleId": {
+      "$ref": "#/$defs/moduleId"
+    },
+    "indicator": {
+      "$ref": "#/$defs/indicator"
+    },
+    "threshold": {
+      "description": "Pragul verde din config-ul modulului (valoarea vine din get_module_rules).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "thresholdCalcId",
+        "sourceRo"
+      ],
+      "properties": {
+        "thresholdCalcId": {
+          "$ref": "#/$defs/calcRef"
+        },
+        "sourceRo": {
+          "type": "string",
+          "maxLength": 240
+        }
+      }
+    },
+    "baseline": {
+      "description": "Situația actuală: ce se înlocuiește și cât consumă azi ferma.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "descriptionRo",
+        "dataSource",
+        "metrics"
+      ],
+      "properties": {
+        "descriptionRo": {
+          "type": "string",
+          "maxLength": 400
+        },
+        "dataSource": {
+          "type": "string",
+          "enum": [
+            "INVOICES",
+            "METER",
+            "QUESTIONNAIRE",
+            "NORM",
+            "APIA",
+            "MIXED"
+          ]
+        },
+        "metrics": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "items": {
+            "$ref": "#/$defs/metricRef"
+          }
+        }
+      }
+    },
+    "configurations": {
+      "description": "Configurația inițială (din ofertă), cea recomandată și, opțional, alternative.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/configuration"
+      }
+    },
+    "initialConfigId": {
+      "$ref": "#/$defs/configId"
+    },
+    "recommendedConfigId": {
+      "$ref": "#/$defs/configId"
+    },
+    "recommendationType": {
+      "type": "string",
+      "enum": [
+        "KEEP_INITIAL",
+        "UPGRADE_TO_PASS",
+        "UPGRADE_BEYOND_REQUEST",
+        "NO_FEASIBLE_UPGRADE"
+      ]
+    },
+    "dnshChecks": {
+      "description": "Verificările DNSH preliminare. Agentul 3 compune tabelul final.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "objective",
+          "status",
+          "evidence",
+          "noteRo"
+        ],
+        "properties": {
+          "objective": {
+            "$ref": "#/$defs/objective"
+          },
+          "status": {
+            "$ref": "#/$defs/dnshStatus"
+          },
+          "evidence": {
+            "type": "array",
+            "maxItems": 6,
+            "items": {
+              "$ref": "#/$defs/docType"
+            }
+          },
+          "noteRo": {
+            "type": "string",
+            "maxLength": 400
+          }
+        }
+      }
+    },
+    "sizingCheck": {
+      "description": "Dimensionarea (ex. putere tractoare / suprafață, regula AFIR Anexa 6). NOT_APPLICABLE la irigații.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "noteRo"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "calcId": {
+          "$ref": "#/$defs/calcRef"
+        },
+        "noteRo": {
+          "type": "string",
+          "maxLength": 300
+        }
+      }
+    },
+    "missingFields": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fieldKey",
+          "labelRo",
+          "requiredFor",
+          "blocking"
+        ],
+        "properties": {
+          "fieldKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,40}$"
+          },
+          "labelRo": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "requiredFor": {
+            "type": "string",
+            "enum": [
+              "GREEN_ELIGIBILITY",
+              "DNSH",
+              "FUNDING",
+              "DISBURSEMENT"
+            ]
+          },
+          "docType": {
+            "$ref": "#/$defs/docType"
+          },
+          "blocking": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "summaryRo": {
+      "description": "Rezumat pentru ofițer.",
+      "type": "string",
+      "maxLength": 800
+    },
+    "farmerMessageRo": {
+      "description": "Mesaj simplu pentru fermier, fără jargon.",
+      "type": "string",
+      "maxLength": 400
+    }
+  },
+  "$defs": {
+    "calcRef": {
+      "type": "string",
+      "pattern": "^calc_[a-f0-9]{12}$"
+    },
+    "configId": {
+      "type": "string",
+      "pattern": "^cfg_[a-z0-9_]{2,40}$"
+    },
+    "componentId": {
+      "type": "string",
+      "pattern": "^cmp_[a-z0-9_]{2,40}$"
+    },
+    "configuration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "configId",
+        "role",
+        "titleRo",
+        "components",
+        "totalCostCalcId",
+        "indicatorCalcId",
+        "thresholdResult",
+        "impacts"
+      ],
+      "properties": {
+        "configId": {
+          "$ref": "#/$defs/configId"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "INITIAL",
+            "RECOMMENDED",
+            "ALTERNATIVE"
+          ]
+        },
+        "titleRo": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "components": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "componentId",
+              "category",
+              "nameRo",
+              "source",
+              "costCalcId"
+            ],
+            "properties": {
+              "componentId": {
+                "$ref": "#/$defs/componentId"
+              },
+              "category": {
+                "$ref": "#/$defs/componentCategory"
+              },
+              "nameRo": {
+                "type": "string",
+                "maxLength": 160
+              },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "OFFER",
+                  "CATALOG_UPGRADE",
+                  "CATALOG_REPLACEMENT"
+                ]
+              },
+              "catalogId": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9_.-]{1,63}$"
+              },
+              "replacesComponentId": {
+                "$ref": "#/$defs/componentId"
+              },
+              "quantityCalcId": {
+                "$ref": "#/$defs/calcRef"
+              },
+              "costCalcId": {
+                "$ref": "#/$defs/calcRef"
+              }
+            }
+          }
+        },
+        "totalCostCalcId": {
+          "$ref": "#/$defs/calcRef"
+        },
+        "upgradeCostCalcId": {
+          "description": "Costul suplimentar față de configurația inițială.",
+          "$ref": "#/$defs/calcRef"
+        },
+        "indicatorCalcId": {
+          "$ref": "#/$defs/calcRef"
+        },
+        "thresholdResult": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "impacts": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/$defs/metricRef"
+          }
+        },
+        "noteRo": {
+          "type": "string",
+          "maxLength": 400
+        }
+      }
+    },
+    "metricRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "calcId"
+      ],
+      "properties": {
+        "metric": {
+          "$ref": "#/$defs/metric"
+        },
+        "calcId": {
+          "$ref": "#/$defs/calcRef"
+        }
+      }
+    },
+    "moduleId": {
+      "type": "string",
+      "enum": [
+        "irigatii",
+        "energie",
+        "utilaje",
+        "zootehnie",
+        "post_recolta",
+        "ecologic"
+      ]
+    },
+    "indicator": {
+      "type": "string",
+      "enum": [
+        "WATER_SAVING_PCT",
+        "FUEL_SAVING_PCT",
+        "FERTILIZER_SAVING_PCT",
+        "ENERGY_SAVING_PCT",
+        "RENEWABLE_GENERATION",
+        "EMISSION_REDUCTION_PCT",
+        "CERTIFIED_AREA_HA"
+      ]
+    },
+    "metric": {
+      "type": "string",
+      "enum": [
+        "WATER_USE_M3",
+        "WATER_SAVING_PCT",
+        "WATER_SAVED_M3",
+        "PUMPING_ENERGY_KWH",
+        "ENERGY_SAVED_KWH",
+        "GRID_ENERGY_REPLACED_KWH",
+        "RENEWABLE_KWH",
+        "FUEL_USE_L",
+        "FUEL_SAVING_PCT",
+        "FUEL_SAVED_L",
+        "NITROGEN_USE_KG",
+        "NITROGEN_SAVED_KG",
+        "AREA_HA",
+        "FLEET_POWER_HP",
+        "PRECISION_SHARE_PCT",
+        "CO2_EMITTED_T",
+        "CO2_AVOIDED_T",
+        "WATER_COST_SAVED_EUR",
+        "ENERGY_COST_SAVED_EUR",
+        "FUEL_COST_SAVED_EUR",
+        "INPUTS_COST_SAVED_EUR",
+        "CERTIFIED_AREA_HA"
+      ]
+    },
+    "objective": {
+      "type": "string",
+      "enum": [
+        "CLIMATE_MITIGATION",
+        "CLIMATE_ADAPTATION",
+        "WATER_MARINE_RESOURCES",
+        "CIRCULAR_ECONOMY",
+        "POLLUTION_PREVENTION",
+        "BIODIVERSITY"
+      ]
+    },
+    "dnshStatus": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "PASS_WITH_CONDITIONS",
+        "FAIL",
+        "MISSING_DATA"
+      ]
+    },
+    "docType": {
+      "type": "string",
+      "enum": [
+        "OFFER",
+        "TECHNICAL_SHEET",
+        "CURRENT_EQUIPMENT",
+        "WATER_PERMIT_ANAR",
+        "WATER_CONSUMPTION",
+        "ENERGY_INVOICES",
+        "FUEL_INVOICES",
+        "FERTILIZER_INVOICES",
+        "BUSINESS_PLAN",
+        "ENVIRONMENTAL_PERMIT",
+        "CERTIFICATION_CONTRACT",
+        "FINAL_INVOICE",
+        "COMMISSIONING_REPORT",
+        "GEOTAGGED_PHOTOS",
+        "AFIR_APPLICATION",
+        "AFIR_FINANCING_CONTRACT",
+        "GUARANTEE_APPROVAL",
+        "CROP_INSURANCE",
+        "SCRAPPING_CERTIFICATE",
+        "WATER_METER_CERTIFICATE",
+        "OTHER"
+      ]
+    },
+    "componentCategory": {
+      "type": "string",
+      "enum": [
+        "IRRIGATION_SPRINKLER",
+        "IRRIGATION_DRIP",
+        "SOIL_MOISTURE_SENSORS",
+        "PUMP",
+        "SOLAR_PUMP",
+        "WATER_METER",
+        "PIPES",
+        "PV_SYSTEM",
+        "TRACTOR",
+        "COMBINE",
+        "PRECISION_PACKAGE",
+        "PRECISION_GUIDANCE",
+        "PRECISION_SECTION_CONTROL",
+        "PRECISION_VARIABLE_RATE",
+        "IMPLEMENT",
+        "BUILDING",
+        "INSTALLATION_WORKS",
+        "OTHER"
+      ]
+    }
+  }
+}

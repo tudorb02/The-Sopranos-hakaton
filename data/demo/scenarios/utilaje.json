@@ -1,0 +1,44 @@
+{
+  "id": "utilaje",
+  "cui": "38264019",
+  "moduleId": "utilaje",
+  "parcelIds": [
+    "cl_1001",
+    "cl_1002",
+    "cl_1003",
+    "cl_1004"
+  ],
+  "questionnaire": {
+    "crops_main": "grâu 6,1 t/ha; porumb 7,4 t/ha; floarea-soarelui 2,8 t/ha; rapiță 3,2 t/ha",
+    "nitrogen_kg_ha": 150,
+    "tillage": "ARATURA",
+    "cover_crops": "ROTATIE",
+    "irrigation_current": "NU",
+    "crop_insurance": true,
+    "certifications": [
+      "NICIUNA"
+    ],
+    "offtake_contracts": true,
+    "cashin_months": [
+      "JUL",
+      "AUG",
+      "SEP",
+      "OCT"
+    ],
+    "old_equipment_fate": "CASARE",
+    "hours_per_year": 650,
+    "manager_competences": false
+  },
+  "documents": [
+    {
+      "documentId": "doc_oferta_tractoare",
+      "docType": "OFFER",
+      "file": "docs/oferta-agrotrac-tractoare.pdf"
+    },
+    {
+      "documentId": "doc_facturi_motorina",
+      "docType": "FUEL_INVOICES",
+      "file": "docs/facturi-motorina-12-luni.pdf"
+    }
+  ]
+}

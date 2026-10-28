@@ -1,0 +1,4 @@
+# Loaded on top of src/main/resources/application.yml in tests: no calls to the real ANAF from the test suite.
+greenstruct:
+  anaf:
+    enabled: false
