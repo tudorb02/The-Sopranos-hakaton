@@ -1,5 +1,5 @@
 import { Icon } from "../../components/icons.jsx";
-import { Disclaimer, IconTile, InfoCard, Section, Src, Ticks } from "../../components/ui.jsx";
+import { Disclaimer, IconTile, InfoCard, NoteCard, Section, Src, Ticks } from "../../components/ui.jsx";
 import { legal } from "../../data/legal.js";
 import { usePersona } from "../../persona.js";
 
@@ -22,6 +22,13 @@ export function Intro() {
       <Section title="Ce fac">
         <Ticks yes={intro.does} />
       </Section>
+
+      <NoteCard icon="lock">
+        {legal.summary}{" "}
+        <a className="link" href="#/informare">
+          Cine îți vede datele
+        </a>
+      </NoteCard>
 
       <Disclaimer legal={legal} />
     </>

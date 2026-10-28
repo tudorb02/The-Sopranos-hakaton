@@ -1,11 +1,15 @@
 // Static screens only: the hash (#/bugete) picks the screen. No data loading or business logic yet.
 // The demo starts at a simulated sign-in. Each personal account opens the same optional Coach in Produse
-// with its own client's data (Daria, salary; Matei, student); the business account shows that its features differ.
+// with its own client's data (Daria, salary; Matei, student); the business account opens the green credit
+// for investments, agriculture first (design/pj-greenstruct.md).
 
 import { useEffect, useState } from "react";
 
 import { BareFrame, FlowActions, FlowFrame, ProductsFrame, SectionFrame } from "./components/layout.jsx";
+import { DisclaimerStrip } from "./components/ui.jsx";
 import { business } from "./data/accounts.js";
+import { greenLegal } from "./data/green/legal.js";
+import { greenPacks } from "./data/green/packs.js";
 import { personas } from "./data/personas.js";
 import { PersonaContext, storePersonaId, storedPersonaId, usePersona } from "./persona.js";
 import { ACTIVATION_STEPS, activationRoutes } from "./screens/activation/routes.js";
@@ -14,6 +18,8 @@ import Budgets from "./screens/Budgets.jsx";
 import Business from "./screens/Business.jsx";
 import Chat from "./screens/Chat.jsx";
 import Goals from "./screens/Goals.jsx";
+import { GREEN_STEPS, greenRoutes } from "./screens/green/routes.js";
+import { Sectors } from "./screens/green/Sectors.jsx";
 import Ideas from "./screens/Ideas.jsx";
 import Legal from "./screens/Legal.jsx";
 import Login from "./screens/Login.jsx";
@@ -26,9 +32,11 @@ import TransactionDetail from "./screens/TransactionDetail.jsx";
 // Pages of the Coach; each client sees the ones in its `pages`. The chat, a payment's details,
 // the statements and the notice open full screen.
 const SECTION_SCREENS = { rezumat: Summary, cheltuieli: Tracking, bugete: Budgets, obiective: Goals, idei: Ideas, profil: Profile };
-const OTHER_ROUTES = ["login", "login/pj", "produse", "firma", "chat", "extrase", "informare"];
+const OTHER_ROUTES = ["login", "login/pj", "produse", "firma", "chat", "extrase", "informare", "verde", "verde/informare"];
 const PAYMENT_PREFIX = "cheltuieli/";
 const ACTIVATION_PREFIX = "activare";
+// #/verde/<area>/<step>: the green-credit flow of one area of the platform.
+const GREEN_PREFIX = "verde/";
 // #/intra/<id> signs in as that demo client, then opens Produse.
 const ENTRY_PREFIX = "intra/";
 
@@ -38,7 +46,7 @@ function hashKey() {
 
 function routeFromHash() {
   const key = hashKey();
-  if (OTHER_ROUTES.includes(key) || key in SECTION_SCREENS || key.startsWith(ACTIVATION_PREFIX) || key.startsWith(PAYMENT_PREFIX)) return key;
+  if (OTHER_ROUTES.includes(key) || key in SECTION_SCREENS || key.startsWith(ACTIVATION_PREFIX) || key.startsWith(PAYMENT_PREFIX) || key.startsWith(GREEN_PREFIX)) return key;
   return "login";
 }
 
@@ -135,6 +143,47 @@ function Screens({ route }) {
     return (
       <FlowFrame title="Informare" closeHref="#/rezumat">
         <Legal />
+      </FlowFrame>
+    );
+  }
+
+  if (route === "verde/informare") {
+    return (
+      <FlowFrame title="Informare" closeHref="#/verde">
+        <Legal legal={greenLegal} />
+      </FlowFrame>
+    );
+  }
+
+  if (route === "verde" || route.startsWith(GREEN_PREFIX)) {
+    const sector = route.split("/")[1];
+    const steps = sector in greenPacks ? greenRoutes(sector) : {};
+    const strip = <DisclaimerStrip legal={greenLegal} href="#/verde/informare" className="disclaimer-strip--card" />;
+    // The area picker, also for an area that is not available yet.
+    if (!(route in steps)) {
+      return (
+        <FlowFrame title="Credit verde" titleAs="p" backHref="#/firma" closeHref="#/firma" footer={strip}>
+          <Sectors />
+        </FlowFrame>
+      );
+    }
+    const { Screen, back, step, footer, title = "Credit verde" } = steps[route];
+    return (
+      <FlowFrame
+        key={route}
+        title={title}
+        titleAs="p"
+        closeHref="#/firma"
+        backHref={back}
+        progress={step ? { steps: GREEN_STEPS, current: step } : null}
+        footer={
+          <>
+            {strip}
+            <FlowActions {...footer} />
+          </>
+        }
+      >
+        <Screen pack={greenPacks[sector]} />
       </FlowFrame>
     );
   }

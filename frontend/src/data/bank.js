@@ -12,6 +12,7 @@ export const bankPages = {
   selfSupport: `${SITE}/persoane-fizice/despre-bani-1-la-1/5-sfaturi-financiare-pentru-cei-care-se-intretin-singuri.html`,
   moneyStrike: `${SITE}/despre-noi/comunicate-de-presa/2025/money-strike-harta-fps-educatie-financiara-pentru-tineri.html`,
   startInvestitii: `${SITE}/despre-noi/comunicate-de-presa/2026/start-in-investitii-program-digital-raiffeisen-bank-disponibil-din-mobile-app.html`,
+  eifCompetitivitate: `${SITE}/imm/produse-si-servicii/finantare/competitivitate-eif.html`,
 };
 
 export const bankServices = {
@@ -77,5 +78,20 @@ export const bankServices = {
     ],
     link: { href: bankPages.recurringPayments, label: "Anunțul funcției pe raiffeisen.ro" },
     source: "comunicat Raiffeisen Bank (25.05.2026)",
+  },
+  // For businesses: the guarantee behind the green credit in the GreenStruct demo (design/pj-greenstruct.md §8).
+  eifCompetitivitate: {
+    icon: "shield",
+    kind: "Garanție pentru credite IMM",
+    name: "EIF Competitivitate (InvestEU)",
+    description: "Fondul European de Investiții garantează o parte din creditul pentru investiții al firmei.",
+    terms: [
+      { label: "Garanție", value: "70% din credit; 50% în București și Ilfov" },
+      { label: "Valoare", value: "Până la 1,7 mil. EUR" },
+      { label: "Durată", value: "Până la 120 de luni" },
+      { label: "Avans", value: "Cel puțin 15%" },
+    ],
+    link: { href: bankPages.eifCompetitivitate, label: "EIF Competitivitate pe raiffeisen.ro" },
+    source: "raiffeisen.ro: Competitivitate EIF (27.04.2026)",
   },
 };

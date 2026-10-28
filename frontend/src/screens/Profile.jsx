@@ -17,7 +17,12 @@ export default function Profile() {
     <>
       <header className="intro">
         <h1 className="page-title">Ce știu despre tine</h1>
-        <p className="small muted">Corectează sau șterge orice rând. Aceste date nu sunt folosite pentru evaluarea creditelor sau în scop de marketing.</p>
+        <p className="small muted">
+          Corectează sau șterge orice rând. Aceste date nu sunt folosite pentru evaluarea creditelor sau în scop de marketing.{" "}
+          <a className="link" href="#/informare">
+            Cine îți vede datele
+          </a>
+        </p>
         <p className="src-legend">
           <Src kind="obs" label="observat în tranzacții" />
           <Src kind="said" label="spus de tine" />

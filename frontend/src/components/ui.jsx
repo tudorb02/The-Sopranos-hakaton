@@ -26,12 +26,12 @@ export function Section({ title, aside, children }) {
   );
 }
 
-// Amount in the app's style: the integer large, ",00 lei" small.
-export function Amount({ value, size = "lg" }) {
+// Amount in the app's style: the integer large, ",00 lei" (or ",00 EUR") small.
+export function Amount({ value, size = "lg", currency = "lei" }) {
   return (
     <span className={`amount amount--${size}`}>
       <span className="amount-int">{num(value)}</span>
-      <span className="amount-dec">,00 lei</span>
+      <span className="amount-dec">,00 {currency}</span>
     </span>
   );
 }
@@ -219,7 +219,7 @@ export function Ticks({ yes = [], no = [] }) {
 }
 
 // The official notice on advice and data (see data/legal.js), as a full card.
-export function Disclaimer({ legal, link = false }) {
+export function Disclaimer({ legal, link = false, href = "#/informare" }) {
   const id = useId();
   return (
     <section className="card disclaimer" aria-labelledby={id}>
@@ -241,7 +241,7 @@ export function Disclaimer({ legal, link = false }) {
         ))}
       </ul>
       {link ? (
-        <a className="link" href="#/informare">
+        <a className="link" href={href}>
           Citește informarea completă
         </a>
       ) : null}
@@ -250,12 +250,12 @@ export function Disclaimer({ legal, link = false }) {
 }
 
 // The same notice in one line, kept in view on every coach page.
-export function DisclaimerStrip({ legal, className }) {
+export function DisclaimerStrip({ legal, className, href = "#/informare" }) {
   return (
     <p className={className ? `disclaimer-strip ${className}` : "disclaimer-strip"}>
       <Icon name="lock" />
       <span>{legal.strip}</span>
-      <a className="link" href="#/informare">
+      <a className="link" href={href}>
         Detalii
       </a>
     </p>
