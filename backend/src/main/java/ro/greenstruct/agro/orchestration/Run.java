@@ -28,7 +28,9 @@ public record Run(
         List<StepRecord> steps,
         List<OfficerAction> officerActions,
         List<PendingDocument> pendingDocuments,
-        RunError error) {
+        RunError error,
+        String chosenVariant,
+        JsonNode monitoring) {
 
     public Run {
         missingDocuments = List.copyOf(missingDocuments);
@@ -41,7 +43,7 @@ public record Run(
     public static Run create(RunRequest request, List<String> missingDocuments, FarmProfile farmProfile) {
         Instant now = Instant.now();
         return new Run(newId(), RunStatus.CREAT, now, now, request, missingDocuments, farmProfile, Map.of(), List.of(),
-                List.of(), List.of(), null);
+                List.of(), List.of(), null, null, null);
     }
 
     /** run_ + 12 base-36 characters, as required by contracts/schemas/event.json. */
@@ -55,12 +57,12 @@ public record Run(
             throw new IllegalStateException("Dosarul nu poate trece din " + status + " în " + next);
         }
         return new Run(id, next, createdAt, Instant.now(), request, missingDocuments, farmProfile, agentOutputs, steps,
-                officerActions, pendingDocuments, error);
+                officerActions, pendingDocuments, error, chosenVariant, monitoring);
     }
 
     public Run withFarmProfile(FarmProfile profile) {
         return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, profile, agentOutputs, steps,
-                officerActions, pendingDocuments, error);
+                officerActions, pendingDocuments, error, chosenVariant, monitoring);
     }
 
     public Run withAgentOutput(AgentSlot slot, JsonNode output) {
@@ -68,14 +70,14 @@ public record Run(
         outputs.putAll(agentOutputs);
         outputs.put(slot, output);
         return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, farmProfile, outputs, steps,
-                officerActions, pendingDocuments, error);
+                officerActions, pendingDocuments, error, chosenVariant, monitoring);
     }
 
     public Run withStep(StepRecord step) {
         List<StepRecord> all = new ArrayList<>(steps);
         all.add(step);
         return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, farmProfile, agentOutputs, all,
-                officerActions, pendingDocuments, error);
+                officerActions, pendingDocuments, error, chosenVariant, monitoring);
     }
 
     public Run withOfficerAction(OfficerAction action, List<PendingDocument> newPendingDocuments) {
@@ -84,11 +86,23 @@ public record Run(
         List<PendingDocument> pending = new ArrayList<>(pendingDocuments);
         pending.addAll(newPendingDocuments);
         return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, farmProfile, agentOutputs,
-                steps, actions, pending, error);
+                steps, actions, pending, error, chosenVariant, monitoring);
+    }
+
+    /** The variant the farmer sends to the bank: CLASIC or VERDE (POST /submit). */
+    public Run withChosenVariant(String variant) {
+        return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, farmProfile, agentOutputs, steps,
+                officerActions, pendingDocuments, error, variant, monitoring);
+    }
+
+    /** Result of "Simulează 12 luni" (MonitoringResult in contracts/openapi.yaml). */
+    public Run withMonitoring(JsonNode result) {
+        return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, farmProfile, agentOutputs, steps,
+                officerActions, pendingDocuments, error, chosenVariant, result);
     }
 
     public Run failed(RunError reason) {
         return new Run(id, RunStatus.ESUAT, createdAt, Instant.now(), request, missingDocuments, farmProfile,
-                agentOutputs, steps, officerActions, pendingDocuments, reason);
+                agentOutputs, steps, officerActions, pendingDocuments, reason, chosenVariant, monitoring);
     }
 }

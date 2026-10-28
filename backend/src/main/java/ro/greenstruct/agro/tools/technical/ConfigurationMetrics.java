@@ -62,6 +62,12 @@ public final class ConfigurationMetrics {
             calcs.add(context.calc(p + "upgrade_cost", "Cost suplimentar față de oferta inițială",
                     cfg.totalCost().subtract(root.totalCost()), Unit.EUR).add());
         }
+        calcs.add(context.calc(p + "indicator", "Indicatorul verde al configurației", cfg.metric("indicator_pct"), Unit.PCT)
+                .formula("indicatorul modulului față de situația actuală").add());
+        for (var component : cfg.components()) {
+            calcs.add(context.calc(p + "cmp." + component.componentId() + ".cost", "Cost: " + component.nameRo(),
+                    component.costEur(), Unit.EUR).add());
+        }
         calcs.addAll(context.calculator().emit(context, cfg));
         calcs.add(context.calc(p + "co2_avoided", "CO₂ evitat pe an", cfg.metric("co2_avoided_t"),
                 Unit.T_CO2_PER_YEAR).add());

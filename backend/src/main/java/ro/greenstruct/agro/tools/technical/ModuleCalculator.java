@@ -37,6 +37,15 @@ public interface ModuleCalculator {
     /** The module-specific calcs of a configuration (the caller adds total_cost, upgrade_cost and CO2). */
     List<Calc> emit(ToolContext context, Configuration configuration);
 
+    /**
+     * Suffix of a configuration calc (cfg_x.&lt;suffix&gt;, as emitted by {@link #emit}) → impact metric of the
+     * contract (WATER_SAVED_M3, FUEL_SAVED_L, ...). The rule-based agents list these as the configuration's impacts.
+     */
+    Map<String, String> impactMetrics();
+
+    /** Baseline calc key (baseline.&lt;name&gt;, as emitted by {@link #baseline}) → contract metric, for the assessment. */
+    Map<String, String> baselineMetrics();
+
     /** Metric name → short key of the yearly savings in EUR that build_scenario adds up (savings_water_eur → water_eur). */
     Map<String, String> savingsMetrics();
 

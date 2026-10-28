@@ -39,6 +39,20 @@ public class DemoScenarioService {
         this.documents = documents;
     }
 
+    /** The scenario ids that have a file in data/demo/scenarios, in alphabetical order. */
+    public List<String> available() {
+        Path dir = demoDir.resolve("scenarios");
+        if (!Files.isDirectory(dir)) {
+            return List.of();
+        }
+        try (var files = Files.list(dir)) {
+            return files.map(f -> f.getFileName().toString()).filter(n -> n.endsWith(".json"))
+                    .map(n -> n.substring(0, n.length() - ".json".length())).sorted().toList();
+        } catch (IOException e) {
+            throw new UncheckedIOException("Cannot list demo scenarios", e);
+        }
+    }
+
     public RunRequest load(String scenarioId) {
         if (!scenarioId.matches("[a-z0-9_-]+")) {
             throw new IllegalArgumentException("Scenariu demo invalid: " + scenarioId);

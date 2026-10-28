@@ -26,6 +26,7 @@ public class ReferenceData {
     private final JsonNode prices;
     private final JsonNode pricing;
     private final JsonNode funds;
+    private final JsonNode monitoring;
     private final SmeRule smeRule;
 
     public ReferenceData(GreenStructProperties properties, ObjectMapper mapper) {
@@ -36,6 +37,7 @@ public class ReferenceData {
         this.prices = JsonFiles.read(mapper, config.resolve("prices.json"));
         this.pricing = JsonFiles.read(mapper, config.resolve("pricing.json"));
         this.funds = JsonFiles.read(mapper, config.resolve("funds.json"));
+        this.monitoring = JsonFiles.read(mapper, config.resolve("monitoring.json"));
         checkFundReferences();
         JsonNode sme = funds.path("smeDefinition");
         this.smeRule = new SmeRule(sme.path("employeesBelow").asInt(), sme.path("maxTurnoverEur").decimalValue(),
@@ -71,6 +73,11 @@ public class ReferenceData {
     /** config/funds.json: F1–F6, their requirements, the fund and green-bond category per module, the SME rule. */
     public JsonNode funds() {
         return funds;
+    }
+
+    /** config/monitoring.json: the 12-month impact simulation (deviation, tolerance). */
+    public JsonNode monitoring() {
+        return monitoring;
     }
 
     private void checkFundReferences() {

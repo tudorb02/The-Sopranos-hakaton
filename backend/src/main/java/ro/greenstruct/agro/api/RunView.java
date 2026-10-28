@@ -18,11 +18,14 @@ import ro.greenstruct.agro.tools.Calc;
  */
 public record RunView(
         String runId,
+        String view,
         String cui,
         String moduleId,
         String scenario,
         String state,
         String mode,
+        String chosenVariant,
+        JsonNode monitoring,
         Instant createdAt,
         Instant updatedAt,
         long lastEventSeq,

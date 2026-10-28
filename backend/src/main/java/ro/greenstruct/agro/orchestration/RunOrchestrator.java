@@ -95,12 +95,31 @@ public class RunOrchestrator {
         return mode;
     }
 
-    /** GATA → APROBAT by the officer; in the demo the drawdown is simulated at once, so → MONITORIZARE. */
+    /**
+     * GATA → TRIMIS by the farmer's representative, with the variant chosen (README §7 step 9). VERDE needs a green
+     * option: when the investment is below the threshold, choosing it means accepting the upgrade (README §13).
+     */
+    public Run submit(String runId, String variant) {
+        if (!"CLASIC".equals(variant) && !"VERDE".equals(variant)) {
+            throw new IllegalArgumentException("Varianta trebuie să fie CLASIC sau VERDE");
+        }
+        requireStatus(runId, RunStatus.GATA, "trimis");
+        Run run = store.find(runId).orElseThrow(() -> new RunNotFoundException(runId));
+        if ("VERDE".equals(variant) && !hasGreenOption(run)) {
+            throw new IllegalStateException("Dosarul nu are credit verde: investiția nu atinge pragul verde");
+        }
+        store.update(runId, r -> r.withChosenVariant(variant).withStatus(RunStatus.TRIMIS));
+        events.transition(runId, RunStatus.GATA, RunStatus.TRIMIS, Actor.FARMER,
+                "Cererea a fost trimisă la bancă: credit " + ("VERDE".equals(variant) ? "verde" : "clasic"), List.of());
+        return store.find(runId).orElseThrow(() -> new RunNotFoundException(runId));
+    }
+
+    /** TRIMIS → APROBAT by the officer; in the demo the drawdown is simulated at once, so → MONITORIZARE. */
     public Run approve(String runId, String officerId, String commentRo) {
-        requireStatus(runId, RunStatus.GATA, "aprobat");
+        requireStatus(runId, RunStatus.TRIMIS, "aprobat");
         store.update(runId, run -> run.withStatus(RunStatus.APROBAT).withOfficerAction(
                 new OfficerAction(OfficerAction.Action.APPROVE, Instant.now(), officerId, commentRo), List.of()));
-        events.transition(runId, RunStatus.GATA, RunStatus.APROBAT, Actor.OFFICER, "Ofițerul a aprobat dosarul",
+        events.transition(runId, RunStatus.TRIMIS, RunStatus.APROBAT, Actor.OFFICER, "Ofițerul a aprobat dosarul",
                 List.of());
         Run monitored = store.update(runId, run -> run.withStatus(RunStatus.MONITORIZARE));
         events.transition(runId, RunStatus.APROBAT, RunStatus.MONITORIZARE, Actor.SYSTEM,
@@ -108,12 +127,25 @@ public class RunOrchestrator {
         return monitored;
     }
 
+    private static boolean hasGreenOption(Run run) {
+        JsonNode funding = run.agentOutputs().get(AgentSlot.FUNDING_OPTIMIZER);
+        if (funding == null) {
+            return false;
+        }
+        for (JsonNode option : funding.path("options")) {
+            if ("VERDE".equals(option.path("variant").asText()) && !"CLASIC".equals(option.path("greenTier").asText())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** The dossier stays GATA; the requested documents show up for the farmer. */
     public Run requestDocuments(String runId, String officerId, String messageRo, List<PendingDocument> documents) {
         if (documents.isEmpty()) {
             throw new IllegalArgumentException("Lista de documente cerute este goală");
         }
-        requireStatus(runId, RunStatus.GATA, "completat cu documente");
+        requireStatus(runId, RunStatus.TRIMIS, "completat cu documente");
         return store.update(runId, run -> run.withOfficerAction(
                 new OfficerAction(OfficerAction.Action.REQUEST_DOCUMENTS, Instant.now(), officerId, messageRo),
                 documents));

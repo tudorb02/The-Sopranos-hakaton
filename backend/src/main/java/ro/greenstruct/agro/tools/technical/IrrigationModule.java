@@ -163,6 +163,18 @@ public class IrrigationModule implements ModuleCalculator {
     }
 
     @Override
+    public Map<String, String> impactMetrics() {
+        return Map.of("water", "WATER_USE_M3", "water_saved", "WATER_SAVED_M3", "pumping_energy", "PUMPING_ENERGY_KWH",
+                "energy_saved", "ENERGY_SAVED_KWH", "co2_avoided", "CO2_AVOIDED_T");
+    }
+
+    @Override
+    public Map<String, String> baselineMetrics() {
+        return Map.of("baseline.area", "AREA_HA", "baseline.water", "WATER_USE_M3", "baseline.energy",
+                "PUMPING_ENERGY_KWH", "baseline.co2", "CO2_EMITTED_T");
+    }
+
+    @Override
     public Map<String, String> savingsMetrics() {
         return Map.of("savings_water_eur", "water_eur", "savings_energy_eur", "energy_eur");
     }

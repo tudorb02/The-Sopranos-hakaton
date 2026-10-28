@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import ro.greenstruct.agro.demo.DemoScenarioService;
+import ro.greenstruct.agro.orchestration.MonitoringService;
 import ro.greenstruct.agro.orchestration.PendingDocument;
 import ro.greenstruct.agro.orchestration.Run;
 import ro.greenstruct.agro.orchestration.RunNotFoundException;
@@ -50,20 +51,25 @@ public class RunController {
     private final SseHub hub;
     private final DocumentStore documents;
     private final DemoScenarioService demoScenarios;
+    private final MonitoringService monitoring;
     private final ObjectMapper mapper;
 
     public RunController(RunOrchestrator orchestrator, RunStore runs, RunViewMapper views, SseHub hub,
-                         DocumentStore documents, DemoScenarioService demoScenarios, ObjectMapper mapper) {
+                         DocumentStore documents, DemoScenarioService demoScenarios, MonitoringService monitoring, ObjectMapper mapper) {
         this.orchestrator = orchestrator;
         this.runs = runs;
         this.views = views;
         this.hub = hub;
         this.documents = documents;
         this.demoScenarios = demoScenarios;
+        this.monitoring = monitoring;
         this.mapper = mapper;
     }
 
     public record RunCreated(String runId, String state, String runUrl, String eventsUrl) {
+    }
+
+    public record SubmitRequest(String variant) {
     }
 
     public record ApproveRequest(String officerId, String commentRo, List<String> acceptedConditionIds) {
@@ -121,15 +127,31 @@ public class RunController {
 
     @PostMapping("/demo/{scenario}")
     public ResponseEntity<RunCreated> startDemo(@PathVariable String scenario) {
-        if (!List.of("irigatii", "utilaje").contains(scenario)) {
+        if (!demoScenarios.available().contains(scenario)) {
             throw new NotFoundException("Scenariul demo " + scenario + " nu există");
         }
         return created(orchestrator.start(demoScenarios.load(scenario)).run());
     }
 
+    /** view=SME hides the funds (README §13); OFFICER (default) shows everything. */
     @GetMapping("/{id}")
-    public RunView get(@PathVariable String id) {
-        return views.toView(runs.find(id).orElseThrow(() -> new RunNotFoundException(id)));
+    public RunView get(@PathVariable String id, @RequestParam(value = "view", defaultValue = "OFFICER") String view) {
+        Run run = runs.find(id).orElseThrow(() -> new RunNotFoundException(id));
+        return switch (view.toUpperCase()) {
+            case "OFFICER" -> views.toView(run);
+            case "SME" -> views.toSmeView(run);
+            default -> throw new IllegalArgumentException("view trebuie să fie OFFICER sau SME");
+        };
+    }
+
+    @PostMapping("/{id}/submit")
+    public RunView submit(@PathVariable String id, @RequestBody SubmitRequest body) {
+        return views.toSmeView(orchestrator.submit(id, requireText(body.variant(), "variant")));
+    }
+
+    @PostMapping("/{id}/simulate-monitoring")
+    public RunView simulateMonitoring(@PathVariable String id) {
+        return views.toView(monitoring.simulate(id));
     }
 
     /** History first (after Last-Event-ID or ?after=), then live events; closes after run.completed/failed. */

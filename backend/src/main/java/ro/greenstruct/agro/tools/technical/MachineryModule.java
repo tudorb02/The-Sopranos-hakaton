@@ -264,6 +264,18 @@ public class MachineryModule implements ModuleCalculator {
     }
 
     @Override
+    public Map<String, String> impactMetrics() {
+        return Map.of("fuel_use", "FUEL_USE_L", "fuel_saved", "FUEL_SAVED_L", "nitrogen_saved", "NITROGEN_SAVED_KG",
+                "precision_share", "PRECISION_SHARE_PCT", "co2_avoided", "CO2_AVOIDED_T");
+    }
+
+    @Override
+    public Map<String, String> baselineMetrics() {
+        return Map.of("baseline.area", "AREA_HA", "baseline.fuel", "FUEL_USE_L", "baseline.nitrogen",
+                "NITROGEN_USE_KG", "baseline.co2", "CO2_EMITTED_T");
+    }
+
+    @Override
     public Map<String, String> savingsMetrics() {
         return Map.of("savings_fuel_eur", "fuel_eur", "savings_inputs_eur", "inputs_eur");
     }
