@@ -191,3 +191,27 @@ for (const farm of farms) {
   }
 }
 console.log(`Generated ${count} documents for ${farms.length} farms in data/demo/test-documents/pdf/`);
+
+// Same documents for the backend demo scenarios: addressed to the backend farm, under the scenario file names.
+const targets = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'backend-farms.json'), 'utf8'));
+const backendDocs = join(root, 'data/demo/docs');
+let copies = 0;
+for (const farm of farms) {
+  const target = targets[farm.id];
+  if (!target) continue;
+  const swap = (value) => typeof value === 'string'
+    ? value.replaceAll(farm.anaf.name, target.name).replaceAll(farm.anaf.address, target.address).replaceAll(farm.anaf.cui, target.cui)
+    : Array.isArray(value) ? value.map(swap)
+    : value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).map(([k, v]) => [k, swap(v)]))
+    : value;
+  const readdressed = swap(farm);
+  for (const d of readdressed.documents) {
+    const name = target.files[d.file];
+    if (!name) continue;
+    const path = join(backendDocs, name);
+    if (d.kind === 'invoiceSeries') renderInvoiceSeries(d, readdressed, path);
+    else renderDocument(d, readdressed, path);
+    copies++;
+  }
+}
+console.log(`Generated ${copies} backend demo documents in data/demo/docs/`);

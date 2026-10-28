@@ -1,0 +1,27 @@
+{
+  "_note": "Copies of the test documents for the backend demo scenarios (data/demo/scenarios): same figures, addressed to the backend demo farm (data/demo/farms/<cui>.json), written to data/demo/docs/ under the names the scenarios use.",
+  "DEMO-0001": {
+    "cui": "45871203", "name": "Legume Bărăgan Demo SRL", "address": "Com. Demo, Jud. Călărași",
+    "files": { "01_oferta_aspersie.pdf": "oferta-aspersie-40ha.pdf", "02_autorizatie_gospodarire_ape.pdf": "autorizatie-gospodarire-ape.pdf", "03_facturi_energie_pompare.pdf": "facturi-energie-pompare.pdf" }
+  },
+  "DEMO-0002": {
+    "cui": "41726035", "name": "Avicola Dealul Verde SRL", "address": "Dealul Verde, Jud. Prahova",
+    "files": { "01_oferta_fotovoltaice_300kWp.pdf": "oferta-fotovoltaice-300kwp.pdf", "02_facturi_energie_12_luni.pdf": "facturi-energie-avicola-12-luni.pdf" }
+  },
+  "DEMO-0003": {
+    "cui": "38264019", "name": "Cereale Câmpia Demo SRL", "address": "Com. Demo, Jud. Ialomița",
+    "files": { "01_oferta_tractor.pdf": "oferta-tractor-300cp-stage-v.pdf", "02_facturi_motorina_12_luni.pdf": "facturi-motorina-12-luni.pdf", "03_facturi_ingrasaminte.pdf": "facturi-ingrasaminte-cereale-12-luni.pdf", "04_fisa_tractor_vechi.pdf": "fisa-tractor-vechi-2004.pdf" }
+  },
+  "DEMO-0004": {
+    "cui": "47209135", "name": "Ferma de Lapte Valea Demo SRL", "address": "Valea Demo, Jud. Bistrița-Năsăud",
+    "files": { "01_oferta_digestor.pdf": "oferta-digestor-biogaz.pdf", "02_autorizatie_mediu.pdf": "autorizatie-mediu-am-42-2024.pdf", "03_facturi_energie_12_luni.pdf": "facturi-energie-ferma-12-luni.pdf" }
+  },
+  "DEMO-0005": {
+    "cui": "38751946", "name": "Livezile Argeș Demo SRL", "address": "Livezi Demo, Jud. Argeș",
+    "files": { "01_oferta_agregat_frigorific.pdf": "oferta-agregat-frigorific.pdf", "02_facturi_energie_12_luni.pdf": "facturi-energie-depozit-12-luni.pdf", "03_fisa_echipament_vechi.pdf": "fisa-echipament-vechi.pdf" }
+  },
+  "DEMO-0006": {
+    "cui": "41629307", "name": "Ferma Bio Mureș Demo SRL", "address": "Comuna Demo, Jud. Mureș",
+    "files": { "01_oferta_utilaje_bio.pdf": "oferta-utilaje-bio.pdf", "02_contract_certificare.pdf": "contract-certificare-bio.pdf", "03_plan_conversie.pdf": "plan-conversie-bio.pdf", "04_facturi_ingrasaminte.pdf": "facturi-ingrasaminte-12-luni.pdf" }
+  }
+}
