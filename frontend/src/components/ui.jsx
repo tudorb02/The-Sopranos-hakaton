@@ -45,13 +45,14 @@ export function IconTile({ icon, tone }) {
 }
 
 // Square shortcuts under a card's main figure; the first one is the main action.
-export function QuickActions({ items }) {
+// On a yellow card the main tile is ink instead of yellow.
+export function QuickActions({ items, primaryTone = "yellow" }) {
   return (
     <ul className="quick">
       {items.map((item, i) => (
         <li key={item.label}>
           <a href={item.href}>
-            <IconTile icon={item.icon} tone={i === 0 ? "yellow" : undefined} />
+            <IconTile icon={item.icon} tone={i === 0 ? primaryTone : undefined} />
             <span>{item.label}</span>
           </a>
         </li>
@@ -181,6 +182,76 @@ export function Agenda({ items }) {
         </li>
       ))}
     </ol>
+  );
+}
+
+// Answer chips; `selected` options are shown as chosen (aria-pressed), nothing is stored.
+export function ChoiceChips({ label, options }) {
+  return (
+    <div className="chips" role="group" aria-label={label}>
+      {options.map((option) => (
+        <button key={option.label} type="button" className="chip" aria-pressed={option.selected ? "true" : "false"}>
+          {option.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// What a permission gives the coach (check) and what it never does (lock).
+export function Ticks({ yes = [], no = [] }) {
+  return (
+    <ul className="card ticks">
+      {yes.map((text) => (
+        <li key={text}>
+          <Icon name="check" />
+          <span>{text}</span>
+        </li>
+      ))}
+      {no.map((text) => (
+        <li key={text} className="is-no">
+          <Icon name="lock" />
+          <span>{text}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function NoteCard({ icon, children }) {
+  return (
+    <div className="card note-card">
+      <Icon name={icon} />
+      <p className="small">{children}</p>
+    </div>
+  );
+}
+
+// type: "text" (default), "textarea", "select" or "time"; values are examples only.
+export function Field({ field }) {
+  const id = useId();
+  let control;
+  if (field.type === "textarea") {
+    control = <textarea id={id} rows={3} defaultValue={field.value} />;
+  } else if (field.type === "select") {
+    control = (
+      <select id={id} defaultValue={field.value}>
+        {field.options.map((option) => (
+          <option key={option}>{option}</option>
+        ))}
+      </select>
+    );
+  } else {
+    control = <input id={id} type={field.type ?? "text"} defaultValue={field.value} inputMode={field.numeric ? "numeric" : undefined} />;
+  }
+  return (
+    <div className="field">
+      <label htmlFor={id}>{field.label}</label>
+      <div className={`input${field.type === "textarea" ? " input--area" : ""}${field.type === "select" ? " input--select" : ""}`}>
+        {control}
+        {field.suffix ? <span className="suffix">{field.suffix}</span> : null}
+      </div>
+    </div>
   );
 }
 

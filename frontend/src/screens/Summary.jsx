@@ -12,16 +12,16 @@ const SHORTCUTS = [
 export default function Summary() {
   return (
     <>
-      <section className="card hero-card" aria-labelledby="summary-title">
+      <section className="card card--yellow hero-card" aria-labelledby="summary-title">
         <p className="eyebrow">{today.label}</p>
         <h1 id="summary-title" className="hero-label">
-          Până la salariu mai ai
+          Până pe {cycle.endsOn} mai ai disponibili
         </h1>
         <Amount value={cycle.left} size="xl" />
         <p className="hero-sub">
-          Cam {cycle.perDay} lei pe zi · {cycle.daysLeftLabel}, până pe {cycle.endsOn} <Src kind="est" />
+          Cam {cycle.perDay} lei pe zi, {cycle.daysLeftLabel} · {cycle.endsOn} e {cycle.basis} <Src kind="est" />
         </p>
-        <QuickActions items={SHORTCUTS} />
+        <QuickActions items={SHORTCUTS} primaryTone="ink" />
       </section>
 
       <InfoCard icon={lastMessage.icon} meta={lastMessage.meta} title={lastMessage.title} text={lastMessage.text} />
@@ -44,7 +44,9 @@ export default function Summary() {
 
       <Section title="Ce am observat">
         <div className="card insight">
-          <p className="insight-figure num">{insight.figure}</p>
+          <p className="insight-figure num">
+            <span className="marker">{insight.figure}</span>
+          </p>
           <p>
             {insight.text} <Src kind="obs" />
           </p>

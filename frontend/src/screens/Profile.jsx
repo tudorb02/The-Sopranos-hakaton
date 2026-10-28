@@ -1,4 +1,4 @@
-import { Facts, Group, Meter, Src, Switch } from "../components/ui.jsx";
+import { Facts, Group, Meter, Src, Switch, ValueRow } from "../components/ui.jsx";
 import { profile } from "../data/demo.js";
 import { lei } from "../lib/format.js";
 
@@ -22,6 +22,21 @@ export default function Profile() {
           <Src kind="est" label="estimat" />
         </p>
       </header>
+
+      <Group
+        label="Extrasele tale"
+        action={
+          <a className="btn btn--text btn--small" href="#/extrase">
+            Gestionează
+          </a>
+        }
+      >
+        <ul className="card rows">
+          {profile.statements.map((source) => (
+            <ValueRow key={source.name} icon={source.icon} name={source.name} note={source.note} value={<span className="status is-on">{source.status}</span>} />
+          ))}
+        </ul>
+      </Group>
 
       <Group label="Despre tine" action={CORRECT}>
         <Facts items={profile.about} />
@@ -114,9 +129,12 @@ export default function Profile() {
         </div>
       </Group>
 
-      <button type="button" className="btn btn--text btn--danger">
-        Șterge tot ce știe coach-ul
-      </button>
+      <div className="deactivate">
+        <button type="button" className="btn btn--text btn--danger">
+          Dezactivează coach-ul
+        </button>
+        <p className="small muted">Extrasele importate și răspunsurile tale se șterg. Contul și cardurile nu sunt afectate.</p>
+      </div>
     </>
   );
 }

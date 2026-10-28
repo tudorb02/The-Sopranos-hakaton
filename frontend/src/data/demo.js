@@ -6,9 +6,13 @@ export const today = { label: "Joi, 12 noiembrie" };
 
 export const client = { firstName: "Daria", initial: "D" };
 
+// The budget period follows the client's profile: the day before the salary for an employee
+// (Daria: paid on the 5th), the day before the pension for a pensioner, or a date the client
+// picks when income is irregular. The screens only show `endsOn` and `basis`.
 export const cycle = {
   label: "5 nov. – 4 dec.",
   endsOn: "4 decembrie",
+  basis: "ziua dinaintea salariului",
   salary: 6200,
   fixed: 3020,
   setAside: 1200,
@@ -153,6 +157,10 @@ export const chat = [
 
 // src: "obs" (observat), "said" (spus), "agreed" (stabilit), "est" (estimat).
 export const profile = {
+  statements: [
+    { icon: "card", name: "Cont curent RON", note: "nov. 2025 – oct. 2026, importat din aplicație · se actualizează lunar", status: "Importat" },
+    { icon: "file", name: "Extrase atașate", note: "2 fișiere: nov. 2024 – oct. 2025 și o altă bancă", status: "Citite" },
+  ],
   about: [
     { label: "Prenume", value: "Daria", src: "obs" },
     { label: "Vârstă", value: "25–34 ani", src: "obs" },
@@ -164,6 +172,7 @@ export const profile = {
     { label: "Salariu net", value: "~6.200 lei", src: "obs" },
     { label: "Tichete de masă", value: "~800 lei pe lună", src: "said" },
     { label: "Cheltuieli fixe", value: "3.020 lei pe lună", src: "obs" },
+    { label: "Perioada de buget", value: "De pe 5 până pe 4, după ziua salariului", src: "obs" },
     { label: "De cheltuit în noiembrie", value: "~460 lei pe săptămână", src: "est" },
   ],
   income: 6200,
@@ -196,10 +205,10 @@ export const profile = {
     { label: "Rezumat", value: "Duminică, la 19:00" },
   ],
   permissions: [
-    { id: "tx", label: "Tranzacții și extrase", hint: "Istoric de 24 de luni", on: true },
+    { id: "tx", label: "Extrase de cont", hint: "Contul curent și 2 extrase atașate · 24 de luni", on: true },
     { id: "live", label: "Plăți cu cardul, în timp real", hint: "Pentru mesajele despre bugete", on: true },
     { id: "screen", label: "Screen Time", hint: "Doar aplicația FitZone", on: true },
-    { id: "calendar", label: "Calendar", hint: "Doar zilele de naștere", on: true },
+    { id: "calendar", label: "Google Calendar", hint: "Doar zilele de naștere și evenimentele marcate", on: true },
     { id: "contacts", label: "Contacte", hint: "Doar prenume, procesate pe telefon", on: true },
     { id: "health", label: "Health", hint: "Nu e folosit", on: false },
   ],

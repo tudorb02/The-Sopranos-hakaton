@@ -9,7 +9,7 @@ export default function Budgets() {
       <section className="card hero-card" aria-labelledby="budgets-title">
         <p className="eyebrow">Ciclul de salariu · {cycle.label}</p>
         <h1 id="budgets-title" className="hero-label">
-          Mai ai de cheltuit
+          Până pe {cycle.endsOn} mai ai disponibili
         </h1>
         <Amount value={cycle.left} size="lg" />
         <p className="hero-sub">
