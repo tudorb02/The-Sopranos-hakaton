@@ -88,7 +88,7 @@ public class MonitoringService {
             throw new IllegalStateException("Raportul nu are impact anual de monitorizat");
         }
 
-        Calc rateBefore = greenRate(runId, funding);
+        Calc rateBefore = greenRate(runId, funding, run.submission().optionId());
         BigDecimal bonus = Params.value(reference.pricing().path("green").path("impactBonusAdjustmentPp"),
                 "impactBonusAdjustmentPp");
         Calc bonusCalc = calcs.create(runId, TOOL, "monitoring.bonus", "Bonusul de impact", confirmed ? bonus
@@ -110,16 +110,17 @@ public class MonitoringService {
         return store.update(runId, r -> r.withMonitoring(result));
     }
 
-    private Calc greenRate(String runId, JsonNode funding) {
+    /** The green rate of the option the farmer sent to the bank (the agent's options carry kind, not variant). */
+    private Calc greenRate(String runId, JsonNode funding, String optionId) {
         List<String> seen = new ArrayList<>();
         for (JsonNode option : funding.path("options")) {
-            if ("VERDE".equals(option.path("variant").asText())) {
+            if (optionId.equals(option.path("optionId").asText())) {
                 String calcId = option.path("rateBreakdown").path("rateCalcId").asText();
                 seen.add(calcId);
                 return calcs.find(runId, calcId).orElseThrow(() ->
                         new IllegalStateException("Dobânda verde " + calcId + " lipsește"));
             }
         }
-        throw new IllegalStateException("Dosarul nu are o variantă verde (" + seen + ")");
+        throw new IllegalStateException("Dosarul nu are opțiunea trimisă " + optionId + " (" + seen + ")");
     }
 }

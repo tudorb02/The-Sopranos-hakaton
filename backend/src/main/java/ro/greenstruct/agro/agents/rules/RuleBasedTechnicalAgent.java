@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,9 +82,7 @@ public class RuleBasedTechnicalAgent implements RuleAgent {
         ModuleCalculator calculator = calculators.require(module.calculator());
 
         ToolOutput rules = flow.call("get_module_rules", flow.input(), "Încarc regulile modulului " + module.nameRo());
-        String thresholdCalcId = rules.calcs().stream().filter(c -> c.key().startsWith("rules.threshold"))
-                .map(Calc::calcId).findFirst().orElseThrow(() -> new AgentFailureException("AGENT_MISSING_CALC",
-                        "Modulul nu publică pragul verde (rules.threshold.*)", false, null));
+        String thresholdCalcId = thresholdCalc(rules);
 
         String offerId = null;
         for (StoredDocument document : run.request().documents()) {
@@ -101,9 +100,26 @@ public class RuleBasedTechnicalAgent implements RuleAgent {
         ToolOutput initial = flow.call("compute_indicator", flow.input().put("configId", INITIAL)
                 .put("documentId", offerId), "Calculez indicatorul investiției cerute");
 
+        // Organic: full against phased conversion, the guidance moment of the category (README §6, cat. 6).
+        ToolOutput plans = "organic".equals(module.calculator()) && tools.find("compare_conversion_plans").isPresent()
+                ? flow.tryCall("compare_conversion_plans", flow.input(), "Compar conversia integrală cu cea etapizată")
+                : null;
+        boolean phased = plans != null && plans.ok() && "PHASED".equals(plans.result().path("recommendedPlan").asText());
+
+        Map<String, String> sizing = new HashMap<>();
+        sizing.put(INITIAL, initial.result().path("sizing").asText(""));
         String recommendedId = INITIAL;
         String type = "KEEP_INITIAL";
-        if (!"PASS".equals(initial.result().path("thresholdResult").asText())) {
+        if (phased) {
+            ObjectNode simulate = flow.input().put("baseConfigId", INITIAL).put("configId", RECOMMENDED);
+            simulate.putArray("add").add(plans.result().path("phasedCatalogId").asText());
+            ToolOutput simulated = flow.call("simulate_upgrade_package", simulate, "Simulez conversia etapizată");
+            sizing.put(RECOMMENDED, simulated.result().path("sizing").asText(""));
+            if ("PASS".equals(simulated.result().path("thresholdResult").asText())) {
+                recommendedId = RECOMMENDED;
+                type = "UPGRADE_BEYOND_REQUEST";
+            }
+        } else if (!"PASS".equals(initial.result().path("thresholdResult").asText())) {
             Optional<Pick> pick = searchUpgrade(flow, module);
             if (pick.isPresent()) {
                 ObjectNode simulate = flow.input().put("baseConfigId", INITIAL).put("configId", RECOMMENDED);
@@ -111,6 +127,7 @@ public class RuleBasedTechnicalAgent implements RuleAgent {
                 pick.get().catalogIds().forEach(addNode::add);
                 ToolOutput simulated = flow.call("simulate_upgrade_package", simulate,
                         "Simulez pachetul de upgrade " + pick.get().candidate().id());
+                sizing.put(RECOMMENDED, simulated.result().path("sizing").asText(""));
                 if ("PASS".equals(simulated.result().path("thresholdResult").asText())) {
                     recommendedId = RECOMMENDED;
                     type = "UPGRADE_TO_PASS";
@@ -125,9 +142,21 @@ public class RuleBasedTechnicalAgent implements RuleAgent {
         ToolOutput dnsh = flow.call("check_dnsh_inputs", flow.input().put("configId", recommendedId),
                 "Verific datele pentru DNSH");
 
-        ObjectNode output = assemble(flow, module, calculator, run, baseline, thresholdCalcId, recommendedId, type, dnsh);
+        ObjectNode output = assemble(flow, module, calculator, run, baseline, thresholdCalcId, recommendedId, type, dnsh,
+                sizing.get(recommendedId), plans != null && plans.ok() ? plans.result() : null);
         flow.thought("Evaluarea tehnică e gata: " + output.path("summaryRo").asText());
         return new AgentResult(output, "LIVE", flow.iterations());
+    }
+
+    /**
+     * The calc the output cites as the green threshold: rules.threshold.* when the module has a numeric threshold, the
+     * sizing limit for a BY_NATURE module (energy), else the first published rule (README §6).
+     */
+    private static String thresholdCalc(ToolOutput rules) {
+        return Stream.of("rules.threshold", "rules.sizing", "rules.")
+                .flatMap(prefix -> rules.calcs().stream().filter(c -> c.key().startsWith(prefix)).limit(1))
+                .map(Calc::calcId).findFirst().orElseThrow(() -> new AgentFailureException("AGENT_MISSING_CALC",
+                        "Modulul nu publică pragul verde (rules.threshold.*)", false, null));
     }
 
     private record Pick(UpgradeSelector.Candidate candidate, List<String> catalogIds) {
@@ -165,7 +194,7 @@ public class RuleBasedTechnicalAgent implements RuleAgent {
 
     private ObjectNode assemble(ToolFlow flow, ModuleDefinition module, ModuleCalculator calculator, Run run,
                                 ToolOutput baseline, String thresholdCalcId, String recommendedId, String type,
-                                ToolOutput dnsh) {
+                                ToolOutput dnsh, String sizingResult, JsonNode plans) {
         ObjectNode out = mapper.createObjectNode();
         out.put("moduleId", module.moduleId());
         out.put("indicator", module.indicator());
@@ -179,8 +208,12 @@ public class RuleBasedTechnicalAgent implements RuleAgent {
         base.put("descriptionRo", cut("Situația actuală pe parcelele alese, din " + ("NORM".equals(
                 base.path("dataSource").asText()) ? "norme și chestionar" : "facturi și norme"), 400));
         ArrayNode baseMetrics = base.putArray("metrics");
-        calculator.baselineMetrics().forEach((key, metric) -> flow.idIfPresent(key).ifPresent(id ->
-                baseMetrics.addObject().put("metric", metric).put("calcId", id)));
+        calculator.baselineMetrics().forEach((key, metric) -> flow.calc(key).filter(c -> c.value().signum() != 0)
+                .ifPresent(c -> baseMetrics.addObject().put("metric", metric).put("calcId", c.calcId())));
+        if (baseMetrics.isEmpty()) {
+            calculator.baselineMetrics().forEach((key, metric) -> flow.idIfPresent(key).ifPresent(id ->
+                    baseMetrics.addObject().put("metric", metric).put("calcId", id)));
+        }
 
         ArrayNode configurations = out.putArray("configurations");
         for (Configuration cfg : workspaces.forRun(run.id()).configurations()) {
@@ -204,14 +237,20 @@ public class RuleBasedTechnicalAgent implements RuleAgent {
             outcome.evidence().forEach(evidence::add);
             row.put("noteRo", cut(outcome.noteRo(), 400));
         }
-        out.set("sizingCheck", sizing(flow, recommendedId));
+        out.set("sizingCheck", sizing(flow, recommendedId, sizingResult));
         out.set("missingFields", missingFields(run, dnsh.result()));
 
         Calc indicator = flow.calc(recommendedId + ".indicator").orElseThrow();
         out.put("summaryRo", cut("Investiția " + ("KEEP_INITIAL".equals(type) ? "cerută" : "recomandată")
                 + " atinge " + indicator.display() + " din indicatorul verde ("
                 + ("NO_FEASIBLE_UPGRADE".equals(type) ? "nu trece pragul, nu am găsit un upgrade" : "trece pragul") + ").", 800));
-        out.put("farmerMessageRo", cut(farmerMessage(flow, module, type, indicator), 400));
+        String farmerMessage = farmerMessage(flow, module, type, indicator);
+        if (plans != null) {
+            String plan = planComparison(flow, type, plans.path("fullCovered").asBoolean());
+            out.put("summaryRo", cut(out.path("summaryRo").asText() + " " + plan, 800));
+            farmerMessage = plan;
+        }
+        out.put("farmerMessageRo", cut(farmerMessage, 400));
         return out;
     }
 
@@ -238,23 +277,28 @@ public class RuleBasedTechnicalAgent implements RuleAgent {
         node.put("indicatorCalcId", flow.id(id + ".indicator"));
         node.put("thresholdResult", cfg.passesThreshold() ? "PASS" : "FAIL");
         ArrayNode impacts = node.putArray("impacts");
-        calculator.impactMetrics().forEach((suffix, metric) -> flow.idIfPresent(id + "." + suffix).ifPresent(calc ->
-                impacts.addObject().put("metric", metric).put("calcId", calc)));
+        calculator.impactMetrics().forEach((suffix, metric) -> flow.calc(id + "." + suffix)
+                .filter(c -> c.value().signum() != 0)
+                .ifPresent(c -> impacts.addObject().put("metric", metric).put("calcId", c.calcId())));
         return node;
     }
 
-    private ObjectNode sizing(ToolFlow flow, String configId) {
+    /** Calc shown for the sizing rule, by module: power per hectare (machinery), share sold to the grid (energy). */
+    private static final List<String> SIZING_CALCS = List.of("hp_per_ha", "export_share");
+
+    private ObjectNode sizing(ToolFlow flow, String configId, String result) {
         ObjectNode node = mapper.createObjectNode();
-        Optional<String> hp = flow.idIfPresent(configId + ".hp_per_ha");
-        if (hp.isEmpty()) {
+        Optional<String> shown = SIZING_CALCS.stream().map(suffix -> flow.idIfPresent(configId + "." + suffix))
+                .flatMap(Optional::stream).findFirst();
+        if (shown.isEmpty() || result == null || result.isEmpty()) {
             node.put("status", "NOT_APPLICABLE");
             node.put("noteRo", "Modulul nu are regulă de dimensionare");
             return node;
         }
-        boolean ok = workspaces.forRun(flow.run().id()).configuration(configId).passesThreshold();
+        boolean ok = "PASS".equals(result);
         node.put("status", ok ? "PASS" : "FAIL");
-        node.put("calcId", hp.get());
-        node.put("noteRo", ok ? "Puterea pe hectar e în limita programului" : "Puterea pe hectar depășește limita");
+        node.put("calcId", shown.get());
+        node.put("noteRo", ok ? "Dimensionarea e în limita programului" : "Dimensionarea depășește limita programului");
         return node;
     }
 
@@ -270,6 +314,28 @@ public class RuleBasedTechnicalAgent implements RuleAgent {
                     .put("requiredFor", "DNSH").put("docType", "WATER_PERMIT_ANAR").put("blocking", false);
         }
         return fields;
+    }
+
+    /** Full against phased conversion in words, with the figures of compare_conversion_plans as calc displays. */
+    private static String planComparison(ToolFlow flow, String type, boolean fullCovered) {
+        boolean phased = "UPGRADE_BEYOND_REQUEST".equals(type);
+        String fullMargin = display(flow, "plan.full.margin_total");
+        String phasedMargin = display(flow, "plan.phased.margin_total");
+        String gap = display(flow, "plan.full.gap_y1");
+        String coverage = display(flow, "plan.full.coverage");
+        String phasedGap = display(flow, "plan.phased.gap_y1");
+        return phased
+                ? "Recomandăm conversia etapizată: cea integrală lasă un gol de lichiditate de " + gap + " în primul an, "
+                + "peste prefinanțarea APIA de " + coverage + "; etapizat golul scade la " + phasedGap
+                + ". Marja cumulată pe orizont: " + fullMargin + " integral, " + phasedMargin + " etapizat."
+                : "Recomandăm conversia integrală: golul de lichiditate din primul an (" + gap
+                + (fullCovered ? ") încape în" : ") depășește, dar etapizarea nu l-ar acoperi mai bine, față de")
+                + " prefinanțarea APIA de " + coverage + "; marja cumulată pe orizont este "
+                + fullMargin + ", față de " + phasedMargin + " în varianta etapizată.";
+    }
+
+    private static String display(ToolFlow flow, String key) {
+        return flow.calc(key).map(Calc::display).orElse("?");
     }
 
     private static String farmerMessage(ToolFlow flow, ModuleDefinition module, String type, Calc indicator) {

@@ -1,10 +1,13 @@
 package ro.greenstruct.agro.agents.rules;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,9 +39,15 @@ import static ro.greenstruct.agro.agents.rules.RuleBasedTechnicalAgent.cut;
 @Component
 public class RuleBasedFundingAgent implements RuleAgent {
 
-    private static final Map<String, String> SAVINGS_METRICS = Map.of("water_eur", "WATER_COST_SAVED_EUR",
-            "energy_eur", "ENERGY_COST_SAVED_EUR", "fuel_eur", "FUEL_COST_SAVED_EUR", "inputs_eur",
-            "INPUTS_COST_SAVED_EUR");
+    /**
+     * Short key of a yearly saving (option_x.savings.&lt;key&gt;, from ModuleCalculator.savingsMetrics) to the contract
+     * metric. A key without a contract metric (organic: margin_eur) is left out; metrics are listed once.
+     */
+    private static final Map<String, String> SAVINGS_METRICS = Map.ofEntries(
+            Map.entry("water_eur", "WATER_COST_SAVED_EUR"), Map.entry("energy_eur", "ENERGY_COST_SAVED_EUR"),
+            Map.entry("electricity_eur", "ENERGY_COST_SAVED_EUR"), Map.entry("gas_eur", "ENERGY_COST_SAVED_EUR"),
+            Map.entry("fuel_eur", "FUEL_COST_SAVED_EUR"), Map.entry("diesel_eur", "FUEL_COST_SAVED_EUR"),
+            Map.entry("inputs_eur", "INPUTS_COST_SAVED_EUR"), Map.entry("fertiliser_eur", "INPUTS_COST_SAVED_EUR"));
     private static final Map<String, String> DRIVERS = Map.of("grant", "GRANT", "investment", "INVESTMENT_DELTA",
             "interest", "INTEREST", "savings", "OPERATING_SAVINGS", "collateral", "COLLATERAL_COSTS");
     private static final Map<String, String> RATE_COMPONENTS = Map.of("funding_cost", "FUNDING_COST", "risk_cost",
@@ -123,10 +132,24 @@ public class RuleBasedFundingAgent implements RuleAgent {
         List<String> optionIds = plans.stream().map(OptionPlan::optionId).toList();
         ObjectNode both = flow.input();
         optionIds.forEach(both.putArray("optionIds")::add);
-        ToolOutput affordability = flow.call("check_affordability", both, "Verific capacitatea de plată");
-        ObjectNode dscrInput = flow.input();
-        optionIds.forEach(dscrInput.putArray("optionIds")::add);
-        flow.call("compute_dscr", dscrInput, "Calculez DSCR-ul");
+        // Without Open Banking consent there is no cashflow: both checks are skipped and the output says so
+        // (README §5.3: missing data becomes a condition, never a rejection).
+        ToolOutput affordability = flow.tryCall("check_affordability", both, "Verific capacitatea de plată");
+        boolean cashflowKnown = affordability.ok();
+        if (cashflowKnown) {
+            ObjectNode dscrInput = flow.input();
+            optionIds.forEach(dscrInput.putArray("optionIds")::add);
+            flow.tryCall("compute_dscr", dscrInput, "Calculez DSCR-ul");
+        } else {
+            flow.thought("Fără consimțământ Open Banking nu pot verifica ratele față de cashflow; trec peste verificare "
+                    + "și o las ca și condiție înainte de semnare.");
+        }
+        boolean organic = "organic".equals(module.calculator()) && tools.find("compute_liquidity_gap").isPresent();
+        if (organic) {
+            ObjectNode gap = flow.input();
+            optionIds.forEach(gap.putArray("optionIds")::add);
+            flow.tryCall("compute_liquidity_gap", gap, "Calculez golul de lichiditate din anii de conversie");
+        }
         boolean green = optionIds.contains("B");
         if (green) {
             ObjectNode compare = flow.input();
@@ -134,8 +157,8 @@ public class RuleBasedFundingAgent implements RuleAgent {
             flow.call("compare_scenarios", compare, "Compar creditul clasic cu cel verde");
         }
 
-        ObjectNode output = assemble(flow, module, plans, schedules, affordability.result(), programs.result(), grant,
-                green);
+        ObjectNode output = assemble(flow, module, plans, schedules, cashflowKnown ? affordability.result() : null,
+                programs.result(), grant, green, organic);
         return new AgentResult(output, "LIVE", flow.iterations());
     }
 
@@ -170,14 +193,15 @@ public class RuleBasedFundingAgent implements RuleAgent {
 
     private ObjectNode assemble(ToolFlow flow, ModuleDefinition module, List<OptionPlan> plans,
                                 Map<String, ObjectNode> schedules, JsonNode affordability, JsonNode programs,
-                                Optional<JsonNode> grant, boolean green) {
+                                Optional<JsonNode> grant, boolean green, boolean organic) {
         ObjectNode out = mapper.createObjectNode();
         ArrayNode options = out.putArray("options");
         Map<String, String> affordabilityStatus = new LinkedHashMap<>();
         for (OptionPlan plan : plans) {
-            String verdict = affordability.path(plan.optionId()).path("result").asText("PASS");
+            String verdict = affordability == null ? "PASS_WITH_WARNING"
+                    : affordability.path(plan.optionId()).path("result").asText("PASS");
             affordabilityStatus.put(plan.optionId(), verdict);
-            options.add(option(flow, plan, schedules.get(plan.optionId()), verdict, affordability.path(plan.optionId())));
+            options.add(option(flow, plan, schedules.get(plan.optionId()), verdict, affordability != null));
         }
         out.put("recommendedOptionId", "A");
 
@@ -189,22 +213,26 @@ public class RuleBasedFundingAgent implements RuleAgent {
         ObjectNode basis = out.putObject("recommendationBasis");
         basis.put("greenEligible", green);
         basis.put("netAdvantagePositive", netPositive);
-        basis.put("affordabilityPassed", green ? affordable : !"FAIL".equals(affordabilityStatus.get("A")));
-        if (green && netPositive && affordable) {
+        basis.put("affordabilityPassed", affordability != null
+                && (green ? affordable : !"FAIL".equals(affordabilityStatus.get("A"))));
+        // The green option is recommended when it is cheaper over the horizon and not worse than the classic one on
+        // affordability: if even the classic instalments exceed the limit, that is not a reason to prefer them.
+        boolean classicAffordable = !"FAIL".equals(affordabilityStatus.get("A"));
+        if (green && netPositive && (affordable || !classicAffordable)) {
             out.put("recommendedOptionId", "B");
         }
 
         out.set("greenTier", greenTier(flow, worstDnsh(flow.run())));
-        out.set("programChecks", programChecks(programs));
+        out.set("programChecks", programChecks(programs, module));
         out.set("grantOutlook", grantOutlook(programs, grant));
         out.set("comparison", comparison(flow, green));
-        out.put("farmerExplanationRo", cut(farmerExplanation(flow, green, netPositive), 700));
-        out.put("officerNotesRo", cut(officerNotes(flow, green), 1000));
+        out.put("farmerExplanationRo", cut(farmerExplanation(flow, green, netPositive, organic), 700));
+        out.put("officerNotesRo", cut(officerNotes(flow, green, organic, affordability != null), 1000));
         return out;
     }
 
     private ObjectNode option(ToolFlow flow, OptionPlan plan, ObjectNode schedule, String affordabilityVerdict,
-                              JsonNode affordabilityNode) {
+                              boolean cashflowKnown) {
         String p = "option_" + plan.optionId().toLowerCase() + ".";
         FinancingOption facts = workspaces.forRun(flow.run().id()).option(plan.optionId());
         boolean classic = "A".equals(plan.optionId());
@@ -283,17 +311,27 @@ public class RuleBasedFundingAgent implements RuleAgent {
         totals.put("netCostCalcId", flow.id(p + "net_cost"));
 
         ArrayNode savings = node.putArray("annualSavings");
-        SAVINGS_METRICS.forEach((short_, metric) -> flow.idIfPresent(p + "savings." + short_).ifPresent(id ->
-                savings.addObject().put("metric", metric).put("calcId", id)));
+        Set<String> listed = new HashSet<>();
+        new TreeMap<>(SAVINGS_METRICS).forEach((key, metric) -> flow.calc(p + "savings." + key).filter(c -> c.value().signum() != 0).ifPresent(c -> {
+            if (listed.add(metric)) {
+                savings.addObject().put("metric", metric).put("calcId", c.calcId());
+            }
+        }));
         ObjectNode afford = node.putObject("affordability");
         afford.put("status", affordabilityVerdict);
-        afford.put("ratioCalcId", flow.id(p + "affordability_ratio"));
+        if (cashflowKnown) {
+            afford.put("ratioCalcId", flow.id(p + "affordability_ratio"));
+        }
         afford.put("limitCalcId", flow.id("line.affordability_limit"));
-        afford.put("noteRo", "FAIL".equals(affordabilityVerdict) ? "Ratele depășesc limita din cashflow"
+        afford.put("noteRo", !cashflowKnown
+                ? "Fără consimțământ Open Banking nu am putut verifica ratele față de cashflow; se verifică la bancă înainte de semnare"
+                : "FAIL".equals(affordabilityVerdict) ? "Ratele depășesc limita din cashflow"
                 : "PASS_WITH_WARNING".equals(affordabilityVerdict) ? "Ratele depășesc cashflow-ul în unele luni"
                 : "Ratele încap în cashflow-ul net");
-        afford.put("dscrCalcId", flow.id(p + "dscr"));
-        flow.idIfPresent(p + "debt_service_year").ifPresent(id -> afford.put("debtServiceCalcId", id));
+        if (cashflowKnown) {
+            afford.put("dscrCalcId", flow.id(p + "dscr"));
+            flow.idIfPresent(p + "debt_service_year").ifPresent(id -> afford.put("debtServiceCalcId", id));
+        }
         node.put("greenEligible", !classic);
         node.set("rateBreakdown", rateBreakdown(flow, classic));
         return node;
@@ -350,8 +388,21 @@ public class RuleBasedFundingAgent implements RuleAgent {
         return values;
     }
 
-    private ArrayNode programChecks(JsonNode programs) {
+    private ArrayNode programChecks(JsonNode programs, ModuleDefinition module) {
         ArrayNode checks = mapper.createArrayNode();
+        if (programs.path("programs").isEmpty()) {
+            // The contract wants at least one row: a module without EU programmes (organic) says so explicitly.
+            ObjectNode row = checks.addObject();
+            row.put("programCode", "INVESTEU_FEI");
+            row.put("result", "NOT_APPLICABLE");
+            row.put("session", "PERMANENT");
+            row.put("checkedAt", properties.today().toString());
+            row.put("sourceUrl", "https://www.eif.org");
+            row.putArray("criteria");
+            row.put("noteRo", "Modulul " + module.nameRo() + " nu folosește programe UE de grant sau garanție; "
+                    + "finanțarea este creditul verde Raiffeisen.");
+            return checks;
+        }
         String today = properties.today().toString();
         for (JsonNode program : programs.path("programs")) {
             if (checks.size() >= 12) {
@@ -442,24 +493,71 @@ public class RuleBasedFundingAgent implements RuleAgent {
         return ro.greenstruct.agro.engine.greentier.DnshStatus.overall(statuses).name();
     }
 
-    private String farmerExplanation(ToolFlow flow, boolean green, boolean netPositive) {
+    private String farmerExplanation(ToolFlow flow, boolean green, boolean netPositive, boolean organic) {
         if (!green) {
             return "Investiția cerută nu atinge pragul verde, așa că vă propunem creditul clasic. Puteți relua analiza cu o investiție mai eficientă.";
         }
         String gain = flow.calc("compare.net_advantage").map(Calc::display).orElse("");
-        return netPositive
+        String base = netPositive
                 ? "Câștigi " + gain + " alegând creditul verde, față de cel clasic, pe toată durata creditului."
                 : "Creditul verde nu iese mai avantajos decât cel clasic pe durata analizată.";
+        String dscr = flow.calc("option_b.dscr").map(Calc::display).orElse(null);
+        String limit = flow.calc("line.affordability_limit").map(Calc::display).orElse(null);
+        String warning = flow.calc("option_b.affordability_ratio").filter(r -> limit != null && dscr != null
+                && flow.calc("line.affordability_limit").map(l -> r.value().compareTo(l.value()) > 0).orElse(false))
+                .map(r -> " Ratele din primul an sunt " + r.display() + " din cashflow-ul net, peste limita de " + limit
+                        + "; economiile le acoperă (DSCR " + dscr + "), dar banca va analiza capacitatea de plată.")
+                .orElse("");
+        return (organic ? base + " " + liquidityGap(flow) : base) + warning;
     }
 
-    private String officerNotes(ToolFlow flow, boolean green) {
-        if (!green) {
-            return "Fără credit verde: configurația nu trece pragul. Parametrii dobânzii sunt demo.";
+    /** Gap in cash flow of the conversion years of the green option against the APIA pre-financing (README §6, cat. 6). */
+    private String liquidityGap(ToolFlow flow) {
+        Optional<Calc> gap = flow.calc("option_b.gap.y1");
+        Optional<Calc> coverage = flow.calc("option_b.gap.coverage_y1");
+        if (gap.isEmpty() || coverage.isEmpty()) {
+            return "";
         }
-        String classic = flow.calc("pricing.classic.rate").map(Calc::display).orElse("?");
-        String verde = flow.calc("pricing.green.rate").map(Calc::display).orElse("?");
-        return "Dobânda clasică " + classic + ", dobânda verde " + verde + ". Parametrii dobânzii (PD, LGD, ponderi de risc, "
-                + "cost de finanțare, subvenție) sunt demo, de confirmat cu Raiffeisen.";
+        boolean covered = gap.get().value().compareTo(coverage.get().value()) <= 0;
+        StringBuilder text = new StringBuilder("Golul de lichiditate din primul an de conversie, cu ratele creditului, este ")
+                .append(gap.get().display()).append(", față de o prefinanțare APIA de ")
+                .append(coverage.get().display()).append(covered ? ": e acoperit." : ": nu e acoperit complet.");
+        for (int year = 2; year <= 5; year++) {
+            Optional<Calc> next = flow.calc("option_b.gap.y" + year);
+            Optional<Calc> cover = flow.calc("option_b.gap.coverage_y" + year);
+            if (next.isPresent() && cover.isPresent() && next.get().value().compareTo(cover.get().value()) > 0) {
+                text.append(" În anul ").append(year).append(" de conversie golul (").append(next.get().display())
+                        .append(") depășește prefinanțarea (").append(cover.get().display())
+                        .append("): discutăm un ajutor de trezorerie (F5).");
+            }
+        }
+        return text.toString();
+    }
+
+    private String officerNotes(ToolFlow flow, boolean green, boolean organic, boolean cashflowKnown) {
+        StringBuilder notes = new StringBuilder();
+        if (!green) {
+            notes.append("Fără credit verde: configurația nu trece pragul. Parametrii dobânzii sunt demo.");
+        } else {
+            String classic = flow.calc("pricing.classic.rate").map(Calc::display).orElse("?");
+            String verde = flow.calc("pricing.green.rate").map(Calc::display).orElse("?");
+            notes.append("Dobânda clasică ").append(classic).append(", dobânda verde ").append(verde)
+                    .append(". Parametrii dobânzii (PD, LGD, ponderi de risc, cost de finanțare, subvenție) sunt demo, "
+                            + "de confirmat cu Raiffeisen.");
+        }
+        if (organic) {
+            notes.append(' ').append(liquidityGap(flow));
+        }
+        if (!cashflowKnown) {
+            notes.append(" Fără consimțământ Open Banking: capacitatea de plată și DSCR nu au fost calculate; "
+                    + "se cer extrasele de cont înainte de semnare.");
+        }
+        List<String> missing = flow.run().missingDocuments();
+        if (!missing.isEmpty()) {
+            notes.append(" Documente lipsă, cerute ca și condiții înainte de tragere: ").append(String.join(", ", missing))
+                    .append('.');
+        }
+        return notes.toString();
     }
 
     private static String shortId(String id) {
