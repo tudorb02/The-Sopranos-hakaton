@@ -72,15 +72,7 @@ public class CalculateImpactTool implements ToolHandler {
                 Unit.PCT).formula("sumă verde / investiție totală").add();
 
         BigDecimal years = BigDecimal.valueOf(FinancingConfig.horizonYears(context));
-        if ("irrigation".equals(context.module().calculator())) {
-            context.calc("impact.water_horizon", "Apă economisită pe orizont",
-                    cfg.metric("water_saved_m3").multiply(years, MC), Unit.M3).add();
-            context.calc("impact.energy_horizon", "Energie economisită pe orizont",
-                    cfg.metric("energy_saved_kwh").multiply(years, MC), Unit.KWH).add();
-        } else {
-            context.calc("impact.fuel_horizon", "Motorină economisită pe orizont",
-                    cfg.metric("fuel_saved_l").multiply(years, MC), Unit.L).add();
-        }
+        context.calculator().horizonImpact(context, cfg, years);
         context.calc("impact.co2_horizon", "CO₂ evitat pe orizont", cfg.metric("co2_avoided_t").multiply(years, MC),
                 Unit.T_CO2).add();
         return context.ok(context.newResult().put("configId", cfg.configId()),

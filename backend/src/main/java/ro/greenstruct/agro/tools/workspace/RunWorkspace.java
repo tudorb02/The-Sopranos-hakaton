@@ -8,6 +8,9 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import ro.greenstruct.agro.engine.greentier.GreenTierResult;
+import ro.greenstruct.agro.engine.pricing.RateBreakdown;
+
 /**
  * Working memory of one dossier shared by the three agents' tools: parsed documents, the baseline,
  * configurations, eligibility results and financing options. Only tools write here.
@@ -19,6 +22,8 @@ public class RunWorkspace {
     private final Map<String, Configuration> configurations = new LinkedHashMap<>();
     private final Map<String, FinancingOption> options = new LinkedHashMap<>();
     private final Map<String, JsonNode> programChecks = new LinkedHashMap<>();
+    private final Map<String, RateBreakdown> pricing = new LinkedHashMap<>();
+    private GreenTierResult tier;
     private Map<String, BigDecimal> baseline;
 
     public synchronized void putDocument(DocumentFacts facts) {
@@ -84,5 +89,30 @@ public class RunWorkspace {
             throw new IllegalArgumentException("Opțiunea " + optionId + " nu există; apelează întâi build_funding_stack");
         }
         return option;
+    }
+
+    /** The green tier decided by determine_green_tier (README §4 step 8). */
+    public synchronized void putTier(GreenTierResult result) {
+        this.tier = result;
+    }
+
+    public synchronized GreenTierResult tier() {
+        if (tier == null) {
+            throw new IllegalArgumentException("Apelează întâi determine_green_tier");
+        }
+        return tier;
+    }
+
+    public synchronized boolean hasTier() {
+        return tier != null;
+    }
+
+    /** The rate by component per variant, CLASIC or VERDE, set by price_loan. */
+    public synchronized void putPricing(String variant, RateBreakdown rate) {
+        pricing.put(variant, rate);
+    }
+
+    public synchronized Optional<RateBreakdown> pricing(String variant) {
+        return Optional.ofNullable(pricing.get(variant));
     }
 }

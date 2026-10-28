@@ -10,6 +10,7 @@ public enum Unit {
     EUR_PER_KWH(2, " EUR/kWh"),
     EUR_PER_HA(0, " EUR/ha"),
     PCT(2, "%"),
+    PP(2, " pp"),
     RATIO(2, ""),
     M3(0, " m³"),
     M3_PER_YEAR(0, " m³/an"),

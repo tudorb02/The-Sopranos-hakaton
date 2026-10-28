@@ -90,7 +90,9 @@ public class BuildScenarioTool implements ToolHandler {
         checkTerm(context, line, cfg, termMonths);
         YearMonth firstMonth = YearMonth.from(context.today())
                 .plusMonths(RuleValues.financingDefault(context, "firstInstallmentOffsetMonths").longValue());
-        BigDecimal rate = FinancingConfig.rate(line);
+        BigDecimal rate = context.workspace().pricing("A".equals(option.optionId()) ? "CLASIC" : "VERDE")
+                .map(priced -> priced.ratePct())
+                .orElseGet(() -> FinancingConfig.rate(line));
         String p = "option_" + option.optionId().toLowerCase() + ".";
 
         boolean seasonal = "SEASONAL".equals(Params.requiredText(input, "scheduleType"));
@@ -190,9 +192,7 @@ public class BuildScenarioTool implements ToolHandler {
 
     /** Which configuration metrics are yearly savings in EUR, per calculator. */
     private static Map<String, String> savingsMetrics(ToolContext context) {
-        return "irrigation".equals(context.module().calculator())
-                ? Map.of("savings_water_eur", "water_eur", "savings_energy_eur", "energy_eur")
-                : Map.of("savings_fuel_eur", "fuel_eur", "savings_inputs_eur", "inputs_eur");
+        return context.calculator().savingsMetrics();
     }
 
     private static Set<Month> paymentMonths(JsonNode input, ToolContext context) {

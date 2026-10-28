@@ -16,6 +16,7 @@ import ro.greenstruct.agro.orchestration.AgentSlot;
 import ro.greenstruct.agro.orchestration.Run;
 import ro.greenstruct.agro.orchestration.RunNotFoundException;
 import ro.greenstruct.agro.orchestration.RunStore;
+import ro.greenstruct.agro.tools.technical.ModuleCalculators;
 import ro.greenstruct.agro.tools.workspace.WorkspaceStore;
 
 /**
@@ -33,10 +34,11 @@ public class ToolRegistry {
     private final CalcStore calcStore;
     private final ObjectMapper mapper;
     private final GreenStructProperties properties;
+    private final ModuleCalculators calculators;
 
     public ToolRegistry(List<ToolHandler> handlers, RunStore runs, ModuleRegistry modules, ReferenceData reference,
                         WorkspaceStore workspaces, CalcStore calcStore, ObjectMapper mapper,
-                        GreenStructProperties properties) {
+                        GreenStructProperties properties, ModuleCalculators calculators) {
         for (ToolHandler handler : handlers) {
             if (tools.putIfAbsent(handler.name(), handler) != null) {
                 throw new IllegalStateException("Duplicate tool " + handler.name());
@@ -49,6 +51,7 @@ public class ToolRegistry {
         this.calcStore = calcStore;
         this.mapper = mapper;
         this.properties = properties;
+        this.calculators = calculators;
     }
 
     public List<ToolHandler> forAgent(AgentSlot agent) {
@@ -66,7 +69,7 @@ public class ToolRegistry {
         String moduleId = run.request().moduleId();
         ToolContext context = new ToolContext(toolName, run, modules.require(moduleId),
                 modules.catalog(moduleId).orElse(mapper.createObjectNode()), workspaces.forRun(runId), reference,
-                properties.today(), mapper, calcStore);
+                properties.today(), mapper, calcStore, calculators);
         try {
             return handler.execute(input == null ? mapper.createObjectNode() : input, context);
         } catch (IllegalArgumentException e) {

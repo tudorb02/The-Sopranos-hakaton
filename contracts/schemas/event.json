@@ -349,6 +349,7 @@
             "EUR_PER_KWH",
             "EUR_PER_HA",
             "PCT",
+        "PP",
             "RATIO",
             "M3",
             "M3_PER_YEAR",

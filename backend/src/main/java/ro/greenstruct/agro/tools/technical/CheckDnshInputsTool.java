@@ -56,36 +56,7 @@ public class CheckDnshInputsTool implements ToolHandler {
         result.put("droughtRisk", FarmFacts.maxRisk(context, "droughtRisk"));
         result.put("oldEquipmentFate", context.questionnaire().path("old_equipment_fate").asText("NECUNOSCUT"));
 
-        if ("irrigation".equals(context.module().calculator())) {
-            result.put("waterMeterInConfig", cfg.components().stream().anyMatch(c -> "WATER_METER".equals(c.category())));
-            context.workspace().documentOfType("WATER_PERMIT_ANAR").ifPresentOrElse(permit -> {
-                String validUntil = permit.texts().get("PERMIT_VALID_UNTIL");
-                result.put("permitPresent", true);
-                result.put("permitValid", validUntil != null && !parseDate(validUntil).isBefore(context.today()));
-            }, () -> result.put("permitPresent", false));
-            result.put("waterSource", context.questionnaire().path("water_source").asText("NECUNOSCUT"));
-        } else {
-            var stages = result.putArray("emissionStages");
-            context.workspace().documentOfType("OFFER").ifPresent(offer -> offer.lines().forEach(line -> {
-                String stage = line.texts().get("EMISSION_STAGE");
-                if (stage != null) {
-                    stages.add(line.lineId() + ": " + stage);
-                }
-            }));
-            result.put("tillage", context.questionnaire().path("tillage").asText("NECUNOSCUT"));
-            var used = result.putArray("usedEquipment");
-            cfg.components().stream().filter(EquipmentAge::isUsed).forEach(c -> used.addObject()
-                    .put("componentId", c.componentId())
-                    .put("ageYears", EquipmentAge.ageYears(context, c)));
-        }
+        context.calculator().dnshInputs(context, cfg, result);
         return context.ok(result, "Am verificat datele pentru DNSH");
-    }
-
-    private static LocalDate parseDate(String raw) {
-        try {
-            return LocalDate.parse(raw.trim(), RO_DATE);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Data „" + raw + "” din aviz nu are formatul zz.ll.aaaa");
-        }
     }
 }

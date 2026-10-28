@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +15,8 @@ import ro.greenstruct.agro.farm.FarmProfile;
 import ro.greenstruct.agro.modules.ModuleDefinition;
 import ro.greenstruct.agro.modules.ReferenceData;
 import ro.greenstruct.agro.orchestration.Run;
+import ro.greenstruct.agro.tools.technical.ModuleCalculator;
+import ro.greenstruct.agro.tools.technical.ModuleCalculators;
 import ro.greenstruct.agro.tools.workspace.RunWorkspace;
 
 /** Everything one tool call may read, plus the calcs it creates. One context per call. */
@@ -28,10 +31,11 @@ public class ToolContext {
     private final LocalDate today;
     private final ObjectMapper mapper;
     private final CalcStore calcStore;
+    private final ModuleCalculators calculators;
     private final List<Calc> created = new ArrayList<>();
 
     public ToolContext(String tool, Run run, ModuleDefinition module, JsonNode catalog, RunWorkspace workspace,
-                       ReferenceData reference, LocalDate today, ObjectMapper mapper, CalcStore calcStore) {
+                       ReferenceData reference, LocalDate today, ObjectMapper mapper, CalcStore calcStore, ModuleCalculators calculators) {
         this.tool = tool;
         this.run = run;
         this.module = module;
@@ -41,6 +45,7 @@ public class ToolContext {
         this.today = today;
         this.mapper = mapper;
         this.calcStore = calcStore;
+        this.calculators = calculators;
     }
 
     public Run run() {
@@ -61,6 +66,11 @@ public class ToolContext {
     /** The module's upgrade catalog (data/catalog/&lt;module&gt;.json); an empty object for config-only modules. */
     public JsonNode catalog() {
         return catalog;
+    }
+
+    /** The calculator of this module (config/modules/&lt;id&gt;.json, field calculator). */
+    public ModuleCalculator calculator() {
+        return calculators.require(module.calculator());
     }
 
     public RunWorkspace workspace() {
@@ -86,6 +96,11 @@ public class ToolContext {
 
     public String paramSource(String name) {
         return module.parameters().path(name).path("sourceRo").asText(null);
+    }
+
+    /** A calc made earlier in this dossier by any tool (the latest with this key), e.g. pricing.diff.total. */
+    public Optional<Calc> latestCalc(String key) {
+        return calcStore.latestByKey(run.id(), key);
     }
 
     public ObjectNode newResult() {

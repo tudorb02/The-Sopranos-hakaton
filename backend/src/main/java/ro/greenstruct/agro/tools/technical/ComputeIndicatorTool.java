@@ -58,7 +58,7 @@ public class ComputeIndicatorTool implements ToolHandler {
                 .orElseThrow(() -> new IllegalArgumentException("Extrage întâi documentul " + documentId));
 
         Configuration cfg = ConfigurationMetrics.build(context, configId, null,
-                offerComponents(offer, context.today().getYear()));
+                offerComponents(offer, context.today().getYear(), context.calculator()));
         context.workspace().putConfiguration(cfg);
         ConfigurationMetrics.emit(context, cfg, cfg);
 
@@ -80,7 +80,7 @@ public class ComputeIndicatorTool implements ToolHandler {
      * One component per offer line; document-level technical fields go to the matching component, and
      * every line records whether it is second-hand and its manufacture year.
      */
-    static List<InvestmentComponent> offerComponents(DocumentFacts offer, int currentYear) {
+    static List<InvestmentComponent> offerComponents(DocumentFacts offer, int currentYear, ModuleCalculator calculator) {
         List<InvestmentComponent> components = new ArrayList<>();
         for (DocumentFacts.LineFacts line : offer.lines()) {
             BigDecimal price = line.numbers().get("LINE_PRICE_NET");
@@ -89,29 +89,7 @@ public class ComputeIndicatorTool implements ToolHandler {
             }
             Map<String, BigDecimal> attributes = new HashMap<>(EquipmentAge.fromOfferLine(line, currentYear));
             BigDecimal quantity = line.numbers().getOrDefault("QUANTITY", BigDecimal.ONE);
-            switch (line.category()) {
-                case "IRRIGATION_SPRINKLER", "IRRIGATION_DRIP" -> {
-                    BigDecimal efficiency = line.numbers().getOrDefault("APPLICATION_EFFICIENCY_PCT",
-                            offer.numbers().get("APPLICATION_EFFICIENCY_PCT"));
-                    if (efficiency != null) {
-                        attributes.put("efficiencyPct", efficiency);
-                    }
-                }
-                case "PUMP" -> {
-                    BigDecimal power = line.numbers().getOrDefault("PUMP_POWER_KW", offer.numbers().get("PUMP_POWER_KW"));
-                    if (power != null) {
-                        attributes.put("powerKw", power);
-                    }
-                }
-                case "TRACTOR", "COMBINE" -> {
-                    BigDecimal hp = line.numbers().get("ENGINE_POWER_HP");
-                    if (hp != null) {
-                        attributes.put("hp", hp);
-                    }
-                }
-                default -> {
-                }
-            }
+            calculator.offerAttributes(line, offer, attributes);
             components.add(new InvestmentComponent("cmp_offer_" + line.lineId(), line.category(), line.descriptionRo(),
                     "OFFER", null, quantity, price, attributes));
         }
