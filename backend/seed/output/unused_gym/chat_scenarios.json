@@ -1,0 +1,24 @@
+[
+  {
+    "message": "Mai plătesc sala? Nu cred că am mai fost din iunie.",
+    "expected_tools": [
+      "list_subscriptions"
+    ],
+    "expected_topic": "unused_subscription"
+  },
+  {
+    "message": "Ce abonamente îmi consumă banii lunar?",
+    "expected_tools": [
+      "list_subscriptions",
+      "find_recurring_expenses"
+    ],
+    "expected_topic": "subscriptions"
+  },
+  {
+    "message": "Confirm, marchează abonamentul la sală ca planificat pentru anulare.",
+    "expected_tools": [
+      "update_subscription_status"
+    ],
+    "expected_topic": "cancel_planned"
+  }
+]

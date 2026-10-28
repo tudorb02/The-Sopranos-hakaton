@@ -1,0 +1,16 @@
+{
+  "persona_id": "goal_2000",
+  "name": "Daria Exemplu",
+  "salary_day": 5,
+  "monthly_income_minor": 700000,
+  "declared_problems": [
+    "Vreau să cumpăr o bicicletă de 2.000 lei."
+  ],
+  "context": [
+    "Sunt dispusă să renunț la sală pentru achiziția de 2.000 lei.",
+    "Economisesc puțin, dar în fiecare lună.",
+    "Păstrez minimum 2.000 lei ca rezervă pentru facturi; bicicleta se cumpără din economiile viitoare.",
+    "Sursa health pentru 18GYM este conectată; încă merg la sală.",
+    "Nume fictiv; abonament lunar fictiv negociat, 230 lei."
+  ]
+}

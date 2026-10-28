@@ -1,0 +1,122 @@
+[
+  {
+    "title": "Ziua de naștere — Prieten fictiv 1.1",
+    "starts_at": "2026-05-06T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 2.1",
+    "starts_at": "2026-06-05T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 2.2",
+    "starts_at": "2026-06-07T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 2.3",
+    "starts_at": "2026-06-08T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 2.4",
+    "starts_at": "2026-06-09T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 3.1",
+    "starts_at": "2026-07-21T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 4.1",
+    "starts_at": "2026-08-06T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 4.2",
+    "starts_at": "2026-08-07T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 4.3",
+    "starts_at": "2026-08-09T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 4.4",
+    "starts_at": "2026-08-20T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 4.5",
+    "starts_at": "2026-08-22T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 5.1",
+    "starts_at": "2026-09-08T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 5.2",
+    "starts_at": "2026-09-20T19:00:00+03:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Prieten fictiv 6.1",
+    "starts_at": "2026-10-25T19:00:00+02:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Invitat fictiv 1",
+    "starts_at": "2026-11-02T19:00:00+02:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Invitat fictiv 2",
+    "starts_at": "2026-11-04T19:00:00+02:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Invitat fictiv 3",
+    "starts_at": "2026-11-07T19:00:00+02:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Invitat fictiv 4",
+    "starts_at": "2026-11-10T19:00:00+02:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Invitat fictiv 5",
+    "starts_at": "2026-11-12T19:00:00+02:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Invitat fictiv 6",
+    "starts_at": "2026-11-15T19:00:00+02:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Invitat fictiv 7",
+    "starts_at": "2026-11-18T19:00:00+02:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Invitat fictiv 8",
+    "starts_at": "2026-11-21T19:00:00+02:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Invitat fictiv 9",
+    "starts_at": "2026-11-24T19:00:00+02:00",
+    "type": "birthday"
+  },
+  {
+    "title": "Ziua de naștere — Invitat fictiv 10",
+    "starts_at": "2026-11-27T19:00:00+02:00",
+    "type": "birthday"
+  }
+]

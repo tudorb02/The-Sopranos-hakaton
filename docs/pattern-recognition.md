@@ -225,6 +225,17 @@ Un tipar ajunge la utilizator doar dacă îndeplinește **toate** condițiile:
 
 Pragurile sunt configurabile per detector și vor fi ajustate împreună cu Business pe baza feedback-ului.
 
+### 8.1 Praguri per detector pentru datele seed
+
+Convenție de integrare aprobată pentru generatorul cu șase luni de istoric:
+
+- `subscription`: minimum **3 plăți lunare**, pe minimum 60 de zile, interval median 28–31 de zile, CV < 0,15, sumă în ±5%; impactul minim de 50 lei/lună rămâne aplicabil. Pragul generic de 8 apariții nu se aplică plăților lunare.
+- `end_of_cycle_shortage`: problema apare în **minimum 2 dintre ultimele 3 cicluri complete**; suportul este numărul de cicluri, nu numărul de tranzacții. Seed-ul țintește sold sub 100 lei timp de 5 zile înainte de salariu.
+- `unused_subscription`: folosește abonamentul identificat cu pragul de mai sus și o sursă de utilizare conectată; zero semnale în ultimele 30 de zile. Seed-ul oferă 90 de zile fără utilizare pentru cazul pozitiv.
+- `daily_habit`: intervalele pentru o rutină de birou se măsoară în **zile lucrătoare**; weekendul nu întrerupe obiceiul. Suportul generic ≥8 și răspândirea pe ≥3 săptămâni rămân aplicabile.
+
+Chiria și facturile sunt categorii fixe, nu abonamente comerciale de optimizat. Pentru controlul negativ, serviciile de streaming se alternează fără reînnoire lunară. O plată izolată nu este un abonament activ dedus doar din numele comerciantului. Aceste precizări definesc așteptările fixture-urilor; implementarea detectorilor trebuie să le respecte.
+
 **Pornire la rece:** sub ~3 luni de istoric, sistemul comunică explicit „mai am nevoie de date pentru X” în loc să afișeze tipare slabe.
 
 ---

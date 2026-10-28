@@ -1,0 +1,61 @@
+{
+  "generator_version": "1.0.0",
+  "parameters": {
+    "end_date": "2026-10-31",
+    "start_date": "2026-05-01",
+    "months": 6,
+    "seed": 42,
+    "timezone": "Europe/Bucharest",
+    "currency": "RON"
+  },
+  "personas": [
+    {
+      "persona_id": "end_of_month",
+      "transaction_count": 165,
+      "opening_balance_minor": 20914,
+      "closing_balance_minor": 81817,
+      "income_minor": 3300000,
+      "expenses_minor": 3239097
+    },
+    {
+      "persona_id": "daily_coffee",
+      "transaction_count": 370,
+      "opening_balance_minor": 250000,
+      "closing_balance_minor": 867998,
+      "income_minor": 3900000,
+      "expenses_minor": 3282002
+    },
+    {
+      "persona_id": "unused_gym",
+      "transaction_count": 264,
+      "opening_balance_minor": 290000,
+      "closing_balance_minor": 1014054,
+      "income_minor": 4080000,
+      "expenses_minor": 3355946
+    },
+    {
+      "persona_id": "birthday_month",
+      "transaction_count": 300,
+      "opening_balance_minor": 450000,
+      "closing_balance_minor": 1320563,
+      "income_minor": 4800000,
+      "expenses_minor": 3929437
+    },
+    {
+      "persona_id": "goal_2000",
+      "transaction_count": 264,
+      "opening_balance_minor": 210000,
+      "closing_balance_minor": 378508,
+      "income_minor": 4200000,
+      "expenses_minor": 4031492
+    },
+    {
+      "persona_id": "balanced",
+      "transaction_count": 258,
+      "opening_balance_minor": 500000,
+      "closing_balance_minor": 1783835,
+      "income_minor": 4500000,
+      "expenses_minor": 3216165
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "message": "Vreau o bicicletă de 2.000 lei. În ce lună mi-aș permite-o?",
+    "expected_tools": [
+      "simulate_goal",
+      "get_spending_summary"
+    ],
+    "expected_topic": "goal_2000"
+  },
+  {
+    "message": "Sunt dispusă să renunț la sală. Cu cât aș ajunge mai repede la țintă?",
+    "expected_tools": [
+      "list_subscriptions",
+      "simulate_goal"
+    ],
+    "expected_topic": "goal_tradeoff"
+  },
+  {
+    "message": "Confirm, salvează obiectivul de 2.000 lei pentru bicicletă.",
+    "expected_tools": [
+      "create_goal"
+    ],
+    "expected_topic": "create_goal"
+  },
+  {
+    "message": "Confirm, reține că sunt dispusă să renunț la sală pentru bicicletă.",
+    "expected_tools": [
+      "save_memory"
+    ],
+    "expected_topic": "goal_preference"
+  }
+]

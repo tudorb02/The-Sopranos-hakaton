@@ -1,0 +1,26 @@
+[
+  {
+    "message": "Am zece zile de naștere luna viitoare. Cât să pun deoparte?",
+    "expected_tools": [
+      "get_upcoming_expenses",
+      "get_spending_summary"
+    ],
+    "expected_topic": "upcoming_spike"
+  },
+  {
+    "message": "Cât am dat pe cadouri în lunile cu multe aniversări?",
+    "expected_tools": [
+      "get_spending_summary",
+      "get_upcoming_expenses"
+    ],
+    "expected_topic": "birthday_history"
+  },
+  {
+    "message": "Pot să mă pregătesc de acum fără să intru în economii?",
+    "expected_tools": [
+      "get_cashflow_pattern",
+      "get_upcoming_expenses"
+    ],
+    "expected_topic": "birthday_budget"
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "message": "Cum stau cu cheltuielile în ultimele luni?",
+    "expected_tools": [
+      "get_spending_summary"
+    ],
+    "expected_topic": "spending_overview"
+  },
+  {
+    "message": "Am suficientă rezervă până la următorul salariu?",
+    "expected_tools": [
+      "get_cashflow_pattern"
+    ],
+    "expected_topic": "healthy_cashflow"
+  },
+  {
+    "message": "Observi vreun obicei care îmi afectează bugetul?",
+    "expected_tools": [
+      "find_recurring_expenses",
+      "get_spending_summary"
+    ],
+    "expected_topic": "no_problem_patterns"
+  }
+]

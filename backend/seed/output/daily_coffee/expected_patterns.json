@@ -1,0 +1,13 @@
+[
+  {
+    "type": "daily_habit",
+    "merchant": "CAFENEA ORIZONT",
+    "notes": "20–22 dimineți lucrătoare/lună, cu o alternativă; intervalele se măsoară în zile lucrătoare."
+  },
+  {
+    "type": "morning_spending",
+    "window": "07:00–10:00",
+    "min_confidence": 0.95,
+    "notes": "Aproximativ 60% din numărul plăților discreționare cu oră; minimum 18 cafele cu oră pe lună completă."
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "message": "De obicei cheltui foarte repede banii și nu-mi dau seama unde se duc.",
+    "expected_tools": [
+      "get_spending_summary",
+      "find_recurring_expenses"
+    ],
+    "expected_topic": "morning_spending"
+  },
+  {
+    "message": "Cât mă costă cafeaua într-o lună?",
+    "expected_tools": [
+      "find_recurring_expenses",
+      "get_spending_summary"
+    ],
+    "expected_topic": "daily_habit"
+  },
+  {
+    "message": "Confirm, vreau să salvezi limita de maximum trei cafele pe săptămână.",
+    "expected_tools": [
+      "create_budget_rule"
+    ],
+    "expected_topic": "coffee_limit"
+  },
+  {
+    "message": "Dacă îmi fac cafeaua acasă două zile pe săptămână, cât economisesc?",
+    "expected_tools": [
+      "find_recurring_expenses"
+    ],
+    "expected_topic": "coffee_savings"
+  }
+]

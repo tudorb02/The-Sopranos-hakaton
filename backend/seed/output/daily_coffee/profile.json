@@ -1,0 +1,13 @@
+{
+  "persona_id": "daily_coffee",
+  "name": "Mara Exemplu",
+  "salary_day": 5,
+  "monthly_income_minor": 650000,
+  "declared_problems": [
+    "cheltui repede banii și nu știu unde se duc"
+  ],
+  "context": [
+    "Lucrez la birou în București și iau cafea în drum spre muncă.",
+    "Nume fictiv."
+  ]
+}

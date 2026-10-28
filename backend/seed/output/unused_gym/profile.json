@@ -1,0 +1,14 @@
+{
+  "persona_id": "unused_gym",
+  "name": "Radu Exemplu",
+  "salary_day": 5,
+  "monthly_income_minor": 680000,
+  "declared_problems": [
+    "Plătesc sala, dar nu mai ajung la antrenamente."
+  ],
+  "context": [
+    "Sursa geofence pentru 18GYM este conectată pe toată perioada.",
+    "Abonament lunar fictiv negociat, 230 lei.",
+    "Nume fictiv."
+  ]
+}

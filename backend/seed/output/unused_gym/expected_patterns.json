@@ -1,0 +1,12 @@
+[
+  {
+    "type": "subscription",
+    "merchant": "18GYM",
+    "notes": "230 lei lunar pe 15; prag specific minimum 3 plăți, CV interval < 0,15 și sumă constantă."
+  },
+  {
+    "type": "unused_subscription",
+    "merchant": "18GYM",
+    "notes": "Sursa geofence este conectată (vezi context); zero utilizări în ultimele 90 de zile."
+  }
+]

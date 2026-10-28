@@ -1,0 +1,14 @@
+{
+  "persona_id": "birthday_month",
+  "name": "Ioana Exemplu",
+  "salary_day": 5,
+  "monthly_income_minor": 800000,
+  "declared_problems": [
+    "Luna viitoare am multe aniversări și vreau să mă pregătesc."
+  ],
+  "context": [
+    "Calendarul personal este conectat.",
+    "Cadourile, florile și mesele aniversare sunt plătite din acest cont.",
+    "Nume fictiv."
+  ]
+}

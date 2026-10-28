@@ -1,0 +1,13 @@
+{
+  "persona_id": "end_of_month",
+  "name": "Alex Exemplu",
+  "salary_day": 10,
+  "monthly_income_minor": 550000,
+  "declared_problems": [
+    "Rămân fără bani înainte să intre salariul."
+  ],
+  "context": [
+    "Locuiesc cu chirie în București.",
+    "Nume fictiv; salariul intră pe 10."
+  ]
+}

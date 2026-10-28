@@ -1,0 +1,25 @@
+[
+  {
+    "message": "Cu câteva zile înainte de salariu mai am doar câțiva lei. Unde greșesc?",
+    "expected_tools": [
+      "get_cashflow_pattern",
+      "get_spending_summary"
+    ],
+    "expected_topic": "end_of_cycle_shortage"
+  },
+  {
+    "message": "Cât cheltui în prima săptămână după salariu?",
+    "expected_tools": [
+      "get_cashflow_pattern"
+    ],
+    "expected_topic": "payday_spending"
+  },
+  {
+    "message": "Ce sumă ar trebui să păstrez pentru ultima săptămână?",
+    "expected_tools": [
+      "get_cashflow_pattern",
+      "get_spending_summary"
+    ],
+    "expected_topic": "budget_planning"
+  }
+]
