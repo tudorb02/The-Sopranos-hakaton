@@ -67,8 +67,6 @@ public class BuildScenarioTool implements ToolHandler {
                 {"type": "object", "additionalProperties": false, "required": ["optionId", "scheduleType"], "properties": {
                   "optionId": {"type": "string", "enum": ["A", "B", "C"]},
                   "scheduleType": {"type": "string", "enum": ["EQUAL_MONTHLY", "SEASONAL"]},
-                  "termMonths": {"type": "integer", "minimum": 12, "maximum": 120,
-                    "description": "Defaults to the farmer's answer loan_term, else the module default."},
                   "paymentMonths": {"type": "array", "items": {"type": "string",
                     "enum": ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]},
                     "description": "SEASONAL only; defaults to the questionnaire answer cashin_months."}}}
@@ -92,7 +90,9 @@ public class BuildScenarioTool implements ToolHandler {
                 .plusMonths(RuleValues.financingDefault(context, "firstInstallmentOffsetMonths").longValue());
         BigDecimal rate = context.workspace().pricing("A".equals(option.optionId()) ? "CLASIC" : "VERDE")
                 .map(priced -> priced.ratePct())
-                .orElseGet(() -> FinancingConfig.rate(line));
+                // the fixed line rate would differ from the component rate the farmer is shown (live run, 29.10.2026)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Calculează întâi dobânda pe componente cu price_loan, apoi construiește scenariul"));
         String p = "option_" + option.optionId().toLowerCase() + ".";
 
         boolean seasonal = "SEASONAL".equals(Params.requiredText(input, "scheduleType"));

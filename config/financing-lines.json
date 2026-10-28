@@ -4,7 +4,8 @@
   "defaults": {
     "firstInstallmentOffsetMonths": 4,
     "affordabilityLimitPct": 40,
-    "sourceRo": "Prima rată la 4 luni după luna analizei; limita: ratele pe 12 luni ≤ 40% din cashflow-ul net anual; utilajele second-hand: vechimea la ultima rată ≤ 12 ani (regulă de demo, de confirmat)",
+    "minDscr": 1.25,
+    "sourceRo": "Prima rată la 4 luni după luna analizei; capacitatea de plată: DSCR ≥ 1,25 (cashflow net anual + economiile investiției, față de ratele din cel mai greu an; prag uzual 1,2–1,3 la creditele de investiții); ratele pe 12 luni față de cashflow-ul de azi (40%) rămân doar informativ; utilajele second-hand: vechimea la ultima rată ≤ 12 ani (reguli de demo, de confirmat)",
     "maxEquipmentAgeAtMaturityYears": 12
   },
   "lines": [
