@@ -1,9 +1,59 @@
 // Layout and small parts of the officer zone (README §8): a wide page of numbered panels, every figure with its source.
 
+import { createContext, useContext, useEffect, useState } from "react";
+
 import { MODE_OFFICER } from "../lib/labels.js";
+import { Icon } from "./icons.jsx";
 import { RoleSwitch } from "./live.jsx";
 
-export function OfficerFrame({ title, subtitle, children }) {
+// Which panels are folded, per page ("home:1", "dossier:4"), kept for the browser session.
+const PANELS_KEY = "greenstruct.officer.panels";
+const PanelsContext = createContext(null);
+
+function storedPanels() {
+  try {
+    return JSON.parse(window.sessionStorage.getItem(PANELS_KEY)) ?? {};
+  } catch {
+    return {};
+  }
+}
+
+function usePanels(page) {
+  const [collapsed, setCollapsed] = useState(storedPanels);
+  const [keys, setKeys] = useState([]);
+
+  useEffect(() => {
+    try {
+      window.sessionStorage.setItem(PANELS_KEY, JSON.stringify(collapsed));
+    } catch {
+      // storage full or blocked: the panels still fold, only for this page view
+    }
+  }, [collapsed]);
+
+  const keyOf = (n) => `${page}:${n}`;
+  const register = (n) => {
+    setKeys((list) => (list.includes(keyOf(n)) ? list : [...list, keyOf(n)]));
+    return () => setKeys((list) => list.filter((k) => k !== keyOf(n)));
+  };
+  const isCollapsed = (n) => Boolean(collapsed[keyOf(n)]);
+  const toggle = (n) => setCollapsed((c) => ({ ...c, [keyOf(n)]: !c[keyOf(n)] }));
+  const anyOpen = keys.some((k) => !collapsed[k]);
+  const setAll = (value) => setCollapsed((c) => ({ ...c, ...Object.fromEntries(keys.map((k) => [k, value])) }));
+  return { register, isCollapsed, toggle, anyOpen, setAll, count: keys.length };
+}
+
+export function OfficerFrame({ title, subtitle, page = "page", children }) {
+  const panels = usePanels(page);
+  return (
+    <PanelsContext.Provider value={panels}>
+      <OfficerLayout title={title} subtitle={subtitle} panels={panels}>
+        {children}
+      </OfficerLayout>
+    </PanelsContext.Provider>
+  );
+}
+
+function OfficerLayout({ title, subtitle, panels, children }) {
   return (
     <div className="officer">
       <header className="officer-head">
@@ -17,6 +67,11 @@ export function OfficerFrame({ title, subtitle, children }) {
           <a className="link" href="#/firma">
             Înapoi la aplicația firmei
           </a>
+          {panels.count ? (
+            <button type="button" className="btn btn--outline btn--small" onClick={() => panels.setAll(panels.anyOpen)}>
+              {panels.anyOpen ? "Collapse all" : "Expand all"}
+            </button>
+          ) : null}
         </div>
       </header>
       <main className="officer-main">{children}</main>
@@ -24,17 +79,37 @@ export function OfficerFrame({ title, subtitle, children }) {
   );
 }
 
+// A numbered panel; inside an OfficerFrame its title folds and unfolds it. `aside` stays outside the toggle, so its
+// tags show while folded and its buttons do not fold the panel.
 export function Panel({ n, title, aside, children, wide }) {
+  const panels = useContext(PanelsContext);
+  useEffect(() => panels?.register(n), [n]);
+  const closed = panels?.isCollapsed(n) ?? false;
+  const bodyId = `panel-body-${n}`;
+  const heading = (
+    <>
+      <span className="panel-n">{n}</span>
+      {title}
+    </>
+  );
   return (
-    <section className={`card panel${wide ? " panel--wide" : ""}`} aria-label={`${n}. ${title}`}>
+    <section className={`card panel${wide ? " panel--wide" : ""}${closed ? " is-collapsed" : ""}`} aria-label={`${n}. ${title}`}>
       <div className="panel-head">
         <h2 className="panel-title">
-          <span className="panel-n">{n}</span>
-          {title}
+          {panels ? (
+            <button type="button" className="panel-toggle" aria-expanded={!closed} aria-controls={bodyId} onClick={() => panels.toggle(n)}>
+              {heading}
+              <Icon name="chevron" className="panel-chevron" />
+            </button>
+          ) : (
+            heading
+          )}
         </h2>
         {aside}
       </div>
-      {children}
+      <div id={bodyId} className="panel-body" hidden={closed}>
+        {children}
+      </div>
     </section>
   );
 }

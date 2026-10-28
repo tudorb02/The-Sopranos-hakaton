@@ -26,7 +26,7 @@ export function OfficerDossier({ runId }) {
 
   const subtitle = run ? `${run.farm.company.name} · ${run.moduleId} · ${run.runId}` : runId;
   return (
-    <OfficerFrame title="Dosar de credit verde" subtitle={subtitle}>
+    <OfficerFrame page="dossier" title="Dosar de credit verde" subtitle={subtitle}>
       {loading && !run ? <Loading label="Încarc dosarul…" /> : null}
       <ErrorCard error={error} onRetry={reload}>
         <a className="btn btn--outline btn--small" href="#/ofiter">

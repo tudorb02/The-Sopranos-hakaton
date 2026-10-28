@@ -64,7 +64,7 @@ export function OfficerHome() {
   const valid = /^run_[0-9a-z]{12}$/.test(id.trim());
 
   return (
-    <OfficerFrame title="Dosarele de credit verde" subtitle="Deschide un dosar după id, sau încarcă dosarul demo al unei categorii.">
+    <OfficerFrame page="home" title="Dosarele de credit verde" subtitle="Deschide un dosar după id, sau încarcă dosarul demo al unei categorii.">
       <div className="panels">
         <Panel n={1} title="Deschide un dosar">
           <form
