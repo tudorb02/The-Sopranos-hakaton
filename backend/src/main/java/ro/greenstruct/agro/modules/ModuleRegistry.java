@@ -32,8 +32,15 @@ public class ModuleRegistry {
         }
     }
 
+    /** The order of README §6: irrigation, energy, machinery, livestock, post-harvest, organic. */
+    private static final List<String> README_ORDER = List.of("irigatii", "energie", "utilaje", "zootehnie",
+            "post_recolta", "ecologic");
+
     public List<ModuleDefinition> all() {
-        return List.copyOf(modules.values());
+        return modules.values().stream().sorted(java.util.Comparator.comparingInt(m -> {
+            int index = README_ORDER.indexOf(m.moduleId());
+            return index < 0 ? README_ORDER.size() : index;
+        })).toList();
     }
 
     public Optional<ModuleDefinition> find(String moduleId) {
