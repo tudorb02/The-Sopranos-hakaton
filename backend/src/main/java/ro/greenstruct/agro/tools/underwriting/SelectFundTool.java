@@ -6,16 +6,18 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;
 
 import ro.greenstruct.agro.orchestration.AgentSlot;
+import ro.greenstruct.agro.tools.Params;
 import ro.greenstruct.agro.tools.Schemas;
 import ro.greenstruct.agro.tools.ToolContext;
 import ro.greenstruct.agro.tools.ToolHandler;
 import ro.greenstruct.agro.tools.ToolOutput;
 import ro.greenstruct.agro.tools.Unit;
+import ro.greenstruct.agro.tools.workspace.FinancingOption;
 
 /**
- * README §3.3: the fund that finances the green loan and its alternatives, from config/funds.json. The AFIR grant (F6)
- * is only offered when check_program_eligibility found the farm eligible in an open session. The farmer never sees
- * this; it goes to the officer's report.
+ * The fund behind a green option (README §3.1 and §3.3): the guarantee or the grant it draws on, whether that is
+ * the module's primary fund or an alternative, and the module's other funds. Only for the bank's report: the
+ * farmer sees "Credit verde Raiffeisen" (README §13).
  */
 @Component
 public class SelectFundTool implements ToolHandler {
@@ -27,14 +29,16 @@ public class SelectFundTool implements ToolHandler {
 
     @Override
     public String description() {
-        return "Picks the Raiffeisen fund that finances this loan (F1–F6, README §3.3) for the module, plus the "
-                + "alternatives that apply. F6 (AFIR grant) is listed only if the farm is eligible in an open session.";
+        return "Returns the fund (F1-F6 of config/funds.json) behind a financing option: the guarantee or the grant "
+                + "programme it uses, whether it is the module's primary fund or an alternative, and the module's "
+                + "other funds with their availability. Call build_funding_stack first.";
     }
 
     @Override
     public JsonNode inputSchema() {
         return Schemas.parse("""
-                {"type": "object", "additionalProperties": false, "properties": {}}
+                {"type": "object", "additionalProperties": false, "required": ["optionId"], "properties": {
+                  "optionId": {"type": "string", "enum": ["A", "B", "C"]}}}
                 """);
     }
 
@@ -45,41 +49,39 @@ public class SelectFundTool implements ToolHandler {
 
     @Override
     public ToolOutput execute(JsonNode input, ToolContext context) {
-        JsonNode entry = Funds.moduleEntry(context);
-        JsonNode primary = Funds.fund(context, entry.path("primaryFund").asText());
-        ObjectNode result = context.newResult();
-        result.put("fundCode", primary.path("fundId").asText());
-        result.put("fundNameRo", primary.path("nameRo").asText());
-        ArrayNode alternatives = result.putArray("alternatives");
-        for (JsonNode alternative : entry.path("alternatives")) {
-            String fundId = alternative.path("fundId").asText();
-            if (!applicable(context, Funds.fund(context, fundId))) {
-                continue;
-            }
-            alternatives.addObject().put("fundCode", fundId)
-                    .put("fundNameRo", Funds.fund(context, fundId).path("nameRo").asText())
-                    .put("noteRo", alternative.path("noteRo").asText());
+        FinancingOption option = context.workspace().option(Params.requiredText(input, "optionId"));
+        JsonNode fund = FundsConfig.backing(context, option).orElseThrow(() -> new IllegalArgumentException(
+                "Opțiunea " + option.optionId() + " nu folosește o garanție sau un grant din config/funds.json"));
+        String fundId = fund.path("fundId").asText();
+        JsonNode module = FundsConfig.module(context);
+        String role;
+        if (fundId.equals(module.path("primaryFund").asText())) {
+            role = "PRIMARY";
+        } else if (FundsConfig.moduleFundIds(context).contains(fundId)) {
+            role = "ALTERNATIVE";
+        } else {
+            throw new IllegalArgumentException("Fondul " + fundId + " nu e prevăzut pentru modulul "
+                    + context.module().moduleId());
         }
-        if (primary.hasNonNull("coveragePct")) {
-            context.calc("fund.guarantee_coverage", "Acoperirea garanției " + primary.path("fundId").asText(),
-                    primary.path("coveragePct").path("value").decimalValue(), Unit.PCT)
-                    .source(primary.path("coveragePct").path("sourceRo").asText(null)).add();
+        if (fund.has("coveragePct")) {
+            context.calc("fund.coverage", "Acoperirea garanției " + fundId,
+                    Params.value(fund.path("coveragePct"), "funds." + fundId + ".coveragePct"), Unit.PCT)
+                    .source(fund.path("coveragePct").path("sourceRo").asText(null)).add();
         }
-        return context.ok(result, "Fondul propus: " + primary.path("fundId").asText() + ", " + primary.path("nameRo").asText());
-    }
 
-    /** F6 needs an eligible, open programme check; the other alternatives are always listed. */
-    private static boolean applicable(ToolContext context, JsonNode fund) {
-        if (!"F6".equals(fund.path("fundId").asText())) {
-            return true;
-        }
-        for (JsonNode code : fund.path("programCodes")) {
-            var check = context.workspace().programCheck(code.asText());
-            if (check.isPresent() && "ELIGIBLE".equals(check.get().path("result").asText())
-                    && "OPEN".equals(check.get().path("session").asText())) {
-                return true;
+        ObjectNode result = context.newResult();
+        result.put("fundId", fundId);
+        result.put("nameRo", fund.path("nameRo").asText());
+        result.put("kind", fund.path("kind").asText());
+        result.put("role", role);
+        ArrayNode alternatives = result.putArray("alternatives");
+        for (String otherId : FundsConfig.moduleFundIds(context)) {
+            if (!otherId.equals(fundId)) {
+                JsonNode other = FundsConfig.requireFund(context, otherId);
+                alternatives.addObject().put("fundId", otherId).put("nameRo", other.path("nameRo").asText())
+                        .put("status", FundsConfig.availability(context, other));
             }
         }
-        return false;
+        return context.ok(result, "Fondul propus: " + fundId + " (" + fund.path("nameRo").asText() + ")");
     }
 }

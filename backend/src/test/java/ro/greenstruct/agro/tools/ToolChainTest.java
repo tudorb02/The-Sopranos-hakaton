@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
 import ro.greenstruct.agro.farm.FarmProfileService;
+import ro.greenstruct.agro.modules.ReferenceData;
 import ro.greenstruct.agro.orchestration.Run;
 import ro.greenstruct.agro.orchestration.RunRequest;
 import ro.greenstruct.agro.orchestration.RunStatus;
@@ -80,6 +81,8 @@ class ToolChainTest {
     private DocumentStore documents;
     @Autowired
     private CalcStore calcs;
+    @Autowired
+    private ReferenceData reference;
     @Autowired
     private ObjectMapper mapper;
 
@@ -169,6 +172,24 @@ class ToolChainTest {
         assertValue(run, "option_a.affordability_ratio", "21.47");
         assertValue(run, "option_b.affordability_ratio", "29.92");
 
+        call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
+        // (98,400 net cash flow + 36,910.89 / 5 savings) / (12 × 1,760.34) = 105,782.18 / 21,124.08 = 5.0077
+        assertValue(run, "option_a.dscr", "5.0077");
+        // Seasonal: 4 installments in every loan year. (98,400 + 142,464.97 / 5) / (4 × 7,359.90) = 4.3103
+        assertValue(run, "option_b.debt_service_year", "29439.60");
+        assertValue(run, "option_b.dscr", "4.3103");
+
+        assertThat(tools.execute(run, "determine_green_tier", mapper.createObjectNode()
+                .put("requestedConfigId", "cfg_initial").put("financedConfigId", "cfg_recommended")).messageRo())
+                .contains("Lipsește statusul DNSH");
+        JsonNode tier = call(run, "determine_green_tier", "{\"requestedConfigId\": \"cfg_initial\","
+                + " \"financedConfigId\": \"cfg_recommended\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
+        // The offer saves 15.03% (< 25%); with the upgrade 32.05%: above 25% but below 25% × 1.5 = 37.5%.
+        assertThat(tier.path("tier").asText()).isEqualTo("VERDE_CU_UPGRADE");
+        assertThat(tier.path("upgradeNeeded").asBoolean()).isTrue();
+        assertValue(run, "green_tier.verde_plus_min", "37.5");
+        assertValue(run, "green_tier.financed_indicator", "32.05");
+
         JsonNode labels = call(run, "get_labeling_rules", "{\"configId\": \"cfg_recommended\"}");
         assertThat(labels.path("rules")).anySatisfy(rule -> {
             assertThat(rule.path("category").asText()).isEqualTo("SOLAR_PUMP");
@@ -181,6 +202,30 @@ class ToolChainTest {
         assertValue(run, "impact.water_horizon", "374685.31");
         // 25.3507 t × 5 years = 126.7535 t
         assertValue(run, "impact.co2_horizon", "126.75");
+
+        // B is secured by the FEI InvestEU guarantee: F1, the primary fund for irrigation (config/funds.json).
+        JsonNode fund = call(run, "select_fund", "{\"optionId\": \"B\"}");
+        assertThat(fund.path("fundId").asText()).isEqualTo("F1");
+        assertThat(fund.path("role").asText()).isEqualTo("PRIMARY");
+        // F6 has programmes checked above, none both eligible and open (DR_12 not eligible, DR_16/DR_26 not open).
+        assertThat(fund.path("alternatives")).extracting(a -> a.path("fundId").asText() + "/" + a.path("status").asText())
+                .containsExactly("F4/TO_CONFIRM", "F6/NOT_AVAILABLE");
+        assertValue(run, "fund.coverage", "70");
+        assertThat(tools.execute(run, "select_fund", mapper.createObjectNode().put("optionId", "A")).ok()).isFalse();
+
+        assertThat(tools.execute(run, "check_fund_requirements",
+                mapper.createObjectNode().put("fundId", "F1").put("optionId", "B")).messageRo())
+                .contains("Lipsește statusul DNSH");
+        JsonNode requirements = call(run, "check_fund_requirements",
+                "{\"fundId\": \"F1\", \"optionId\": \"B\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
+        assertThat(requirements.path("requirements"))
+                .extracting(r -> r.path("requirementId").asText() + "/" + r.path("status").asText())
+                .containsExactly("SME_STATUS/MET", "ELIGIBLE_CATEGORY/MET", "TECHNICAL_THRESHOLD/MET", "DNSH/TO_CONFIRM",
+                        "IMPACT_QUANTIFIED/MET", "CLIENT_BENEFIT/MET", "PERIODIC_REPORTING/MET");
+        assertThat(requirements.path("allMet").asBoolean()).isFalse();
+
+        JsonNode bond = call(run, "get_bond_category", "{}");
+        assertThat(bond.path("proposed").asText()).isEqualTo("AGRICULTURE_FORESTRY");
     }
 
     @Test
@@ -255,12 +300,54 @@ class ToolChainTest {
         assertValue(run, "option_a.affordability_ratio", "38.56");
         assertValue(run, "option_b.affordability_ratio", "24.38");
 
+        call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
+        // Savings A = 84 × 6,748.84 paid − 531,097.62 net cost = 35,804.94 over 7 years = 5,114.99 a year:
+        // (210,000 + 5,114.99) / (12 × 6,748.84) = 215,114.99 / 80,986.08 = 2.6562
+        assertValue(run, "option_a.dscr", "2.6562");
+        // Savings B = 492,000 − 200,000 grant + 80,318.62 interest − 289,607.55 = 82,711.07 over 7 years; the bridge
+        // is repaid from the grant: (210,000 + 11,815.87) / (12 × 4,265.70) = 221,815.87 / 51,188.40 = 4.3333
+        assertValue(run, "option_b.dscr", "4.3333");
+
+        JsonNode tier = call(run, "determine_green_tier", "{\"requestedConfigId\": \"cfg_initial\","
+                + " \"financedConfigId\": \"cfg_recommended\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
+        // New tractors alone 12.14% (< 20%); with precision 20.93%: above 20% but below 20% × 1.5 = 30%.
+        assertThat(tier.path("tier").asText()).isEqualTo("VERDE_CU_UPGRADE");
+        assertValue(run, "green_tier.verde_plus_min", "30");
+
         call(run, "calculate_impact", "{\"configId\": \"cfg_recommended\"}");
         assertValue(run, "label.green_amount", "52000");
         assertValue(run, "label.transition_amount", "440000");
         assertValue(run, "impact.fuel_horizon", "52740");
         // 52,740.03 l over 7 years × 2.68 kg/l / 1,000 = 141.3433 t
         assertValue(run, "impact.co2_horizon", "141.34");
+
+        // B uses the DR-12 grant and the AFIR co-financing line: F6, an alternative for machinery with no own
+        // green requirements in config/funds.json; F1 stays available.
+        JsonNode fund = call(run, "select_fund", "{\"optionId\": \"B\"}");
+        assertThat(fund.path("fundId").asText()).isEqualTo("F6");
+        assertThat(fund.path("role").asText()).isEqualTo("ALTERNATIVE");
+        assertThat(fund.path("alternatives")).extracting(a -> a.path("fundId").asText() + "/" + a.path("status").asText())
+                .containsExactly("F1/AVAILABLE");
+        JsonNode requirements = call(run, "check_fund_requirements",
+                "{\"fundId\": \"F6\", \"optionId\": \"B\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
+        assertThat(requirements.path("requirements")).isEmpty();
+
+        JsonNode bond = call(run, "get_bond_category", "{}");
+        assertThat(bond.path("categories")).extracting(c -> c.path("categoryId").asText())
+                .containsExactly("AGRICULTURE_FORESTRY", "ENERGY_EFFICIENCY");
+    }
+
+    @Test
+    void bondCategoriesOfTheConfigAreTheReportSchemaCategories() throws Exception {
+        JsonNode schema = mapper.readTree(Path.of("../contracts/schemas/submit_underwriting_report.json").toFile());
+        List<String> inSchema = new ArrayList<>();
+        schema.path("properties").path("greenBond").path("properties").path("category").path("enum")
+                .forEach(category -> inSchema.add(category.asText()));
+        List<String> inConfig = new ArrayList<>();
+        reference.funds().path("bondCategories").forEach(category -> inConfig.add(category.path("categoryId").asText()));
+        inConfig.add("NONE");
+
+        assertThat(inSchema).containsExactlyInAnyOrderElementsOf(inConfig);
     }
 
     @Test

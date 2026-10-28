@@ -38,8 +38,7 @@ public final class ConfigurationMetrics {
         Map<String, BigDecimal> metrics = new HashMap<>(context.calculator().metrics(context, components));
         metrics.put("total_cost", components.stream().map(InvestmentComponent::costEur)
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
-        boolean passes = metrics.get("indicator_pct").compareTo(RuleValues.thresholdPct(context)) >= 0
-                && sizingOk(context, metrics);
+        boolean passes = meetsThreshold(context, metrics.get("indicator_pct")) && sizingOk(context, metrics);
         return new Configuration(configId, baseConfigId, components, metrics, passes);
     }
 
@@ -48,7 +47,19 @@ public final class ConfigurationMetrics {
         return context.calculator().sizingOk(context, metrics);
     }
 
+    /**
+     * MIN_PCT modules: indicator at or above the threshold. Modules without a percentage threshold (BY_NATURE,
+     * e.g. energy) are eligible as such: only the module's sizing and site checks decide.
+     */
+    private static boolean meetsThreshold(ToolContext context, java.math.BigDecimal indicatorPct) {
+        return !"MIN_PCT".equals(context.module().threshold().kind())
+                || indicatorPct.compareTo(RuleValues.thresholdPct(context)) >= 0;
+    }
+
     public static boolean meetsSafetyMargin(ToolContext context, Configuration configuration) {
+        if (!"MIN_PCT".equals(context.module().threshold().kind())) {
+            return configuration.passesThreshold();
+        }
         return configuration.metric("indicator_pct")
                 .compareTo(RuleValues.thresholdPct(context).add(RuleValues.safetyMarginPct(context))) >= 0;
     }

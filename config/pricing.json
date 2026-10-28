@@ -110,6 +110,12 @@
         "demo": true,
         "proposal": true
       }
+    },
+    "verdePlusMaxExtraCostPct": {
+      "value": 15,
+      "sourceRo": "Propunere echipă: dacă un pachet care atinge Verde Plus costă cel mult 15% peste cel mai ieftin pachet care trece pragul, îl propunem pe el (README §12: picurare + senzori, 40%, în loc de picurare, 33%); de confirmat cu Raiffeisen",
+      "demo": true,
+      "proposal": true
     }
   }
 }

@@ -34,6 +34,9 @@ class RunOrchestratorTest {
         @Bean
         Agent fundingOptimizer(ObjectMapper mapper) {
             ObjectNode output = mapper.createObjectNode().put("recommendedOptionId", "B");
+            output.putArray("options")
+                    .add(mapper.createObjectNode().put("optionId", "A").put("kind", "STANDARD").put("greenEligible", false))
+                    .add(mapper.createObjectNode().put("optionId", "B").put("kind", "GREEN_PACKAGE").put("greenEligible", true));
             output.putObject("comparison").put("netAdvantageCalcId", "calc_0123456789ab");
             return stub(AgentSlot.FUNDING_OPTIMIZER, output);
         }
@@ -97,18 +100,39 @@ class RunOrchestratorTest {
     }
 
     @Test
-    void officerApprovesOnlyAFinishedDossier() throws Exception {
+    void theBankApprovesOnlyADossierTheFarmerSent() throws Exception {
         Run done = orchestrator.start(demoScenarios.load("utilaje")).completion().get(10, TimeUnit.SECONDS);
+        assertThatThrownBy(() -> orchestrator.approve(done.id(), "ofiter.demo", "prea devreme"))
+                .isInstanceOf(IllegalStateException.class).hasMessageContaining("TRIMIS");
+
+        Run sent = orchestrator.submit(done.id(), Submission.Variant.VERDE);
+
+        assertThat(sent.status()).isEqualTo(RunStatus.TRIMIS);
+        assertThat(sent.submission().variant()).isEqualTo(Submission.Variant.VERDE);
+        assertThat(sent.submission().optionId()).isEqualTo("B");
+        RunEvent submitted = hub.history(done.id()).getLast();
+        assertThat(submitted.data().path("to").asText()).isEqualTo("TRIMIS");
+        assertThat(submitted.data().path("actor").asText()).isEqualTo("FARMER");
+        assertThatThrownBy(() -> orchestrator.submit(done.id(), Submission.Variant.CLASIC))
+                .isInstanceOf(IllegalStateException.class);
 
         Run approved = orchestrator.approve(done.id(), "ofiter.demo", "OK");
 
         assertThat(approved.status()).isEqualTo(RunStatus.MONITORIZARE);
+        assertThat(approved.submission().optionId()).isEqualTo("B");
         assertThat(approved.officerActions()).singleElement()
                 .extracting(OfficerAction::action).isEqualTo(OfficerAction.Action.APPROVE);
         assertThat(hub.history(done.id())).extracting(e -> e.data().path("to").asText())
-                .contains("APROBAT", "MONITORIZARE");
+                .contains("TRIMIS", "APROBAT", "MONITORIZARE");
         assertThatThrownBy(() -> orchestrator.approve(done.id(), "ofiter.demo", "din nou"))
                 .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    void theClassicCardSendsTheStandardOption() throws Exception {
+        Run done = orchestrator.start(demoScenarios.load("irigatii")).completion().get(10, TimeUnit.SECONDS);
+
+        assertThat(orchestrator.submit(done.id(), Submission.Variant.CLASIC).submission().optionId()).isEqualTo("A");
     }
 
     @Test

@@ -17,5 +17,7 @@ Aici pun cei de la Product PDF-urile la care trimit scenariile din `../scenarios
 | `oferta-agregat-frigorific.pdf` | post-recoltă | agregat cu R404A pentru depozitul de 650 t, 118.000 EUR fără TVA (copie din `test-documents/pdf/DEMO-0005`) |
 | `facturi-energie-depozit-12-luni.pdf` | post-recoltă | 85.000 kWh pe an la depozit |
 | `fisa-echipament-vechi.pdf` | post-recoltă | agregatul vechi, din 2006, cu R404A |
+| `oferta-fotovoltaice-300kwp.pdf` | energie | ofertă pentru 300 kWp pe acoperișul halelor, 210.000 EUR fără TVA |
+| `facturi-energie-avicola-12-luni.pdf` | energie | 12 facturi lunare, 215.000 kWh pe an, 0,19 EUR/kWh fără TVA |
 
 Până apar PDF-urile, rularea demo pornește oricum și marchează documentele lipsă.

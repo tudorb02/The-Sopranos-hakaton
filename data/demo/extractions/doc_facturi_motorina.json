@@ -1,0 +1,45 @@
+{
+  "documentId": "doc_facturi_motorina",
+  "documentType": "FUEL_INVOICES",
+  "moduleId": "utilaje",
+  "currency": "RON",
+  "supplierName": "Distribuitor carburanți (demo)",
+  "documentFields": [
+    {
+      "key": "PERIOD_FROM",
+      "rawValue": "01.10.2025",
+      "unit": "DATE",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "PERIOD_TO",
+      "rawValue": "30.09.2026",
+      "unit": "DATE",
+      "page": 9,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "FUEL_LITRES",
+      "rawValue": "36.180 l",
+      "unit": "L",
+      "page": 10,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "FUEL_COST",
+      "rawValue": "372.654,00 lei",
+      "unit": "RON",
+      "page": 10,
+      "confidence": "HIGH"
+    }
+  ],
+  "lineItems": [],
+  "missingFields": [
+    {
+      "key": "FERTILIZER_KG_N",
+      "reasonRo": "Facturile de îngrășăminte nu au fost încărcate; folosesc doza declarată în chestionar."
+    }
+  ],
+  "warnings": []
+}
