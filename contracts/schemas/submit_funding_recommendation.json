@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://contracts.greenstruct.ro/schemas/submit_funding_recommendation.json",
   "title": "submit_funding_recommendation",
-  "description": "Output-ul final al Agentului 2 (optimizator de finanțare): Opțiunea A (standard) vs. Opțiunea B (pachet verde: credit verde, garanție, grant AFIR dacă e eligibil, credit-punte, rate sezoniere). Toate cifrele sunt referite prin calcId.",
+  "description": "Output-ul final al Agentului 2 (structurare credit): varianta A = credit CLASIC, varianta B = credit VERDE (garanție FEI, grant AFIR dacă e eligibil, credit-punte, rate sezoniere). Fiecare variantă are dobânda descompusă pe componente, nivelul verde și DSCR. Toate cifrele sunt referite prin calcId.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -25,10 +25,11 @@
       }
     },
     "recommendedOptionId": {
-      "$ref": "#/$defs/optionId"
+      "$ref": "#/$defs/optionId",
+      "description": "A = clasic, B = verde."
     },
     "recommendationBasis": {
-      "description": "B se recomandă doar dacă toate trei sunt adevărate (README §8, plan §6).",
+      "description": "Creditul verde se recomandă doar dacă toate trei sunt adevărate (README §4, pasul 8).",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -203,7 +204,9 @@
       "required": [
         "horizonCalcId",
         "netAdvantageCalcId",
-        "drivers"
+        "drivers",
+        "rateDifference",
+        "rateDifferenceCalcId"
       ],
       "properties": {
         "horizonCalcId": {
@@ -245,6 +248,35 @@
               }
             }
           }
+        },
+        "rateDifference": {
+          "description": "De ce dobânda verde e mai mică: diferența verde − clasic pe fiecare componentă (pp). Pentru tabelul din zona ofițerului.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "component",
+              "deltaCalcId"
+            ],
+            "properties": {
+              "component": {
+                "$ref": "#/$defs/rateComponent"
+              },
+              "deltaCalcId": {
+                "$ref": "#/$defs/calcRef"
+              }
+            }
+          }
+        },
+        "rateDifferenceCalcId": {
+          "description": "Suma diferențelor = dobânda verde − dobânda clasică (pp).",
+          "$ref": "#/$defs/calcRef"
+        },
+        "monthlySavingsDeltaCalcId": {
+          "$ref": "#/$defs/calcRef"
         }
       }
     },
@@ -351,7 +383,11 @@
         "totals",
         "annualSavings",
         "affordability",
-        "greenEligible"
+        "greenEligible",
+        "variant",
+        "greenTier",
+        "rateBreakdown",
+        "dscrCalcId"
       ],
       "properties": {
         "optionId": {
@@ -485,6 +521,25 @@
         },
         "greenEligible": {
           "type": "boolean"
+        },
+        "variant": {
+          "description": "Corespondența cu README: A = CLASIC, B = VERDE (C = VERDE cu grant AFIR).",
+          "type": "string",
+          "enum": [
+            "CLASIC",
+            "VERDE"
+          ]
+        },
+        "greenTier": {
+          "description": "Nivelul verde (README §4, pasul 8). Varianta CLASIC are mereu CLASIC.",
+          "$ref": "#/$defs/greenTier"
+        },
+        "rateBreakdown": {
+          "$ref": "#/$defs/rateBreakdown"
+        },
+        "dscrCalcId": {
+          "description": "DSCR = (cashflow operațional anual + economii anuale) / (rate + dobânzi pe an).",
+          "$ref": "#/$defs/calcRef"
         }
       }
     },
@@ -594,6 +649,70 @@
         "noteRo": {
           "type": "string",
           "maxLength": 300
+        }
+      }
+    },
+    "greenTier": {
+      "type": "string",
+      "enum": [
+        "VERDE_PLUS",
+        "VERDE",
+        "VERDE_CU_UPGRADE",
+        "CLASIC"
+      ]
+    },
+    "rateComponent": {
+      "type": "string",
+      "enum": [
+        "FUNDING_COST",
+        "RISK_COST",
+        "CAPITAL_COST",
+        "OPERATIONAL_COST",
+        "TARGET_PROFIT",
+        "PROGRAM_SUBSIDY",
+        "TIER_ADJUSTMENT"
+      ]
+    },
+    "rateBreakdown": {
+      "description": "Dobânda = indice + marjă; marja = suma componentelor (calcId pe fiecare, în puncte procentuale).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "indexCalcId",
+        "components",
+        "marginCalcId",
+        "rateCalcId"
+      ],
+      "properties": {
+        "indexCalcId": {
+          "$ref": "#/$defs/calcRef"
+        },
+        "components": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "component",
+              "calcId"
+            ],
+            "properties": {
+              "component": {
+                "$ref": "#/$defs/rateComponent"
+              },
+              "calcId": {
+                "$ref": "#/$defs/calcRef"
+              }
+            }
+          }
+        },
+        "marginCalcId": {
+          "$ref": "#/$defs/calcRef"
+        },
+        "rateCalcId": {
+          "$ref": "#/$defs/calcRef"
         }
       }
     }

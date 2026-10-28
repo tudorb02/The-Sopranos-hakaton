@@ -45,14 +45,15 @@ data: {"seq":16,"runId":"run_irg7k2xq4m9p","type":"agent.tool_result", ...}
 ## Stările dosarului
 
 ```text
-CREAT → DATE_FIRMA → AGENT_1 → AGENT_2 → AGENT_3 → GATA → APROBAT → MONITORIZARE
+CREAT → DATE_FIRMA → AGENT_1 → AGENT_2 → AGENT_3 → GATA → TRIMIS → APROBAT → MONITORIZARE
   └──────────┴──────────┴──────────┴──────────┴──→ ESUAT
 ```
 
 - `CREAT → … → GATA` le face sistemul (`actor: SYSTEM`); prima tranziție (`null → CREAT`) are `actor: FARMER`.
-- `GATA → APROBAT` o face ofițerul (`POST /api/runs/{id}/approve`, `actor: OFFICER`).
+- `GATA → TRIMIS` o face reprezentantul IMM (`POST /api/runs/{id}/submit` cu varianta aleasă, `actor: FARMER`).
+- `TRIMIS → APROBAT` o face ofițerul (`POST /api/runs/{id}/approve`, `actor: OFFICER`).
 - `APROBAT → MONITORIZARE`: după tragere. În demo, tragerea e simulată imediat după aprobare.
-- `POST /api/runs/{id}/request-documents` nu schimbă starea: dosarul rămâne `GATA`, iar documentele apar în `RunView.pendingDocuments`.
+- `POST /api/runs/{id}/request-documents` nu schimbă starea: dosarul rămâne `TRIMIS`, iar documentele apar în `RunView.pendingDocuments`.
 - Evenimentele unui agent apar doar cât dosarul e în starea lui (`TECHNICAL_AUDITOR` în `AGENT_1` etc.).
 
 ## Ordinea tipică într-un dosar
@@ -67,7 +68,8 @@ state.transition  AGENT_1 → AGENT_2
   ... la fel pentru FUNDING_OPTIMIZER și GREEN_UNDERWRITER ...
 state.transition  AGENT_3 → GATA
 run.completed
-state.transition  GATA → APROBAT → MONITORIZARE   (după acțiunea ofițerului)
+state.transition  GATA → TRIMIS                  (IMM-ul trimite cererea)
+state.transition  TRIMIS → APROBAT → MONITORIZARE (după acțiunea ofițerului)
 ```
 
 ## Cifrele: `calcs` și `calcId`
