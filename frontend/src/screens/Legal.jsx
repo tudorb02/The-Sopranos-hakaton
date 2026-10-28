@@ -1,6 +1,6 @@
 import { Card, Row, RowMain, RowName, RowNote, Rows, Small } from "../components/base.jsx";
 import { Disclaimer, Group, GroupHint, IconTile, NoteCard, Ticks, ValueRow } from "../components/ui.jsx";
-import { legal as coachLegal } from "../data/legal.js";
+import { usePersona } from "../persona.js";
 
 // Icon, title and text, for who sees the data, how it is protected and what to do if something happens.
 function InfoRows({ items }) {
@@ -20,7 +20,9 @@ function InfoRows({ items }) {
 }
 
 // The coach's notice by default; the green credit passes its own (data/green/legal.js).
-export default function Legal({ legal = coachLegal }) {
+export default function Legal({ legal: provided }) {
+  const persona = usePersona();
+  const legal = provided ?? persona?.legal;
   return (
     <>
       <Disclaimer legal={legal} />

@@ -147,18 +147,21 @@ const BTN_TEXT = { ink: color.yellow, text: color.teal, danger: color.danger };
 
 // A pill button. variant: "yellow" (default), "ink", "outline", "text", "danger"; small and block change the size.
 // onYellow keeps a text button in ink on a yellow card.
-export function Btn({ href, onPress, variant = "yellow", small, block, onYellow, icon, style, children }) {
+export function Btn({ href, onPress, variant = "yellow", small, block, onYellow, icon, style, children, disabled = false }) {
   const { navigate } = useRouter();
   const textColor = onYellow ? color.ink : (BTN_TEXT[variant] ?? color.ink);
   return (
     <Pressable
       accessibilityRole={href ? "link" : "button"}
+      accessibilityState={disabled ? { disabled: true } : undefined}
+      disabled={disabled}
       onPress={onPress ?? (href ? () => navigate(href) : undefined)}
       style={({ pressed }) => [
         styles.btn,
         small && styles.btnSmall,
         block && styles.btnBlock,
         btnVariants[variant],
+        disabled && { opacity: 0.55 },
         pressed && (btnPressed[onYellow ? "onYellow" : variant] ?? styles.pressed),
         style,
       ]}

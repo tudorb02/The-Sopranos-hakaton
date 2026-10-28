@@ -2,7 +2,7 @@
   "name": "busola-frontend-personal",
   "private": true,
   "version": "0.2.0",
-  "description": "Busola: ecranele statice ale coach-ului financiar, gândit ca extensie Smart Mobile pentru persoane fizice (prototip de hackathon, date fictive). Aplicație React Native (Expo).",
+  "description": "Busola: ecranele statice ale coach-ului financiar, g\u00e2ndit ca extensie Smart Mobile pentru persoane fizice (prototip de hackathon, date fictive). Aplica\u021bie React Native (Expo).",
   "main": "index.js",
   "scripts": {
     "start": "expo start",
@@ -22,7 +22,8 @@
     "react-native": "0.88.0",
     "react-native-safe-area-context": "~5.10.1",
     "react-native-svg": "15.16.0",
-    "react-native-web": "^0.21.4"
+    "react-native-web": "^0.21.4",
+    "expo-document-picker": "~58.0.4"
   },
   "engines": {
     "node": ">=20.19"

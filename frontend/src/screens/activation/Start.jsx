@@ -3,7 +3,6 @@ import { StyleSheet, View } from "react-native";
 import { Btn, Card, Intro as PageIntro, PageTitle, Row, RowMain, RowNote, Rows, Small, T } from "../../components/base.jsx";
 import { Icon } from "../../components/icons.jsx";
 import { Disclaimer, IconTile, InfoCard, PrivacyPromise, Section, Src, Ticks } from "../../components/ui.jsx";
-import { legal } from "../../data/legal.js";
 import { usePersona } from "../../persona.js";
 import { color, radius, space, text } from "../../theme.js";
 
@@ -24,7 +23,7 @@ export function Welcome({ icon, eyebrow, title, lead, duration }) {
 }
 
 export function Intro() {
-  const { intro } = usePersona();
+  const { intro, legal } = usePersona();
   return (
     <>
       <Welcome icon="compass" title={intro.title} lead={intro.lead} duration={intro.duration} />

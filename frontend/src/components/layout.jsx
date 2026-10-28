@@ -1,7 +1,7 @@
 import { Animated, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { legal } from "../data/legal.js";
+import { usePersona } from "../persona.js";
 import { useRiseStyle } from "../motion.js";
 import { useRouter } from "../router.jsx";
 import { caps, color, radius, space, text } from "../theme.js";
@@ -141,6 +141,7 @@ export function ProductsFrame({ title = "Produse", subtitle, productsHref = "#/p
 // A page of the Coach, opened from Produse: back link, the coach's own pages, the notice, the app's tab bar.
 // `pages` lists the ids this client sees (Idei only for a client without a stable income).
 export function SectionFrame({ current, client, pages, children }) {
+  const { legal } = usePersona();
   return (
     <Stage>
       <Header style={s.coachHeader}>
@@ -200,16 +201,16 @@ function Progress({ steps, current, note }) {
 }
 
 // Primary and secondary actions pinned to the bottom of a flow.
-export function FlowActions({ next, nextLabel, skip, skipLabel }) {
+export function FlowActions({ next, nextLabel, skip, skipLabel, onNext, disabled = false }) {
   return (
     <>
       {next ? (
-        <Btn href={next} block>
+        <Btn href={next} onPress={onNext} disabled={disabled} block>
           {nextLabel}
         </Btn>
       ) : null}
       {skip ? (
-        <Btn href={skip} variant="text" block>
+        <Btn href={skip} variant="text" block disabled={disabled}>
           {skipLabel}
         </Btn>
       ) : null}

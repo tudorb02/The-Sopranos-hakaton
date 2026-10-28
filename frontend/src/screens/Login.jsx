@@ -1,10 +1,13 @@
 // Simulated sign-in for the demo: pick a personal or the business account. Nothing is typed or checked.
 
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Btn, Card, Link, PageTitle, Row, RowMain, RowName, RowNote, T } from "../components/base.jsx";
 import { IconTile, NoteCard } from "../components/ui.jsx";
 import { accounts, login } from "../data/accounts.js";
+import { ApiState } from "../components/ApiState.jsx";
+import { request } from "../lib/api.js";
 import { color, radius, shadowCard, space, text } from "../theme.js";
 
 const TYPES = [
@@ -13,12 +16,23 @@ const TYPES = [
 ];
 
 export default function Login({ type }) {
+  const [remote, setRemote] = useState(null);
+  const [error, setError] = useState(null);
+  const [attempt, retry] = useState(0);
+  useEffect(() => {
+    if (type !== "pf") return;
+    const controller = new AbortController();
+    request("/accounts", { signal: controller.signal }).then((data) => { if (!controller.signal.aborted) { setRemote(data); setError(null); } }).catch((error) => { if (!controller.signal.aborted) setError(error); });
+    return () => controller.abort();
+  }, [type, attempt]);
+  const content = type === "pf" ? remote?.login ?? login : login;
+  const choices = type === "pf" ? remote?.accounts ?? [] : accounts.pj;
   return (
     <>
       <Card yellow style={s.welcome}>
         <IconTile icon="lock" tone="ink" />
-        <PageTitle>{login.title}</PageTitle>
-        <T style={{ color: color.ink2 }}>{login.lead}</T>
+        <PageTitle>{content.title}</PageTitle>
+        <T style={{ color: color.ink2 }}>{content.lead}</T>
       </Card>
 
       <View style={[s.segmented, shadowCard]} accessibilityLabel="Tipul contului">
@@ -32,7 +46,8 @@ export default function Login({ type }) {
         })}
       </View>
 
-      {accounts[type].map((account) => (
+      {type === "pf" && !remote ? <ApiState loading={!error} error={error} retry={() => { setError(null); retry((value) => value + 1); }} /> : null}
+      {choices.map((account) => (
         <Card key={account.id} style={s.account} accessibilityLabel={`Cont demo: ${account.name}`}>
           <Row style={s.flush}>
             <IconTile tone="yellow" round>
@@ -51,7 +66,7 @@ export default function Login({ type }) {
         </Card>
       ))}
 
-      <NoteCard icon="lock">{login.note}</NoteCard>
+      <NoteCard icon="lock">{content.note}</NoteCard>
     </>
   );
 }

@@ -1,4 +1,4 @@
-// Static screens only: the route (#/bugete) picks the screen. No data loading or business logic yet.
+// Personal routes load their data from the isolated demo API through PersonaProvider.
 // The demo starts at a simulated sign-in. Each personal account opens the same optional Coach in Produse
 // with its own client's data (Daria, salary; Matei, student); the business account opens the green credit
 // for investments, agriculture first (design/pj-greenstruct.md).
@@ -15,11 +15,12 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { BareFrame, FlowActions, FlowFrame, ProductsFrame, SectionFrame } from "./components/layout.jsx";
 import { DisclaimerStrip } from "./components/ui.jsx";
+import { ApiState, SaveNotice } from "./components/ApiState.jsx";
+import { PersonaProvider } from "./components/PersonaProvider.jsx";
 import { business } from "./data/accounts.js";
 import { greenLegal } from "./data/green/legal.js";
 import { greenPacks } from "./data/green/packs.js";
-import { personas } from "./data/personas.js";
-import { PersonaContext, storePersonaId, storedPersonaId, usePersona } from "./persona.js";
+import { PERSONA_IDS, storePersonaId, storedPersonaId, usePersona, usePersonaApi } from "./persona.js";
 import { RouterProvider, useRouter } from "./router.jsx";
 import { ACTIVATION_STEPS, activationRoutes } from "./screens/activation/routes.js";
 import { Statements } from "./screens/activation/Statements.jsx";
@@ -61,7 +62,7 @@ export default function App() {
   const resolve = useCallback((key) => {
     if (key.startsWith(ENTRY_PREFIX)) {
       const id = key.slice(ENTRY_PREFIX.length);
-      if (id in personas) {
+      if (PERSONA_IDS.includes(id)) {
         setPersonaId(id);
         storePersonaId(id);
       }
@@ -75,11 +76,11 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <StatusBar style="dark" />
-      <PersonaContext.Provider value={personas[personaId]}>
-        <RouterProvider resolve={resolve}>
+      <RouterProvider resolve={resolve}>
+        <PersonaProvider id={personaId}>
           <Screens />
-        </RouterProvider>
-      </PersonaContext.Provider>
+        </PersonaProvider>
+      </RouterProvider>
     </SafeAreaProvider>
   );
 }
@@ -87,6 +88,10 @@ export default function App() {
 function Screens() {
   const { route } = useRouter();
   const persona = usePersona();
+  const api = usePersonaApi();
+  const publicRoute = ["login", "login/pj", "firma", "verde"].includes(route) || route.startsWith(GREEN_PREFIX);
+  if (!publicRoute && api.status !== "ready") return <BareFrame><ApiState loading={api.status === "loading"} error={api.loadError} retry={api.reload} /></BareFrame>;
+  if (!publicRoute && !api.enabled) return <ProductsFrame subtitle={persona?.client?.name}><SaveNotice /><Products /></ProductsFrame>;
 
   if (route === "login" || route === "login/pj") {
     return (
@@ -99,6 +104,7 @@ function Screens() {
   if (route === "produse") {
     return (
       <ProductsFrame subtitle={`${persona.client.name} · ${persona.client.segment}`}>
+        <SaveNotice />
         <Products />
       </ProductsFrame>
     );
@@ -115,6 +121,7 @@ function Screens() {
   if (route === "chat") {
     return (
       <FlowFrame title="Coach" closeHref="#/rezumat" footer={<Composer />} bare>
+        <SaveNotice />
         <Chat />
       </FlowFrame>
     );
@@ -123,6 +130,7 @@ function Screens() {
   if (route === "extrase") {
     return (
       <FlowFrame title="Extrase de cont" closeHref="#/profil" footer={<FlowActions next="#/profil" nextLabel="Gata" />}>
+        <SaveNotice />
         <Statements />
       </FlowFrame>
     );
@@ -134,8 +142,9 @@ function Screens() {
         title="Detalii tranzacție"
         backHref="#/cheltuieli"
         closeHref="#/cheltuieli"
-        footer={<FlowActions next="#/cheltuieli" nextLabel="Salvează" skip="#/cheltuieli" skipLabel="Anulează" />}
+        footer={<PersonalFooter next="#/cheltuieli" nextLabel="Salvează" skip="#/cheltuieli" skipLabel="Anulează" />}
       >
+        <SaveNotice />
         <TransactionDetail key={route} id={route.slice(PAYMENT_PREFIX.length)} />
       </FlowFrame>
     );
@@ -144,6 +153,7 @@ function Screens() {
   if (route === "informare") {
     return (
       <FlowFrame title="Informare" closeHref="#/rezumat">
+        <SaveNotice />
         <Legal />
       </FlowFrame>
     );
@@ -198,8 +208,9 @@ function Screens() {
         closeHref="#/produse"
         backHref={back}
         progress={step ? { steps: ACTIVATION_STEPS, current: step, note } : null}
-        footer={<FlowActions {...footer} />}
+        footer={<PersonalFooter {...footer} />}
       >
+        <SaveNotice />
         <Screen key={key} {...props} />
       </FlowFrame>
     );
@@ -209,7 +220,18 @@ function Screens() {
   const Screen = SECTION_SCREENS[section];
   return (
     <SectionFrame current={section} client={persona.client} pages={persona.pages}>
+      <SaveNotice />
       <Screen />
     </SectionFrame>
   );
+}
+
+function PersonalFooter(props) {
+  const api = usePersonaApi();
+  const { navigate, route } = useRouter();
+  const next = async () => {
+    const saved = route === "activare" ? await api.mutate("/coach", {}, "POST") : await api.submit();
+    if (saved !== false) navigate(props.next);
+  };
+  return <FlowActions {...props} onNext={next} disabled={api.busy} />;
 }

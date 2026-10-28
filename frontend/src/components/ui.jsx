@@ -3,6 +3,7 @@ import { Animated, Easing, Platform, Pressable, ScrollView, StyleSheet, TextInpu
 
 import { lei, num, pct } from "../lib/format.js";
 import { useGrowStyle, useSpinStyle } from "../motion.js";
+import { usePersonaApi } from "../persona.js";
 import { caps, color, fontFamily, radius, space, text } from "../theme.js";
 import { Card, CardTitle, Divided, Eyebrow, Link, OnYellow, Row, RowMain, RowName, RowNote, RowValue, Rows, Small, T, TextLink } from "./base.jsx";
 import { Icon } from "./icons.jsx";
@@ -160,11 +161,11 @@ export function InfoCard({ icon, title, meta, text: body, children }) {
   );
 }
 
-export function Meter({ value, max, tone, style }) {
+export function Meter({ value, max, tone, style, percent }) {
   const grow = useGrowStyle("right");
   return (
     <View style={[s.meter, style]} aria-hidden>
-      <Animated.View style={[s.meterFill, { width: pct(value, max) }, tone === "warn" && s.meterWarn, grow]} />
+      <Animated.View style={[s.meterFill, { width: percent === undefined ? pct(value, max) : `${percent}%` }, tone === "warn" && s.meterWarn, grow]} />
     </View>
   );
 }
@@ -181,6 +182,7 @@ export function Dots({ used, max }) {
 
 // kind: "count", "amount", "paid", "pause" or "protected" (see data/demo.js).
 export function BudgetRow({ budget }) {
+  const api = usePersonaApi();
   const { name, hint, icon, kind, note, warn } = budget;
   let value = null;
   if (kind === "count") value = <Dots used={budget.used} max={budget.max} />;
@@ -206,7 +208,7 @@ export function BudgetRow({ budget }) {
           {hint ? <T style={{ color: color.ink3 }}>{hint} · </T> : null}
           <T style={warn ? { color: color.warn } : null}>{note}</T>
         </RowNote>
-        {kind === "amount" ? <Meter value={budget.spent} max={budget.limit} tone={warn ? "warn" : undefined} style={{ marginTop: 6 }} /> : null}
+        {kind === "amount" ? <Meter value={budget.spent} max={budget.limit} percent={api?.metrics?.budgets[budget.id]} tone={warn ? "warn" : undefined} style={{ marginTop: 6 }} /> : null}
       </View>
     </Row>
   );
@@ -312,12 +314,13 @@ export function Agenda({ items }) {
 }
 
 // One answer chip. The web version only showed the choice; here a tap also changes it, nothing is stored.
-export function Chip({ label, selected = false, onPress, toggle = true }) {
+export function Chip({ label, selected = false, onPress, toggle = true, disabled = false }) {
   const [on, setOn] = useState(selected);
   const pressed = onPress ? selected : on;
   return (
     <Pressable
       accessibilityRole="button"
+      disabled={disabled}
       accessibilityState={{ selected: pressed }}
       onPress={onPress ?? (toggle ? () => setOn(!on) : undefined)}
       style={({ pressed: down }) => [s.chip, pressed && s.chipOn, down && !pressed && { borderColor: color.ink3 }]}
@@ -331,8 +334,8 @@ export function Chip({ label, selected = false, onPress, toggle = true }) {
 }
 
 // Answer chips; `selected` options start as chosen.
-export function ChoiceChips({ label, options, scroll = false }) {
-  const chips = options.map((option) => <Chip key={option.label} label={option.label} selected={Boolean(option.selected)} />);
+export function ChoiceChips({ label, options, scroll = false, onChange, disabled = false }) {
+  const chips = options.map((option, index) => <Chip key={option.label} label={option.label} selected={Boolean(option.selected)} disabled={disabled} onPress={onChange ? () => onChange(option, index) : undefined} />);
   if (scroll) {
     return (
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={[s.chips, s.chipsNoWrap]} accessibilityLabel={label}>
@@ -348,11 +351,11 @@ export function ChoiceChips({ label, options, scroll = false }) {
 }
 
 // Plain chips that do nothing yet (the web version's buttons without an action).
-export function Chips({ items }) {
+export function Chips({ items, onSelect }) {
   return (
     <View style={s.chips}>
       {items.map((item) => (
-        <Chip key={item} label={item} toggle={false} />
+        <Chip key={item} label={item} toggle={false} onPress={onSelect ? () => onSelect(item) : undefined} />
       ))}
     </View>
   );
@@ -512,18 +515,19 @@ export function Marker({ children, style }) {
 }
 
 // type: "text" (default), "textarea", "select" or "time"; values are examples only.
-export function Field({ field, style }) {
+export function Field({ field, style, onChange, disabled = false }) {
   const area = field.type === "textarea";
   return (
     <View style={[s.field, style]}>
       <T style={s.fieldLabel}>{field.label}</T>
       {field.type === "select" ? (
-        <Select value={field.value} options={field.options} label={field.label} />
+        <Select value={field.value} options={field.options} label={field.label} onChange={onChange} disabled={disabled} />
       ) : (
         <View style={[s.input, area && s.inputArea]}>
           <TextInput
             accessibilityLabel={field.label}
-            defaultValue={field.value}
+            editable={!disabled}
+            {...(onChange ? { value: field.value ?? "", onChangeText: onChange } : { defaultValue: field.value })}
             placeholder={field.placeholder}
             placeholderTextColor={color.ink3}
             multiline={area}
@@ -539,12 +543,13 @@ export function Field({ field, style }) {
 }
 
 // A select without the system picker: the chosen value, and the list under it once tapped.
-function Select({ value, options, label }) {
-  const [chosen, setChosen] = useState(value ?? options[0]);
+function Select({ value, options, label, onChange, disabled }) {
+  const [local, setChosen] = useState(value ?? options[0]);
+  const chosen = onChange ? value : local;
   const [open, setOpen] = useState(false);
   return (
     <View>
-      <Pressable accessibilityRole="button" accessibilityLabel={`${label}: ${chosen}`} onPress={() => setOpen(!open)} style={[s.input, open && s.inputFocus]}>
+      <Pressable accessibilityRole="button" accessibilityLabel={`${label}: ${chosen}`} disabled={disabled} onPress={() => setOpen(!open)} style={[s.input, open && s.inputFocus]}>
         <T style={s.flex}>{chosen}</T>
         <Icon name="chevron" size={18} color={color.ink2} strokeWidth={2} style={{ transform: [{ rotate: open ? "-90deg" : "90deg" }] }} />
       </Pressable>
@@ -553,10 +558,12 @@ function Select({ value, options, label }) {
           {options.map((option) => (
             <Pressable
               key={option}
+              disabled={disabled}
               accessibilityRole="button"
               accessibilityState={{ selected: option === chosen }}
               onPress={() => {
                 setChosen(option);
+                onChange?.(option);
                 setOpen(false);
               }}
               style={({ pressed }) => [s.option, option === chosen && { backgroundColor: color.yellowSoft }, pressed && { backgroundColor: color.sand }]}
@@ -570,10 +577,11 @@ function Select({ value, options, label }) {
   );
 }
 
-export function Switch({ label, hint, defaultChecked = false }) {
-  const [on, setOn] = useState(Boolean(defaultChecked));
+export function Switch({ label, hint, defaultChecked = false, checked, onChange, disabled = false }) {
+  const [local, setOn] = useState(Boolean(defaultChecked));
+  const on = checked === undefined ? local : checked;
   return (
-    <Pressable accessibilityRole="switch" accessibilityState={{ checked: on }} onPress={() => setOn(!on)} style={s.switchRow}>
+    <Pressable accessibilityRole="switch" accessibilityState={{ checked: on, disabled }} disabled={disabled} onPress={() => onChange ? onChange(!on) : setOn(!on)} style={s.switchRow}>
       <View style={s.switchText}>
         <T>{label}</T>
         {hint ? <Small muted>{hint}</Small> : null}

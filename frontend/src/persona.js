@@ -4,20 +4,24 @@
 
 import { createContext, useContext } from "react";
 
-import { personas } from "./data/personas.js";
-
 const STORAGE_KEY = "coach-persona";
+export const PERSONA_IDS = ["pf", "student"];
 
-export const PersonaContext = createContext(personas.pf);
+export const PersonaContext = createContext(null);
+export const PersonaApiContext = createContext(null);
 
 export function usePersona() {
   return useContext(PersonaContext);
 }
 
+export function usePersonaApi() {
+  return useContext(PersonaApiContext);
+}
+
 export function storedPersonaId() {
   try {
     const id = globalThis.sessionStorage?.getItem(STORAGE_KEY);
-    return id in personas ? id : "pf";
+    return PERSONA_IDS.includes(id) ? id : "pf";
   } catch {
     return "pf";
   }

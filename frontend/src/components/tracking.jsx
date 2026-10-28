@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
-import { categories } from "../data/tracking.js";
+import { usePersona, usePersonaApi } from "../persona.js";
 import { lei } from "../lib/format.js";
 import { categoryTones, color, radius, space, text } from "../theme.js";
 import { Link, T } from "./base.jsx";
@@ -11,6 +11,7 @@ import { Icon } from "./icons.jsx";
 import { Amount } from "./ui.jsx";
 
 export function CategoryTile({ id, size }) {
+  const { categories } = usePersona();
   const tone = categoryTones[categories[id].tone];
   const lg = size === "lg";
   return (
@@ -25,10 +26,9 @@ export function TxAmount({ value, size = "md" }) {
   return <Amount value={Math.abs(value)} size={size} prefix={value < 0 ? "−" : "+"} income={value > 0} />;
 }
 
-const percent = (part, total) => Math.round((part.lei / total) * 100);
-
 // Variable spending by category: one segment per category, 2px gaps, colour fixed per category.
 export function ShareBar({ parts }) {
+  const { categories } = usePersona();
   return (
     <View style={s.share} accessibilityRole="image" accessibilityLabel={parts.map((part) => `${categories[part.id].label} ${lei(part.lei)}`).join(", ")}>
       {parts.map((part, i) => (
@@ -46,7 +46,9 @@ export function ShareBar({ parts }) {
   );
 }
 
-export function CategoryLegend({ parts, total }) {
+export function CategoryLegend({ parts }) {
+  const { categories } = usePersona();
+  const { metrics } = usePersonaApi();
   return (
     <View style={s.legend}>
       {parts.map((part) => (
@@ -54,7 +56,7 @@ export function CategoryLegend({ parts, total }) {
           <View style={[s.dot, { backgroundColor: categoryTones[categories[part.id].tone].dot }]} aria-hidden />
           <T style={[s.legendText, s.flex]}>{categories[part.id].label}</T>
           <T style={[s.legendText, s.num]}>{lei(part.lei)}</T>
-          <T style={[s.legendText, s.num, s.percent]}>{percent(part, total)}%</T>
+          <T style={[s.legendText, s.num, s.percent]}>{metrics.categories[part.id] ?? 0}%</T>
         </View>
       ))}
     </View>
@@ -72,6 +74,7 @@ function Flag({ icon, review, children }) {
 
 // One payment in the list; the whole row opens its details.
 export function TxRow({ tx }) {
+  const { categories } = usePersona();
   const category = categories[tx.category];
   const title = tx.name || tx.merchant;
   const meta = [tx.name && tx.name !== tx.merchant ? tx.merchant : null, category.label, tx.time].filter(Boolean).join(" · ");
@@ -102,8 +105,10 @@ export function TxRow({ tx }) {
 
 // Categories as tiles; `selected` is chosen, `suggested` is the coach's proposal for an unsorted payment.
 // A tap moves the choice; nothing is saved.
-export function CategoryPicker({ ids, selected, suggested }) {
-  const [chosen, setChosen] = useState(selected);
+export function CategoryPicker({ ids, selected, suggested, onChange, onCreate, disabled = false }) {
+  const { categories } = usePersona();
+  const [local, setChosen] = useState(selected);
+  const chosen = onChange ? selected : local;
   return (
     <View style={s.picker} accessibilityLabel="Categorie">
       {ids.map((id) => (
@@ -111,7 +116,8 @@ export function CategoryPicker({ ids, selected, suggested }) {
           key={id}
           accessibilityRole="button"
           accessibilityState={{ selected: id === chosen }}
-          onPress={() => setChosen(id)}
+          disabled={disabled}
+          onPress={() => onChange ? onChange(id) : setChosen(id)}
           style={[s.option, id === chosen && s.optionOn]}
         >
           <CategoryTile id={id} />
@@ -123,7 +129,7 @@ export function CategoryPicker({ ids, selected, suggested }) {
           ) : null}
         </Pressable>
       ))}
-      <Pressable accessibilityRole="button" style={s.option}>
+      <Pressable accessibilityRole="button" style={s.option} onPress={onCreate} disabled={disabled}>
         <View style={[s.tile, { backgroundColor: color.sand }]} aria-hidden>
           <Icon name="tag" size={21} />
         </View>
