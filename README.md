@@ -88,7 +88,7 @@ Aplicația are **două zone** care lucrează pe același dosar:
 │  AGENT 3  Underwriter      → DNSH, fondul potrivit, condiții, raport     │
 │                                                                         │
 │  MOTOR DE CALCUL (cod)     → toate formulele din acest document         │
-│  DATE AUTOMATE (mock)      → ANAF · APIA · ANSVSA · Open Banking · hărți │
+│  DATE AUTOMATE             → ANAF (live) · APIA · ANSVSA · Open Banking  │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -609,7 +609,7 @@ La fiecare pas, backend-ul trimite un **eveniment live (SSE)** către ambele zon
 | 📋 **Agent 3 — Underwriter verde** | rezultatele Agenților 1 și 2 | 1. bifează cerințele fondului · 2. alege categoria din cadrul obligațiunilor verzi · 3. transformă datele lipsă în condiții înainte de tragere · 4. scrie raportul pentru ofițer | raportul verde |
 
 **Cum ne asigurăm că rezultatul AI e corect:**
-- fiecare agent își termină munca **obligatoriu** printr-un tool `submit_*` cu schemă JSON fixă (zod);
+- fiecare agent își termină munca **obligatoriu** printr-un tool `submit_*` cu schemă JSON fixă (`contracts/schemas/`);
 - dacă rezultatul nu respectă schema, agentul primește eroarea și se corectează;
 - backend-ul **recalculează** toate cifrele cu motorul de calcul și le înlocuiește pe cele scrise de AI.
 
@@ -622,60 +622,56 @@ La fiecare pas, backend-ul trimite un **eveniment live (SSE)** către ambele zon
 | Zonă | Tehnologie |
 |---|---|
 | Frontend | Vite + React + TypeScript + Tailwind + shadcn/ui · Leaflet (OpenStreetMap cu internet, parcele pe fundal simplu fără internet) · Recharts (grafice) |
-| Backend | Node.js + TypeScript + Fastify |
-| AI | AWS Bedrock, `ConverseCommand` cu Claude (citire PDF + tool use), regiune UE. **Opțional:** fără chei AWS în `.env`, aplicația merge complet din rulările demo înregistrate |
+| Backend | Java 21 + Spring Boot 3.5 (Maven), pipeline pe thread-uri virtuale |
+| AI | AWS Bedrock, Converse API (AWS SDK for Java v2) cu Claude (citire PDF + tool use), regiune UE. **Opțional:** fără credențiale AWS, aplicația merge din rulările demo înregistrate |
+| Date externe | **ANAF live** (API-urile publice de TVA și bilanț, fără cheie) pentru orice CUI real · mock-uri pentru APIA, ANSVSA, Open Banking, hărți de risc și pentru fermele demo |
 | Fișiere | disc local (AWS S3 opțional) |
-| Stocare | dosarele în memorie, salvate într-un fișier JSON; fără bază de date |
+| Stocare | dosarele în memorie; fără bază de date |
 | Autentificare | fără: cele două zone sunt rutele `/imm` și `/ofiter`, afișate în split-view, cu un selector de dosar demo |
-| Repo | npm workspaces (`frontend/`, `backend/`, `shared/`), pornit cu `npm run dev` |
 | Live | Server-Sent Events (SSE) |
-| Validare | zod (aceleași scheme pentru AI, backend și frontend) |
-| Teste | vitest |
+| Contract | `contracts/`: OpenAPI, JSON Schema pentru output-urile agenților, catalogul de evenimente, fixtures (contract-first; frontend-ul poate lucra pe mock-ul Prism) |
+| Teste | JUnit 5 (backend) · validatoarele din `contracts/` (`npm run check`, `npm run validate:samples`) |
 
 ### Structura repo-ului
 
 ```
-greenstruct-agro/
-├── frontend/
-│   └── src/
-│       ├── views/sme/          # zona IMM
-│       ├── views/officer/      # zona ofițer
-│       └── components/         # hartă, pașii agenților, clasic vs. verde, descompunerea dobânzii
-├── backend/
-│   └── src/
-│       ├── routes/             # API + SSE
-│       ├── orchestrator/       # ciclul de viață al dosarului
-│       ├── agents/             # cei 3 agenți (prompt + tool-uri + schemă)
-│       ├── engine/             # MOTORUL DE CALCUL (cod determinist, cu teste)
-│       │   ├── categories/     # formulele celor 6 categorii
-│       │   ├── credit/         # anuitate, rate după încasări, DSCR, clasic vs. verde
-│       │   ├── pricing/        # dobânda verde + nivelurile verzi
-│       │   └── carbon.ts       # CO₂ din kWh, motorină, azot, metan
-│       ├── categories/         # config pentru cele 6 categorii (date cerute, prag, upgrade-uri)
-│       ├── services/           # Bedrock, S3
-│       ├── mock-external-apis/ # ANAF, APIA, ANSVSA, Open Banking, climă, Natura 2000, nitrați
-│       └── fallback/           # rulări demo înregistrate
-├── shared/                     # tipuri + scheme zod comune
-├── scripts/                    # generează PDF-urile demo din aceleași date JSON ca mock-urile
-├── data/
-│   ├── catalog/                # upgrade-urile pe categorie
-│   └── demo/                   # documente și date demo
-└── config/
-    ├── funds.json              # F1–F6 și cerințele lor
-    ├── pricing.json            # parametrii dobânzii verzi + nivelurile
-    └── constants.json          # factori de emisie, eficiențe, prețuri
+The-Sopranos-hakaton/  (branch B2B_Agro)
+├── frontend/                   # React (zona IMM + zona ofițer)
+├── backend/                    # Spring Boot
+│   └── src/main/java/ro/greenstruct/agro/
+│       ├── api/                # REST + SSE, erori în formatul din contract
+│       ├── orchestration/      # mașina de stări a dosarului, evenimente
+│       ├── tools/              # uneltele agenților (technical, funding, underwriting) → motor
+│       ├── engine/             # MOTORUL DE CALCUL (BigDecimal, cu teste)
+│       │   ├── finance/        # anuitate, rate sezoniere, comparație clasic vs. verde
+│       │   ├── funding/        # grant, cofinanțare, punte, garanție, de minimis
+│       │   ├── irrigation/  machinery/  impact/  affordability/
+│       ├── modules/            # încărcarea config-ului pe modul (categorie)
+│       ├── external/           # porturi + ANAF live (anaf/) + mock-uri (mock/)
+│       ├── farm/  storage/  demo/  config/
+├── contracts/                  # openapi.yaml, schemas/, events.md, fixtures/, examples/
+├── config/                     # modules/*.json, financing-lines.json, funding-programs.json, factors.json, prices.json
+└── data/
+    ├── catalog/                # upgrade-urile pe modul
+    └── demo/                   # fermele demo, scenariile, documentele demo
 ```
 
 ### API
 
+Definiția completă e în `contracts/openapi.yaml`.
+
 | Endpoint | Ce face |
 |---|---|
-| `POST /api/runs` | creează un dosar (CUI, categorie, parcele, documente, răspunsuri) și întoarce `runId` |
-| `GET /api/runs/:id` | starea completă a dosarului |
-| `GET /api/runs/:id/events` | evenimentele live (SSE) |
-| `POST /api/runs/:id/submit` | IMM-ul trimite cererea cu varianta aleasă |
-| `POST /api/runs/:id/approve` | ofițerul aprobă |
-| `GET /api/portfolio` | totalurile pentru panoul de portofoliu |
+| `GET /api/modules` | cele 6 module (categorii), cu documentele și întrebările fiecăruia |
+| `GET /api/farms/{cui}` | profilul firmei: ANAF (live sau mock demo), parcele APIA, cashflow Open Banking |
+| `POST /api/runs` | creează un dosar (multipart: CUI, modul, parcele, chestionar, documente) și întoarce `runId` |
+| `POST /api/runs/demo/{scenario}` | încarcă dosarul demo (`irigatii` / `utilaje`) |
+| `GET /api/runs/{id}` | starea completă a dosarului, cu cifrele rezolvate |
+| `GET /api/runs/{id}/events` | evenimentele live (SSE, cu reluare prin `Last-Event-ID`) |
+| `POST /api/runs/{id}/approve` · `/request-documents` | acțiunile ofițerului |
+| `GET /api/health/bedrock` | starea Bedrock înainte de demo |
+
+De adăugat în contract: `POST /api/runs/{id}/submit` (IMM-ul trimite varianta aleasă) și `GET /api/portfolio` (totalurile pentru portofoliu).
 
 **Evenimente live:** `state.transition` · `agent.started` · `agent.thought` · `agent.tool_call` · `agent.tool_result` · `agent.completed` · `agent.degraded` · `run.completed` · `run.failed`
 
@@ -729,7 +725,7 @@ Deciziile luate pentru versiunea de hackathon. Ce nu e scris aici urmează restu
 |---|---|
 | **Toate cele 6 categorii merg complet** | fiecare are fermă demo, documente, calcule, ofertă și raport |
 | **6 ferme demo fictive** | legume (irigații) · fermă cu facturi mari la energie (fotovoltaice) · cereale (utilaje) · vaci (biogaz) · fructe (depozit frigorific) · fermă în conversie la bio. Fiecare are un buton „Dosar demo” pe cardul categoriei. Detaliile lor sunt în `data/demo/README.md` |
-| **Date evident fictive** | nume fictive și CUI-uri `DEMO-0001` … `DEMO-0006`, nu numere care ar putea aparține unor firme reale. Mock-ul ANAF acceptă doar aceste coduri |
+| **Date evident fictive** | nume fictive și CUI-uri numerice fictive (formatul cerut de ANAF), verificate că nu există la ANAF. Fermele demo din `data/demo/farms/` nu ajung niciodată la ANAF; orice alt CUI se caută live |
 | **Momentul de îndrumare** | categoriile 1, 3, 4, 5 pornesc **sub prag** și arată upgrade-ul · categoria 2 (eligibilă direct) arată **redimensionarea** instalației · categoria 6 arată **conversia etapizată** și golul de lichiditate |
 | **Zona IMM e self-service** | o folosește reprezentantul firmei, singur |
 | **IMM-ul nu vede fondurile** | vede „Credit verde Raiffeisen” și beneficiul „fără ipotecă, datorită unei garanții europene”. Fondul și cerințele lui apar doar în zona ofițerului |
@@ -748,7 +744,7 @@ Deciziile luate pentru versiunea de hackathon. Ce nu e scris aici urmează restu
 | Decizie | Detaliu |
 |---|---|
 | **Merge complet fără AWS** | agenții rulează din rulările demo înregistrate. Bedrock se activează punând cheile în `.env` |
-| **Toate sursele externe sunt mock-uri** | ANAF, APIA, ANSVSA, Open Banking, hărți de risc. Fiecare mock are interfața serviciului real, ca integrarea reală să se poată adăuga ulterior |
+| **ANAF live, restul mock-uri** | ANAF are API public: datele firmei (identitate, CAEN, TVA, stare fiscală, bilanț) vin live, cu cache și cu răspunsul anterior dacă ANAF pică. APIA, ANSVSA, Open Banking și hărțile de risc rămân mock-uri cu interfața serviciului real. `GREENSTRUCT_ANAF_ENABLED=false` oprește ANAF pentru demo-ul offline |
 | **Fără login, fără bază de date** | vezi [§11](#11-arhitectura-tehnică) |
 | **PDF-uri demo generate de un script** | din aceleași date JSON ca mock-urile, ca cifrele să fie mereu identice |
 | **Demo local** | rulează pe laptopul de prezentare, fără hosting |
