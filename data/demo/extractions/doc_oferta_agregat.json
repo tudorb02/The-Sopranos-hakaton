@@ -1,0 +1,118 @@
+{
+  "documentId": "doc_oferta_agregat",
+  "documentType": "OFFER",
+  "moduleId": "post_recolta",
+  "currency": "EUR",
+  "supplierName": "Frig Industrial Demo SRL",
+  "documentFields": [
+    {
+      "key": "DOCUMENT_NUMBER",
+      "rawValue": "OF-FR-2026-140",
+      "unit": "TEXT",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "DOCUMENT_DATE",
+      "rawValue": "14.10.2026",
+      "unit": "DATE",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "TOTAL_NET",
+      "rawValue": "118.000 EUR",
+      "unit": "EUR",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "SPECIFIC_CONSUMPTION_KWH_PER_UNIT",
+      "rawValue": "115 kWh / tonă / sezon",
+      "unit": "KWH",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "REFRIGERANT_TYPE",
+      "rawValue": "R404A (GWP 3.922)",
+      "unit": "TEXT",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "REFRIGERANT_GWP",
+      "rawValue": "3.922",
+      "unit": "PCS",
+      "page": 1,
+      "confidence": "HIGH"
+    }
+  ],
+  "lineItems": [
+    {
+      "lineId": "ln_1",
+      "category": "REFRIGERATION_UNIT",
+      "descriptionRo": "Agregat frigorific cu compresoare semiermetice, agent R404A",
+      "fields": [
+        {
+          "key": "QUANTITY",
+          "rawValue": "1 buc.",
+          "unit": "PCS",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "LINE_PRICE_NET",
+          "rawValue": "74.000 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_2",
+      "category": "REFRIGERATION_UNIT",
+      "descriptionRo": "Vaporizatoare pentru celule",
+      "fields": [
+        {
+          "key": "QUANTITY",
+          "rawValue": "6 buc.",
+          "unit": "PCS",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "LINE_PRICE_NET",
+          "rawValue": "26.000 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    },
+    {
+      "lineId": "ln_3",
+      "category": "INSTALLATION_WORKS",
+      "descriptionRo": "Automatizare, montaj, punere în funcțiune",
+      "fields": [
+        {
+          "key": "QUANTITY",
+          "rawValue": "1 set",
+          "unit": "PCS",
+          "page": 1,
+          "confidence": "HIGH"
+        },
+        {
+          "key": "LINE_PRICE_NET",
+          "rawValue": "18.000 EUR",
+          "unit": "EUR",
+          "page": 1,
+          "confidence": "HIGH"
+        }
+      ]
+    }
+  ],
+  "missingFields": [],
+  "warnings": []
+}

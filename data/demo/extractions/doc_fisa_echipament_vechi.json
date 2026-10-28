@@ -1,0 +1,40 @@
+{
+  "documentId": "doc_fisa_echipament_vechi",
+  "documentType": "CURRENT_EQUIPMENT",
+  "moduleId": "post_recolta",
+  "currency": "EUR",
+  "supplierName": "Livezile Argeș Demo SRL",
+  "documentFields": [
+    {
+      "key": "DOCUMENT_NUMBER",
+      "rawValue": "FT-FR-01",
+      "unit": "TEXT",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "DOCUMENT_DATE",
+      "rawValue": "16.10.2026",
+      "unit": "DATE",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "MANUFACTURE_YEAR",
+      "rawValue": "2006",
+      "unit": "YEAR",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "REFRIGERANT_GWP",
+      "rawValue": "3.922",
+      "unit": "PCS",
+      "page": 1,
+      "confidence": "HIGH"
+    }
+  ],
+  "lineItems": [],
+  "missingFields": [],
+  "warnings": []
+}

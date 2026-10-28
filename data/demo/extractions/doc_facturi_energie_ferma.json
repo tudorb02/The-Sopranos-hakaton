@@ -1,0 +1,19 @@
+{
+  "documentId": "doc_facturi_energie_ferma",
+  "documentType": "ENERGY_INVOICES",
+  "moduleId": "zootehnie",
+  "currency": "EUR",
+  "supplierName": "Energie Demo Furnizare SA",
+  "documentFields": [
+    {
+      "key": "ENERGY_KWH",
+      "rawValue": "120.000 kWh",
+      "unit": "KWH",
+      "page": 1,
+      "confidence": "HIGH"
+    }
+  ],
+  "lineItems": [],
+  "missingFields": [],
+  "warnings": []
+}
