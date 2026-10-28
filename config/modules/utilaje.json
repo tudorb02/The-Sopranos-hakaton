@@ -3,29 +3,29 @@
   "nameRo": "Utilaje & precizie",
   "icon": "🚜",
   "status": "DEMO_READY",
-  "descriptionRo": "Tractoare eficiente, GPS, dozare variabilă.",
+  "descriptionRo": "Tractor eficient, pilot automat GPS, dozare variabilă.",
   "examplesRo": [
-    "tractoare eficiente",
-    "ghidaj GPS",
-    "doză variabilă"
+    "tractor eficient Stage V",
+    "pilot automat GPS",
+    "dozare variabilă"
   ],
   "indicator": "FUEL_SAVING_PCT",
   "threshold": {
     "kind": "MIN_PCT",
     "value": 20,
     "unit": "PCT",
-    "sourceRo": "config/modules/utilaje.json (propunere; −20% motorină sau îngrășăminte / ha)",
+    "sourceRo": "README §6, categoria 3: reducere ≥ 20% a motorinei pe hectar SAU a azotului pe hectar (propunere, de validat cu mentorii)",
     "demo": true
   },
   "requiredDocs": [
     {
       "docType": "OFFER",
-      "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+      "labelRo": "Oferta / proforma și fișa tehnică a tractorului (cu consumul în l/ha)",
       "required": true
     },
     {
       "docType": "CURRENT_EQUIPMENT",
-      "labelRo": "Ce se înlocuiește: fișă tehnică, poză cu eticheta sau descriere",
+      "labelRo": "Fișa utilajului înlocuit (an de fabricație, putere) sau talonul",
       "required": false
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "docType": "FERTILIZER_INVOICES",
-      "labelRo": "Facturile de îngrășăminte pe 12 luni",
+      "labelRo": "Facturile de îngrășăminte cu azot pe 12 luni (obligatorii pentru precizie)",
       "required": false
     }
   ],
@@ -48,16 +48,22 @@
       "required": true
     },
     {
-      "questionId": "nitrogen_kg_ha",
-      "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)?",
+      "questionId": "replaced_machine_year",
+      "labelRo": "Anul de fabricație al utilajului înlocuit",
       "type": "NUMBER",
-      "unit": "KG_N_PER_HA",
+      "prefillFrom": "NONE",
+      "required": true
+    },
+    {
+      "questionId": "replaced_machine_hp",
+      "labelRo": "Puterea utilajului înlocuit (CP)",
+      "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": true
     },
     {
       "questionId": "tillage",
-      "labelRo": "Cum lucrați solul?",
+      "labelRo": "Cum lucrați solul? (arătură, lucrare minimă sau no-till)",
       "type": "SINGLE_CHOICE",
       "options": [
         {
@@ -75,6 +81,14 @@
       ],
       "prefillFrom": "NONE",
       "required": true
+    },
+    {
+      "questionId": "nitrogen_kg_ha",
+      "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)? Se folosește doar dacă lipsesc facturile",
+      "type": "NUMBER",
+      "unit": "KG_N_PER_HA",
+      "prefillFrom": "NONE",
+      "required": false
     },
     {
       "questionId": "cover_crops",
@@ -134,7 +148,7 @@
     },
     {
       "questionId": "old_equipment_fate",
-      "labelRo": "Ce faceți cu utilajul vechi și cu deșeurile (ambalaje, folie)?",
+      "labelRo": "Ce faceți cu utilajul înlocuit (casare, vânzare, rezervă)?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
@@ -163,41 +177,6 @@
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": false
-    },
-    {
-      "questionId": "current_tractors",
-      "labelRo": "Câte tractoare aveți acum în fermă?",
-      "type": "NUMBER",
-      "prefillFrom": "NONE",
-      "required": true
-    },
-    {
-      "questionId": "replaced_tractors",
-      "labelRo": "Câte dintre ele scoateți din fermă după investiție? (0 = doar extindeți flota)",
-      "type": "NUMBER",
-      "prefillFrom": "NONE",
-      "required": true
-    },
-    {
-      "questionId": "replaced_fleet_age",
-      "labelRo": "Ce vechime au tractoarele pe care le scoateți?",
-      "type": "SINGLE_CHOICE",
-      "options": [
-        {
-          "value": "ANI_0_7",
-          "labelRo": "sub 8 ani"
-        },
-        {
-          "value": "ANI_8_15",
-          "labelRo": "8–15 ani"
-        },
-        {
-          "value": "PESTE_15_ANI",
-          "labelRo": "peste 15 ani"
-        }
-      ],
-      "prefillFrom": "NONE",
-      "required": true
     },
     {
       "questionId": "loan_term",
@@ -241,12 +220,12 @@
     },
     {
       "objective": "POLLUTION_PREVENTION",
-      "checkRo": "Motoare Stage V (minimum legal).",
+      "checkRo": "Motorul tractorului nou respectă norma Stage V (minimum legal).",
       "evidence": "EMISSION_STAGE"
     },
     {
       "objective": "BIODIVERSITY",
-      "checkRo": "Section control reduce pesticidele la marginea parcelelor; fără Natura 2000.",
+      "checkRo": "Parcelele nu sunt în arii Natura 2000; pilotul automat reduce suprapunerile și pesticidele la margini.",
       "evidence": "NATURA_2000_PARCELS"
     }
   ],
@@ -287,7 +266,7 @@
   "parameters": {
     "baselineLitresPerHa": {
       "value": 90,
-      "sourceRo": "Toate lucrările la cereale; INRAE: ~125 l/ha la o fermă europeană medie; Estimare echipă, de validat cu mentorii"
+      "sourceRo": "Folosit doar când lipsesc facturile de motorină: toate lucrările la cereale; INRAE ~125 l/ha la o fermă europeană medie; estimare echipă, de validat cu mentorii"
     },
     "maxHpPerHa": {
       "value": 2.5,
@@ -295,44 +274,11 @@
     },
     "nitrogenKgPerHaDefault": {
       "value": 150,
-      "sourceRo": "Estimare echipă, de validat cu mentorii"
+      "sourceRo": "Folosit doar când lipsesc facturile de îngrășăminte și răspunsul din chestionar; estimare echipă, de validat cu mentorii"
     },
-    "inputsEurPerHa": {
-      "value": 250,
-      "sourceRo": "Sămânță + îngrășăminte + pesticide; Estimare echipă, de validat cu mentorii"
-    },
-    "invoiceToleranceRatio": {
-      "value": 0.05,
-      "sourceRo": "Abaterea maximă dintre normă și facturi acceptată fără semnalare"
-    },
-    "specificFuelByAge": {
-      "value": [
-        {
-          "maxAgeYears": 2,
-          "gPerKwh": 246
-        },
-        {
-          "maxAgeYears": 7,
-          "gPerKwh": 252
-        },
-        {
-          "maxAgeYears": 15,
-          "gPerKwh": 265
-        },
-        {
-          "maxAgeYears": 99,
-          "gPerKwh": 280
-        }
-      ],
-      "sourceRo": "Consum specific la lucrări de câmp după vechimea tractorului: nou 246 g/kWh (DLG PowerMix 2018+, 235–256); 3–7 ani 252, 8–15 ani 265 (estimări echipă); peste 15 ani 280 (~+14%, Nebraska/UNL). De validat."
-    },
-    "fleetAgeYears": {
-      "value": {
-        "ANI_0_7": 5,
-        "ANI_8_15": 12,
-        "PESTE_15_ANI": 20
-      },
-      "sourceRo": "Vârsta reprezentativă pentru fiecare variantă de răspuns din chestionar"
+    "nitrogenEurPerKg": {
+      "value": 1.0,
+      "sourceRo": "Preț al azotului pur (EUR/kg N): azotat de amoniu 34% la 0,36 EUR/kg = 1,06; uree 46% la 0,46 EUR/kg = 1,00 (facturile demo DEMO-0003); valoare de demo, de validat"
     },
     "usedAgeYearsDefault": {
       "value": 5,
@@ -341,8 +287,8 @@
   },
   "substantialContribution": "CLIMATE_MITIGATION",
   "financing": {
-    "termMonths": 84,
-    "horizonYears": 7,
+    "termMonths": 60,
+    "horizonYears": 5,
     "standardLine": "rbro.invest.machinery",
     "greenLine": "rbro.agri.green_investeu",
     "cofinancingLine": "rbro.agri.cofinancing_fgcr",

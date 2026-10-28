@@ -1,19 +1,29 @@
 {
   "module": "utilaje",
-  "note": "Prețuri de verificat în Baza de prețuri de referință AFIR. Pachetul de precizie se montează pe fiecare tractor. role ALTERNATIVE înlocuiește tractoarele ofertate cu tractoare noi de aceeași putere.",
+  "note": "Prețuri estimate (README §13: prețul upgrade-ului vine din catalog; oferta actualizată a furnizorului e condiție înainte de tragere). Reducerile de motorină se înmulțesc (l/ha = l/ha tractor × Π(1 − reducere)); cele de azot se adună. Articolele cu role ALTERNATIVE înlocuiesc tractoarele second-hand din ofertă cu tractoare noi Stage V de aceeași putere.",
   "items": [
     {
-      "catalogId": "utl.precision.rtk_sc_vra",
-      "category": "PRECISION_PACKAGE",
-      "nameRo": "Pachet de precizie: ghidaj RTK, section control, doză variabilă de azot",
+      "catalogId": "utl.gps.rtk",
+      "category": "PRECISION_GUIDANCE",
+      "nameRo": "Pilot automat GPS RTK (mai puține suprapuneri)",
       "role": "INDICATOR",
-      "costEurPerTractor": 13000,
+      "costEurPerTractor": 16000,
       "effect": {
-        "fuelSavingPct": 10,
-        "inputSavingPct": 3,
-        "nitrogenSavingPct": 5
+        "dieselReductionPct": 9,
+        "nitrogenReductionPct": 5
       },
-      "sourceRo": "Motorină: Haapala et al., Agronomy Research 23(1), 2025 (−20% la semănat; 10% conservator). Inputuri: PAMI/Iowa State. Azot: studiu CEMEPE (−4,8…8,8%)"
+      "sourceRo": "Catalogul Product (data/demo/test-documents/reference/upgrades.json, MCH-GPS): −9% motorină, −5% azot; preț estimat pe tractor. Motorină: Haapala et al., Agronomy Research 23(1), 2025; azot: studiu CEMEPE (−4,8…8,8%)"
+    },
+    {
+      "catalogId": "utl.vra.module",
+      "category": "PRECISION_VARIABLE_RATE",
+      "nameRo": "Modul de dozare variabilă a îngrășămintelor",
+      "role": "INDICATOR",
+      "costEur": 11000,
+      "effect": {
+        "nitrogenReductionPct": 12
+      },
+      "sourceRo": "Catalogul Product (data/demo/test-documents/reference/upgrades.json, MCH-VRA): −12% azot; preț estimat pe fermă"
     },
     {
       "catalogId": "utl.tractor.new_stage_v",
@@ -22,8 +32,10 @@
       "role": "ALTERNATIVE",
       "mirrorsCategory": "TRACTOR",
       "costEurPerHp": 525,
-      "effect": {},
-      "sourceRo": "≈ 520–530 EUR/CP în ofertele demo; cercetare: 600–1.000 EUR/CP la mărci premium. De verificat în Baza de prețuri AFIR."
+      "effect": {
+        "dieselSavingVsOldPct": 12
+      },
+      "sourceRo": "Preț ≈ 520–530 EUR/CP în ofertele demo; 600–1.000 EUR/CP la mărci premium, de verificat în Baza de prețuri AFIR. Economie 12% față de consumul actual: 1 − 246/280 g/kWh (DLG PowerMix 2018+ față de un tractor de peste 15 ani, +14% conform Nebraska/UNL), estimare de validat. Se propune doar în locul tractoarelor second-hand."
     }
   ]
 }

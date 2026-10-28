@@ -27,11 +27,25 @@ final class DnshRules {
                     "Aviz de mediu pentru parcelele din arii Natura 2000");
             case "NITRATE_PARCELS" -> parcels(check, facts.path("nitrateVulnerableParcels"), "zone vulnerabile la nitrați",
                     "Plan de fertilizare pentru parcelele din zone vulnerabile la nitrați");
-            case "PUMPING_ENERGY", "PARCEL_RISK", "TILLAGE", "EMISSION_STAGE" -> new Outcome(DnshStatus.PASS,
+            case "EMISSION_STAGE" -> emissionStage(check, facts);
+            case "PUMPING_ENERGY", "PARCEL_RISK", "TILLAGE" -> new Outcome(DnshStatus.PASS,
                     List.of("OFFER"), check.checkRo());
             default -> new Outcome(DnshStatus.PASS_WITH_CONDITIONS, List.of("OFFER"),
                     check.checkRo() + " De confirmat înainte de tragere.");
         };
+    }
+
+    /** Machinery: a tractor with a known engine stage below Stage V fails; an unknown stage is a condition. */
+    private static Outcome emissionStage(ModuleDefinition.DnshCheck check, JsonNode facts) {
+        if (facts.has("stageV") && !facts.path("stageV").asBoolean()) {
+            return new Outcome(DnshStatus.FAIL, List.of("OFFER"),
+                    "Motorul tractorului ofertat nu respectă norma Stage V: " + facts.path("emissionStages"));
+        }
+        if (facts.path("tractorsWithoutStage").size() > 0) {
+            return new Outcome(DnshStatus.PASS_WITH_CONDITIONS, List.of("OFFER"),
+                    "Oferta nu indică norma de emisii a tractorului; fișa tehnică Stage V se cere înainte de tragere.");
+        }
+        return new Outcome(DnshStatus.PASS, List.of("OFFER"), check.checkRo());
     }
 
     private static Outcome equipmentFate(ModuleDefinition.DnshCheck check, String fate) {

@@ -254,7 +254,8 @@ public class RuleBasedTechnicalAgent implements RuleAgent {
         boolean ok = workspaces.forRun(flow.run().id()).configuration(configId).passesThreshold();
         node.put("status", ok ? "PASS" : "FAIL");
         node.put("calcId", hp.get());
-        node.put("noteRo", ok ? "Puterea pe hectar e în limita programului" : "Puterea pe hectar depășește limita");
+        node.put("noteRo", ok ? "Puterea pe hectar e în limita programului"
+                : "Puterea pe hectar depășește limita sau motorul nu respectă norma Stage V");
         return node;
     }
 
