@@ -200,9 +200,9 @@ public class IrrigationModule implements ModuleCalculator {
                     .formula("1 − apă nouă / apă actuală").add());
             calcs.add(context.calc(p + "water_saved", "Apă economisită pe an", cfg.metric("water_saved_m3"),
                     Unit.M3_PER_YEAR).add());
+            calcs.add(context.calc(p + "pumping_energy", "Energie de pompare", cfg.metric("pumping_kwh"),
+                    Unit.KWH_PER_YEAR).formula("m³ × (înălțime de ridicare + presiune) × 0,002725 / randamentul pompei").add());
             if (cfg.metricOrZero("pv_kwh").signum() > 0) {
-                calcs.add(context.calc(p + "pumping_energy", "Energie de pompare", cfg.metric("pumping_kwh"),
-                        Unit.KWH_PER_YEAR).formula("m³ × kWh/m³").add());
                 calcs.add(context.calc(p + "pv_kwh", "Energie produsă de pompa solară", cfg.metric("pv_kwh"),
                         Unit.KWH_PER_YEAR).formula("min(kWp × kWh/kWp, consum de pompare)").add());
                 calcs.add(context.calc(p + "grid_kwh", "Energie rămasă din rețea", cfg.metric("grid_kwh"),

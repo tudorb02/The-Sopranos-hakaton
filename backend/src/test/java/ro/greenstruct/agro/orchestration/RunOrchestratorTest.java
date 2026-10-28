@@ -85,9 +85,9 @@ class RunOrchestratorTest {
         Run done = started.completion().get(10, TimeUnit.SECONDS);
 
         assertThat(done.status()).isEqualTo(RunStatus.GATA);
-        assertThat(done.farmProfile().company().name()).isEqualTo("Legume Dobrogea Verde SRL");
+        assertThat(done.farmProfile().company().name()).isEqualTo("Legume Bărăgan Demo SRL");
         assertThat(done.agentOutputs()).containsOnlyKeys(AgentSlot.values());
-        assertThat(done.missingDocuments()).contains("OFFER", "WATER_PERMIT_ANAR", "ENERGY_INVOICES");
+        assertThat(done.missingDocuments()).isEmpty();
 
         List<RunEvent> events = hub.history(done.id());
         assertThat(events).extracting(RunEvent::type).startsWith(EventType.STATE_TRANSITION, EventType.STATE_TRANSITION)
