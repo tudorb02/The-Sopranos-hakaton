@@ -1,0 +1,6148 @@
+{
+  "pf": {
+    "account": {
+      "id": "pf",
+      "profile": "Salariat",
+      "name": "Daria Ionescu",
+      "initial": "D",
+      "detail": "Cont curent RON · RO12 RZBR •••• 1234",
+      "href": "#/intra/pf"
+    },
+    "client": {
+      "firstName": "Daria",
+      "name": "Daria Ionescu",
+      "initial": "D",
+      "segment": "persoană fizică",
+      "card": "Card Visa •••• 1234"
+    },
+    "mode": "salary",
+    "has_categories": true,
+    "templates": {
+      "analysis": {
+        "title": "Analizez ultimele 24 de luni",
+        "lead": "12 luni importate din contul curent și 12 din extrasul atașat. Durează circa un minut.",
+        "items": [
+          {
+            "label": "Venituri și ziua salariului",
+            "state": "done",
+            "note": "Salariu pe 5, în 24 din 24 de luni"
+          },
+          {
+            "label": "Plăți recurente și abonamente",
+            "state": "done",
+            "note": "9 plăți recurente, dintre care 3 abonamente"
+          },
+          {
+            "label": "Categorii pentru 1.946 de plăți",
+            "state": "running",
+            "note": "1.362 din 1.946",
+            "progress": 70
+          },
+          {
+            "label": "Obiceiuri și luni cu cheltuieli mari",
+            "state": "waiting",
+            "note": "Urmează"
+          }
+        ],
+        "note": "Poți închide aplicația. Îți scriu când e gata."
+      },
+      "apps": {
+        "learns": [
+          "Doar dacă ai deschis aplicația într-o zi"
+        ],
+        "doesNotLearn": [
+          "Cât timp stai în aplicație sau ce faci acolo",
+          "Alte aplicații decât cele alese de tine"
+        ],
+        "platform": "Pe iPhone folosesc Screen Time, iar pe Android accesul la datele de utilizare. Telefonul îți cere acordul la pasul următor."
+      },
+      "calendar": {
+        "options": [
+          {
+            "id": "google",
+            "icon": "calendar",
+            "title": "Google Calendar",
+            "note": "Citesc doar zilele de naștere și evenimentele marcate de tine.",
+            "action": "Conectează",
+            "href": "#/activare/calendar/conectat"
+          },
+          {
+            "id": "phone",
+            "icon": "phone",
+            "title": "Calendarul telefonului",
+            "note": "Datele rămân pe telefon. Coach-ul află doar câte evenimente sunt și când.",
+            "action": "Permite"
+          }
+        ],
+        "reads": [
+          "Tipul evenimentului și data",
+          "Zilele de naștere din contactele Google"
+        ],
+        "doesNotRead": [
+          "Titluri, invitați sau locații",
+          "Nu modific nimic în calendar"
+        ],
+        "found": [
+          {
+            "day": "nov.",
+            "month": "2026",
+            "title": "10 zile de naștere",
+            "note": "Din contactele tale Google"
+          },
+          {
+            "day": "dec.",
+            "month": "2026",
+            "title": "Sf. Nicolae, Crăciun, Sf. Ștefan",
+            "note": "Sărbători cu cadouri"
+          },
+          {
+            "day": "19",
+            "month": "iun.",
+            "title": "Nuntă",
+            "note": "Eveniment marcat de tine, în 2027"
+          }
+        ],
+        "gift": {
+          "question": "Cât vrei să dai de obicei pe un cadou?",
+          "groups": [
+            {
+              "label": "Pentru prieteni",
+              "options": [
+                "50 lei",
+                "100 lei",
+                "150 lei",
+                "Altă sumă"
+              ],
+              "selected": "100 lei"
+            },
+            {
+              "label": "Pentru familie",
+              "options": [
+                "100 lei",
+                "200 lei",
+                "300 lei",
+                "Altă sumă"
+              ],
+              "selected": "200 lei"
+            }
+          ],
+          "result": "Pentru cele 10 zile de naștere din noiembrie: aproximativ 1.200 lei."
+        }
+      },
+      "entry": {
+        "title": "Coach financiar",
+        "badge": "Nou",
+        "subtitle": "Funcție opțională",
+        "text": "Îți analizează extrasele de cont și te ajută cu bugete pe categorii și cu obiective. Îl activezi doar dacă vrei și îl poți opri oricând."
+      },
+      "findings": {
+        "lead": "Din 24 de luni de extrase, din calendar și din răspunsurile tale.",
+        "items": [
+          {
+            "text": "Între 27 și 5 ale lunii ai sub 100 lei în cont, în 5 din ultimele 6 luni.",
+            "src": "obs"
+          },
+          {
+            "text": "Aproape în fiecare dimineață plătești circa 30 lei la Boabe & Co: aproximativ 600 lei pe lună.",
+            "note": "Te întreb despre asta în discuție.",
+            "src": "obs"
+          },
+          {
+            "text": "FitZone Gym: 220 lei pe lună, iar aplicația sălii n-a mai fost deschisă din aprilie.",
+            "src": "obs"
+          },
+          {
+            "text": "În noiembrie ai 10 zile de naștere.",
+            "src": "obs",
+            "label": "din calendar"
+          }
+        ],
+        "firstStep": {
+          "icon": "gift",
+          "title": "Primul pas pe care ți-l propun",
+          "text": "Pe 5 noiembrie, după salariu, pune deoparte cei 1.200 lei pentru cadouri. Așa vezi de la început cât îți rămâne pentru restul lunii.",
+          "action": "Vezi propunerea",
+          "href": "#/chat"
+        }
+      },
+      "intro": {
+        "title": "Activează coach-ul financiar",
+        "lead": "Te ajut să vezi unde se duc banii, să-ți pui bugete pe categorii și să strângi pentru ce îți dorești.",
+        "duration": "Durează circa 3 minute",
+        "does": [
+          "Citesc extrasele de cont pe care mi le dai și îți arăt tiparele",
+          "Te întreb doar ce nu pot vedea din tranzacții",
+          "Îți scriu când te apropii de o limită stabilită de tine"
+        ]
+      },
+      "products": [
+        {
+          "icon": "card",
+          "name": "Conturi curente"
+        },
+        {
+          "icon": "wallet",
+          "name": "Economii și depozite"
+        },
+        {
+          "icon": "card",
+          "name": "Carduri"
+        },
+        {
+          "icon": "bank",
+          "name": "Credite"
+        },
+        {
+          "icon": "shield",
+          "name": "Asigurări"
+        }
+      ],
+      "statements": {
+        "lead": "Coach-ul lucrează cu extrasele tale de cont. Cu cât au mai multe luni, cu atât vede mai bine tiparele: ideal 12–24.",
+        "account": {
+          "name": "Cont curent RON",
+          "iban": "RO12 RZBR •••• 1234"
+        },
+        "periods": [
+          "Ultimele 12 luni (nov. 2025 – oct. 2026)",
+          "Ultimele 6 luni",
+          "Ultimele 3 luni"
+        ],
+        "imported": {
+          "title": "12 extrase lunare importate",
+          "meta": "nov. 2025 – oct. 2026 · 978 de plăți · se actualizează lunar"
+        },
+        "attachHint": "Din anii trecuți sau de la altă bancă.",
+        "formats": "PDF, XLS sau CSV · până la 10 MB",
+        "howTo": [
+          "Deschide aplicația sau internet banking-ul băncii",
+          "Intră la cont și caută „Extras de cont”",
+          "Alege perioada cea mai lungă, în format PDF sau XLS",
+          "Salvează fișierul și atașează-l aici"
+        ],
+        "privacy": "Fișierele sunt criptate, nu devin publice și le vede doar coach-ul. Din extrase citesc data, suma, comerciantul și descrierea; transferurile către persoane apar doar ca „transfer către o persoană”. Poți șterge oricând un extras."
+      },
+      "categoryNotes": {
+        "cafenele": "Intră la bugetul Cafenele: cel mult 3 pe săptămână.",
+        "nesortat": "Nu recunosc comerciantul. Pare o cumpărătură online: alege categoria, ca plata să fie inclusă în bugetul potrivit.",
+        "locuinta": "Cheltuială fixă: nu se adună la cheltuielile variabile.",
+        "abonamente": "Cheltuială fixă: nu se adună la cheltuielile variabile.",
+        "economii": "Economii: nu se adună la cheltuieli.",
+        "venit": "Încasare: nu se adună la cheltuieli."
+      },
+      "filters": [
+        {
+          "label": "Toate",
+          "selected": true
+        },
+        {
+          "label": "Cheltuieli"
+        },
+        {
+          "label": "Încasări"
+        },
+        {
+          "label": "Fără categorie · 1"
+        },
+        {
+          "label": "Recurente"
+        }
+      ],
+      "pickerCategories": [
+        "alimente",
+        "cafenele",
+        "livrari",
+        "iesiri",
+        "taxi",
+        "cumparaturi",
+        "cadouri",
+        "abonamente",
+        "locuinta"
+      ],
+      "review": {
+        "id": "t14",
+        "title": "1 plată de verificat",
+        "text": "ONLINE*ABC SRL · 120 lei · vineri, 6 nov."
+      },
+      "spending": {
+        "fixedNote": "chiria și abonamentele",
+        "compare": "Cu 210 lei mai puțin față de aceeași perioadă din octombrie",
+        "partIds": [
+          "alimente",
+          "cafenele",
+          "livrari",
+          "iesiri",
+          "taxi",
+          "nesortat"
+        ]
+      },
+      "tagSuggestions": [
+        "birou",
+        "weekend",
+        "prieteni",
+        "familie"
+      ],
+      "agenda": [
+        {
+          "day": "14",
+          "month": "nov.",
+          "title": "2 zile de naștere",
+          "note": "200 lei din bugetul de cadouri"
+        },
+        {
+          "day": "30",
+          "month": "nov.",
+          "title": "Sf. Andrei",
+          "note": "Doar urări, cum ai stabilit"
+        },
+        {
+          "day": "5",
+          "month": "dec.",
+          "title": "Salariu",
+          "note": "1.200 lei deoparte pentru Crăciun"
+        }
+      ],
+      "allocation": [
+        {
+          "id": "fixed",
+          "label": "Cheltuieli fixe",
+          "tone": "fixed"
+        },
+        {
+          "id": "aside",
+          "label": "Deoparte pentru cadouri",
+          "tone": "aside"
+        },
+        {
+          "id": "spend",
+          "label": "Disponibil pentru cheltuieli",
+          "tone": "spend"
+        }
+      ],
+      "budgetGroups": [
+        {
+          "title": "Pe categorii",
+          "src": "agreed",
+          "note": "stabilite de tine"
+        }
+      ],
+      "client": {
+        "firstName": "Daria",
+        "name": "Daria Ionescu",
+        "initial": "D",
+        "segment": "persoană fizică",
+        "card": "Card Visa •••• 1234"
+      },
+      "cycle": {
+        "label": "5 nov. – 4 dec.",
+        "endsOn": "4 decembrie",
+        "basis": "Salariul intră pe 5 decembrie.",
+        "totalNote": "Din salariul de 6.200 lei, intrat pe 5 noiembrie."
+      },
+      "insight": {
+        "figure": "28%",
+        "text": "din bugetul perioadei l-ai cheltuit în primele 4 zile după salariu. În octombrie, procentul a fost de 41%."
+      },
+      "lastMessage": {
+        "icon": "cup",
+        "meta": "Azi, 08:12 · Cafenele",
+        "title": "A treia cafea din această săptămână",
+        "text": "Până luni, cafeaua o faci acasă. Față de o săptămână obișnuită, economisești aproximativ 50 lei."
+      },
+      "nextGoals": [],
+      "profile": {
+        "statements": [
+          {
+            "icon": "card",
+            "name": "Cont curent RON",
+            "note": "nov. 2025 – oct. 2026, importat din aplicație · se actualizează lunar",
+            "status": "Importat"
+          },
+          {
+            "icon": "file",
+            "name": "Extrase atașate",
+            "note": "2 fișiere: nov. 2024 – oct. 2025 și o altă bancă",
+            "status": "Procesate"
+          }
+        ],
+        "about": [
+          {
+            "label": "Prenume",
+            "value": "Daria",
+            "src": "obs"
+          },
+          {
+            "label": "Vârstă",
+            "value": "25–34 ani",
+            "src": "obs"
+          },
+          {
+            "label": "Gospodărie",
+            "value": "1 persoană",
+            "src": "said"
+          },
+          {
+            "label": "Venit",
+            "value": "Salariu, pe 5 ale lunii",
+            "src": "obs"
+          },
+          {
+            "label": "Istoric analizat",
+            "value": "24 de luni, nov. 2024 – oct. 2026",
+            "src": "obs"
+          }
+        ],
+        "money": [
+          {
+            "label": "Salariu net",
+            "value": "circa 6.200 lei",
+            "src": "obs"
+          },
+          {
+            "label": "Tichete de masă",
+            "value": "circa 800 lei pe lună",
+            "src": "said"
+          },
+          {
+            "label": "Cheltuieli fixe",
+            "value": "3.020 lei pe lună",
+            "src": "obs"
+          },
+          {
+            "label": "Perioada de buget",
+            "value": "Din 5 până în 4 ale lunii următoare, după data salariului",
+            "src": "obs"
+          },
+          {
+            "label": "Buget săptămânal în noiembrie",
+            "value": "circa 460 lei",
+            "src": "est"
+          }
+        ],
+        "observed": [
+          {
+            "text": "Sub 100 lei în cont între 27 și 5 ale lunii, în 5 din ultimele 6 luni",
+            "src": "obs"
+          },
+          {
+            "text": "55% din cheltuieli în primele 10 zile după salariu",
+            "src": "obs"
+          },
+          {
+            "text": "Boabe & Co, circa 30 lei, 4–5 dimineți pe săptămână",
+            "quote": "cafea și covrig în drum spre birou",
+            "src": "said"
+          }
+        ],
+        "talk": [
+          {
+            "label": "Ton",
+            "value": "Direct, cu puțin umor"
+          },
+          {
+            "label": "Notificări",
+            "value": "Cel mult una pe zi"
+          },
+          {
+            "label": "Fără notificări",
+            "value": "22:00 – 08:00"
+          },
+          {
+            "label": "Rezumat săptămânal",
+            "value": "Duminică, la 19:00"
+          }
+        ],
+        "unknown": [
+          "Fond pentru urgențe",
+          "Bonus de sărbători",
+          "Datorii la prieteni sau familie"
+        ],
+        "spending": [
+          {
+            "name": "Chirie"
+          },
+          {
+            "name": "Alimente",
+            "note": "plus tichetele"
+          },
+          {
+            "name": "Cafenele"
+          },
+          {
+            "name": "Utilități"
+          },
+          {
+            "name": "Livrări de mâncare"
+          },
+          {
+            "name": "Restaurante"
+          },
+          {
+            "name": "Cadouri"
+          },
+          {
+            "name": "Haine"
+          },
+          {
+            "name": "Transport"
+          },
+          {
+            "name": "Altele"
+          }
+        ]
+      },
+      "question": {
+        "options": [
+          "Cumpărături online",
+          "Cadou",
+          "Altceva"
+        ],
+        "txId": "t14"
+      },
+      "reserve": {
+        "title": "Fond pentru urgențe",
+        "text": "Nu am vorbit încă despre asta. Un fond pentru urgențe te ajută când apare o cheltuială neprevăzută.",
+        "action": "Hai să vorbim",
+        "href": "#/chat"
+      },
+      "services": {
+        "hint": "Cel mult una pe săptămână, doar pentru nevoi pe care le-ai spus sau confirmat"
+      },
+      "today": {
+        "label": "Joi, 12 noiembrie"
+      },
+      "unbudgeted": {
+        "items": [
+          {
+            "name": "Alimente",
+            "icon": "cart",
+            "note": "Plus tichetele de masă"
+          },
+          {
+            "name": "Taxi",
+            "icon": "car"
+          },
+          {
+            "name": "Fără categorie",
+            "icon": "help",
+            "note": "O plată de clarificat"
+          }
+        ]
+      },
+      "week": {
+        "scaleMax": 90,
+        "days": [
+          {
+            "d": "L",
+            "name": "luni"
+          },
+          {
+            "d": "Ma",
+            "name": "marți"
+          },
+          {
+            "d": "Mi",
+            "name": "miercuri"
+          },
+          {
+            "d": "J",
+            "name": "joi"
+          },
+          {
+            "d": "V",
+            "name": "vineri"
+          },
+          {
+            "d": "S",
+            "name": "sâmbătă"
+          },
+          {
+            "d": "D",
+            "name": "duminică"
+          }
+        ]
+      },
+      "pages": [
+        "rezumat",
+        "cheltuieli",
+        "bugete",
+        "obiective",
+        "profil"
+      ]
+    },
+    "cycle": {
+      "start": "2026-11-05",
+      "end": "2026-12-04",
+      "opening_minor": 0
+    },
+    "commitments": [
+      {
+        "amount_minor": 240000,
+        "name": "Chirie"
+      },
+      {
+        "amount_minor": 46000,
+        "name": "Utilități"
+      },
+      {
+        "amount_minor": 5500,
+        "name": "StreamFlix"
+      },
+      {
+        "amount_minor": 2500,
+        "name": "MuzicaPlus"
+      },
+      {
+        "amount_minor": 8000,
+        "name": "Alte obligații fixe"
+      }
+    ],
+    "transactions": [
+      {
+        "legacy_id": "t1",
+        "local_date": "2026-11-12",
+        "occurred_at": "2026-11-12T08:12:00+02:00",
+        "amount_minor": -3000,
+        "category": "cafenele",
+        "merchant": "Boabe & Co",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 0,
+        "presentation": {
+          "id": "t1",
+          "time": "08:12",
+          "raw": "BOABE&CO CAFENEA BUCURESTI RO",
+          "name": "Cafea și covrig",
+          "renamed": true,
+          "rule": true,
+          "tags": [
+            "birou"
+          ],
+          "note": "Cafeaua de dimineață, în drum spre birou",
+          "status": "În așteptare",
+          "history": "Ultimele 3 luni: 58 de plăți, 1.740 lei"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t2",
+        "local_date": "2026-11-12",
+        "occurred_at": "2026-11-12T06:00:00+02:00",
+        "amount_minor": -5500,
+        "category": "abonamente",
+        "merchant": "StreamFlix",
+        "kind": "fixed",
+        "visible": true,
+        "sort_order": 1,
+        "presentation": {
+          "id": "t2",
+          "time": "06:00",
+          "raw": "STREAMFLIX.COM SUBSCRIPTION",
+          "name": "StreamFlix",
+          "recurring": true,
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t3",
+        "local_date": "2026-11-11",
+        "occurred_at": "2026-11-11T22:10:00+02:00",
+        "amount_minor": -1500,
+        "category": "taxi",
+        "merchant": "TaxiGo",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 100,
+        "presentation": {
+          "id": "t3",
+          "time": "22:10",
+          "raw": "TAXIGO RIDE BUCURESTI",
+          "name": "TaxiGo",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t4",
+        "local_date": "2026-11-11",
+        "occurred_at": "2026-11-11T18:40:00+02:00",
+        "amount_minor": -3900,
+        "category": "alimente",
+        "merchant": "Market Express",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 101,
+        "presentation": {
+          "id": "t4",
+          "time": "18:40",
+          "raw": "MARKET EXPRESS 0142 BUCURESTI",
+          "name": "Market Express",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t5",
+        "local_date": "2026-11-10",
+        "occurred_at": "2026-11-10T19:20:00+02:00",
+        "amount_minor": -1800,
+        "category": "alimente",
+        "merchant": "Market Express",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 200,
+        "presentation": {
+          "id": "t5",
+          "time": "19:20",
+          "raw": "MARKET EXPRESS 0142 BUCURESTI",
+          "name": "Market Express",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t6",
+        "local_date": "2026-11-10",
+        "occurred_at": "2026-11-10T08:05:00+02:00",
+        "amount_minor": -3000,
+        "category": "cafenele",
+        "merchant": "Boabe & Co",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 201,
+        "presentation": {
+          "id": "t6",
+          "time": "08:05",
+          "raw": "BOABE&CO CAFENEA BUCURESTI RO",
+          "name": "Cafea și covrig",
+          "renamed": true,
+          "rule": true,
+          "tags": [
+            "birou"
+          ],
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 58 de plăți, 1.740 lei"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t7",
+        "local_date": "2026-11-09",
+        "occurred_at": "2026-11-09T18:55:00+02:00",
+        "amount_minor": -3200,
+        "category": "alimente",
+        "merchant": "Market Express",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 300,
+        "presentation": {
+          "id": "t7",
+          "time": "18:55",
+          "raw": "MARKET EXPRESS 0142 BUCURESTI",
+          "name": "Market Express",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t8",
+        "local_date": "2026-11-09",
+        "occurred_at": "2026-11-09T08:20:00+02:00",
+        "amount_minor": -3000,
+        "category": "cafenele",
+        "merchant": "Boabe & Co",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 301,
+        "presentation": {
+          "id": "t8",
+          "time": "08:20",
+          "raw": "BOABE&CO CAFENEA BUCURESTI RO",
+          "name": "Cafea și covrig",
+          "renamed": true,
+          "rule": true,
+          "tags": [
+            "birou"
+          ],
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 58 de plăți, 1.740 lei"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t9",
+        "local_date": "2026-11-08",
+        "occurred_at": "2026-11-08T20:30:00+02:00",
+        "amount_minor": -7500,
+        "category": "livrari",
+        "merchant": "LivrareRapidă",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 400,
+        "presentation": {
+          "id": "t9",
+          "time": "20:30",
+          "raw": "LIVRARERAPIDA*COMANDA 88412",
+          "name": "Pizza de duminică",
+          "renamed": true,
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t10",
+        "local_date": "2026-11-07",
+        "occurred_at": "2026-11-07T23:50:00+02:00",
+        "amount_minor": -2500,
+        "category": "taxi",
+        "merchant": "TaxiGo",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 500,
+        "presentation": {
+          "id": "t10",
+          "time": "23:50",
+          "raw": "TAXIGO RIDE BUCURESTI",
+          "name": "TaxiGo",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t11",
+        "local_date": "2026-11-07",
+        "occurred_at": "2026-11-07T21:15:00+02:00",
+        "amount_minor": -12000,
+        "category": "iesiri",
+        "merchant": "Bistro Central",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 501,
+        "presentation": {
+          "id": "t11",
+          "time": "21:15",
+          "raw": "BISTRO CENTRAL SRL BUCURESTI",
+          "name": "Cină cu prietenii",
+          "renamed": true,
+          "tags": [
+            "prieteni"
+          ],
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t12",
+        "local_date": "2026-11-07",
+        "occurred_at": "2026-11-07T11:40:00+02:00",
+        "amount_minor": -500,
+        "category": "cafenele",
+        "merchant": "Cafea Expres",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 502,
+        "presentation": {
+          "id": "t12",
+          "time": "11:40",
+          "raw": "CAFEAEXPRES SRL BUCURESTI RO",
+          "name": "Espresso",
+          "renamed": true,
+          "rule": true,
+          "note": "Un espresso la chioșcul de lângă metrou",
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 6 plăți, 30 lei"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t13",
+        "local_date": "2026-11-06",
+        "occurred_at": "2026-11-06T20:45:00+02:00",
+        "amount_minor": -7500,
+        "category": "livrari",
+        "merchant": "LivrareRapidă",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 600,
+        "presentation": {
+          "id": "t13",
+          "time": "20:45",
+          "raw": "LIVRARERAPIDA*COMANDA 87990",
+          "name": "LivrareRapidă",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t14",
+        "local_date": "2026-11-06",
+        "occurred_at": "2026-11-06T13:05:00+02:00",
+        "amount_minor": -12000,
+        "category": "nesortat",
+        "merchant": "ONLINE*ABC SRL",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 601,
+        "presentation": {
+          "id": "t14",
+          "time": "13:05",
+          "raw": "ONLINE*ABC SRL WWW.ABC.RO",
+          "name": "",
+          "needsReview": true,
+          "suggestion": "cumparaturi",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t15",
+        "local_date": "2026-11-06",
+        "occurred_at": "2026-11-06T09:00:00+02:00",
+        "amount_minor": -240000,
+        "category": "locuinta",
+        "merchant": "Transfer către o persoană",
+        "kind": "fixed",
+        "visible": true,
+        "sort_order": 602,
+        "presentation": {
+          "id": "t15",
+          "time": "09:00",
+          "raw": "TRANSFER SMART MOBILE · CHIRIE NOIEMBRIE",
+          "name": "Chirie",
+          "recurring": true,
+          "renamed": true,
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t16",
+        "local_date": "2026-11-06",
+        "occurred_at": "2026-11-06T08:10:00+02:00",
+        "amount_minor": -3000,
+        "category": "cafenele",
+        "merchant": "Boabe & Co",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 603,
+        "presentation": {
+          "id": "t16",
+          "time": "08:10",
+          "raw": "BOABE&CO CAFENEA BUCURESTI RO",
+          "name": "Cafea și covrig",
+          "renamed": true,
+          "rule": true,
+          "tags": [
+            "birou"
+          ],
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 58 de plăți, 1.740 lei"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t17",
+        "local_date": "2026-11-05",
+        "occurred_at": "2026-11-05T18:30:00+02:00",
+        "amount_minor": -6500,
+        "category": "alimente",
+        "merchant": "Market Express",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 700,
+        "presentation": {
+          "id": "t17",
+          "time": "18:30",
+          "raw": "MARKET EXPRESS 0142 BUCURESTI",
+          "name": "Market Express",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t18",
+        "local_date": "2026-11-05",
+        "occurred_at": "2026-11-05T10:30:00+02:00",
+        "amount_minor": -120000,
+        "category": "economii",
+        "merchant": "FixPay → Super Acces Plus",
+        "kind": "saving",
+        "visible": true,
+        "sort_order": 701,
+        "presentation": {
+          "id": "t18",
+          "time": "10:30",
+          "raw": "FIXPAY ECONOMII CADOURI",
+          "name": "Deoparte pentru cadouri",
+          "recurring": true,
+          "renamed": true,
+          "status": "Finalizată"
+        },
+        "pot": "gifts"
+      },
+      {
+        "legacy_id": "t19",
+        "local_date": "2026-11-05",
+        "occurred_at": "2026-11-05T08:15:00+02:00",
+        "amount_minor": -3000,
+        "category": "cafenele",
+        "merchant": "Boabe & Co",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 702,
+        "presentation": {
+          "id": "t19",
+          "time": "08:15",
+          "raw": "BOABE&CO CAFENEA BUCURESTI RO",
+          "name": "Cafea și covrig",
+          "renamed": true,
+          "rule": true,
+          "tags": [
+            "birou"
+          ],
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 58 de plăți, 1.740 lei"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "t20",
+        "local_date": "2026-11-05",
+        "occurred_at": "2026-11-05T07:02:00+02:00",
+        "amount_minor": 620000,
+        "category": "venit",
+        "merchant": "Nord Media SRL",
+        "kind": "income",
+        "visible": true,
+        "sort_order": 703,
+        "presentation": {
+          "id": "t20",
+          "time": "07:02",
+          "raw": "SALARIU NOIEMBRIE NORD MEDIA SRL",
+          "name": "Salariu",
+          "recurring": true,
+          "renamed": true,
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "gift-1",
+        "local_date": "2026-11-06",
+        "occurred_at": "2026-11-06T18:00:00+02:00",
+        "amount_minor": -10000,
+        "category": "cadouri",
+        "merchant": "Cadou demo",
+        "kind": "pot",
+        "pot": "gifts",
+        "visible": false,
+        "sort_order": 10000,
+        "presentation": {}
+      },
+      {
+        "legacy_id": "gift-2",
+        "local_date": "2026-11-08",
+        "occurred_at": "2026-11-08T18:00:00+02:00",
+        "amount_minor": -10000,
+        "category": "cadouri",
+        "merchant": "Cadou demo",
+        "kind": "pot",
+        "pot": "gifts",
+        "visible": false,
+        "sort_order": 10001,
+        "presentation": {}
+      },
+      {
+        "legacy_id": "gift-3",
+        "local_date": "2026-11-11",
+        "occurred_at": "2026-11-11T18:00:00+02:00",
+        "amount_minor": -18000,
+        "category": "cadouri",
+        "merchant": "Cadou demo",
+        "kind": "pot",
+        "pot": "gifts",
+        "visible": false,
+        "sort_order": 10002,
+        "presentation": {}
+      },
+      {
+        "legacy_id": "october-0",
+        "local_date": "2026-10-01",
+        "occurred_at": "2026-10-01T18:00:00+03:00",
+        "amount_minor": -32000,
+        "category": "alimente",
+        "merchant": "Market Express",
+        "kind": "variable",
+        "scope": "comparison",
+        "visible": false,
+        "sort_order": 20000,
+        "presentation": {},
+        "pot": null
+      },
+      {
+        "legacy_id": "october-1",
+        "local_date": "2026-10-04",
+        "occurred_at": "2026-10-04T18:00:00+03:00",
+        "amount_minor": -41000,
+        "category": "iesiri",
+        "merchant": "Bistro Central",
+        "kind": "variable",
+        "scope": "comparison",
+        "visible": false,
+        "sort_order": 20001,
+        "presentation": {},
+        "pot": null
+      },
+      {
+        "legacy_id": "october-2",
+        "local_date": "2026-10-10",
+        "occurred_at": "2026-10-10T18:00:00+03:00",
+        "amount_minor": -21900,
+        "category": "livrari",
+        "merchant": "LivrareRapidă",
+        "kind": "variable",
+        "scope": "comparison",
+        "visible": false,
+        "sort_order": 20002,
+        "presentation": {},
+        "pot": null
+      }
+    ],
+    "budgets": [
+      {
+        "key": "cafenele",
+        "category": "cafenele",
+        "period": "week",
+        "kind": "count",
+        "limit_minor": null,
+        "count_limit": 3,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "cafenele",
+          "name": "Cafenele",
+          "icon": "cup",
+          "kind": "count",
+          "note": "3 din 3 săptămâna aceasta · următoarea, de luni",
+          "onHome": true
+        },
+        "sort_order": 0
+      },
+      {
+        "key": "cadouri",
+        "category": "cadouri",
+        "period": "cycle",
+        "kind": "amount",
+        "limit_minor": 120000,
+        "count_limit": null,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "cadouri",
+          "name": "Cadouri",
+          "icon": "gift",
+          "kind": "amount",
+          "note": "3 din 10 ocazii, din banii puși deoparte",
+          "onHome": true
+        },
+        "sort_order": 1
+      },
+      {
+        "key": "iesiri",
+        "category": "iesiri",
+        "period": "cycle",
+        "kind": "amount",
+        "limit_minor": 20000,
+        "count_limit": null,
+        "warn_at_percent": 60,
+        "presentation": {
+          "id": "iesiri",
+          "name": "Restaurante",
+          "icon": "utensils",
+          "kind": "amount",
+          "note": "60% din buget, în primele 8 zile ale perioadei",
+          "onHome": true
+        },
+        "sort_order": 2
+      },
+      {
+        "key": "haine",
+        "category": "haine",
+        "period": "cycle",
+        "kind": "pause",
+        "limit_minor": null,
+        "count_limit": null,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "haine",
+          "name": "Haine",
+          "icon": "shirt",
+          "kind": "pause",
+          "note": "Pauză până în ianuarie, cum am stabilit"
+        },
+        "sort_order": 3
+      },
+      {
+        "key": "livrari",
+        "category": "livrari",
+        "period": "cycle",
+        "kind": "protected",
+        "limit_minor": null,
+        "count_limit": null,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "livrari",
+          "name": "Livrări de mâncare",
+          "icon": "bag",
+          "kind": "protected",
+          "note": "Fără limită, cum ai cerut"
+        },
+        "sort_order": 4
+      }
+    ],
+    "subscriptions": [
+      {
+        "key": "FitZone Gym",
+        "amount_minor": 22000,
+        "monitored": true,
+        "profile": {
+          "name": "FitZone Gym",
+          "note": "Aplicația sălii nedeschisă din aprilie · 1.320 lei plătiți de atunci",
+          "status": "Anulezi la sală, apoi blochezi plata"
+        },
+        "app": {
+          "name": "FitZone Gym",
+          "note": "Plătit lunar din ianuarie"
+        },
+        "sort_order": 0
+      },
+      {
+        "key": "StreamFlix",
+        "amount_minor": 5500,
+        "monitored": false,
+        "profile": {
+          "name": "StreamFlix"
+        },
+        "app": {
+          "name": "StreamFlix",
+          "note": "Plătit lunar"
+        },
+        "sort_order": 1
+      },
+      {
+        "key": "MuzicaPlus",
+        "amount_minor": 2500,
+        "monitored": false,
+        "profile": {
+          "name": "MuzicaPlus"
+        },
+        "app": {
+          "name": "MuzicaPlus",
+          "note": "Plătit lunar"
+        },
+        "sort_order": 2
+      }
+    ],
+    "historical": [
+      {
+        "month": "2026-10-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-10-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-10-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-10-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-10-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-10-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-10-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-10-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-10-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-10-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-10-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-09-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-09-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-09-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-09-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-09-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-09-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-09-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-09-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-09-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-09-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-08-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-08-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-08-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-08-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-08-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-08-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-08-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-08-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-08-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-08-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-07-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-07-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-07-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-07-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-07-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-07-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-07-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-07-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-07-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-07-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-06-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-06-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-06-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-06-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-06-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-06-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-06-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-06-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-06-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-06-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-05-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-05-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-05-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-05-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-05-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-05-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-05-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-05-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-05-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-05-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-04-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-04-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-04-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-04-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-04-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-04-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-04-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-04-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-04-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-04-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-03-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-03-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-03-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-03-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-03-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-03-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-03-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-03-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-03-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-03-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-02-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-02-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-02-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-02-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-02-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-02-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-02-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-02-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-02-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-02-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-01-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-01-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-01-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-01-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-01-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-01-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-01-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-01-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-01-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-01-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2024-12-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2024-12-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2024-12-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2024-12-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2024-12-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2024-12-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2024-12-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2024-12-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2024-12-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2024-12-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      },
+      {
+        "month": "2024-11-01",
+        "group": "Chirie",
+        "amount_minor": -240000,
+        "sort_order": 0
+      },
+      {
+        "month": "2024-11-01",
+        "group": "Alimente",
+        "amount_minor": -65000,
+        "sort_order": 1
+      },
+      {
+        "month": "2024-11-01",
+        "group": "Cafenele",
+        "amount_minor": -60000,
+        "sort_order": 2
+      },
+      {
+        "month": "2024-11-01",
+        "group": "Utilități",
+        "amount_minor": -46000,
+        "sort_order": 3
+      },
+      {
+        "month": "2024-11-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -45000,
+        "sort_order": 4
+      },
+      {
+        "month": "2024-11-01",
+        "group": "Restaurante",
+        "amount_minor": -35000,
+        "sort_order": 5
+      },
+      {
+        "month": "2024-11-01",
+        "group": "Cadouri",
+        "amount_minor": -30000,
+        "sort_order": 6
+      },
+      {
+        "month": "2024-11-01",
+        "group": "Haine",
+        "amount_minor": -28000,
+        "sort_order": 7
+      },
+      {
+        "month": "2024-11-01",
+        "group": "Transport",
+        "amount_minor": -23000,
+        "sort_order": 8
+      },
+      {
+        "month": "2024-11-01",
+        "group": "Altele",
+        "amount_minor": -18000,
+        "sort_order": 9
+      }
+    ],
+    "questions": [
+      {
+        "key": "probleme",
+        "sort_order": 0,
+        "definition": {
+          "id": "probleme",
+          "title": "Ce te încurcă cel mai des când vine vorba de bani?",
+          "hint": "Poți alege mai multe.",
+          "options": [
+            {
+              "label": "Rămân fără bani înainte de salariu"
+            },
+            {
+              "label": "Nu știu unde se duc banii"
+            },
+            {
+              "label": "Nu reușesc să pun deoparte"
+            },
+            {
+              "label": "Plătesc abonamente pe care nu le folosesc"
+            },
+            {
+              "label": "Altceva"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Spune cu cuvintele tale",
+              "type": "textarea"
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "Rămân fără bani înainte de salariu",
+            "Nu știu unde se duc banii"
+          ],
+          "fields": {
+            "Spune cu cuvintele tale": "Cheltui foarte repede banii și nu-mi dau seama unde se duc."
+          }
+        }
+      },
+      {
+        "key": "obiective",
+        "sort_order": 1,
+        "definition": {
+          "id": "obiective",
+          "title": "Pentru ce ai vrea să strângi bani în lunile următoare?",
+          "hint": "Poți alege mai multe.",
+          "options": [
+            {
+              "label": "O achiziție"
+            },
+            {
+              "label": "O vacanță"
+            },
+            {
+              "label": "Un fond pentru urgențe"
+            },
+            {
+              "label": "Nimic anume acum"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Ce anume?"
+            },
+            {
+              "label": "Cât costă?",
+              "suffix": "lei",
+              "numeric": true
+            },
+            {
+              "label": "Până când?",
+              "type": "select",
+              "options": [
+                "Cât mai curând",
+                "În 3 luni",
+                "În 6 luni",
+                "Până la final de an"
+              ]
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "O achiziție"
+          ],
+          "fields": {
+            "Ce anume?": "Laptop",
+            "Cât costă?": "2000",
+            "Până când?": "Cât mai curând"
+          }
+        }
+      },
+      {
+        "key": "bani-in-afara",
+        "sort_order": 2,
+        "definition": {
+          "id": "bani-in-afara",
+          "title": "Ai bani care nu trec prin contul ăsta?",
+          "hint": "De exemplu tichete de masă, numerar sau un cont la altă bancă. Așa calculez corect cât îți rămâne.",
+          "options": [
+            {
+              "label": "Tichete de masă"
+            },
+            {
+              "label": "Numerar"
+            },
+            {
+              "label": "Cont la altă bancă"
+            },
+            {
+              "label": "Nu"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Tichete de masă pe lună",
+              "suffix": "lei",
+              "numeric": true
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "Tichete de masă"
+          ],
+          "fields": {
+            "Tichete de masă pe lună": "800"
+          }
+        }
+      },
+      {
+        "key": "gospodarie",
+        "sort_order": 3,
+        "definition": {
+          "id": "gospodarie",
+          "title": "Împarți cheltuielile casei cu cineva?",
+          "options": [
+            {
+              "label": "Nu, doar eu"
+            },
+            {
+              "label": "Da, cu partenerul"
+            },
+            {
+              "label": "Da, cu colegi de apartament"
+            },
+            {
+              "label": "Locuiesc cu familia"
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "Nu, doar eu"
+          ],
+          "fields": {}
+        }
+      },
+      {
+        "key": "notificari",
+        "sort_order": 4,
+        "definition": {
+          "id": "notificari",
+          "title": "Cât de des vrei să-ți scriu și când să nu te deranjez?",
+          "options": [
+            {
+              "label": "Doar când e important"
+            },
+            {
+              "label": "Cel mult o dată pe zi"
+            },
+            {
+              "label": "Doar rezumatul săptămânal"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Fără notificări de la"
+            },
+            {
+              "label": "până la"
+            },
+            {
+              "label": "Rezumatul săptămânal",
+              "type": "select",
+              "options": [
+                "Duminică, la 19:00",
+                "Luni, la 08:00",
+                "Vineri, la 18:00",
+                "Fără rezumat"
+              ]
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "Cel mult o dată pe zi"
+          ],
+          "fields": {
+            "Fără notificări de la": "22:00",
+            "până la": "08:00",
+            "Rezumatul săptămânal": "Duminică, la 19:00"
+          }
+        }
+      },
+      {
+        "key": "servicii",
+        "sort_order": 5,
+        "definition": {
+          "id": "servicii",
+          "title": "Vrei să-ți spun și când un serviciu Raiffeisen te-ar ajuta?",
+          "hint": "Îți spun de fiecare dată de ce și cât costă. Poți schimba oricând din Profil.",
+          "options": [
+            {
+              "label": "Da, cel mult o dată pe săptămână"
+            },
+            {
+              "label": "Nu, doar sfaturi"
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "Da, cel mult o dată pe săptămână"
+          ],
+          "fields": {}
+        }
+      }
+    ],
+    "permissions": [
+      {
+        "id": "tx",
+        "label": "Extrase de cont",
+        "hint": "Contul curent și 2 extrase atașate · 24 de luni",
+        "on": true
+      },
+      {
+        "id": "live",
+        "label": "Plăți cu cardul, în timp real",
+        "hint": "Pentru mesajele despre bugete",
+        "on": true
+      },
+      {
+        "id": "screen",
+        "label": "Screen Time",
+        "hint": "Doar aplicația FitZone",
+        "on": true
+      },
+      {
+        "id": "calendar",
+        "label": "Google Calendar",
+        "hint": "Doar zilele de naștere și evenimentele marcate",
+        "on": true
+      },
+      {
+        "id": "contacts",
+        "label": "Contacte",
+        "hint": "Doar prenume, procesate pe telefon",
+        "on": true
+      },
+      {
+        "id": "health",
+        "label": "Health",
+        "hint": "Nu e folosit",
+        "on": false
+      }
+    ],
+    "privacy": [
+      {
+        "id": "hide-amounts",
+        "label": "Ascunde sumele pe ecran",
+        "hint": "Sumele apar ca „••••” până le atingi",
+        "on": false
+      },
+      {
+        "id": "quiet-notifications",
+        "label": "Fără sume în notificări",
+        "hint": "Pe ecranul blocat apare doar „Ai un mesaj de la coach”",
+        "on": true
+      }
+    ],
+    "services_on": true,
+    "services": [
+      {
+        "icon": "repeat",
+        "kind": "Transfer programat",
+        "name": "FixPay → Super Acces Plus",
+        "description": "FixPay mută automat, la data aleasă de tine, o sumă din contul curent în contul de economii Super Acces Plus.",
+        "terms": [
+          {
+            "label": "Cost FixPay",
+            "value": "0 lei în pachetul ZERO Simplu"
+          },
+          {
+            "label": "Dobândă",
+            "value": "2,00% pe an, variabilă; impozit pe dobândă 10%"
+          },
+          {
+            "label": "Retrageri",
+            "value": "Oricând"
+          }
+        ],
+        "link": {
+          "href": "https://www.raiffeisen.ro/ro/persoane-fizice/produsele-noastre/economii/cont-de-economii.html",
+          "label": "Super Acces Plus și FixPay pe raiffeisen.ro"
+        },
+        "source": "raiffeisen.ro: tarife (01.09.2026) și cont de economii (30.06.2026)",
+        "id": "fixpay",
+        "state": "active",
+        "status": "Activ",
+        "helps": "Pe 5, după salariu, banii pentru cadouri pleacă singuri în contul de economii, iar din ianuarie și cei pentru laptop: 700 lei pe 5 ianuarie și pe 5 februarie, apoi 600 lei pe 5 martie. Vezi de la început cât îți rămâne de cheltuit.",
+        "why": "Pe 28 octombrie ai spus că vrei să pui bani deoparte la început de lună.",
+        "without": "Fără FixPay, muți tu banii pe 5, din aplicație."
+      },
+      {
+        "icon": "lock",
+        "kind": "Funcție din Smart Mobile",
+        "name": "Administrează plățile recurente",
+        "description": "În Smart Mobile vezi plățile recurente făcute cu cardul Visa și le poți bloca.",
+        "terms": [
+          {
+            "label": "Unde",
+            "value": "Smart Mobile, la cardul Visa"
+          },
+          {
+            "label": "Atenție",
+            "value": "Blocarea plății nu anulează contractul"
+          }
+        ],
+        "link": {
+          "href": "https://www.raiffeisen.ro/ro/despre-noi/comunicate-de-presa/2026/smart-mobile-control-plati-recurente-si-abonamente.html",
+          "label": "Anunțul funcției pe raiffeisen.ro"
+        },
+        "source": "comunicat Raiffeisen Bank (25.05.2026)",
+        "id": "recurring-payments",
+        "state": "howto",
+        "status": "După anulare",
+        "helps": "După ce ceri anularea la FitZone, blochezi plata de 220 lei pe lună, ca să nu mai fie retrasă de pe card.",
+        "whyLabel": "De ce îți arăt asta",
+        "why": "Pe 28 octombrie ai spus că nu mai mergi la sală și vrei să renunți la abonament.",
+        "without": "Cererea de anulare la sală rămâne necesară: contractul poate avea o perioadă de preaviz.",
+        "actions": [
+          "Arată-mi pașii"
+        ]
+      },
+      {
+        "icon": "card",
+        "kind": "Economisire la plata cu cardul",
+        "name": "Plătești și economisești",
+        "description": "La fiecare plată cu cardul de debit, 1%, 3%, 5% sau 10% din sumă se mută automat într-un cont de economii dedicat.",
+        "terms": [
+          {
+            "label": "Cost",
+            "value": "0 lei administrare"
+          },
+          {
+            "label": "Dobândă",
+            "value": "10,00% pe an pentru primii 5.000 lei, variabilă"
+          },
+          {
+            "label": "Condiție",
+            "value": "Contul se alimentează doar din plățile cu cardul"
+          }
+        ],
+        "link": {
+          "href": "https://www.raiffeisen.ro/ro/persoane-fizice/produsele-noastre/economii/cont-de-economii.html",
+          "label": "„Plătești și economisești” pe raiffeisen.ro"
+        },
+        "source": "raiffeisen.ro: cont de economii (30.06.2026)",
+        "id": "savingbox",
+        "state": "later",
+        "status": "Mai târziu",
+        "helps": "Te-ar ajuta să economisești fără să te gândești, dar acum ar lua bani la fiecare plată, exact când îți lipsesc la final de lună. Ți-l propun după 3 luni în care ajungi la salariu cu bani în cont.",
+        "whyLabel": "De ce mai târziu",
+        "why": "În 5 din ultimele 6 luni ai avut sub 100 lei în cont între 27 și 5 ale lunii.",
+        "without": "Până atunci, FixPay pune deoparte sumele stabilite, pe 5, după salariu."
+      }
+    ],
+    "chat": [
+      {
+        "type": "divider",
+        "text": "28 octombrie"
+      },
+      {
+        "type": "coach",
+        "text": "Văd o plată de aproximativ 30 lei aproape în fiecare dimineață la Boabe & Co, între 8:00 și 9:30. În ultimele 3 luni: 4–5 pe săptămână, aproximativ 600 lei pe lună. Ce cumperi de obicei?"
+      },
+      {
+        "type": "me",
+        "text": "Cafea și covrig în drum spre birou."
+      },
+      {
+        "type": "coach",
+        "text": "Mulțumesc. Cât de des ți-ar plăcea s-o iei, ca să te bucuri de ea fără să te încurce la final de lună?"
+      },
+      {
+        "type": "me",
+        "text": "De 3 ori pe săptămână."
+      },
+      {
+        "type": "proposal",
+        "title": "Buget nou: Cafenele",
+        "lines": [
+          "Cel mult 3 pe săptămână, la orice cafenea.",
+          "Îți scriu la a treia.",
+          "Economisești aproximativ 210 lei pe lună."
+        ],
+        "done": "Aprobat pe 28 octombrie"
+      },
+      {
+        "type": "coach",
+        "text": "Încă ceva: plătești 220 lei pe lună la FitZone, dar aplicația sălii n-a mai fost deschisă din aprilie. Mai mergi?"
+      },
+      {
+        "type": "me",
+        "text": "Nu. Vreau să renunț."
+      },
+      {
+        "type": "coach",
+        "text": "Atunci pașii sunt:",
+        "steps": [
+          "Ceri anularea la sală. Contractul poate avea o perioadă de preaviz.",
+          "După confirmare, blochezi plata din „Administrează plățile recurente”. Blocarea singură nu anulează contractul."
+        ],
+        "after": "O intrare costă 40 lei, deci abonamentul merită doar dacă mergi de cel puțin 6 ori pe lună."
+      },
+      {
+        "type": "service",
+        "id": "recurring-payments"
+      },
+      {
+        "type": "proposal",
+        "title": "Memento: cererea la FitZone",
+        "lines": [
+          "Îți amintesc vineri, la 10:00, să trimiți cererea de anulare."
+        ],
+        "actions": [
+          "Da, amintește-mi",
+          "Nu acum"
+        ]
+      },
+      {
+        "type": "divider",
+        "text": "Azi"
+      },
+      {
+        "type": "me",
+        "text": "Mai pot lua o cafea azi după-amiază?"
+      },
+      {
+        "type": "coach",
+        "text": "Ai ajuns la 3 din 3 săptămâna aceasta. Decizia e a ta: a patra cafea ar ieși din cei aproximativ 54 lei pe zi pe care îi mai ai până pe 4 decembrie."
+      }
+    ],
+    "documents": [
+      {
+        "name": "extras_nov2024-oct2025.pdf",
+        "meta": "12 luni · 968 de plăți",
+        "state": "done"
+      },
+      {
+        "name": "extras_alta_banca_2026.csv",
+        "meta": "Se procesează…",
+        "state": "reading",
+        "progress": 60
+      }
+    ],
+    "goal": {
+      "presentation": {
+        "name": "Laptop",
+        "icon": "target",
+        "note": "Din economii, fără rate",
+        "due": {
+          "label": "Obiectiv atins pe",
+          "note": "prima depunere pe 5 ianuarie"
+        },
+        "reason": "Noiembrie și decembrie au cadouri și Crăciunul, așa că începem din ianuarie.",
+        "fundingLabel": "estimat, ian.–mar.",
+        "storage": "fixpay"
+      },
+      "target_minor": 200000,
+      "opening_minor": 0,
+      "schedule": [
+        {
+          "month": "nov.",
+          "planned_minor": 0,
+          "occurs_on": "2026-11-05"
+        },
+        {
+          "month": "dec.",
+          "planned_minor": 0,
+          "occurs_on": "2026-12-05"
+        },
+        {
+          "month": "ian.",
+          "planned_minor": 70000,
+          "occurs_on": "2027-01-05"
+        },
+        {
+          "month": "feb.",
+          "planned_minor": 70000,
+          "occurs_on": "2027-02-05"
+        },
+        {
+          "month": "mar.",
+          "planned_minor": 60000,
+          "occurs_on": "2027-03-05"
+        }
+      ],
+      "funding": [
+        {
+          "name": "Fără abonamentul FitZone",
+          "amount_minor": 22000
+        },
+        {
+          "name": "Cafenele: 3 pe săptămână",
+          "amount_minor": 21000
+        },
+        {
+          "name": "Mai puține cadouri în ian.–mar.",
+          "amount_minor": 20000
+        },
+        {
+          "name": "Mai puține restaurante și haine",
+          "amount_minor": 13000
+        }
+      ]
+    },
+    "pots": [
+      {
+        "key": "gifts",
+        "presentation": {
+          "name": "Cadouri, noiembrie",
+          "icon": "gift",
+          "note": "Rămași din 1.200 lei, pentru 7 ocazii"
+        },
+        "target_minor": 120000,
+        "planned": false
+      },
+      {
+        "key": "christmas",
+        "presentation": {
+          "name": "Crăciun",
+          "icon": "wallet",
+          "note": "Se pun deoparte pe 5 decembrie, după salariu"
+        },
+        "target_minor": 120000,
+        "planned": true
+      }
+    ],
+    "gift_counts": [
+      8,
+      2
+    ],
+    "idea_forecast": null
+  },
+  "student": {
+    "account": {
+      "id": "student",
+      "profile": "Student",
+      "name": "Matei Popescu",
+      "initial": "M",
+      "detail": "Cont curent RON · RO45 RZBR •••• 5678",
+      "href": "#/intra/student"
+    },
+    "client": {
+      "firstName": "Matei",
+      "name": "Matei Popescu",
+      "initial": "M",
+      "segment": "persoană fizică · student",
+      "card": "Card Visa •••• 5678"
+    },
+    "mode": "student",
+    "has_categories": false,
+    "templates": {
+      "agenda": [
+        {
+          "day": "15",
+          "month": "nov.",
+          "title": "Bursa, circa 700 lei",
+          "note": "Estimat: o adaug în buget când intră"
+        },
+        {
+          "day": "20",
+          "month": "nov.",
+          "title": "Telefon",
+          "note": "25 lei, din necesare"
+        },
+        {
+          "day": "1",
+          "month": "dec.",
+          "title": "Bani de la familie",
+          "note": "1.200 lei · 120 lei în fondul de siguranță"
+        }
+      ],
+      "allocation": [
+        {
+          "id": "needs",
+          "label": "Necesare",
+          "tone": "fixed"
+        },
+        {
+          "id": "aside",
+          "label": "Fond de siguranță",
+          "tone": "aside"
+        },
+        {
+          "id": "spend",
+          "label": "Opționale",
+          "tone": "spend"
+        }
+      ],
+      "analysis": {
+        "title": "Analizez ultimele 12 luni",
+        "lead": "12 luni importate din contul curent. Durează circa un minut.",
+        "items": [
+          {
+            "label": "Venituri și cât de sigure sunt",
+            "state": "done",
+            "note": "Bani de la familie pe 1, în 12 din 12 luni"
+          },
+          {
+            "label": "Plăți recurente și abonamente",
+            "state": "done",
+            "note": "4 plăți recurente, dintre care 2 abonamente"
+          },
+          {
+            "label": "Categorii pentru 1.104 plăți",
+            "state": "running",
+            "note": "773 din 1.104",
+            "progress": 70
+          },
+          {
+            "label": "Necesare și opționale",
+            "state": "waiting",
+            "note": "Urmează"
+          }
+        ],
+        "note": "Poți închide aplicația. Îți scriu când e gata."
+      },
+      "apps": {
+        "learns": [
+          "Doar dacă ai deschis aplicația într-o zi"
+        ],
+        "doesNotLearn": [
+          "Cât timp stai în aplicație sau ce faci acolo",
+          "Alte aplicații decât cele alese de tine"
+        ],
+        "platform": "Pe iPhone folosesc Screen Time, iar pe Android accesul la datele de utilizare. Telefonul îți cere acordul la pasul următor."
+      },
+      "budgetGroups": [
+        {
+          "id": "necesare",
+          "title": "Necesare",
+          "src": "agreed",
+          "note": "stabilite de tine"
+        },
+        {
+          "id": "optionale",
+          "title": "Opționale",
+          "note": "mai ai 137 lei"
+        }
+      ],
+      "calendar": {
+        "options": [
+          {
+            "id": "google",
+            "icon": "calendar",
+            "title": "Google Calendar",
+            "note": "Citesc doar zilele de naștere și evenimentele marcate de tine.",
+            "action": "Conectează",
+            "href": "#/activare/calendar/conectat"
+          },
+          {
+            "id": "phone",
+            "icon": "phone",
+            "title": "Calendarul telefonului",
+            "note": "Datele rămân pe telefon. Coach-ul află doar câte evenimente sunt și când.",
+            "action": "Permite"
+          }
+        ],
+        "reads": [
+          "Tipul evenimentului și data",
+          "Zilele de naștere din contactele Google"
+        ],
+        "doesNotRead": [
+          "Titluri, invitați sau locații",
+          "Nu modific nimic în calendar"
+        ],
+        "found": [
+          {
+            "day": "dec.",
+            "month": "2026",
+            "title": "3 zile de naștere",
+            "note": "Din contactele tale Google"
+          },
+          {
+            "day": "18",
+            "month": "ian.",
+            "title": "Sesiunea de iarnă",
+            "note": "Eveniment marcat de tine"
+          },
+          {
+            "day": "20",
+            "month": "feb.",
+            "title": "Termen pentru dosarul de bursă",
+            "note": "Eveniment marcat de tine"
+          }
+        ],
+        "gift": {
+          "question": "Cât vrei să dai de obicei pe un cadou?",
+          "groups": [
+            {
+              "label": "Pentru prieteni",
+              "options": [
+                "30 lei",
+                "50 lei",
+                "100 lei",
+                "Altă sumă"
+              ],
+              "selected": "50 lei"
+            },
+            {
+              "label": "Pentru familie",
+              "options": [
+                "50 lei",
+                "100 lei",
+                "150 lei",
+                "Altă sumă"
+              ],
+              "selected": "50 lei"
+            }
+          ],
+          "result": "Pentru cele 3 zile de naștere din decembrie: aproximativ 150 lei."
+        }
+      },
+      "categoryNotes": {
+        "alimente": "Necesar: intră în minimul lunar, înaintea cheltuielilor opționale.",
+        "cafenele": "Opțional: intră la bugetul Cafenele, 60 lei pe lună.",
+        "nesortat": "Nu recunosc comerciantul. Pare o plată online: alege categoria, ca plata să fie inclusă în bugetul potrivit.",
+        "locuinta": "Necesar: căminul, plătit o dată pe lună.",
+        "transport": "Necesar: abonamentul de student.",
+        "abonamente": "Opțional: se plătește lunar.",
+        "economii": "Economii: nu se adună la cheltuieli.",
+        "venit": "Încasare: nu se adună la cheltuieli."
+      },
+      "client": {
+        "firstName": "Matei",
+        "name": "Matei Popescu",
+        "initial": "M",
+        "segment": "persoană fizică · student",
+        "card": "Card Visa •••• 5678"
+      },
+      "cycle": {
+        "label": "1 – 30 nov.",
+        "endsOn": "30 noiembrie",
+        "basis": "Banii de la familie intră pe 1 decembrie.",
+        "totalNote": "Din 1.861 lei: 1.500 lei încasați în noiembrie și 361 lei rămași din octombrie. Bursa nu e inclusă."
+      },
+      "essentials": {
+        "title": "Necesare până pe 30 noiembrie",
+        "items": [
+          {
+            "name": "Cămin și transport",
+            "icon": "home",
+            "note": "400 lei, plătite pe 2 noiembrie",
+            "status": "Plătite"
+          },
+          {
+            "name": "Alimente",
+            "icon": "cart",
+            "note": "Circa 21 lei pe zi"
+          },
+          {
+            "name": "Studii",
+            "icon": "book",
+            "note": "Cărți și imprimări"
+          },
+          {
+            "name": "Telefon și internet",
+            "icon": "phone",
+            "note": "Pe 20 noiembrie"
+          }
+        ],
+        "rest": {
+          "label": "Rămân pentru opționale"
+        },
+        "pending": "Bursa nu e inclusă: circa 700 lei, în jur de 15 noiembrie. O adaug în buget când intră în cont."
+      },
+      "filters": [
+        {
+          "label": "Toate",
+          "selected": true
+        },
+        {
+          "label": "Cheltuieli"
+        },
+        {
+          "label": "Încasări"
+        },
+        {
+          "label": "Fără categorie · 1"
+        },
+        {
+          "label": "Recurente"
+        }
+      ],
+      "findings": {
+        "lead": "Din 12 luni de extrase, din calendar și din răspunsurile tale.",
+        "items": [
+          {
+            "text": "În iulie, august și septembrie, fără bursă, banii s-au terminat cu 5–8 zile înainte de 1.",
+            "src": "obs"
+          },
+          {
+            "text": "Necesarele tale costă circa 1.200 lei pe lună, cât primești de la familie.",
+            "src": "est"
+          },
+          {
+            "text": "LinguaPlus: 45 lei pe lună, iar aplicația a fost deschisă de 2 ori în octombrie.",
+            "note": "Te întreb despre asta în discuție.",
+            "src": "obs"
+          },
+          {
+            "text": "Pe 20 februarie ai termenul pentru dosarul de bursă.",
+            "src": "obs",
+            "label": "din calendar"
+          }
+        ],
+        "firstStep": {
+          "icon": "wallet",
+          "title": "Primul pas pe care ți-l propun",
+          "text": "La fiecare încasare de peste 100 lei, pune 10% în fondul de siguranță. Pe 1 noiembrie, din cei 1.200 lei de la familie, înseamnă 120 lei.",
+          "action": "Vezi propunerea",
+          "href": "#/chat"
+        }
+      },
+      "ideas": {
+        "title": "Idei pentru tine",
+        "lead": "Pornesc de la ce mi-ai spus: vrei fondul de siguranță complet și cursul de UX design din martie. Primești cel mult o idee nouă pe săptămână.",
+        "featured": {
+          "icon": "wallet",
+          "eyebrow": "Ideea săptămânii · Venituri",
+          "title": "2 ore de meditații în plus pe săptămână",
+          "text": "La 50 lei ora, câștigi circa 400 lei în plus pe lună.",
+          "effects": [
+            "Fondul de siguranță e complet în decembrie, nu în martie.",
+            "Banii pentru cursul de UX design sunt gata în februarie."
+          ],
+          "why": "Pe 28 octombrie ai spus că dai meditații la matematică și că marțea și joia ai după-amiezile libere.",
+          "actions": [
+            "Adaugă în plan",
+            "Nu mă interesează"
+          ]
+        },
+        "groups": [
+          {
+            "title": "Venituri",
+            "items": [
+              {
+                "icon": "calendar",
+                "title": "Jobul de vară din 2027",
+                "text": "Vara aceasta ai câștigat 2.400 lei, iar în octombrie mai aveai 500. Dacă împarți suma pe cele 9 luni de cursuri, ai circa 270 lei în plus în fiecare lună.",
+                "status": "Revin cu un plan în mai"
+              }
+            ]
+          },
+          {
+            "title": "Educație financiară gratuită",
+            "note": "de la Raiffeisen Bank",
+            "items": [
+              {
+                "icon": "book",
+                "title": "5 sfaturi financiare pentru cei care se întrețin singuri",
+                "text": "Articol din ghidul „Despre bani 1:1” al băncii, despre bugetul celor care se descurcă pe cont propriu.",
+                "link": {
+                  "href": "https://www.raiffeisen.ro/ro/persoane-fizice/despre-bani-1-la-1/5-sfaturi-financiare-pentru-cei-care-se-intretin-singuri.html",
+                  "label": "Citește pe raiffeisen.ro"
+                }
+              },
+              {
+                "icon": "shield",
+                "title": "Fondul de urgență",
+                "text": "De ce contează o rezervă și cum o construiești treptat. Se potrivește cu obiectivul tău de acum.",
+                "link": {
+                  "href": "https://www.raiffeisen.ro/ro/persoane-fizice/despre-bani-1-la-1/fondul-de-urgenta-protejeaza-te-de-situatii-neasteptate.html",
+                  "label": "Citește pe raiffeisen.ro"
+                }
+              },
+              {
+                "icon": "target",
+                "title": "Money Strike",
+                "text": "Hartă de joc gratuită pentru educație financiară. Modul de învățare are 10 runde și îți arată la final dacă ești Econom, Impulsiv sau Echilibrat.",
+                "link": {
+                  "href": "https://www.raiffeisen.ro/ro/despre-noi/comunicate-de-presa/2025/money-strike-harta-fps-educatie-financiara-pentru-tineri.html",
+                  "label": "Despre joc pe raiffeisen.ro"
+                }
+              },
+              {
+                "icon": "lock",
+                "title": "Start în Investiții",
+                "text": "5 cursuri interactive în aplicație despre cum funcționează investițiile. Ți-l arăt după ce completezi fondul de siguranță și nu îți recomand fonduri.",
+                "link": {
+                  "href": "https://www.raiffeisen.ro/ro/despre-noi/comunicate-de-presa/2026/start-in-investitii-program-digital-raiffeisen-bank-disponibil-din-mobile-app.html",
+                  "label": "Despre program pe raiffeisen.ro"
+                },
+                "status": "După fondul de siguranță"
+              }
+            ]
+          },
+          {
+            "title": "Oportunități",
+            "items": [
+              {
+                "icon": "calendar",
+                "title": "Bursa pentru semestrul al II-lea",
+                "text": "Termenul pentru dosar e pe 20 februarie, din calendarul tău. Îți amintesc cu o săptămână înainte.",
+                "status": "Memento pe 13 februarie"
+              }
+            ]
+          }
+        ],
+        "rules": "Ideile sunt orientative și le poți ascunde oricând. Nu îți promit venituri și nu îți propun pariuri, cripto sau scheme de câștig rapid."
+      },
+      "insight": {
+        "figure": "6 zile",
+        "text": "Atât ți-au lipsit în medie până la 1 în lunile fără bursă, din iulie până în septembrie. În octombrie, cu bursa, ai încheiat luna cu 361 lei în cont."
+      },
+      "intro": {
+        "title": "Activează coach-ul financiar",
+        "lead": "Te ajut să vezi unde se duc banii, să-ți pui bugete pe categorii și să strângi pentru ce îți dorești.",
+        "duration": "Durează circa 3 minute",
+        "does": [
+          "Citesc extrasele de cont pe care mi le dai și îți arăt tiparele",
+          "Te întreb doar ce nu pot vedea din tranzacții",
+          "Îți scriu când te apropii de o limită stabilită de tine"
+        ]
+      },
+      "lastMessage": {
+        "icon": "wallet",
+        "meta": "Ieri, 19:32 · Fond de siguranță",
+        "title": "Ai pus 15 lei deoparte",
+        "text": "10% din cei 150 lei de la meditații, cum am stabilit. Fondul de siguranță are acum 650 din 1.200 lei."
+      },
+      "nextGoals": [
+        {
+          "name": "Curs de UX design",
+          "icon": "book",
+          "when": "Începe în martie 2027",
+          "text": "Cu planul de acum, începi să economisești pentru curs după fondul de siguranță. Cu ideea săptămânii, banii sunt gata în februarie.",
+          "action": "Vezi ideea",
+          "href": "#/idei",
+          "amount_minor": 90000
+        }
+      ],
+      "pickerCategories": [
+        "alimente",
+        "cafenele",
+        "livrari",
+        "iesiri",
+        "taxi",
+        "cumparaturi",
+        "abonamente",
+        "studii",
+        "transport",
+        "telefon",
+        "locuinta"
+      ],
+      "profile": {
+        "statements": [
+          {
+            "icon": "card",
+            "name": "Cont curent RON",
+            "note": "nov. 2025 – oct. 2026, importat din aplicație · se actualizează lunar",
+            "status": "Importat"
+          }
+        ],
+        "about": [
+          {
+            "label": "Prenume",
+            "value": "Matei",
+            "src": "obs"
+          },
+          {
+            "label": "Vârstă",
+            "value": "18–24 ani",
+            "src": "obs"
+          },
+          {
+            "label": "Ocupație",
+            "value": "Student, anul II",
+            "src": "said"
+          },
+          {
+            "label": "Locuință",
+            "value": "Cămin studențesc",
+            "src": "obs"
+          },
+          {
+            "label": "Istoric analizat",
+            "value": "12 luni, nov. 2025 – oct. 2026",
+            "src": "obs"
+          }
+        ],
+        "money": [
+          {
+            "label": "Bani de la familie",
+            "value": "1.200 lei, pe 1 ale lunii",
+            "src": "obs"
+          },
+          {
+            "label": "Bursă",
+            "value": "circa 700 lei în lunile de cursuri, doar cu media peste 9",
+            "src": "said"
+          },
+          {
+            "label": "Meditații",
+            "value": "150–450 lei pe lună",
+            "src": "said"
+          },
+          {
+            "label": "Minimul lunar",
+            "value": "1.200 lei: cămin, alimente, transport, telefon, studii",
+            "src": "est"
+          },
+          {
+            "label": "Perioada de buget",
+            "value": "Din 1 până la sfârșitul lunii, după banii de la familie",
+            "src": "agreed"
+          },
+          {
+            "label": "Regula de economisire",
+            "value": "10% din fiecare încasare de peste 100 lei",
+            "src": "agreed"
+          }
+        ],
+        "observed": [
+          {
+            "text": "În iulie, august și septembrie, fără bursă, banii s-au terminat cu 5–8 zile înainte de 1",
+            "src": "obs"
+          },
+          {
+            "text": "Bursa a intrat în martie–iunie și în octombrie, în jur de 15 ale lunii",
+            "src": "obs"
+          },
+          {
+            "text": "Meditații: 2–3 plăți pe lună, de la aceleași persoane",
+            "quote": "dau meditații la matematică",
+            "src": "said"
+          }
+        ],
+        "talk": [
+          {
+            "label": "Ton",
+            "value": "Prietenos, fără predici"
+          },
+          {
+            "label": "Notificări",
+            "value": "Cel mult una pe zi"
+          },
+          {
+            "label": "Fără notificări",
+            "value": "23:00 – 09:00"
+          },
+          {
+            "label": "Rezumat săptămânal",
+            "value": "Duminică, la 20:00"
+          }
+        ],
+        "unknown": [
+          "Cât costă anul următor",
+          "Planuri pentru vară",
+          "Datorii la prieteni"
+        ],
+        "spending": [
+          {
+            "name": "Alimente"
+          },
+          {
+            "name": "Cămin"
+          },
+          {
+            "name": "Livrări de mâncare"
+          },
+          {
+            "name": "Restaurante"
+          },
+          {
+            "name": "Cafenele"
+          },
+          {
+            "name": "Taxi"
+          },
+          {
+            "name": "Abonamente"
+          },
+          {
+            "name": "Studii"
+          },
+          {
+            "name": "Transport"
+          },
+          {
+            "name": "Telefon și internet"
+          }
+        ]
+      },
+      "question": {
+        "options": [
+          "Un joc",
+          "Un abonament",
+          "Altceva"
+        ],
+        "txId": "m13"
+      },
+      "reserve": null,
+      "review": {
+        "id": "m13",
+        "title": "1 plată de verificat",
+        "text": "PLAYNET*STORE · 28 lei · sâmbătă, 7 nov."
+      },
+      "services": {
+        "hint": "Cel mult una pe săptămână, doar pentru nevoi pe care le-ai spus sau confirmat. Fără credite."
+      },
+      "spending": {
+        "fixedNote": "căminul, transportul și abonamentele",
+        "compare": "Cu 85 lei mai mult față de aceeași perioadă din octombrie",
+        "partIds": [
+          "alimente",
+          "cafenele",
+          "livrari",
+          "iesiri",
+          "taxi",
+          "nesortat"
+        ]
+      },
+      "statements": {
+        "lead": "Coach-ul lucrează cu extrasele tale de cont. Cu cât au mai multe luni, cu atât vede mai bine tiparele: ideal 12–24.",
+        "account": {
+          "name": "Cont curent RON",
+          "iban": "RO45 RZBR •••• 5678"
+        },
+        "periods": [
+          "Ultimele 12 luni (nov. 2025 – oct. 2026)",
+          "Ultimele 6 luni",
+          "Ultimele 3 luni"
+        ],
+        "imported": {
+          "title": "12 extrase lunare importate",
+          "meta": "nov. 2025 – oct. 2026 · 1.104 plăți · se actualizează lunar"
+        },
+        "attachHint": "Din anii trecuți sau de la altă bancă.",
+        "formats": "PDF, XLS sau CSV · până la 10 MB",
+        "howTo": [
+          "Deschide aplicația sau internet banking-ul băncii",
+          "Intră la cont și caută „Extras de cont”",
+          "Alege perioada cea mai lungă, în format PDF sau XLS",
+          "Salvează fișierul și atașează-l aici"
+        ],
+        "privacy": "Fișierele sunt criptate, nu devin publice și le vede doar coach-ul. Din extrase citesc data, suma, comerciantul și descrierea; transferurile către persoane apar doar ca „transfer către o persoană”. Poți șterge oricând un extras."
+      },
+      "tagSuggestions": [
+        "facultate",
+        "prieteni",
+        "weekend",
+        "cămin"
+      ],
+      "today": {
+        "label": "Joi, 12 noiembrie"
+      },
+      "unbudgeted": {
+        "items": [
+          {
+            "name": "Abonamente",
+            "icon": "repeat",
+            "note": "LinguaPlus și MuzicaPlus Student"
+          },
+          {
+            "name": "Fără categorie",
+            "icon": "help",
+            "note": "O plată de clarificat"
+          }
+        ]
+      },
+      "week": {
+        "scaleMax": 120,
+        "days": [
+          {
+            "d": "L",
+            "name": "luni"
+          },
+          {
+            "d": "Ma",
+            "name": "marți"
+          },
+          {
+            "d": "Mi",
+            "name": "miercuri"
+          },
+          {
+            "d": "J",
+            "name": "joi"
+          },
+          {
+            "d": "V",
+            "name": "vineri"
+          },
+          {
+            "d": "S",
+            "name": "sâmbătă"
+          },
+          {
+            "d": "D",
+            "name": "duminică"
+          }
+        ]
+      },
+      "pages": [
+        "rezumat",
+        "cheltuieli",
+        "bugete",
+        "obiective",
+        "idei",
+        "profil"
+      ]
+    },
+    "cycle": {
+      "start": "2026-11-01",
+      "end": "2026-11-30",
+      "opening_minor": 36100
+    },
+    "commitments": [],
+    "transactions": [
+      {
+        "legacy_id": "m1",
+        "local_date": "2026-11-12",
+        "occurred_at": "2026-11-12T08:45:00+02:00",
+        "amount_minor": -800,
+        "category": "cafenele",
+        "merchant": "Cafeteria Campus",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 0,
+        "presentation": {
+          "raw": "CAFETERIA CAMPUS SRL CLUJ-NAPOCA",
+          "name": "Cafea",
+          "renamed": true,
+          "rule": true,
+          "tags": [
+            "facultate"
+          ],
+          "status": "În așteptare",
+          "history": "Ultimele 3 luni: 24 de plăți, 192 lei",
+          "id": "m1",
+          "time": "08:45",
+          "note": "Înainte de cursul de la 9"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m2",
+        "local_date": "2026-11-11",
+        "occurred_at": "2026-11-11T22:40:00+02:00",
+        "amount_minor": -1600,
+        "category": "taxi",
+        "merchant": "TaxiGo",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 100,
+        "presentation": {
+          "id": "m2",
+          "time": "22:40",
+          "raw": "TAXIGO RIDE CLUJ-NAPOCA",
+          "name": "TaxiGo",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m3",
+        "local_date": "2026-11-11",
+        "occurred_at": "2026-11-11T19:32:00+02:00",
+        "amount_minor": -1500,
+        "category": "economii",
+        "merchant": "Către Super Acces Plus",
+        "kind": "saving",
+        "visible": true,
+        "sort_order": 101,
+        "presentation": {
+          "raw": "TRANSFER CONT PROPRIU · FOND SIGURANTA",
+          "name": "Fond de siguranță",
+          "renamed": true,
+          "status": "Finalizată",
+          "id": "m3",
+          "time": "19:32"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m4",
+        "local_date": "2026-11-11",
+        "occurred_at": "2026-11-11T19:30:00+02:00",
+        "amount_minor": 15000,
+        "category": "venit",
+        "merchant": "Transfer de la o persoană",
+        "kind": "income",
+        "visible": true,
+        "sort_order": 102,
+        "presentation": {
+          "raw": "TRANSFER PRIMIT · MEDITATII",
+          "name": "Meditații",
+          "renamed": true,
+          "status": "Finalizată",
+          "id": "m4",
+          "time": "19:30"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m5",
+        "local_date": "2026-11-11",
+        "occurred_at": "2026-11-11T13:00:00+02:00",
+        "amount_minor": -1800,
+        "category": "alimente",
+        "merchant": "Cantina Studențească",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 103,
+        "presentation": {
+          "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+          "name": "Prânz la cantină",
+          "renamed": true,
+          "rule": true,
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+          "id": "m5",
+          "time": "13:00"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m6",
+        "local_date": "2026-11-11",
+        "occurred_at": "2026-11-11T08:40:00+02:00",
+        "amount_minor": -800,
+        "category": "cafenele",
+        "merchant": "Cafeteria Campus",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 104,
+        "presentation": {
+          "raw": "CAFETERIA CAMPUS SRL CLUJ-NAPOCA",
+          "name": "Cafea",
+          "renamed": true,
+          "rule": true,
+          "tags": [
+            "facultate"
+          ],
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 24 de plăți, 192 lei",
+          "id": "m6",
+          "time": "08:40"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m7",
+        "local_date": "2026-11-10",
+        "occurred_at": "2026-11-10T21:30:00+02:00",
+        "amount_minor": -5200,
+        "category": "iesiri",
+        "merchant": "Pizzeria Napoca",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 200,
+        "presentation": {
+          "id": "m7",
+          "time": "21:30",
+          "raw": "PIZZERIA NAPOCA SRL CLUJ-NAPOCA",
+          "name": "Pizza cu colegii",
+          "renamed": true,
+          "tags": [
+            "prieteni"
+          ],
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m8",
+        "local_date": "2026-11-10",
+        "occurred_at": "2026-11-10T19:15:00+02:00",
+        "amount_minor": -3700,
+        "category": "alimente",
+        "merchant": "Market Express",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 201,
+        "presentation": {
+          "raw": "MARKET EXPRESS 0217 CLUJ-NAPOCA",
+          "name": "Market Express",
+          "status": "Finalizată",
+          "id": "m8",
+          "time": "19:15"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m9",
+        "local_date": "2026-11-10",
+        "occurred_at": "2026-11-10T13:00:00+02:00",
+        "amount_minor": -1800,
+        "category": "alimente",
+        "merchant": "Cantina Studențească",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 202,
+        "presentation": {
+          "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+          "name": "Prânz la cantină",
+          "renamed": true,
+          "rule": true,
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+          "id": "m9",
+          "time": "13:00"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m10",
+        "local_date": "2026-11-09",
+        "occurred_at": "2026-11-09T13:05:00+02:00",
+        "amount_minor": -1800,
+        "category": "alimente",
+        "merchant": "Cantina Studențească",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 300,
+        "presentation": {
+          "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+          "name": "Prânz la cantină",
+          "renamed": true,
+          "rule": true,
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+          "id": "m10",
+          "time": "13:05"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m11",
+        "local_date": "2026-11-09",
+        "occurred_at": "2026-11-09T08:30:00+02:00",
+        "amount_minor": -800,
+        "category": "cafenele",
+        "merchant": "Cafeteria Campus",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 301,
+        "presentation": {
+          "raw": "CAFETERIA CAMPUS SRL CLUJ-NAPOCA",
+          "name": "Cafea",
+          "renamed": true,
+          "rule": true,
+          "tags": [
+            "facultate"
+          ],
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 24 de plăți, 192 lei",
+          "id": "m11",
+          "time": "08:30"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m12",
+        "local_date": "2026-11-08",
+        "occurred_at": "2026-11-08T20:40:00+02:00",
+        "amount_minor": -4100,
+        "category": "livrari",
+        "merchant": "LivrareRapidă",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 400,
+        "presentation": {
+          "id": "m12",
+          "time": "20:40",
+          "raw": "LIVRARERAPIDA*COMANDA 90544",
+          "name": "LivrareRapidă",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m13",
+        "local_date": "2026-11-07",
+        "occurred_at": "2026-11-07T16:20:00+02:00",
+        "amount_minor": -2800,
+        "category": "nesortat",
+        "merchant": "PLAYNET*STORE",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 500,
+        "presentation": {
+          "id": "m13",
+          "time": "16:20",
+          "raw": "PLAYNET*STORE 7781 ONLINE",
+          "name": "",
+          "needsReview": true,
+          "suggestion": "cumparaturi",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m14",
+        "local_date": "2026-11-07",
+        "occurred_at": "2026-11-07T12:00:00+02:00",
+        "amount_minor": -5200,
+        "category": "alimente",
+        "merchant": "Market Express",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 501,
+        "presentation": {
+          "raw": "MARKET EXPRESS 0217 CLUJ-NAPOCA",
+          "name": "Market Express",
+          "status": "Finalizată",
+          "id": "m14",
+          "time": "12:00"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m15",
+        "local_date": "2026-11-06",
+        "occurred_at": "2026-11-06T23:50:00+02:00",
+        "amount_minor": -2400,
+        "category": "taxi",
+        "merchant": "TaxiGo",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 600,
+        "presentation": {
+          "id": "m15",
+          "time": "23:50",
+          "raw": "TAXIGO RIDE CLUJ-NAPOCA",
+          "name": "TaxiGo",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m16",
+        "local_date": "2026-11-06",
+        "occurred_at": "2026-11-06T22:00:00+02:00",
+        "amount_minor": -6800,
+        "category": "iesiri",
+        "merchant": "Studio Pub",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 601,
+        "presentation": {
+          "id": "m16",
+          "time": "22:00",
+          "raw": "STUDIO PUB SRL CLUJ-NAPOCA",
+          "name": "Ieșire cu prietenii",
+          "renamed": true,
+          "tags": [
+            "prieteni"
+          ],
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m17",
+        "local_date": "2026-11-06",
+        "occurred_at": "2026-11-06T13:00:00+02:00",
+        "amount_minor": -1800,
+        "category": "alimente",
+        "merchant": "Cantina Studențească",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 602,
+        "presentation": {
+          "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+          "name": "Prânz la cantină",
+          "renamed": true,
+          "rule": true,
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+          "id": "m17",
+          "time": "13:00"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m18",
+        "local_date": "2026-11-05",
+        "occurred_at": "2026-11-05T13:00:00+02:00",
+        "amount_minor": -1800,
+        "category": "alimente",
+        "merchant": "Cantina Studențească",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 700,
+        "presentation": {
+          "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+          "name": "Prânz la cantină",
+          "renamed": true,
+          "rule": true,
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+          "id": "m18",
+          "time": "13:00"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m19",
+        "local_date": "2026-11-05",
+        "occurred_at": "2026-11-05T08:35:00+02:00",
+        "amount_minor": -800,
+        "category": "cafenele",
+        "merchant": "Cafeteria Campus",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 701,
+        "presentation": {
+          "raw": "CAFETERIA CAMPUS SRL CLUJ-NAPOCA",
+          "name": "Cafea",
+          "renamed": true,
+          "rule": true,
+          "tags": [
+            "facultate"
+          ],
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 24 de plăți, 192 lei",
+          "id": "m19",
+          "time": "08:35"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m20",
+        "local_date": "2026-11-04",
+        "occurred_at": "2026-11-04T21:10:00+02:00",
+        "amount_minor": -4500,
+        "category": "livrari",
+        "merchant": "LivrareRapidă",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 800,
+        "presentation": {
+          "id": "m20",
+          "time": "21:10",
+          "raw": "LIVRARERAPIDA*COMANDA 89917",
+          "name": "LivrareRapidă",
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m21",
+        "local_date": "2026-11-04",
+        "occurred_at": "2026-11-04T19:02:00+02:00",
+        "amount_minor": -1500,
+        "category": "economii",
+        "merchant": "Către Super Acces Plus",
+        "kind": "saving",
+        "visible": true,
+        "sort_order": 801,
+        "presentation": {
+          "raw": "TRANSFER CONT PROPRIU · FOND SIGURANTA",
+          "name": "Fond de siguranță",
+          "renamed": true,
+          "status": "Finalizată",
+          "id": "m21",
+          "time": "19:02"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m22",
+        "local_date": "2026-11-04",
+        "occurred_at": "2026-11-04T19:00:00+02:00",
+        "amount_minor": 15000,
+        "category": "venit",
+        "merchant": "Transfer de la o persoană",
+        "kind": "income",
+        "visible": true,
+        "sort_order": 802,
+        "presentation": {
+          "raw": "TRANSFER PRIMIT · MEDITATII",
+          "name": "Meditații",
+          "renamed": true,
+          "status": "Finalizată",
+          "id": "m22",
+          "time": "19:00"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m23",
+        "local_date": "2026-11-04",
+        "occurred_at": "2026-11-04T13:00:00+02:00",
+        "amount_minor": -1800,
+        "category": "alimente",
+        "merchant": "Cantina Studențească",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 803,
+        "presentation": {
+          "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+          "name": "Prânz la cantină",
+          "renamed": true,
+          "rule": true,
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+          "id": "m23",
+          "time": "13:00"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m24",
+        "local_date": "2026-11-03",
+        "occurred_at": "2026-11-03T13:05:00+02:00",
+        "amount_minor": -1800,
+        "category": "alimente",
+        "merchant": "Cantina Studențească",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 900,
+        "presentation": {
+          "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+          "name": "Prânz la cantină",
+          "renamed": true,
+          "rule": true,
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+          "id": "m24",
+          "time": "13:05"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m25",
+        "local_date": "2026-11-03",
+        "occurred_at": "2026-11-03T08:40:00+02:00",
+        "amount_minor": -800,
+        "category": "cafenele",
+        "merchant": "Cafeteria Campus",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 901,
+        "presentation": {
+          "raw": "CAFETERIA CAMPUS SRL CLUJ-NAPOCA",
+          "name": "Cafea",
+          "renamed": true,
+          "rule": true,
+          "tags": [
+            "facultate"
+          ],
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 24 de plăți, 192 lei",
+          "id": "m25",
+          "time": "08:40"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m26",
+        "local_date": "2026-11-03",
+        "occurred_at": "2026-11-03T06:00:00+02:00",
+        "amount_minor": -4500,
+        "category": "abonamente",
+        "merchant": "LinguaPlus",
+        "kind": "fixed",
+        "visible": true,
+        "sort_order": 902,
+        "presentation": {
+          "id": "m26",
+          "time": "06:00",
+          "raw": "LINGUAPLUS.COM SUBSCRIPTION",
+          "name": "LinguaPlus",
+          "recurring": true,
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m27",
+        "local_date": "2026-11-03",
+        "occurred_at": "2026-11-03T06:00:00+02:00",
+        "amount_minor": -1500,
+        "category": "abonamente",
+        "merchant": "MuzicaPlus",
+        "kind": "fixed",
+        "visible": true,
+        "sort_order": 903,
+        "presentation": {
+          "id": "m27",
+          "time": "06:00",
+          "raw": "MUZICAPLUS STUDENT",
+          "name": "MuzicaPlus Student",
+          "recurring": true,
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m28",
+        "local_date": "2026-11-02",
+        "occurred_at": "2026-11-02T13:10:00+02:00",
+        "amount_minor": -1800,
+        "category": "alimente",
+        "merchant": "Cantina Studențească",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 1000,
+        "presentation": {
+          "raw": "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA",
+          "name": "Prânz la cantină",
+          "renamed": true,
+          "rule": true,
+          "status": "Finalizată",
+          "history": "Ultimele 3 luni: 41 de plăți, 738 lei",
+          "id": "m28",
+          "time": "13:10"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m29",
+        "local_date": "2026-11-02",
+        "occurred_at": "2026-11-02T09:20:00+02:00",
+        "amount_minor": -5000,
+        "category": "transport",
+        "merchant": "TransUrban",
+        "kind": "fixed",
+        "visible": true,
+        "sort_order": 1001,
+        "presentation": {
+          "id": "m29",
+          "time": "09:20",
+          "raw": "TRANSURBAN ABONAMENT STUDENT",
+          "name": "Abonament transport",
+          "recurring": true,
+          "renamed": true,
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m30",
+        "local_date": "2026-11-02",
+        "occurred_at": "2026-11-02T09:00:00+02:00",
+        "amount_minor": -35000,
+        "category": "locuinta",
+        "merchant": "Cămin studențesc",
+        "kind": "fixed",
+        "visible": true,
+        "sort_order": 1002,
+        "presentation": {
+          "id": "m30",
+          "time": "09:00",
+          "raw": "CAMIN STUDENTESC C4 · TAXA NOIEMBRIE",
+          "name": "Cămin",
+          "recurring": true,
+          "renamed": true,
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m31",
+        "local_date": "2026-11-01",
+        "occurred_at": "2026-11-01T18:30:00+02:00",
+        "amount_minor": -6400,
+        "category": "alimente",
+        "merchant": "Market Express",
+        "kind": "variable",
+        "visible": true,
+        "sort_order": 1100,
+        "presentation": {
+          "raw": "MARKET EXPRESS 0217 CLUJ-NAPOCA",
+          "name": "Market Express",
+          "status": "Finalizată",
+          "id": "m31",
+          "time": "18:30"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m32",
+        "local_date": "2026-11-01",
+        "occurred_at": "2026-11-01T10:05:00+02:00",
+        "amount_minor": -12000,
+        "category": "economii",
+        "merchant": "Către Super Acces Plus",
+        "kind": "saving",
+        "visible": true,
+        "sort_order": 1101,
+        "presentation": {
+          "raw": "TRANSFER CONT PROPRIU · FOND SIGURANTA",
+          "name": "Fond de siguranță",
+          "renamed": true,
+          "status": "Finalizată",
+          "id": "m32",
+          "time": "10:05"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "m33",
+        "local_date": "2026-11-01",
+        "occurred_at": "2026-11-01T10:02:00+02:00",
+        "amount_minor": 120000,
+        "category": "venit",
+        "merchant": "Transfer de la o persoană",
+        "kind": "income",
+        "visible": true,
+        "sort_order": 1102,
+        "presentation": {
+          "id": "m33",
+          "time": "10:02",
+          "raw": "TRANSFER PRIMIT · BANI NOIEMBRIE",
+          "name": "Bani de la familie",
+          "recurring": true,
+          "renamed": true,
+          "status": "Finalizată"
+        },
+        "pot": null
+      },
+      {
+        "legacy_id": "october-0",
+        "local_date": "2026-10-01",
+        "occurred_at": "2026-10-01T18:00:00+03:00",
+        "amount_minor": -18000,
+        "category": "alimente",
+        "merchant": "Market Express",
+        "kind": "variable",
+        "scope": "comparison",
+        "visible": false,
+        "sort_order": 20000,
+        "presentation": {},
+        "pot": null
+      },
+      {
+        "legacy_id": "october-1",
+        "local_date": "2026-10-04",
+        "occurred_at": "2026-10-04T18:00:00+03:00",
+        "amount_minor": -21000,
+        "category": "iesiri",
+        "merchant": "Bistro Central",
+        "kind": "variable",
+        "scope": "comparison",
+        "visible": false,
+        "sort_order": 20001,
+        "presentation": {},
+        "pot": null
+      },
+      {
+        "legacy_id": "october-2",
+        "local_date": "2026-10-10",
+        "occurred_at": "2026-10-10T18:00:00+03:00",
+        "amount_minor": -13600,
+        "category": "livrari",
+        "merchant": "LivrareRapidă",
+        "kind": "variable",
+        "scope": "comparison",
+        "visible": false,
+        "sort_order": 20002,
+        "presentation": {},
+        "pot": null
+      }
+    ],
+    "budgets": [
+      {
+        "key": "camin",
+        "category": "locuinta",
+        "period": "cycle",
+        "kind": "paid",
+        "limit_minor": null,
+        "count_limit": null,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "camin",
+          "group": "necesare",
+          "name": "Cămin",
+          "icon": "home",
+          "kind": "paid",
+          "note": "Plătit pe 2 noiembrie"
+        },
+        "sort_order": 0
+      },
+      {
+        "key": "transport",
+        "category": "transport",
+        "period": "cycle",
+        "kind": "paid",
+        "limit_minor": null,
+        "count_limit": null,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "transport",
+          "group": "necesare",
+          "name": "Transport",
+          "icon": "bus",
+          "kind": "paid",
+          "note": "Abonament de student, plătit pe 2 noiembrie"
+        },
+        "sort_order": 1
+      },
+      {
+        "key": "alimente",
+        "category": "alimente",
+        "period": "cycle",
+        "kind": "amount",
+        "limit_minor": 70000,
+        "count_limit": null,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "alimente",
+          "group": "necesare",
+          "name": "Alimente",
+          "icon": "cart",
+          "kind": "amount",
+          "note": "Circa 21 lei pe zi până pe 30 noiembrie"
+        },
+        "sort_order": 2
+      },
+      {
+        "key": "studii",
+        "category": "studii",
+        "period": "cycle",
+        "kind": "amount",
+        "limit_minor": 7500,
+        "count_limit": null,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "studii",
+          "group": "necesare",
+          "name": "Studii",
+          "icon": "book",
+          "kind": "amount",
+          "note": "Cărți și imprimări"
+        },
+        "sort_order": 3
+      },
+      {
+        "key": "telefon",
+        "category": "telefon",
+        "period": "cycle",
+        "kind": "amount",
+        "limit_minor": 2500,
+        "count_limit": null,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "telefon",
+          "group": "necesare",
+          "name": "Telefon și internet",
+          "icon": "phone",
+          "kind": "amount",
+          "note": "Se plătește pe 20 noiembrie"
+        },
+        "sort_order": 4
+      },
+      {
+        "key": "iesiri",
+        "category": "iesiri",
+        "period": "cycle",
+        "kind": "amount",
+        "limit_minor": 12000,
+        "count_limit": null,
+        "warn_at_percent": 100,
+        "presentation": {
+          "id": "iesiri",
+          "group": "optionale",
+          "name": "Restaurante",
+          "icon": "utensils",
+          "kind": "amount",
+          "note": "Limita lunii atinsă",
+          "onHome": true
+        },
+        "sort_order": 5
+      },
+      {
+        "key": "livrari",
+        "category": "livrari",
+        "period": "cycle",
+        "kind": "amount",
+        "limit_minor": 12000,
+        "count_limit": null,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "livrari",
+          "group": "optionale",
+          "name": "Livrări de mâncare",
+          "icon": "bag",
+          "kind": "amount",
+          "note": "2 comenzi luna aceasta",
+          "onHome": true
+        },
+        "sort_order": 6
+      },
+      {
+        "key": "cafenele",
+        "category": "cafenele",
+        "period": "cycle",
+        "kind": "amount",
+        "limit_minor": 6000,
+        "count_limit": null,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "cafenele",
+          "group": "optionale",
+          "name": "Cafenele",
+          "icon": "cup",
+          "kind": "amount",
+          "note": "5 cafele luna aceasta",
+          "onHome": true
+        },
+        "sort_order": 7
+      },
+      {
+        "key": "taxi",
+        "category": "taxi",
+        "period": "cycle",
+        "kind": "amount",
+        "limit_minor": 6000,
+        "count_limit": null,
+        "warn_at_percent": null,
+        "presentation": {
+          "id": "taxi",
+          "group": "optionale",
+          "name": "Taxi",
+          "icon": "car",
+          "kind": "amount",
+          "note": "Doar seara târziu, cum am stabilit"
+        },
+        "sort_order": 8
+      }
+    ],
+    "subscriptions": [
+      {
+        "key": "LinguaPlus",
+        "amount_minor": 4500,
+        "monitored": true,
+        "profile": {
+          "name": "LinguaPlus",
+          "note": "Aplicația deschisă de 2 ori în octombrie · 135 lei plătiți din septembrie",
+          "status": "O păstrezi până la examenul din ianuarie"
+        },
+        "app": {
+          "name": "LinguaPlus",
+          "note": "Plătit lunar din septembrie"
+        },
+        "sort_order": 0
+      },
+      {
+        "key": "MuzicaPlus Student",
+        "amount_minor": 1500,
+        "monitored": false,
+        "profile": {
+          "name": "MuzicaPlus Student"
+        },
+        "app": {
+          "name": "MuzicaPlus Student",
+          "note": "Plătit lunar"
+        },
+        "sort_order": 1
+      }
+    ],
+    "historical": [
+      {
+        "month": "2026-10-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-10-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-09-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-08-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-07-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-06-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-05-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-04-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-03-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-02-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2026-01-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-12-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Alimente",
+        "amount_minor": -72000,
+        "sort_order": 0
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Cămin",
+        "amount_minor": -35000,
+        "sort_order": 1
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Livrări de mâncare",
+        "amount_minor": -21000,
+        "sort_order": 2
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Restaurante",
+        "amount_minor": -19000,
+        "sort_order": 3
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Cafenele",
+        "amount_minor": -9000,
+        "sort_order": 4
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Taxi",
+        "amount_minor": -7000,
+        "sort_order": 5
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Abonamente",
+        "amount_minor": -6000,
+        "sort_order": 6
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Studii",
+        "amount_minor": -6000,
+        "sort_order": 7
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Transport",
+        "amount_minor": -5000,
+        "sort_order": 8
+      },
+      {
+        "month": "2025-11-01",
+        "group": "Telefon și internet",
+        "amount_minor": -2500,
+        "sort_order": 9
+      }
+    ],
+    "questions": [
+      {
+        "key": "venituri",
+        "sort_order": 0,
+        "definition": {
+          "id": "venituri",
+          "title": "Din ce surse primești bani?",
+          "hint": "Poți alege mai multe. Așa știu pe ce bani te poți baza.",
+          "options": [
+            {
+              "label": "Bani de la familie"
+            },
+            {
+              "label": "Bursă"
+            },
+            {
+              "label": "Meditații sau proiecte"
+            },
+            {
+              "label": "Job part-time"
+            },
+            {
+              "label": "Job de vară"
+            },
+            {
+              "label": "Altceva"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Bani de la familie pe lună",
+              "suffix": "lei",
+              "numeric": true
+            },
+            {
+              "label": "Bursa e sigură?",
+              "type": "select",
+              "options": [
+                "Da",
+                "Nu, depinde de medie",
+                "Nu primesc bursă"
+              ]
+            },
+            {
+              "label": "Meditații pe lună, aproximativ",
+              "suffix": "lei",
+              "numeric": true
+            },
+            {
+              "label": "Rămas din jobul de vară",
+              "suffix": "lei",
+              "numeric": true
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "Bani de la familie",
+            "Bursă",
+            "Meditații sau proiecte",
+            "Job de vară"
+          ],
+          "fields": {
+            "Bani de la familie pe lună": "1200",
+            "Bursa e sigură?": "Nu, depinde de medie",
+            "Meditații pe lună, aproximativ": "300",
+            "Rămas din jobul de vară": "500"
+          }
+        }
+      },
+      {
+        "key": "necesare",
+        "sort_order": 1,
+        "definition": {
+          "id": "necesare",
+          "title": "Ce cheltuieli trebuie acoperite în fiecare lună?",
+          "hint": "Din ele calculez minimul lunar. Restul sunt cheltuieli opționale.",
+          "options": [
+            {
+              "label": "Cămin sau chirie"
+            },
+            {
+              "label": "Alimente"
+            },
+            {
+              "label": "Transport"
+            },
+            {
+              "label": "Telefon și internet"
+            },
+            {
+              "label": "Taxe și materiale de studiu"
+            },
+            {
+              "label": "Sănătate"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Cămin pe lună",
+              "suffix": "lei",
+              "numeric": true
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "Cămin sau chirie",
+            "Alimente",
+            "Transport",
+            "Telefon și internet",
+            "Taxe și materiale de studiu"
+          ],
+          "fields": {
+            "Cămin pe lună": "350"
+          }
+        }
+      },
+      {
+        "key": "obiective",
+        "sort_order": 2,
+        "definition": {
+          "id": "obiective",
+          "title": "Pentru ce ai vrea să economisești?",
+          "hint": "Poți alege mai multe.",
+          "options": [
+            {
+              "label": "Un fond de siguranță"
+            },
+            {
+              "label": "Un curs"
+            },
+            {
+              "label": "Echipament pentru facultate"
+            },
+            {
+              "label": "Erasmus sau o călătorie"
+            },
+            {
+              "label": "Nimic anume acum"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Ce curs?"
+            },
+            {
+              "label": "Cât costă?",
+              "suffix": "lei",
+              "numeric": true
+            },
+            {
+              "label": "Când începe?",
+              "type": "select",
+              "options": [
+                "Ianuarie 2027",
+                "Martie 2027",
+                "Octombrie 2027",
+                "Nu știu încă"
+              ]
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "Un fond de siguranță",
+            "Un curs"
+          ],
+          "fields": {
+            "Ce curs?": "UX design",
+            "Cât costă?": "900",
+            "Când începe?": "Martie 2027"
+          }
+        }
+      },
+      {
+        "key": "idei",
+        "sort_order": 3,
+        "definition": {
+          "id": "idei",
+          "title": "Te interesează idei de dezvoltare?",
+          "hint": "Cel mult una pe săptămână. Le poți opri oricând din Profil.",
+          "options": [
+            {
+              "label": "Venituri suplimentare"
+            },
+            {
+              "label": "Cursuri și educație financiară"
+            },
+            {
+              "label": "Burse și oportunități"
+            },
+            {
+              "label": "Nu acum"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Ce ai putea face contra cost?",
+              "type": "textarea"
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "Venituri suplimentare",
+            "Cursuri și educație financiară",
+            "Burse și oportunități"
+          ],
+          "fields": {
+            "Ce ai putea face contra cost?": "Meditații la matematică, marțea și joia după-amiaza."
+          }
+        }
+      },
+      {
+        "key": "notificari",
+        "sort_order": 4,
+        "definition": {
+          "id": "notificari",
+          "title": "Cât de des vrei să-ți scriu și când să nu te deranjez?",
+          "options": [
+            {
+              "label": "Doar când e important"
+            },
+            {
+              "label": "Cel mult o dată pe zi"
+            },
+            {
+              "label": "Doar rezumatul săptămânal"
+            }
+          ],
+          "fields": [
+            {
+              "label": "Fără notificări de la"
+            },
+            {
+              "label": "până la"
+            },
+            {
+              "label": "Rezumatul săptămânal",
+              "type": "select",
+              "options": [
+                "Duminică, la 20:00",
+                "Luni, la 08:00",
+                "Vineri, la 18:00",
+                "Fără rezumat"
+              ]
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "Cel mult o dată pe zi"
+          ],
+          "fields": {
+            "Fără notificări de la": "23:00",
+            "până la": "09:00",
+            "Rezumatul săptămânal": "Duminică, la 20:00"
+          }
+        }
+      },
+      {
+        "key": "servicii",
+        "sort_order": 5,
+        "definition": {
+          "id": "servicii",
+          "title": "Vrei să-ți spun și când un serviciu Raiffeisen te-ar ajuta?",
+          "hint": "Îți spun de fiecare dată de ce și cât costă. Poți schimba oricând din Profil.",
+          "options": [
+            {
+              "label": "Da, cel mult o dată pe săptămână"
+            },
+            {
+              "label": "Nu, doar sfaturi"
+            }
+          ]
+        },
+        "answer": {
+          "selected": [
+            "Da, cel mult o dată pe săptămână"
+          ],
+          "fields": {}
+        }
+      }
+    ],
+    "permissions": [
+      {
+        "id": "tx",
+        "label": "Extrase de cont",
+        "hint": "Contul curent · 12 luni",
+        "on": true
+      },
+      {
+        "id": "live",
+        "label": "Plăți cu cardul, în timp real",
+        "hint": "Pentru mesajele despre bugete",
+        "on": true
+      },
+      {
+        "id": "screen",
+        "label": "Screen Time",
+        "hint": "Doar aplicația LinguaPlus",
+        "on": true
+      },
+      {
+        "id": "calendar",
+        "label": "Google Calendar",
+        "hint": "Doar zilele de naștere și termenele marcate de tine",
+        "on": true
+      },
+      {
+        "id": "contacts",
+        "label": "Contacte",
+        "hint": "Nu e folosit",
+        "on": false
+      },
+      {
+        "id": "health",
+        "label": "Health",
+        "hint": "Nu e folosit",
+        "on": false
+      }
+    ],
+    "privacy": [
+      {
+        "id": "hide-amounts",
+        "label": "Ascunde sumele pe ecran",
+        "hint": "Sumele apar ca „••••” până le atingi",
+        "on": false
+      },
+      {
+        "id": "quiet-notifications",
+        "label": "Fără sume în notificări",
+        "hint": "Pe ecranul blocat apare doar „Ai un mesaj de la coach”",
+        "on": true
+      }
+    ],
+    "services_on": true,
+    "services": [
+      {
+        "icon": "card",
+        "kind": "Economisire la plata cu cardul",
+        "name": "Plătești și economisești",
+        "description": "La fiecare plată cu cardul de debit, 1%, 3%, 5% sau 10% din sumă se mută automat într-un cont de economii dedicat.",
+        "terms": [
+          {
+            "label": "Cost",
+            "value": "0 lei administrare"
+          },
+          {
+            "label": "Dobândă",
+            "value": "10,00% pe an pentru primii 5.000 lei, variabilă"
+          },
+          {
+            "label": "Condiție",
+            "value": "Contul se alimentează doar din plățile cu cardul"
+          }
+        ],
+        "link": {
+          "href": "https://www.raiffeisen.ro/ro/persoane-fizice/produsele-noastre/economii/cont-de-economii.html",
+          "label": "„Plătești și economisești” pe raiffeisen.ro"
+        },
+        "source": "raiffeisen.ro: cont de economii (30.06.2026)",
+        "id": "savingbox",
+        "state": "proposed",
+        "status": "Propunere",
+        "helps": "La 1%, din circa 1.500 lei plătiți lunar cu cardul, pui deoparte automat circa 15 lei pe lună. Până pe 30 noiembrie înseamnă circa 6 lei, deci nu simți diferența.",
+        "why": "Pe 28 octombrie ai întrebat cum poți economisi automat, din sume mici. Îți propun 1% cât timp banii nu îți ajung până la 1.",
+        "without": "Fără serviciu rămâne regula ta de 10% la fiecare încasare, pe care o confirmi de fiecare dată.",
+        "actions": [
+          "Setez în aplicație",
+          "Nu acum",
+          "Nu-mi mai propune"
+        ]
+      },
+      {
+        "icon": "wallet",
+        "kind": "Cont de economii",
+        "name": "Super Acces Plus",
+        "description": "Cont de economii în lei, cu dobândă variabilă, din care poți retrage banii oricând.",
+        "terms": [
+          {
+            "label": "Dobândă",
+            "value": "2,00% pe an, variabilă"
+          },
+          {
+            "label": "Impozit",
+            "value": "10% din dobândă"
+          },
+          {
+            "label": "Retrageri",
+            "value": "Oricând"
+          }
+        ],
+        "link": {
+          "href": "https://www.raiffeisen.ro/ro/persoane-fizice/produsele-noastre/economii/cont-de-economii.html",
+          "label": "Contul de economii pe raiffeisen.ro"
+        },
+        "source": "raiffeisen.ro: cont de economii (30.06.2026)",
+        "id": "savings",
+        "state": "active",
+        "status": "Activ",
+        "helps": "Aici stă fondul de siguranță: 650 din 1.200 lei. Banii sunt separați de cei de cheltuit, dar îi ai la îndemână dacă apare o urgență.",
+        "why": "Pe 28 octombrie ai spus că vrei un fond pentru situații neprevăzute.",
+        "without": "Fără cont de economii, fondul ar sta în contul curent, amestecat cu banii de cheltuit."
+      },
+      {
+        "icon": "card",
+        "kind": "Pachet de cont curent",
+        "name": "ZERO Simplu",
+        "description": "Pachetul de cont curent în lei, cu card de debit, Smart Mobile și plăți instant.",
+        "terms": [
+          {
+            "label": "Cost lunar",
+            "value": "0 lei între 18 și 24 de ani, fără condiții"
+          },
+          {
+            "label": "FixPay",
+            "value": "0 lei în pachet"
+          }
+        ],
+        "link": {
+          "href": "https://www.raiffeisen.ro/ro/persoane-fizice/produsele-noastre/conturi-si-pachete-de-cont-curent/pachetul-de-cont-curent-zero-simplu.html",
+          "label": "Pachetul ZERO Simplu pe raiffeisen.ro"
+        },
+        "source": "raiffeisen.ro: pachetul ZERO Simplu (16.10.2026)",
+        "id": "zero-simplu",
+        "state": "active",
+        "status": "Pachetul tău",
+        "helps": "Între 18 și 24 de ani nu plătești nimic lunar pentru cont și card, fără condiții. Banii de la familie și din meditații rămân întregi pentru tine.",
+        "whyLabel": "De ce îți arăt asta",
+        "why": "Îl ai deja. Îți arăt ce include, ca să nu plătești pentru ceva ce primești gratuit."
+      }
+    ],
+    "chat": [
+      {
+        "type": "divider",
+        "text": "28 octombrie"
+      },
+      {
+        "type": "coach",
+        "text": "În iulie, august și septembrie, banii s-au terminat cu 5–8 zile înainte de 1. În octombrie, cu bursa, mai ai 380 lei în cont cu 3 zile înainte de 1. Bursa vine sigur în fiecare lună de cursuri?"
+      },
+      {
+        "type": "me",
+        "text": "Doar dacă am media peste 9. Nu e sigur."
+      },
+      {
+        "type": "coach",
+        "text": "Atunci fac planul fără ea și o adaug doar după ce intră. Banii de la familie și meditațiile acoperă necesarele, de circa 1.200 lei pe lună."
+      },
+      {
+        "type": "proposal",
+        "title": "Regulă nouă: 10% deoparte",
+        "lines": [
+          "La fiecare încasare de peste 100 lei îți propun să muți 10% în fondul de siguranță.",
+          "Muți banii doar după ce confirmi.",
+          "Ținta: 1.200 lei, adică o lună de necesare."
+        ],
+        "done": "Aprobat pe 28 octombrie"
+      },
+      {
+        "type": "me",
+        "text": "Pot să economisesc și automat, din sume mici?"
+      },
+      {
+        "type": "coach",
+        "text": "Da. Banca are un serviciu care pune deoparte un procent din fiecare plată cu cardul. Cât timp banii nu îți ajung până la 1, ți-l propun la 1%."
+      },
+      {
+        "type": "service",
+        "id": "savingbox"
+      },
+      {
+        "type": "divider",
+        "text": "Azi"
+      },
+      {
+        "type": "me",
+        "text": "Mai pot comanda mâncare diseară?"
+      },
+      {
+        "type": "coach",
+        "text": "La Livrări de mâncare mai ai 34 lei din 120. O comandă obișnuită, de circa 40 lei, trece puțin peste limită. Decizia e a ta."
+      }
+    ],
+    "documents": [],
+    "goal": {
+      "presentation": {
+        "name": "Fond de siguranță",
+        "icon": "shield",
+        "note": "O lună de cheltuieli necesare",
+        "due": {
+          "label": "Obiectiv atins în",
+          "note": "10% din fiecare încasare"
+        },
+        "reason": "Am pornit de la cei 500 lei rămași din jobul de vară. Planific doar cu banii siguri, de la familie și din meditații. Dacă intră bursa, termenul se apropie.",
+        "fundingLabel": "estimat, pe lună",
+        "storage": "savings",
+        "suggestion": "savingbox"
+      },
+      "target_minor": 120000,
+      "opening_minor": 50000,
+      "schedule": [
+        {
+          "month": "oct.",
+          "planned_minor": 50000,
+          "occurs_on": "2026-10-01"
+        },
+        {
+          "month": "nov.",
+          "planned_minor": 16500,
+          "occurs_on": "2026-11-01"
+        },
+        {
+          "month": "dec.",
+          "planned_minor": 13500,
+          "occurs_on": "2026-12-01"
+        },
+        {
+          "month": "ian.",
+          "planned_minor": 13500,
+          "occurs_on": "2027-01-01"
+        },
+        {
+          "month": "feb.",
+          "planned_minor": 13500,
+          "occurs_on": "2027-02-01"
+        },
+        {
+          "month": "mar.",
+          "planned_minor": 13000,
+          "occurs_on": "2027-03-01"
+        }
+      ],
+      "funding": [
+        {
+          "name": "10% din banii de la familie",
+          "amount_minor": 12000
+        },
+        {
+          "name": "10% din meditații, cel puțin",
+          "amount_minor": 1500
+        }
+      ]
+    },
+    "pots": [],
+    "gift_counts": [
+      2,
+      1
+    ],
+    "idea_forecast": {
+      "hourly_rate_minor": 5000,
+      "hours_per_week": 2,
+      "weeks_per_month": 4,
+      "starts_on": "2026-12-01"
+    }
+  }
+}
