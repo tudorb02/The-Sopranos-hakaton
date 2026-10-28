@@ -5,3 +5,6 @@ __pycache__/
 .venv/
 build/
 dist/
+.env
+*.db
+.ruff_cache/
