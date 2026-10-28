@@ -1,5 +1,5 @@
 {
-  "summary": "Dosarul demo de utilaje, gata pentru ofițer (din fixtures/utilaje.ndjson)",
+  "summary": "Dosarul demo de utilaje, cu ofertele gata (din fixtures/utilaje.ndjson)",
   "value": {
     "runId": "run_utl3m8vz2c6h",
     "cui": "38264019",
@@ -3967,6 +3967,7 @@
         ]
       }
     },
+    "submission": null,
     "officerActions": [],
     "pendingDocuments": [],
     "error": null

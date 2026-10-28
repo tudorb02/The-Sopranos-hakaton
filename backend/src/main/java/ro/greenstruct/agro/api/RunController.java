@@ -33,6 +33,7 @@ import ro.greenstruct.agro.orchestration.RunNotFoundException;
 import ro.greenstruct.agro.orchestration.RunOrchestrator;
 import ro.greenstruct.agro.orchestration.RunRequest;
 import ro.greenstruct.agro.orchestration.RunStore;
+import ro.greenstruct.agro.orchestration.Submission;
 import ro.greenstruct.agro.orchestration.events.SseHub;
 import ro.greenstruct.agro.storage.DocumentStore;
 import ro.greenstruct.agro.storage.StoredDocument;
@@ -64,6 +65,9 @@ public class RunController {
     }
 
     public record RunCreated(String runId, String state, String runUrl, String eventsUrl) {
+    }
+
+    public record SubmitRequest(String variant) {
     }
 
     public record ApproveRequest(String officerId, String commentRo, List<String> acceptedConditionIds) {
@@ -127,9 +131,16 @@ public class RunController {
         return created(orchestrator.start(demoScenarios.load(scenario)).run());
     }
 
+    /** view=sme leaves out the funds and the notes for the bank (README §13); the default is the full dossier. */
     @GetMapping("/{id}")
-    public RunView get(@PathVariable String id) {
-        return views.toView(runs.find(id).orElseThrow(() -> new RunNotFoundException(id)));
+    public RunView get(@PathVariable String id, @RequestParam(value = "view", required = false) String view) {
+        return views.toView(runs.find(id).orElseThrow(() -> new RunNotFoundException(id)), view(view));
+    }
+
+    /** The farmer sends the chosen card to the bank; the answer is the farmer's view of the dossier. */
+    @PostMapping("/{id}/submit")
+    public RunView submit(@PathVariable String id, @RequestBody SubmitRequest body) {
+        return views.toView(orchestrator.submit(id, variant(body.variant())), RunViewMapper.View.SME);
     }
 
     /** History first (after Last-Event-ID or ?after=), then live events; closes after run.completed/failed. */
@@ -179,6 +190,25 @@ public class RunController {
 
     private static String requiredOfficer(String officerId) {
         return requireText(officerId, "officerId");
+    }
+
+    private static RunViewMapper.View view(String view) {
+        if (view == null || "full".equals(view)) {
+            return RunViewMapper.View.FULL;
+        }
+        if ("sme".equals(view)) {
+            return RunViewMapper.View.SME;
+        }
+        throw new IllegalArgumentException("view poate fi full sau sme");
+    }
+
+    private static Submission.Variant variant(String value) {
+        for (Submission.Variant variant : Submission.Variant.values()) {
+            if (variant.name().equals(value)) {
+                return variant;
+            }
+        }
+        throw new IllegalArgumentException("variant poate fi CLASIC sau VERDE");
     }
 
     private static String requireText(String value, String field) {

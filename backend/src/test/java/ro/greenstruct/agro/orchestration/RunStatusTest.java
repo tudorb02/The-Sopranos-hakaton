@@ -11,7 +11,8 @@ class RunStatusTest {
         assertThat(RunStatus.CREAT.canMoveTo(RunStatus.DATE_FIRMA)).isTrue();
         assertThat(RunStatus.DATE_FIRMA.canMoveTo(RunStatus.AGENT_1)).isTrue();
         assertThat(RunStatus.AGENT_3.canMoveTo(RunStatus.GATA)).isTrue();
-        assertThat(RunStatus.GATA.canMoveTo(RunStatus.APROBAT)).isTrue();
+        assertThat(RunStatus.GATA.canMoveTo(RunStatus.TRIMIS)).isTrue();
+        assertThat(RunStatus.TRIMIS.canMoveTo(RunStatus.APROBAT)).isTrue();
         assertThat(RunStatus.APROBAT.canMoveTo(RunStatus.MONITORIZARE)).isTrue();
     }
 
@@ -19,7 +20,9 @@ class RunStatusTest {
     void cannotSkipAgentsOrLeaveFinalStates() {
         assertThat(RunStatus.AGENT_1.canMoveTo(RunStatus.AGENT_3)).isFalse();
         assertThat(RunStatus.CREAT.canMoveTo(RunStatus.GATA)).isFalse();
+        assertThat(RunStatus.GATA.canMoveTo(RunStatus.APROBAT)).isFalse();
         assertThat(RunStatus.GATA.canMoveTo(RunStatus.ESUAT)).isFalse();
+        assertThat(RunStatus.TRIMIS.canMoveTo(RunStatus.GATA)).isFalse();
         assertThat(RunStatus.ESUAT.canMoveTo(RunStatus.CREAT)).isFalse();
     }
 

@@ -14,7 +14,7 @@ import ro.greenstruct.agro.farm.FarmProfile;
 /**
  * Immutable state of one dossier. Agents only see this object: each agent reads the previous agents'
  * outputs from agentOutputs and its own output is stored there when it finishes. The API exposes it
- * through RunView (contracts/openapi.yaml).
+ * through RunView (contracts/openapi.yaml). submission is null until the farmer sends an offer to the bank.
  */
 public record Run(
         String id,
@@ -26,6 +26,7 @@ public record Run(
         FarmProfile farmProfile,
         Map<AgentSlot, JsonNode> agentOutputs,
         List<StepRecord> steps,
+        Submission submission,
         List<OfficerAction> officerActions,
         List<PendingDocument> pendingDocuments,
         RunError error) {
@@ -41,7 +42,7 @@ public record Run(
     public static Run create(RunRequest request, List<String> missingDocuments, FarmProfile farmProfile) {
         Instant now = Instant.now();
         return new Run(newId(), RunStatus.CREAT, now, now, request, missingDocuments, farmProfile, Map.of(), List.of(),
-                List.of(), List.of(), null);
+                null, List.of(), List.of(), null);
     }
 
     /** run_ + 12 base-36 characters, as required by contracts/schemas/event.json. */
@@ -55,12 +56,12 @@ public record Run(
             throw new IllegalStateException("Dosarul nu poate trece din " + status + " în " + next);
         }
         return new Run(id, next, createdAt, Instant.now(), request, missingDocuments, farmProfile, agentOutputs, steps,
-                officerActions, pendingDocuments, error);
+                submission, officerActions, pendingDocuments, error);
     }
 
     public Run withFarmProfile(FarmProfile profile) {
         return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, profile, agentOutputs, steps,
-                officerActions, pendingDocuments, error);
+                submission, officerActions, pendingDocuments, error);
     }
 
     public Run withAgentOutput(AgentSlot slot, JsonNode output) {
@@ -68,14 +69,19 @@ public record Run(
         outputs.putAll(agentOutputs);
         outputs.put(slot, output);
         return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, farmProfile, outputs, steps,
-                officerActions, pendingDocuments, error);
+                submission, officerActions, pendingDocuments, error);
     }
 
     public Run withStep(StepRecord step) {
         List<StepRecord> all = new ArrayList<>(steps);
         all.add(step);
         return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, farmProfile, agentOutputs, all,
-                officerActions, pendingDocuments, error);
+                submission, officerActions, pendingDocuments, error);
+    }
+
+    public Run withSubmission(Submission sent) {
+        return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, farmProfile, agentOutputs, steps,
+                sent, officerActions, pendingDocuments, error);
     }
 
     public Run withOfficerAction(OfficerAction action, List<PendingDocument> newPendingDocuments) {
@@ -84,11 +90,11 @@ public record Run(
         List<PendingDocument> pending = new ArrayList<>(pendingDocuments);
         pending.addAll(newPendingDocuments);
         return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, farmProfile, agentOutputs,
-                steps, actions, pending, error);
+                steps, submission, actions, pending, error);
     }
 
     public Run failed(RunError reason) {
         return new Run(id, RunStatus.ESUAT, createdAt, Instant.now(), request, missingDocuments, farmProfile,
-                agentOutputs, steps, officerActions, pendingDocuments, reason);
+                agentOutputs, steps, submission, officerActions, pendingDocuments, reason);
     }
 }

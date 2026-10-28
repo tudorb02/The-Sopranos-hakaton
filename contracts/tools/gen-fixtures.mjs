@@ -635,13 +635,14 @@ function buildIrigatii() {
   };
   R.completed(A3, 'submit_underwriting_report', '✅ Agentul 3 a terminat: eligibil verde cu condiții', report, 3, 21600);
 
-  R.state('AGENT_3', 'GATA', 'Dosarul e gata pentru ofițerul de credit', {}, 300);
+  R.state('AGENT_3', 'GATA', 'Ofertele sunt gata; fermierul alege varianta și trimite cererea', {}, 300);
   const t0 = Date.parse('2026-10-28T09:30:00.000Z');
   R.emit('run.completed', null, `Analiză completă: eligibil cu condiții, recomandăm B (+${cmpAdv.display} în 5 ani)`, {
     state: 'GATA', durationMs: R.t - t0 + 200, decision: 'ELIGIBLE_WITH_CONDITIONS', recommendedOptionId: 'B', netAdvantageCalcId: cmpAdv.calcId,
     sources: { TECHNICAL_AUDITOR: 'LIVE', FUNDING_OPTIMIZER: 'LIVE', GREEN_UNDERWRITER: 'LIVE' },
   }, 200);
-  R.state('GATA', 'APROBAT', 'Ofițerul a aprobat dosarul cu condițiile propuse', { actor: 'OFFICER', reasonRo: 'Aprobat cu cele 6 condiții din raport.' }, 45000);
+  R.state('GATA', 'TRIMIS', 'Cererea a fost trimisă la bancă: Credit verde', { actor: 'FARMER' }, 40000);
+  R.state('TRIMIS', 'APROBAT', 'Banca a aprobat dosarul cu condițiile propuse', { actor: 'OFFICER', reasonRo: 'Aprobat cu cele 6 condiții din raport.' }, 5000);
   R.state('APROBAT', 'MONITORIZARE', 'Tragere simulată în demo; încep verificările de monitorizare', { reasonRo: 'Demo: tragerea e simulată imediat după aprobare.' }, 3000);
 
   return { R, assessment, funding, report, extractions: [extractionOffer, extractionPermit, extractionEnergy] };
@@ -1088,7 +1089,7 @@ function buildUtilaje() {
   };
   R.completed(A3, 'submit_underwriting_report', '✅ Agentul 3 a terminat: eligibil cu condiții; tractoare = tranziție, precizie = verde de piață', report, 3, 24800, 'RETRY');
 
-  R.state('AGENT_3', 'GATA', 'Dosarul e gata pentru ofițerul de credit', {}, 300);
+  R.state('AGENT_3', 'GATA', 'Ofertele sunt gata; fermierul alege varianta și trimite cererea', {}, 300);
   const t0 = Date.parse('2026-10-28T10:15:00.000Z');
   R.emit('run.completed', null, `Analiză completă: eligibil cu condiții, recomandăm B (+${cmpAdv.display} în 7 ani)`, {
     state: 'GATA', durationMs: R.t - t0 + 200, decision: 'ELIGIBLE_WITH_CONDITIONS', recommendedOptionId: 'B', netAdvantageCalcId: cmpAdv.calcId,
@@ -1206,7 +1207,7 @@ function modules() {
   ];
 }
 
-function runView(built, { cui, moduleId, scenario, farm, documents, questionnaire, parcelIds, officerActions }) {
+function runView(built, { cui, moduleId, scenario, farm, documents, questionnaire, parcelIds, submission, officerActions }) {
   const { R } = built;
   const last = R.events[R.events.length - 1];
   const states = R.events.filter((e) => e.type === 'state.transition');
@@ -1222,7 +1223,7 @@ function runView(built, { cui, moduleId, scenario, farm, documents, questionnair
     farm, parcelIds, documents, questionnaire, agentStatus,
     agents: { extractions: built.extractions, technicalAssessment: built.assessment, fundingRecommendation: built.funding, underwritingReport: built.report },
     calcs: Object.fromEntries(R.calcs),
-    officerActions, pendingDocuments: [], error: null,
+    submission, officerActions, pendingDocuments: [], error: null,
   };
 }
 
@@ -1241,8 +1242,8 @@ const fUtl = farmUtilaje();
 writeFileSync(join(ROOT, 'examples/modules.json'), example('Cele 6 module', modules()));
 writeFileSync(join(ROOT, 'examples/farm-irigatii.json'), example('Fermă de legume, 40 ha, Constanța', fIrg));
 writeFileSync(join(ROOT, 'examples/farm-utilaje.json'), example('Fermă de cereale, 400 ha, Călărași', fUtl));
-const approveAt = irg.R.events.find((e) => e.type === 'state.transition' && e.data.to === 'APROBAT').at;
-writeFileSync(join(ROOT, 'examples/run-irigatii.json'), example('Dosarul demo de irigații, după aprobare (din fixtures/irigatii.ndjson)', runView(irg, {
+const transitionAt = (built, to) => built.R.events.find((e) => e.type === 'state.transition' && e.data.to === to).at;
+writeFileSync(join(ROOT, 'examples/run-irigatii.json'), example('Dosarul demo de irigații, trimis și aprobat (din fixtures/irigatii.ndjson)', runView(irg, {
   cui: fIrg.cui, moduleId: 'irigatii', scenario: 'irigatii', farm: fIrg,
   parcelIds: fIrg.parcels.features.map((f) => f.id),
   documents: [
@@ -1251,9 +1252,10 @@ writeFileSync(join(ROOT, 'examples/run-irigatii.json'), example('Dosarul demo de
     { documentId: 'doc_facturi_energie', docType: 'ENERGY_INVOICES', fileName: 'facturi-energie-12-luni.pdf', sizeBytes: 1290455 },
   ],
   questionnaire: { crops_main: 'tomate, ardei, castraveți, varză, ceapă; 35-38 t/ha', nitrogen_kg_ha: 180, tillage: 'MINIMA', cover_crops: 'ROTATIE', irrigation_current: 'ASPERSIE_VECHE', crop_insurance: false, certifications: ['GLOBALGAP'], offtake_contracts: true, cashin_months: ['JUL', 'AUG', 'SEP', 'OCT'], old_equipment_fate: 'VANZARE', water_source: 'ANIF' },
-  officerActions: [{ action: 'APPROVE', at: approveAt, officerId: 'ofiter.demo', commentRo: 'Aprobat cu condițiile din raport.' }],
+  submission: { variant: 'VERDE', optionId: 'B', submittedAt: transitionAt(irg, 'TRIMIS') },
+  officerActions: [{ action: 'APPROVE', at: transitionAt(irg, 'APROBAT'), officerId: 'ofiter.demo', commentRo: 'Aprobat cu condițiile din raport.' }],
 })));
-writeFileSync(join(ROOT, 'examples/run-utilaje.json'), example('Dosarul demo de utilaje, gata pentru ofițer (din fixtures/utilaje.ndjson)', runView(utl, {
+writeFileSync(join(ROOT, 'examples/run-utilaje.json'), example('Dosarul demo de utilaje, cu ofertele gata (din fixtures/utilaje.ndjson)', runView(utl, {
   cui: fUtl.cui, moduleId: 'utilaje', scenario: 'utilaje', farm: fUtl,
   parcelIds: fUtl.parcels.features.map((f) => f.id),
   documents: [
@@ -1261,6 +1263,7 @@ writeFileSync(join(ROOT, 'examples/run-utilaje.json'), example('Dosarul demo de 
     { documentId: 'doc_facturi_motorina', docType: 'FUEL_INVOICES', fileName: 'facturi-motorina-12-luni.pdf', sizeBytes: 988120 },
   ],
   questionnaire: { crops_main: 'grâu 6,1 t/ha; porumb 7,4 t/ha; floarea-soarelui 2,8 t/ha; rapiță 3,2 t/ha', nitrogen_kg_ha: 150, tillage: 'ARATURA', cover_crops: 'ROTATIE', irrigation_current: 'NU', crop_insurance: true, certifications: ['NICIUNA'], offtake_contracts: true, cashin_months: ['JUL', 'AUG', 'SEP', 'OCT'], old_equipment_fate: 'CASARE', hours_per_year: 650, manager_competences: false },
+  submission: null,
   officerActions: [],
 })));
 

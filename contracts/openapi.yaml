@@ -139,9 +139,20 @@ paths:
       tags: [runs]
       operationId: getRun
       summary: Starea completă a dosarului
-      description: Output-urile agenților și toate cifrele rezolvate (`calcs`). Se poate cere oricând; câmpurile agenților sunt `null` până termină agentul respectiv.
+      description: |
+        Output-urile agenților și toate cifrele rezolvate (`calcs`). Se poate cere oricând; câmpurile agenților sunt `null` până termină agentul respectiv.
+        Cu `view=sme`, răspunsul e ce vede IMM-ul (README §13, „IMM-ul nu vede fondurile”): fără `officerNotesRo` în recomandarea de finanțare
+        și doar partea din raportul verde care îl privește (`SmeUnderwritingReport`).
       parameters:
         - $ref: '#/components/parameters/RunId'
+        - name: view
+          in: query
+          required: false
+          description: '`full` (implicit) = dosarul așa cum îl primește banca; `sme` = ce vede IMM-ul.'
+          schema:
+            type: string
+            enum: [full, sme]
+            default: full
       responses:
         '200':
           description: Dosarul.
@@ -165,8 +176,8 @@ paths:
       description: |
         Server-Sent Events. Trimite întâi istoricul (de la `Last-Event-ID` + 1 sau de la `after` + 1), apoi evenimentele live.
         Fiecare eveniment e un mesaj nenumit (`message`) cu `id: <seq>` și `data: <RunEvent JSON>`.
-        Fluxul se închide după `run.completed` sau `run.failed`, iar după aprobare se trimit și tranzițiile
-        `GATA → APROBAT → MONITORIZARE`. Catalogul complet e în `events.md`.
+        Fluxul se închide după `run.completed` sau `run.failed`; tranzițiile de după (`GATA → TRIMIS` la trimiterea cererii,
+        `TRIMIS → APROBAT → MONITORIZARE` la aprobare) se primesc la reconectare. Catalogul complet e în `events.md`.
       parameters:
         - $ref: '#/components/parameters/RunId'
         - name: Last-Event-ID
@@ -204,12 +215,46 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+  /api/runs/{id}/submit:
+    post:
+      tags: [runs]
+      operationId: submitRun
+      summary: IMM-ul trimite cererea la bancă
+      description: |
+        Doar din starea `GATA`. IMM-ul alege unul din cele două carduri (README §7, pasul 9); dosarul trece în `TRIMIS`
+        (`state.transition`, `actor: FARMER`). `CLASIC` = opțiunea de tip `STANDARD`; `VERDE` = opțiunea verde recomandată
+        (`GREEN_PACKAGE` sau `GREEN_PACKAGE_WITH_GRANT`, cu `greenEligible: true`). Dacă dosarul nu are opțiunea cerută
+        (de ex. `VERDE` sub prag, fără upgrade), răspunsul e `409`. Răspunde cu ce vede IMM-ul (`view=sme`).
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitRequest'
+            example:
+              variant: VERDE
+      responses:
+        '200':
+          description: Dosarul trimis, așa cum îl vede IMM-ul.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunView'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
   /api/runs/{id}/approve:
     post:
       tags: [officer]
       operationId: approveRun
-      summary: Ofițerul aprobă dosarul
-      description: Doar din starea `GATA`. Mută dosarul în `APROBAT` și emite `state.transition`.
+      summary: Banca aprobă dosarul
+      description: Aprobarea finală, doar din starea `TRIMIS`. Mută dosarul în `APROBAT`, apoi în `MONITORIZARE` (tragerea e simulată în demo), cu câte un `state.transition`.
       parameters:
         - $ref: '#/components/parameters/RunId'
       requestBody:
@@ -237,7 +282,7 @@ paths:
       tags: [officer]
       operationId: requestDocuments
       summary: Ofițerul cere documente
-      description: Doar din starea `GATA`. Starea rămâne `GATA`; documentele cerute apar în `RunView.pendingDocuments` și la fermier.
+      description: Doar din starea `TRIMIS`. Starea rămâne `TRIMIS`; documentele cerute apar în `RunView.pendingDocuments` și la fermier.
       parameters:
         - $ref: '#/components/parameters/RunId'
       requestBody:
@@ -352,7 +397,7 @@ components:
           example:
             error:
               code: INVALID_STATE
-              message: Dosarul poate fi aprobat doar din starea GATA.
+              message: Dosarul poate fi aprobat doar din starea TRIMIS; acum e în GATA.
     PayloadTooLarge:
       description: Fișier prea mare.
       content:
@@ -876,7 +921,7 @@ components:
     RunView:
       type: object
       additionalProperties: false
-      required: [runId, cui, moduleId, scenario, state, mode, createdAt, updatedAt, lastEventSeq, farm, parcelIds, documents, questionnaire, agentStatus, agents, calcs, officerActions, pendingDocuments, error]
+      required: [runId, cui, moduleId, scenario, state, mode, createdAt, updatedAt, lastEventSeq, farm, parcelIds, documents, questionnaire, agentStatus, agents, calcs, submission, officerActions, pendingDocuments, error]
       properties:
         runId:
           $ref: '#/components/schemas/RunId'
@@ -934,12 +979,16 @@ components:
                 - $ref: './schemas/submit_technical_assessment.json'
                 - type: 'null'
             fundingRecommendation:
+              description: Cu `view=sme`, `SmeFundingRecommendation`.
               anyOf:
                 - $ref: './schemas/submit_funding_recommendation.json'
+                - $ref: '#/components/schemas/SmeFundingRecommendation'
                 - type: 'null'
             underwritingReport:
+              description: Cu `view=sme`, `SmeUnderwritingReport`.
               anyOf:
                 - $ref: './schemas/submit_underwriting_report.json'
+                - $ref: '#/components/schemas/SmeUnderwritingReport'
                 - type: 'null'
         calcs:
           type: object
@@ -948,6 +997,11 @@ components:
             pattern: '^calc_[a-f0-9]{12}$'
           additionalProperties:
             $ref: '#/components/schemas/CalcResult'
+        submission:
+          description: Varianta trimisă la bancă; `null` până la `POST /api/runs/{id}/submit`.
+          anyOf:
+            - $ref: '#/components/schemas/Submission'
+            - type: 'null'
         officerActions:
           type: array
           items:
@@ -1031,6 +1085,77 @@ components:
         requestedAt:
           type: string
           format: date-time
+    Variant:
+      type: string
+      description: |
+        Cele două carduri ale IMM-ului (README §7). `CLASIC` = opțiunea de tip `STANDARD`; `VERDE` = opțiunea verde
+        (`GREEN_PACKAGE` sau `GREEN_PACKAGE_WITH_GRANT`) recomandată, sau singura opțiune verde, cu `greenEligible: true`.
+      enum: [CLASIC, VERDE]
+    SubmitRequest:
+      type: object
+      additionalProperties: false
+      required: [variant]
+      properties:
+        variant:
+          $ref: '#/components/schemas/Variant'
+    Submission:
+      type: object
+      additionalProperties: false
+      required: [variant, optionId, submittedAt]
+      properties:
+        variant:
+          $ref: '#/components/schemas/Variant'
+        optionId:
+          description: Opțiunea din `agents.fundingRecommendation.options` care corespunde variantei.
+          $ref: './schemas/submit_funding_recommendation.json#/$defs/optionId'
+        submittedAt:
+          type: string
+          format: date-time
+    SmeFundingRecommendation:
+      type: object
+      additionalProperties: false
+      description: '`submit_funding_recommendation` fără `officerNotesRo`, notele pentru bancă (doar în `view=sme`).'
+      required: [options, recommendedOptionId, recommendationBasis, programChecks, grantOutlook, comparison, farmerExplanationRo]
+      properties:
+        options:
+          $ref: './schemas/submit_funding_recommendation.json#/properties/options'
+        recommendedOptionId:
+          $ref: './schemas/submit_funding_recommendation.json#/properties/recommendedOptionId'
+        recommendationBasis:
+          $ref: './schemas/submit_funding_recommendation.json#/properties/recommendationBasis'
+        programChecks:
+          $ref: './schemas/submit_funding_recommendation.json#/properties/programChecks'
+        grantOutlook:
+          $ref: './schemas/submit_funding_recommendation.json#/properties/grantOutlook'
+        comparison:
+          $ref: './schemas/submit_funding_recommendation.json#/properties/comparison'
+        farmerExplanationRo:
+          $ref: './schemas/submit_funding_recommendation.json#/properties/farmerExplanationRo'
+    SmeUnderwritingReport:
+      type: object
+      additionalProperties: false
+      description: |
+        Partea din `submit_underwriting_report` pe care o vede IMM-ul (doar în `view=sme`): decizia, criteriul, impactul,
+        condițiile înainte de tragere, indicatorii de monitorizare și pașii următori. Fondul și cerințele lui, categoria
+        din cadrul obligațiunilor verzi, etichetele, DNSH, riscurile și rezumatul pentru comitet rămân la bancă.
+      required: [decision, moduleId, recommendedOptionId, criterion, impact, conditionsPrecedent, monitoringKpis, farmerNextSteps]
+      properties:
+        decision:
+          $ref: './schemas/submit_underwriting_report.json#/properties/decision'
+        moduleId:
+          $ref: './schemas/submit_underwriting_report.json#/properties/moduleId'
+        recommendedOptionId:
+          $ref: './schemas/submit_underwriting_report.json#/properties/recommendedOptionId'
+        criterion:
+          $ref: './schemas/submit_underwriting_report.json#/properties/criterion'
+        impact:
+          $ref: './schemas/submit_underwriting_report.json#/properties/impact'
+        conditionsPrecedent:
+          $ref: './schemas/submit_underwriting_report.json#/properties/conditionsPrecedent'
+        monitoringKpis:
+          $ref: './schemas/submit_underwriting_report.json#/properties/monitoringKpis'
+        farmerNextSteps:
+          $ref: './schemas/submit_underwriting_report.json#/properties/farmerNextSteps'
     RunError:
       type: object
       additionalProperties: false

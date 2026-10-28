@@ -1,5 +1,5 @@
 {
-  "summary": "Dosarul demo de irigații, după aprobare (din fixtures/irigatii.ndjson)",
+  "summary": "Dosarul demo de irigații, trimis și aprobat (din fixtures/irigatii.ndjson)",
   "value": {
     "runId": "run_irg7k2xq4m9p",
     "cui": "45871203",
@@ -9,7 +9,7 @@
     "mode": "LIVE",
     "createdAt": "2026-10-28T09:30:00.000Z",
     "updatedAt": "2026-10-28T09:31:43.028Z",
-    "lastEventSeq": 58,
+    "lastEventSeq": 59,
     "farm": {
       "cui": "45871203",
       "company": {
@@ -3708,6 +3708,11 @@
           "calc_63eb160b82cf"
         ]
       }
+    },
+    "submission": {
+      "variant": "VERDE",
+      "optionId": "B",
+      "submittedAt": "2026-10-28T09:31:35.028Z"
     },
     "officerActions": [
       {

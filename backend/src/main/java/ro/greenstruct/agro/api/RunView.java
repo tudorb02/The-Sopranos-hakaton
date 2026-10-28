@@ -10,11 +10,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import ro.greenstruct.agro.farm.FarmProfile;
 import ro.greenstruct.agro.orchestration.OfficerAction;
 import ro.greenstruct.agro.orchestration.PendingDocument;
+import ro.greenstruct.agro.orchestration.Submission;
 import ro.greenstruct.agro.tools.Calc;
 
 /**
- * GET /api/runs/{id} (RunView in contracts/openapi.yaml). Nullable fields (scenario, error, the agents'
- * outputs) are always present; optional ones inside nested objects are omitted when empty.
+ * GET /api/runs/{id} (RunView in contracts/openapi.yaml). Nullable fields (scenario, submission, error, the
+ * agents' outputs) are always present; optional ones inside nested objects are omitted when empty.
  */
 public record RunView(
         String runId,
@@ -33,6 +34,7 @@ public record RunView(
         List<AgentStatus> agentStatus,
         Agents agents,
         Map<String, Calc> calcs,
+        Submission submission,
         List<OfficerAction> officerActions,
         List<PendingDocument> pendingDocuments,
         Error error) {
