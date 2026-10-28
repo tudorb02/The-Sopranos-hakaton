@@ -25,7 +25,7 @@ public final class ExtractionParser {
     private static final Set<String> INVOICE_TYPES = Set.of("ENERGY_INVOICES", "FUEL_INVOICES", "FERTILIZER_INVOICES",
             "WATER_CONSUMPTION");
     private static final List<String> INVOICE_TOTALS = List.of("ENERGY_KWH", "ENERGY_COST", "FUEL_LITRES", "FUEL_COST",
-            "FERTILIZER_KG_N", "WATER_M3");
+            "FERTILIZER_KG_N", "WATER_M3", "TOTAL_NET", "VAT_AMOUNT", "TOTAL_GROSS");
 
     private ExtractionParser() {
     }

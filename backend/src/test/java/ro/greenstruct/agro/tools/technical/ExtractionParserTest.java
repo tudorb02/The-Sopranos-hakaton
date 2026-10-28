@@ -27,6 +27,21 @@ class ExtractionParserTest {
     }
 
     @Test
+    void invoiceAmountsAreSummedToo() {
+        ObjectNode extraction = invoices("FUEL_INVOICES");
+        var lines = extraction.withArray("lineItems");
+        for (String net : new String[]{"6.500,00", "3.875,00"}) {
+            lines.addObject().put("lineId", "ln_" + (lines.size() + 1)).put("category", "OTHER")
+                    .put("descriptionRo", "Factură").putArray("fields").addObject().put("key", "TOTAL_NET")
+                    .put("rawValue", net + " EUR").put("unit", "EUR");
+        }
+        extraction.putArray("documentFields");
+
+        assertThat(ExtractionParser.parse(extraction).number("TOTAL_NET"))
+                .hasValueSatisfying(v -> assertThat(v).isEqualByComparingTo("10375.00"));
+    }
+
+    @Test
     void anOfferKeepsItsOwnTotals() {
         ObjectNode extraction = invoices("OFFER", "10", "20");
         extraction.putArray("documentFields");
