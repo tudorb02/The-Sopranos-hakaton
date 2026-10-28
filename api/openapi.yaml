@@ -1,0 +1,1288 @@
+openapi: 3.1.0
+info:
+  title: Nexxt Finance API
+  description: Analiză financiară deterministă. X-User-Id este exclusiv pentru dezvoltare.
+    Sumele sunt întregi în bani; cheltuielile sunt negative. Datele sunt UTC.
+  version: 1.0.0
+paths:
+  /api/v1/accounts/import:
+    post:
+      tags:
+      - imports
+      summary: Create Import
+      description: 'Import sincron expus ca job. Limita fișierului: 10 MiB.'
+      operationId: create_import_api_v1_accounts_import_post
+      parameters:
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_create_import_api_v1_accounts_import_post'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResponse'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '413':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Request Entity Too Large
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+  /api/v1/imports/{id}:
+    get:
+      tags:
+      - imports
+      summary: Get Import
+      operationId: get_import_api_v1_imports__id__get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResponse'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/transactions:
+    get:
+      tags:
+      - transactions
+      summary: Transactions
+      operationId: transactions_api_v1_transactions_get
+      parameters:
+      - name: from
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: From
+      - name: to
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: To
+      - name: category
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - enum:
+            - salary
+            - rent
+            - utilities
+            - loan
+            - gym
+            - subscription
+            - groceries
+            - transport
+            - pharmacy
+            - uncategorized
+            - coffee
+            - restaurants
+            - delivery
+            - shopping
+            - entertainment
+            - gifts
+            type: string
+          - type: 'null'
+          title: Category
+      - name: merchant
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Merchant
+      - name: currency
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            pattern: ^[A-Z]{3}$
+          - type: 'null'
+          title: Currency
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          minimum: 1
+          default: 50
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionPage'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+  /api/v1/transactions/{id}:
+    patch:
+      tags:
+      - transactions
+      summary: Patch Transaction
+      operationId: patch_transaction_api_v1_transactions__id__patch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionPatch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/analytics/summary:
+    get:
+      tags:
+      - analytics
+      summary: Summary
+      operationId: summary_api_v1_analytics_summary_get
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          enum:
+          - current_month
+          - last_month
+          - last_3_months
+          - last_6_months
+          - all
+          type: string
+          default: last_3_months
+          title: Period
+      - name: currency
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            pattern: ^[A-Z]{3}$
+          - type: 'null'
+          title: Currency
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SummaryResponse'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/analytics/cashflow:
+    get:
+      tags:
+      - analytics
+      summary: Cashflow
+      operationId: cashflow_api_v1_analytics_cashflow_get
+      parameters:
+      - name: months
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 120
+          minimum: 1
+          default: 3
+          title: Months
+      - name: currency
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            pattern: ^[A-Z]{3}$
+          - type: 'null'
+          title: Currency
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashflowResponse'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/analytics/recurring:
+    get:
+      tags:
+      - analytics
+      summary: Recurring
+      operationId: recurring_api_v1_analytics_recurring_get
+      parameters:
+      - name: min_frequency
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Min Frequency
+      - name: currency
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            pattern: ^[A-Z]{3}$
+          - type: 'null'
+          title: Currency
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PatternResponse'
+                title: Response Recurring Api V1 Analytics Recurring Get
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/insights:
+    get:
+      tags:
+      - insights
+      summary: Insights
+      operationId: insights_api_v1_insights_get
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - enum:
+            - new
+            - seen
+            - accepted
+            - dismissed
+            type: string
+          - type: 'null'
+          title: Status
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InsightResponse'
+                title: Response Insights Api V1 Insights Get
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/insights/{id}:
+    patch:
+      tags:
+      - insights
+      summary: Patch Insight
+      operationId: patch_insight_api_v1_insights__id__patch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsightPatch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightResponse'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/subscriptions:
+    get:
+      tags:
+      - subscriptions
+      summary: Subscriptions
+      operationId: subscriptions_api_v1_subscriptions_get
+      parameters:
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionResponse'
+                title: Response Subscriptions Api V1 Subscriptions Get
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/subscriptions/{id}:
+    patch:
+      tags:
+      - subscriptions
+      summary: Patch Subscription
+      operationId: patch_subscription_api_v1_subscriptions__id__patch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionPatch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponse'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+  /api/v1/usage-signals:
+    post:
+      tags:
+      - subscriptions
+      summary: Create Usage Signal
+      operationId: create_usage_signal_api_v1_usage_signals_post
+      parameters:
+      - name: X-User-Id
+        in: header
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: X-User-Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsageSignalCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageSignalResponse'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+  /health:
+    get:
+      tags:
+      - health
+      summary: Health
+      operationId: health_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+components:
+  schemas:
+    BalancePoint:
+      properties:
+        date:
+          type: string
+          format: date
+          title: Date
+        balance_minor:
+          type: integer
+          title: Balance Minor
+        critical:
+          type: boolean
+          title: Critical
+      type: object
+      required:
+      - date
+      - balance_minor
+      - critical
+      title: BalancePoint
+    Body_create_import_api_v1_accounts_import_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        account_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Account Id
+        currency:
+          type: string
+          pattern: ^[A-Z]{3}$
+          title: Currency
+          default: RON
+      type: object
+      required:
+      - file
+      title: Body_create_import_api_v1_accounts_import_post
+    CashflowResponse:
+      properties:
+        currency:
+          type: string
+          title: Currency
+        salary_day:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Salary Day
+        critical_threshold_minor:
+          type: integer
+          title: Critical Threshold Minor
+        critical_days:
+          type: integer
+          title: Critical Days
+        points:
+          items:
+            $ref: '#/components/schemas/BalancePoint'
+          type: array
+          title: Points
+      type: object
+      required:
+      - currency
+      - salary_day
+      - critical_threshold_minor
+      - critical_days
+      - points
+      title: CashflowResponse
+    ErrorBody:
+      properties:
+        code:
+          type: string
+          title: Code
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - code
+      - message
+      title: ErrorBody
+    ErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorBody'
+      type: object
+      required:
+      - error
+      title: ErrorResponse
+    HealthResponse:
+      properties:
+        status:
+          type: string
+          const: ok
+          title: Status
+          default: ok
+      type: object
+      title: HealthResponse
+    HistoryResponse:
+      properties:
+        sufficient:
+          type: boolean
+          title: Sufficient
+        history_days:
+          type: integer
+          minimum: 0.0
+          title: History Days
+        required_days:
+          type: integer
+          title: Required Days
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - sufficient
+      - history_days
+      - required_days
+      - message
+      title: HistoryResponse
+    ImportResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        account_id:
+          type: string
+          format: uuid
+          title: Account Id
+        status:
+          type: string
+          enum:
+          - pending
+          - processing
+          - completed
+          - failed
+          title: Status
+        inserted_count:
+          type: integer
+          title: Inserted Count
+        duplicate_count:
+          type: integer
+          title: Duplicate Count
+        error_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Code
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        completed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Completed At
+      type: object
+      required:
+      - id
+      - account_id
+      - status
+      - inserted_count
+      - duplicate_count
+      - error_code
+      - error_message
+      - created_at
+      - completed_at
+      title: ImportResponse
+    InsightPatch:
+      properties:
+        status:
+          type: string
+          enum:
+          - new
+          - seen
+          - accepted
+          - dismissed
+          title: Status
+      additionalProperties: false
+      type: object
+      required:
+      - status
+      title: InsightPatch
+    InsightResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        pattern_id:
+          type: string
+          format: uuid
+          title: Pattern Id
+        type:
+          type: string
+          title: Type
+        payload:
+          additionalProperties: true
+          type: object
+          title: Payload
+        status:
+          type: string
+          enum:
+          - new
+          - seen
+          - accepted
+          - dismissed
+          title: Status
+        score:
+          type: string
+          title: Score
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - pattern_id
+      - type
+      - payload
+      - status
+      - score
+      - created_at
+      title: InsightResponse
+    PatternResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        type:
+          type: string
+          title: Type
+        evidence:
+          additionalProperties: true
+          type: object
+          title: Evidence
+        support:
+          type: integer
+          title: Support
+        confidence:
+          type: number
+          title: Confidence
+        monthly_impact_minor:
+          type: integer
+          title: Monthly Impact Minor
+        currency:
+          type: string
+          title: Currency
+        period_start:
+          type: string
+          format: date-time
+          title: Period Start
+        period_end:
+          type: string
+          format: date-time
+          title: Period End
+        detector_version:
+          type: string
+          title: Detector Version
+      type: object
+      required:
+      - id
+      - type
+      - evidence
+      - support
+      - confidence
+      - monthly_impact_minor
+      - currency
+      - period_start
+      - period_end
+      - detector_version
+      title: PatternResponse
+    SubscriptionPatch:
+      properties:
+        status:
+          anyOf:
+          - type: string
+            enum:
+            - active
+            - cancel_planned
+            - cancelled
+          - type: 'null'
+          title: Status
+        usage_source:
+          anyOf:
+          - type: string
+            enum:
+            - geofence
+            - health
+            - manual
+          - type: 'null'
+          title: Usage Source
+        usage_connected_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Usage Connected At
+      additionalProperties: false
+      type: object
+      title: SubscriptionPatch
+    SubscriptionResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        merchant_id:
+          type: string
+          format: uuid
+          title: Merchant Id
+        merchant:
+          type: string
+          title: Merchant
+        amount_minor:
+          type: integer
+          title: Amount Minor
+        currency:
+          type: string
+          title: Currency
+        period:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          title: Period
+        next_charge_at:
+          type: string
+          format: date-time
+          title: Next Charge At
+        last_charge_at:
+          type: string
+          format: date-time
+          title: Last Charge At
+        status:
+          type: string
+          enum:
+          - active
+          - cancel_planned
+          - cancelled
+          title: Status
+        usage_source:
+          anyOf:
+          - type: string
+            enum:
+            - geofence
+            - health
+            - manual
+          - type: 'null'
+          title: Usage Source
+        usage_connected_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Usage Connected At
+        usage_count_30_days:
+          type: integer
+          title: Usage Count 30 Days
+        cost_per_use_minor:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Cost Per Use Minor
+        usage_monitoring_complete:
+          type: boolean
+          title: Usage Monitoring Complete
+      type: object
+      required:
+      - id
+      - merchant_id
+      - merchant
+      - amount_minor
+      - currency
+      - period
+      - next_charge_at
+      - last_charge_at
+      - status
+      - usage_source
+      - usage_connected_at
+      - usage_count_30_days
+      - cost_per_use_minor
+      - usage_monitoring_complete
+      title: SubscriptionResponse
+    SummaryResponse:
+      properties:
+        period:
+          type: string
+          title: Period
+        currency:
+          type: string
+          title: Currency
+        income_minor:
+          type: integer
+          title: Income Minor
+        expenses_minor:
+          type: integer
+          title: Expenses Minor
+        net_minor:
+          type: integer
+          title: Net Minor
+        transaction_count:
+          type: integer
+          title: Transaction Count
+        categories:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Categories
+        history:
+          $ref: '#/components/schemas/HistoryResponse'
+      type: object
+      required:
+      - period
+      - currency
+      - income_minor
+      - expenses_minor
+      - net_minor
+      - transaction_count
+      - categories
+      - history
+      title: SummaryResponse
+    TransactionPage:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/TransactionResponse'
+          type: array
+          title: Items
+        total:
+          type: integer
+          title: Total
+        limit:
+          type: integer
+          title: Limit
+        offset:
+          type: integer
+          title: Offset
+      type: object
+      required:
+      - items
+      - total
+      - limit
+      - offset
+      title: TransactionPage
+    TransactionPatch:
+      properties:
+        category:
+          type: string
+          enum:
+          - salary
+          - rent
+          - utilities
+          - loan
+          - gym
+          - subscription
+          - groceries
+          - transport
+          - pharmacy
+          - uncategorized
+          - coffee
+          - restaurants
+          - delivery
+          - shopping
+          - entertainment
+          - gifts
+          title: Category
+      additionalProperties: false
+      type: object
+      required:
+      - category
+      title: TransactionPatch
+    TransactionResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        account_id:
+          type: string
+          format: uuid
+          title: Account Id
+        occurred_at:
+          type: string
+          format: date-time
+          title: Occurred At
+        occurred_at_precision:
+          type: string
+          enum:
+          - minute
+          - day
+          title: Occurred At Precision
+        booked_at:
+          type: string
+          format: date-time
+          title: Booked At
+        amount_minor:
+          type: integer
+          title: Amount Minor
+        balance_minor:
+          type: integer
+          title: Balance Minor
+        currency:
+          type: string
+          title: Currency
+        description_raw:
+          type: string
+          title: Description Raw
+        merchant_id:
+          type: string
+          format: uuid
+          title: Merchant Id
+        category:
+          type: string
+          enum:
+          - salary
+          - rent
+          - utilities
+          - loan
+          - gym
+          - subscription
+          - groceries
+          - transport
+          - pharmacy
+          - uncategorized
+          - coffee
+          - restaurants
+          - delivery
+          - shopping
+          - entertainment
+          - gifts
+          title: Category
+        spending_type:
+          type: string
+          enum:
+          - fixed
+          - essential
+          - discretionary
+          title: Spending Type
+        is_recurring:
+          type: boolean
+          title: Is Recurring
+        category_corrected:
+          type: boolean
+          title: Category Corrected
+      type: object
+      required:
+      - id
+      - account_id
+      - occurred_at
+      - occurred_at_precision
+      - booked_at
+      - amount_minor
+      - balance_minor
+      - currency
+      - description_raw
+      - merchant_id
+      - category
+      - spending_type
+      - is_recurring
+      - category_corrected
+      title: TransactionResponse
+    UsageSignalCreate:
+      properties:
+        subscription_id:
+          type: string
+          format: uuid
+          title: Subscription Id
+        source:
+          type: string
+          enum:
+          - geofence
+          - health
+          - manual
+          title: Source
+        occurred_at:
+          type: string
+          format: date-time
+          title: Occurred At
+      additionalProperties: false
+      type: object
+      required:
+      - subscription_id
+      - source
+      - occurred_at
+      title: UsageSignalCreate
+    UsageSignalResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        subscription_id:
+          type: string
+          format: uuid
+          title: Subscription Id
+        source:
+          type: string
+          enum:
+          - geofence
+          - health
+          - manual
+          title: Source
+        occurred_at:
+          type: string
+          format: date-time
+          title: Occurred At
+      type: object
+      required:
+      - id
+      - subscription_id
+      - source
+      - occurred_at
+      title: UsageSignalResponse
