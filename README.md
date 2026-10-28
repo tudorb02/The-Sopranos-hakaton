@@ -29,8 +29,9 @@ Proiect pentru hackathonul Raiffeisen Bank România: *„Provocare Deschisă: Ag
 10. [Agenții AI](#10-agenții-ai)
 11. [Arhitectura tehnică](#11-arhitectura-tehnică)
 12. [Demo-ul](#12-demo-ul)
-13. [Ipoteze de confirmat cu Raiffeisen](#13-ipoteze-de-confirmat-cu-raiffeisen)
-14. [Surse](#14-surse)
+13. [Decizii pentru prototip](#13-decizii-pentru-prototip)
+14. [Ipoteze de confirmat cu Raiffeisen](#14-ipoteze-de-confirmat-cu-raiffeisen)
+15. [Surse](#15-surse)
 
 ---
 
@@ -111,7 +112,7 @@ Aplicația are **două zone** care lucrează pe același dosar:
 
 Creditul verde e posibil pentru că Raiffeisen accesează **bani și garanții** care vin cu **cerințe verzi**. Fiecare credit verde din aplicație trebuie legat de una din aceste surse și trebuie să îndeplinească cerințele ei.
 
-> ⚠️ Lista e construită din **surse publice** (vezi [§14](#14-surse)). Unele sunt mai vechi, iar **termenii actuali** (procentul de garanție, dobânzile, sumele disponibile, dacă un program mai e activ) **se confirmă cu Raiffeisen**. În aplicație, toate valorile stau în `config/funds.json`, nu în cod.
+> ⚠️ Lista e construită din **surse publice** (vezi [§15](#15-surse)). Unele sunt mai vechi, iar **termenii actuali** (procentul de garanție, dobânzile, sumele disponibile, dacă un program mai e activ) **se confirmă cu Raiffeisen**. În aplicație, toate valorile stau în `config/funds.json`, nu în cod.
 
 ### 3.1 Sursele
 
@@ -620,10 +621,13 @@ La fiecare pas, backend-ul trimite un **eveniment live (SSE)** către ambele zon
 
 | Zonă | Tehnologie |
 |---|---|
-| Frontend | React + TypeScript + Tailwind + Shadcn UI · Leaflet (hărți) · Recharts (grafice) |
+| Frontend | Vite + React + TypeScript + Tailwind + shadcn/ui · Leaflet (OpenStreetMap cu internet, parcele pe fundal simplu fără internet) · Recharts (grafice) |
 | Backend | Node.js + TypeScript + Fastify |
-| AI | AWS Bedrock, `ConverseCommand` cu Claude (citire PDF + tool use), regiune UE |
-| Fișiere | AWS S3, cu fallback pe disc local |
+| AI | AWS Bedrock, `ConverseCommand` cu Claude (citire PDF + tool use), regiune UE. **Opțional:** fără chei AWS în `.env`, aplicația merge complet din rulările demo înregistrate |
+| Fișiere | disc local (AWS S3 opțional) |
+| Stocare | dosarele în memorie, salvate într-un fișier JSON; fără bază de date |
+| Autentificare | fără: cele două zone sunt rutele `/imm` și `/ofiter`, afișate în split-view, cu un selector de dosar demo |
+| Repo | npm workspaces (`frontend/`, `backend/`, `shared/`), pornit cu `npm run dev` |
 | Live | Server-Sent Events (SSE) |
 | Validare | zod (aceleași scheme pentru AI, backend și frontend) |
 | Teste | vitest |
@@ -652,6 +656,7 @@ greenstruct-agro/
 │       ├── mock-external-apis/ # ANAF, APIA, ANSVSA, Open Banking, climă, Natura 2000, nitrați
 │       └── fallback/           # rulări demo înregistrate
 ├── shared/                     # tipuri + scheme zod comune
+├── scripts/                    # generează PDF-urile demo din aceleași date JSON ca mock-urile
 ├── data/
 │   ├── catalog/                # upgrade-urile pe categorie
 │   └── demo/                   # documente și date demo
@@ -689,7 +694,7 @@ greenstruct-agro/
 | 3. Cache | timeout | rezultatul salvat de la o rulare anterioară cu aceleași documente |
 | 4. Înregistrare | AWS indisponibil / fără internet | redăm o rulare reală înregistrată, cu același ritm |
 
-Motorul de calcul **rulează mereu live**, pentru că e cod local.
+Motorul de calcul **rulează mereu live**, pentru că e cod local. Până apar cheile AWS, aplicația pornește direct în modul offline (nivelul 4).
 
 ---
 
@@ -699,7 +704,7 @@ Motorul de calcul **rulează mereu live**, pentru că e cod local.
 |---|---|---|
 | **Problema** | Raiffeisen are bani verzi, fermierii au nevoie de ei, dar verificarea manuală e prea scumpă | 20 sec |
 | **Rularea principală (live)** | **Fermă de legume, 40 ha, sud-est.** Irigă prin brazde și cere aspersie clasică (20% economie de apă, sub prag) → aplicația propune picurare + senzori (40%, Verde Plus) → clasic vs. verde, cu descompunerea dobânzii și rate după recoltă → raportul ofițerului cu harta, fondul și categoria din cadrul obligațiunilor verzi | ~2 min |
-| **A doua rulare (rapidă)** | **Fermă de vaci, 150 de capete** → biogaz. Aceeași aplicație, altă categorie | ~30 sec |
+| **A doua rulare (live)** | **Juriul alege una din celelalte 5 categorii**, iar noi rulăm pe loc ferma ei demo | ~30 sec |
 | **Pentru bancă** | panoul de portofoliu: credite verzi, sume pe fiecare fond, impact | 20 sec |
 
 ### Demo-ul e gata când
@@ -708,13 +713,62 @@ Motorul de calcul **rulează mereu live**, pentru că e cod local.
 - [ ] Se vede momentul *„sub prag → upgrade → peste prag”*
 - [ ] Se vede **de ce** dobânda verde e mai mică (descompunerea pe componente)
 - [ ] Raportul ofițerului are fondul, cerințele bifate, DNSH, impactul și condițiile
-- [ ] Ferma de vaci funcționează
+- [ ] Toate cele 6 ferme demo trec complet, oricare ar alege juriul
 - [ ] Toate cifrele vin din motorul de calcul și au teste
 - [ ] Demo-ul merge **fără internet**
 
 ---
 
-## 13. Ipoteze de confirmat cu Raiffeisen
+## 13. Decizii pentru prototip
+
+Deciziile luate pentru versiunea de hackathon. Ce nu e scris aici urmează restul documentului.
+
+### Produs
+
+| Decizie | Detaliu |
+|---|---|
+| **Toate cele 6 categorii merg complet** | fiecare are fermă demo, documente, calcule, ofertă și raport |
+| **6 ferme demo fictive** | legume (irigații) · fermă cu facturi mari la energie (fotovoltaice) · cereale (utilaje) · vaci (biogaz) · fructe (depozit frigorific) · fermă în conversie la bio. Fiecare are un buton „Dosar demo” pe cardul categoriei. Detaliile lor sunt în `data/demo/README.md` |
+| **Date evident fictive** | nume fictive și CUI-uri `DEMO-0001` … `DEMO-0006`, nu numere care ar putea aparține unor firme reale. Mock-ul ANAF acceptă doar aceste coduri |
+| **Momentul de îndrumare** | categoriile 1, 3, 4, 5 pornesc **sub prag** și arată upgrade-ul · categoria 2 (eligibilă direct) arată **redimensionarea** instalației · categoria 6 arată **conversia etapizată** și golul de lichiditate |
+| **Zona IMM e self-service** | o folosește reprezentantul firmei, singur |
+| **IMM-ul nu vede fondurile** | vede „Credit verde Raiffeisen” și beneficiul „fără ipotecă, datorită unei garanții europene”. Fondul și cerințele lui apar doar în zona ofițerului |
+| **Două carduri: Clasic și Verde** | dacă investiția cerută e sub prag, alegerea cardului Verde înseamnă acceptarea upgrade-ului. Nu există „verde fără upgrade” |
+| **Prețul upgrade-ului e estimat** | vine din catalog. Condiție înainte de tragere: oferta actualizată de la furnizor, iar suma se ajustează după ea |
+| **„Aprobă”** | schimbă statusul în ambele zone și generează raportul PDF. Fără integrare cu sistemele băncii |
+| **„Simulează 12 luni”** | buton în zona ofițerului: încarcă date de monitorizare simulate, arată impactul real față de cel estimat și bonusul de impact, actualizează portofoliul |
+| **Moneda: EUR** | indice EURIBOR 3M. Moneda rămâne parametru în config |
+| **Durata creditului** | 5 ani pentru irigații, utilaje, post-recoltă și ecologic · 7 ani pentru fotovoltaice și biogaz · grație de maximum 12 luni, până la prima recoltă după investiție (config pe categorie) |
+| **Parametri demo** | pragurile și parametrii dobânzii sunt cei ilustrativi din acest document, marcați „parametri demo” în zona ofițerului, până răspund mentorii |
+| **Limba** | interfața e în română; codul, variabilele și commit-urile sunt în engleză |
+| **Branding** | „Raiffeisen” apare ca text, cu o temă de culori proprie. Logo-ul oficial se adaugă doar cu acordul organizatorilor |
+
+### Tehnic
+
+| Decizie | Detaliu |
+|---|---|
+| **Merge complet fără AWS** | agenții rulează din rulările demo înregistrate. Bedrock se activează punând cheile în `.env` |
+| **Toate sursele externe sunt mock-uri** | ANAF, APIA, ANSVSA, Open Banking, hărți de risc. Fiecare mock are interfața serviciului real, ca integrarea reală să se poată adăuga ulterior |
+| **Fără login, fără bază de date** | vezi [§11](#11-arhitectura-tehnică) |
+| **PDF-uri demo generate de un script** | din aceleași date JSON ca mock-urile, ca cifrele să fie mereu identice |
+| **Demo local** | rulează pe laptopul de prezentare, fără hosting |
+
+### Ordinea de construcție
+
+În orice moment există o versiune care merge complet. Dacă nu ajunge timpul, se taie de la coadă.
+
+| Pas | Ce | Dacă nu ajunge timpul |
+|---|---|---|
+| 1 | Categoria 1 cap-coadă, în ambele zone, inclusiv offline | nu se taie |
+| 2 | Categoriile 2–6, cu fermele lor demo | nu se taie |
+| 3 | Raportul PDF | nu se taie |
+| 4 | Portofoliul și „Simulează 12 luni” | se taie al treilea |
+| 5 | Agenții live pe Bedrock (doar dacă apar cheile AWS) | se taie al doilea |
+| 6 | Polish vizual | se taie primul |
+
+---
+
+## 14. Ipoteze de confirmat cu Raiffeisen
 
 ### Ce am presupus
 
@@ -738,7 +792,7 @@ Motorul de calcul **rulează mereu live**, pentru că e cod local.
 
 ---
 
-## 14. Surse
+## 15. Surse
 
 - [Sustainalytics — Raiffeisen Bank Romania Sustainability Bond Framework, Second Party Opinion (2024)](https://www.sustainalytics.com/corporate-solutions/sustainable-finance-and-lending/published-projects/project/raiffeisen-bank-romania/raiffeisen-bank-romania-sustainability-bond-framework-second-party-opinion-(2024)/raiffeisen-bank-romania-sustainability-bond-framework-second-party-opinion-(2024))
 - [Sustainalytics — RBRO Green Bond Framework, Second Party Opinion](https://mstar-sustops-cdn-mainwebsite-s3.s3.amazonaws.com/docs/default-source/spos/rbro-green-bond-framework-second-party-opinion.pdf)
