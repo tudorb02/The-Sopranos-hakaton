@@ -1,0 +1,33 @@
+{
+  "documentId": "doc_oferta_utilaje_bio",
+  "documentType": "OFFER",
+  "moduleId": "ecologic",
+  "currency": "EUR",
+  "supplierName": "Agro Mecanic Demo SRL",
+  "documentFields": [
+    {"key": "DOCUMENT_NUMBER", "rawValue": "OF-MB-2026-058", "unit": "TEXT", "page": 1, "confidence": "HIGH"},
+    {"key": "TOTAL_NET", "rawValue": "78.000 EUR", "unit": "EUR", "page": 1, "confidence": "HIGH"}
+  ],
+  "lineItems": [
+    {
+      "lineId": "ln_1",
+      "category": "IMPLEMENT",
+      "descriptionRo": "Prășitoare 6 rânduri, cu ghidare prin cameră",
+      "fields": [
+        {"key": "QUANTITY", "rawValue": "1 buc.", "unit": "PCS", "page": 1, "confidence": "HIGH"},
+        {"key": "LINE_PRICE_NET", "rawValue": "46.000 EUR", "unit": "EUR", "page": 1, "confidence": "HIGH"}
+      ]
+    },
+    {
+      "lineId": "ln_2",
+      "category": "IMPLEMENT",
+      "descriptionRo": "Grapă cu colți elastici, lățime de lucru 12 m",
+      "fields": [
+        {"key": "QUANTITY", "rawValue": "1 buc.", "unit": "PCS", "page": 1, "confidence": "HIGH"},
+        {"key": "LINE_PRICE_NET", "rawValue": "32.000 EUR", "unit": "EUR", "page": 1, "confidence": "HIGH"}
+      ]
+    }
+  ],
+  "missingFields": [],
+  "warnings": []
+}

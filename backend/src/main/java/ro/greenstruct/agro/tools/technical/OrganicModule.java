@@ -190,6 +190,10 @@ public class OrganicModule implements ModuleCalculator {
 
     @Override
     public void describeRules(ToolContext context) {
+        // CERTIFICATION has no numeric threshold: one certificate or conversion contract must exist
+        context.calc("rules.threshold.certification", "Pragul verde: certificat ecologic UE sau contract de conversie",
+                BigDecimal.ONE, Unit.COUNT).formula("cel puțin un certificat sau contract cu un organism de certificare")
+                .source(context.module().threshold().sourceRo()).add();
         rule(context, "yieldPctConversionYear1", "Producția în anul 1 de conversie, din cea convențională", Unit.PCT);
         rule(context, "yieldPctConversionYear2", "Producția în anul 2 de conversie, din cea convențională", Unit.PCT);
         rule(context, "yieldPctCertified", "Producția după certificare, din cea convențională", Unit.PCT);

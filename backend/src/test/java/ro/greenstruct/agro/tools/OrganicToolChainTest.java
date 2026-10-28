@@ -189,7 +189,7 @@ class OrganicToolChainTest {
                 + "{\"optionId\": \"B\", \"configId\": \"cfg_initial\", \"products\": [\"rbro.agri.credit_bio\"]}]}");
         assertValue(run, "option_b.loan.amount", "78000");
 
-        JsonNode tier = call(run, "determine_green_tier", "{}");
+        JsonNode tier = call(run, "determine_green_tier", "{\"requestedConfigId\": \"cfg_initial\", \"financedConfigId\": \"cfg_initial\"}");
         assertThat(tier.path("tier").asText()).isEqualTo("VERDE");
         call(run, "price_loan", "{}");
         // EURIBOR 2 + funding 0.9 + risk 2.5% × 45% × 30% + capital 22.5% × 12% × 12% + operational 1.35 + profit 1.77
@@ -236,7 +236,7 @@ class OrganicToolChainTest {
         assertValue(run, "impact.margin_horizon", "83614");
         // 67.0956 t/year × 5 years
         assertValue(run, "impact.co2_horizon", "335.478");
-        JsonNode funds = call(run, "select_fund", "{}");
+        JsonNode funds = call(run, "select_fund", "{\"optionId\": \"B\"}");
         assertThat(funds.toString()).contains("F3").contains("F5");
     }
 
