@@ -134,7 +134,7 @@ DevOps: medii AWS + CI/CD (în paralel, de la început)
 |---|---|---|
 | Core API | Backend | Auth, CRUD (reguli, ținte, abonamente), import tranzacții, conversații. |
 | Ingestion | Backend | Import CSV (MVP) / agregator Open Banking (ulterior). Normalizare, categorizare, deduplicare. |
-| Analytics Engine | Backend | Funcții pure: detectare tipare, abonamente, cash flow, prognoză, simulare obiective. |
+| Analytics Engine | Backend | Funcții pure: detectare tipare, abonamente, cash flow, prognoză, simulare obiective. Plan detaliat: `docs/pattern-recognition.md`. |
 | Rule Engine | Backend | Evaluează fiecare tranzacție nouă față de regulile utilizatorului. Fără LLM. |
 | Agent Service | AI | Conversația cu utilizatorul, apeluri de tool-uri, memorie, generare insight-uri. |
 | Scheduler + Insight Job | AI + DevOps | Rulează periodic analiza și cere agentului să formuleze insight-uri proactive. |
