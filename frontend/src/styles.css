@@ -2972,3 +2972,9 @@ a.row--link:hover {
     transform: rotate(360deg);
   }
 }
+
+.demo-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

@@ -350,5 +350,16 @@
     "horizonYears": 5,
     "standardLine": "rbro.invest.standard",
     "greenLine": "rbro.agri.green_investeu"
-  }
+  },
+  "detectionKeywords": [
+    "irigat",
+    "picurare",
+    "aspersie",
+    "pivot",
+    "hidrant",
+    "umiditate",
+    "debit apa",
+    "pompare",
+    "gospodarire"
+  ]
 }

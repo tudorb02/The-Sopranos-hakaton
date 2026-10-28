@@ -23,11 +23,6 @@
       "required": true
     },
     {
-      "docType": "CURRENT_EQUIPMENT",
-      "labelRo": "Pompa actuală pe motorină: fișă tehnică, poză cu eticheta sau descriere",
-      "required": false
-    },
-    {
       "docType": "ENERGY_INVOICES",
       "labelRo": "Facturile de energie electrică pe ultimele 12 luni",
       "required": true
@@ -96,7 +91,7 @@
     },
     {
       "questionId": "old_equipment_fate",
-      "labelRo": "Ce faceți cu echipamentul vechi (pompa pe motorină, invertoare, cabluri)?",
+      "labelRo": "Ce faceți cu echipamentul vechi pe care îl înlocuiți (invertoare, cabluri, pompe)?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
@@ -176,7 +171,20 @@
       "sourceRo": "Producția specifică a panourilor, sudul României; valoare de pornire din documentele de test Product (data/demo/test-documents/reference/constants.json), de înlocuit cu PVGIS pe locația fermei"
     },
     "monthlyProductionShare": {
-      "value": [0.035, 0.05, 0.08, 0.1, 0.12, 0.125, 0.13, 0.12, 0.09, 0.07, 0.045, 0.035],
+      "value": [
+        0.035,
+        0.05,
+        0.08,
+        0.1,
+        0.12,
+        0.125,
+        0.13,
+        0.12,
+        0.09,
+        0.07,
+        0.045,
+        0.035
+      ],
       "sourceRo": "Profilul lunar al producției, ianuarie–decembrie, suma 1; profil de demo (data/demo/test-documents/reference/constants.json), de înlocuit cu PVGIS"
     },
     "sellPriceEurPerKwh": {
@@ -196,7 +204,11 @@
       "sourceRo": "Suprafața de acoperiș pe kWp, din oferta de test Solar Câmpia Demo: 1.650 m² pentru 300 kWp; estimare, de validat"
     },
     "eligibleMountings": {
-      "value": ["ACOPERIS", "TEREN_NEPRODUCTIV", "AGRIVOLTAIC"],
+      "value": [
+        "ACOPERIS",
+        "TEREN_NEPRODUCTIV",
+        "AGRIVOLTAIC"
+      ],
       "sourceRo": "README §6, categoria 2, pragul verde: acoperiș, teren neproductiv sau agrivoltaic; terenul agricol productiv nu e eligibil"
     }
   },
@@ -206,5 +218,15 @@
     "horizonYears": 7,
     "standardLine": "rbro.invest.standard",
     "greenLine": "rbro.agri.green_investeu"
-  }
+  },
+  "detectionKeywords": [
+    "fotovoltaic",
+    "panou",
+    "panouri",
+    "invertor",
+    "kwp",
+    "agrivoltaic",
+    "solar",
+    "fotovolt"
+  ]
 }

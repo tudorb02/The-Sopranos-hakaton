@@ -7,7 +7,7 @@ import { Group, IconTile, NoteCard, PrivacyPromise, Src } from "../../../compone
 import { greenLegal } from "../../../data/green/legal.js";
 import { eur, ha } from "../../../lib/format.js";
 import { useFarm } from "../../../lib/hooks.js";
-import { DEMO_FARMS, MODE_SME, MONTHS_RO, SME_STATUS_RO, SOURCE_RO } from "../../../lib/labels.js";
+import { DEMO_FARMS, MONTHS_RO, SME_STATUS_RO } from "../../../lib/labels.js";
 import { patchFlow, useFlow } from "../../../lib/session.js";
 
 function ConsentSwitch({ label, hint, checked, onChange }) {
@@ -160,23 +160,11 @@ export function Company() {
               ) : null}
             </ul>
           </Group>
-
-          <Group label="De unde vin datele">
-            <ul className="card facts">
-              {profile.dataSources.map((source) => (
-                <li key={source.source}>
-                  <span className="fact-label">{SOURCE_RO[source.source] ?? source.source}</span>
-                  <span className="fact-value">{MODE_SME[source.mode]}</span>
-                  <Src kind={source.mode === "LIVE" ? "obs" : "est"} label={source.mode === "LIVE" ? "reale" : "de demonstrație"} />
-                </li>
-              ))}
-            </ul>
-          </Group>
         </>
       ) : null}
 
       <Actions>
-        <NextButton href="#/verde/agro/categorie" disabled={!canContinue}>
+        <NextButton href="#/verde/agro/unde" disabled={!canContinue}>
           Confirm datele
         </NextButton>
         {profile && !consents.apia ? <p className="small muted">Bifează acordul APIA ca să continui.</p> : null}

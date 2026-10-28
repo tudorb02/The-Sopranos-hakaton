@@ -172,12 +172,12 @@ function Screens({ route }) {
     // The area picker, also for an area that is not available yet.
     if (!(route in steps)) {
       return (
-        <FlowFrame title="Credit verde" titleAs="p" backHref="#/firma" closeHref="#/firma" footer={strip}>
+        <FlowFrame title="Credit sustenabil" titleAs="p" backHref="#/firma" closeHref="#/firma" footer={strip}>
           <Sectors />
         </FlowFrame>
       );
     }
-    const { Screen, back, step, footer, actions, title = "Credit verde" } = steps[route];
+    const { Screen, back, step, footer, actions, title = "Credit sustenabil" } = steps[route];
     return (
       <FlowFrame
         key={route}

@@ -68,7 +68,7 @@ Aplicația are **două zone** care lucrează pe același dosar:
 │  (reprezentantul firmei)   │          │                                │
 │                            │          │                                │
 │  1. CUI + 2 acorduri       │          │  • dosarul firmei + hartă      │
-│  2. alege categoria (1–6)  │          │  • pașii agenților, live       │
+│  2. încarcă oferta (aplicația │          │  • pașii agenților, live       │
 │  3. bifează parcelele      │          │  • calculele, cu sursa lor     │
 │  4. documente esențiale    │          │  • clasic vs. verde            │
 │  5. întrebări esențiale    │          │  • de ce dobânda e mai mică    │
@@ -98,7 +98,7 @@ Aplicația are **două zone** care lucrează pe același dosar:
 |---|---|---|
 | 1 | IMM-ul introduce CUI-ul și dă acordul pentru APIA și Open Banking | zona IMM |
 | 2 | Aplicația ia automat datele firmei, ale fermei și cashflow-ul | ambele zone |
-| 3 | IMM-ul alege categoria, bifează parcelele, încarcă documentele și răspunde la întrebări | zona IMM |
+| 3 | IMM-ul bifează parcelele și încarcă oferta (aplicația recunoaște singură categoria, 1–6), apoi restul documentelor, și răspunde la întrebări | zona IMM |
 | 4 | **Agent 1** calculează indicatorul verde și îl compară cu pragul. Dacă e sub prag, propune upgrade-ul | ambele zone (live) |
 | 5 | **Agent 2** construiește creditul clasic și creditul verde | ambele zone (live) |
 | 6 | **Agent 3** verifică DNSH, alege fondul și scrie raportul | zona ofițer |
@@ -667,6 +667,7 @@ Definiția completă e în `contracts/openapi.yaml`.
 
 | Endpoint | Ce face |
 |---|---|
+| `POST /api/classify` | categoria investiției, recunoscută din oferta încărcată |
 | `GET /api/modules` | cele 6 module (categorii), cu documentele și întrebările fiecăruia |
 | `GET /api/farms/{cui}` | profilul firmei: ANAF (live sau mock demo), parcele APIA, cashflow Open Banking |
 | `POST /api/runs` | creează un dosar (multipart: CUI, modul, parcele, chestionar, documente) și întoarce `runId` |

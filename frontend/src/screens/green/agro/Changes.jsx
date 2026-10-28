@@ -18,7 +18,7 @@ export function Changes() {
 
   if (!runId) {
     return (
-      <Missing href="#/verde/agro/categorie" label="Alege categoria">
+      <Missing href="#/verde/agro/documente" label="Încarcă oferta">
         Nu ai încă o analiză.
       </Missing>
     );

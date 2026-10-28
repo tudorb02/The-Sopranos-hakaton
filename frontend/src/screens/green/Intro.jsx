@@ -32,7 +32,7 @@ export function Intro({ pack }) {
         </ol>
       </Section>
 
-      <Section title="Ce face consultantul">
+      <Section title="Ce face aplicația">
         <Ticks yes={intro.does} no={intro.doesNot} />
       </Section>
 

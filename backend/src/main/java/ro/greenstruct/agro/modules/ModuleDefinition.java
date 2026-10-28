@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * One investment module from config/modules/&lt;moduleId&gt;.json. The first fields follow the Module schema in
- * contracts/openapi.yaml; calculator and everything after it are backend-only (tools, agents, financing).
+ * contracts/openapi.yaml; calculator and everything after it are backend-only (tools, agents, financing, document classification).
  */
 public record ModuleDefinition(
         String moduleId,
@@ -28,7 +28,8 @@ public record ModuleDefinition(
         List<String> fundingPrograms,
         Map<String, LabelRule> labels,
         Financing financing,
-        JsonNode parameters) {
+        JsonNode parameters,
+        List<String> detectionKeywords) {
 
     public boolean demoReady() {
         return calculator != null;

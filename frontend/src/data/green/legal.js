@@ -16,7 +16,6 @@ export const greenLegal = {
     title: "Cine vede dosarul",
     items: [
       { icon: "lock", title: "Tu", text: "Vezi tot dosarul și fiecare cifră din el, cu sursa ei." },
-      { icon: "compass", title: "Agenții AI", text: "Citesc documentele și datele firmei doar pentru acest dosar. Modelul nu învață din ele." },
       { icon: "bank", title: "Banca", text: "Primește dosarul gata pregătit doar după ce apeși „Trimite cererea la bancă”, pentru aprobarea finală. Până atunci, îl vezi doar tu." },
       { icon: "shield", title: "Fondul European de Investiții", text: "Dacă alegi creditul verde cu garanție, primește doar datele cerute pentru garanție: firma, creditul și investiția." },
     ],
@@ -34,7 +33,6 @@ export const greenLegal = {
     title: "Ultimele accesări",
     items: [
       { who: "Banca", what: "A primit dosarul, pentru aprobarea finală", when: "12 nov., 11:02" },
-      { who: "Agenții AI", what: "Au citit oferta și facturile de energie", when: "12 nov., 10:21" },
       { who: "Tu", what: "Ai încărcat documentele", when: "12 nov., 10:15" },
     ],
   },

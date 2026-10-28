@@ -90,7 +90,7 @@ class BedrockLiveIT {
                 env("GREENSTRUCT_EXTRACTION_MODEL_ID", BedrockModels.DEFAULT_EXTRACTION),
                 AgentRuntimeConfiguration.prompt("extraction"), 4096, Duration.ofSeconds(2), Thread::sleep);
         ModuleDefinition module = new ModuleDefinition("irigatii", null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null, null, null);
         StoredDocument document = new StoredDocument("doc_oferta_aspersie", "OFFER", "01_oferta_aspersie.pdf",
                 "application/pdf", 1, "x", "k");
 

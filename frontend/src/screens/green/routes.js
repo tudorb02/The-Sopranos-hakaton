@@ -4,7 +4,6 @@
 // footer slot (components/live.jsx Actions), because they depend on what the API returned.
 
 import { Analysis } from "./agro/Analysis.jsx";
-import { Category } from "./agro/Category.jsx";
 import { Changes } from "./agro/Changes.jsx";
 import { Company } from "./agro/Company.jsx";
 import { Documents } from "./agro/Documents.jsx";
@@ -15,7 +14,7 @@ import { Questions } from "./agro/Questions.jsx";
 import { Request } from "./agro/Request.jsx";
 import { Intro } from "./Intro.jsx";
 
-export const GREEN_STEPS = ["Firma", "Categoria", "Locul", "Documente", "Întrebări", "Analiza", "Ofertele", "Ce schimbi", "Cererea"];
+export const GREEN_STEPS = ["Firma", "Locul", "Documente", "Întrebări", "Ofertele", "Ce schimbi", "Cererea"];
 
 export function greenRoutes(sector) {
   const base = `#/verde/${sector}`;
@@ -27,14 +26,13 @@ export function greenRoutes(sector) {
       footer: { next: `${base}/firma`, nextLabel: "Începe", skip: "#/firma", skipLabel: "Nu acum" },
     },
     [key("firma")]: { Screen: Company, back: base, step: 1, actions: true },
-    [key("categorie")]: { Screen: Category, back: `${base}/firma`, step: 2, actions: true },
-    [key("unde")]: { Screen: Location, back: `${base}/categorie`, step: 3, actions: true },
-    [key("documente")]: { Screen: Documents, back: `${base}/unde`, step: 4, actions: true },
-    [key("intrebari")]: { Screen: Questions, back: `${base}/documente`, step: 5, actions: true },
-    [key("analiza")]: { Screen: Analysis, back: `${base}/intrebari`, step: 6, actions: true },
-    [key("oferte")]: { Screen: Offers, back: `${base}/analiza`, step: 7, actions: true },
-    [key("schimbari")]: { Screen: Changes, back: `${base}/oferte`, step: 8, actions: true },
-    [key("cerere")]: { Screen: Request, back: `${base}/schimbari`, step: 9, actions: true },
+    [key("unde")]: { Screen: Location, back: `${base}/firma`, step: 2, actions: true },
+    [key("documente")]: { Screen: Documents, back: `${base}/unde`, step: 3, actions: true },
+    [key("intrebari")]: { Screen: Questions, back: `${base}/documente`, step: 4, actions: true },
+    [key("analiza")]: { Screen: Analysis, back: `${base}/intrebari`, step: 4, actions: true },
+    [key("oferte")]: { Screen: Offers, back: `${base}/intrebari`, step: 5, actions: true },
+    [key("schimbari")]: { Screen: Changes, back: `${base}/oferte`, step: 6, actions: true },
+    [key("cerere")]: { Screen: Request, back: `${base}/schimbari`, step: 7, actions: true },
     [key("dosar")]: { Screen: Dossier, back: "#/firma", title: "Dosarul tău", footer: { next: "#/firma", nextLabel: "Înapoi la Produse" } },
   };
 }

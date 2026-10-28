@@ -55,6 +55,37 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 
+  /api/classify:
+    post:
+      tags: [modules]
+      operationId: classifyOffer
+      summary: Categoria investiției, din ofertă
+      description: Aplicația recunoaște singură categoria din oferta încărcată (cuvinte-cheie din `config/modules`, în numele fișierului și în textul PDF-ului). `moduleId` e null dacă oferta nu spune ce se cumpără.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [document]
+              properties:
+                document:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Categoria găsită.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [moduleId]
+                properties:
+                  moduleId:
+                    type: [string, 'null']
+        '500':
+          $ref: '#/components/responses/InternalError'
+
   /api/farms/{cui}:
     get:
       tags: [farms]

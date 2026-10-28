@@ -3,18 +3,18 @@
 
 export const sectorName = "Agricultură";
 
-// The client-facing voice of the three agents is one consultant that helps prepare the credit application.
+// The client-facing voice of the three agents is one voice that helps prepare the credit application.
 export const intro = {
   title: "Pregătim împreună cererea de credit",
-  lead: "Pregătești tot dosarul în aplicație, cu un consultant. Îți arată, pe lângă creditul clasic, un credit verde cu dobândă mai mică, ce să schimbi ca investiția să devină verde și ce clauze să ceri. Banca mai dă doar aprobarea finală.",
+  lead: "Pregătești tot dosarul în aplicație. Îți arată, pe lângă creditul clasic, un credit verde cu dobândă mai mică, ce să schimbi ca investiția să devină verde și ce clauze să ceri. Banca mai dă doar aprobarea finală.",
   duration: "Circa 10 minute, cu documentele la îndemână",
   steps: [
     "Confirmi datele firmei, luate din ANAF, APIA și din conturi",
-    "Alegi categoria investiției și parcelele",
-    "Încarci doar documentele esențiale ale categoriei",
+    "Alegi parcelele",
+    "Încarci oferta: recunoaștem singuri ce investiție vrei să faci, apoi cerem restul documentelor esențiale",
     "Răspunzi la câteva întrebări, completate unde se poate",
     "Compari creditul clasic cu cel verde și vezi ce să schimbi",
-    "Consultantul îți verifică cererea înainte s-o trimiți",
+    "Îți verificăm cererea înainte s-o trimiți",
   ],
   does: [
     "Îți spune ce lipsește din dosar și ce îi crește șansele de aprobare",

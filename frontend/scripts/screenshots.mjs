@@ -97,7 +97,7 @@ await send("Page.navigate", { url: `${APP}/#/login` });
 await sleep(1000);
 await evaluate("sessionStorage.clear(); localStorage.clear(); 0");
 
-// ---- manual path (real clicks): firm -> category -> parcels -> documents ----
+// ---- manual path (real clicks): firm -> parcels -> documents ----
 await go("/verde/agro");
 await shot("00-intro");
 await go("/verde/agro/firma");
@@ -107,35 +107,26 @@ check((await bodyText()).includes("Firma ta este IMM".toLowerCase()), "firm: SME
 await evaluate(`document.querySelectorAll('input[role=switch]')[0].click(); 0`);
 await sleep(300);
 await shot("01-firma", { full: true });
-await go("/verde/agro/categorie");
-check(await waitText("Irigații"), "category: modules from /api/modules");
-check((await evaluate("document.querySelectorAll('.module-card').length")) === 6, "category: 6 cards");
-await click(".module-card", "Irigații");
-await sleep(300);
-await shot("02-categorie", { full: true });
 await go("/verde/agro/unde");
 check(await waitText("Parcelele tale"), "parcels: list");
 check((await evaluate("document.querySelectorAll('.parcel path').length")) >= 3, "parcels: SVG polygons from GeoJSON");
-await shot("03-unde", { full: true });
+await shot("02-unde", { full: true });
 await go("/verde/agro/documente");
 await waitText("Oferta");
-await shot("04-documente", { full: true });
+await shot("03-documente", { full: true });
+// The category comes from the offer upload (classify); a file cannot be picked here, so set it as the upload would.
+await evaluate(`const f = JSON.parse(sessionStorage.getItem("gs.flow") || "{}"); f.moduleId = "irigatii"; sessionStorage.setItem("gs.flow", JSON.stringify(f)); 0`);
 await go("/verde/agro/intrebari");
 check(await waitText("Câteva întrebări"), "questions: screen");
 await sleep(600);
 check((await bodyText()).includes("completat din APIA".toLowerCase()) || (await bodyText()).includes("completat din Open Banking".toLowerCase()), "questions: prefilled from APIA / Open Banking");
-await shot("05-intrebari", { full: true });
+await shot("04-intrebari", { full: true });
 
 // ---- demo path: category card button -> analysis -> offers -> changes -> request -> dossier ----
-await go("/verde/agro/categorie");
-await waitText("Dosar demo");
-check(await click("button", "Dosar demo"), "category: Dosar demo button");
-check(await waitText("Vezi ofertele"), "analysis: reached after the demo button");
-await sleep(800);
-await shot("06-analiza", { full: true });
-const analysis = await bodyText();
-check(!/\bf[1-6]\b|\bfei\b|investeu|dscr|dnsh/.test(analysis), "analysis: no funds / DSCR / DNSH words for the SME");
-await go("/verde/agro/oferte");
+await go("/verde/agro/documente");
+await waitText("Sau pornește un dosar demo");
+check(await click("button", "Legume Bărăgan"), "documents: demo button");
+check(await waitText("alegând creditul verde"), "offers: reached by itself after the demo button");
 check(await waitText("alegând creditul verde"), "offers: big message");
 await shot("07-oferte", { full: true });
 const offers = await bodyText();

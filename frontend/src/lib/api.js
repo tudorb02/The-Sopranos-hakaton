@@ -73,6 +73,13 @@ export const getPortfolio = (opts) => request("/api/portfolio", opts);
 export const getBedrockHealth = (opts) => request("/api/health/bedrock", opts);
 export const reportUrl = (runId) => apiUrl(`/api/runs/${runId}/report.pdf`);
 
+// POST /api/classify: the category of the investment, found from the offer. Resolves with { moduleId } (null if unknown).
+export function classifyOffer(file) {
+  const form = new FormData();
+  form.append("document", file, file.name);
+  return request("/api/classify", { method: "POST", form });
+}
+
 // POST /api/runs (multipart). documents: [{ docType, file }]; the manifest keeps the same order as the files.
 export function createRun({ cui, moduleId, parcelIds, questionnaire, documents, consents }) {
   const form = new FormData();

@@ -80,8 +80,8 @@ export function Offers() {
 
   if (!runId) {
     return (
-      <Missing href="#/verde/agro/categorie" label="Alege categoria">
-        Nu ai încă o analiză. Alege o categorie și trimite dosarul, sau pornește un dosar demo.
+      <Missing href="#/verde/agro/documente" label="Încarcă oferta">
+        Nu ai încă o analiză. Încarcă oferta și trimite dosarul, sau pornește un dosar demo.
       </Missing>
     );
   }

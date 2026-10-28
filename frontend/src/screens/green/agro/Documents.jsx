@@ -1,13 +1,15 @@
 // Step 4: the documents of the category (GET /api/modules requiredDocs). Upload them, or use the recorded demo dossier.
 
 import { useRef, useState } from "react";
+import { classifyOffer } from "../../../lib/api.js";
 
 import { Actions, ErrorCard, Loading, NextButton } from "../../../components/live.jsx";
 import { Icon } from "../../../components/icons.jsx";
 import { Group, IconTile, NoteCard } from "../../../components/ui.jsx";
 import { useModules } from "../../../lib/hooks.js";
-import { getFiles, setFile, useFlow } from "../../../lib/session.js";
-import { Missing, startDemo } from "./shared.jsx";
+import { DEMO_FARMS } from "../../../lib/labels.js";
+import { getFiles, patchFlow, setFile, useFlow } from "../../../lib/session.js";
+import { startDemo } from "./shared.jsx";
 
 // The backend caps one file at 5 MB (application.yml); the contract says 20 MB.
 const MAX_BYTES = 5 * 1024 * 1024;
@@ -62,84 +64,106 @@ export function Documents() {
   const flow = useFlow();
   const modules = useModules();
   const [, force] = useState(0);
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState(null);
   const [error, setError] = useState(null);
+  const [unknown, setUnknown] = useState(false);
 
   const module = modules.data?.find((m) => m.moduleId === flow.moduleId);
   const files = getFiles();
   const fileOf = (docType) => files.find((f) => f.docType === docType)?.file;
+  const offer = fileOf("OFFER");
 
-  const demo = async () => {
-    setBusy(true);
+  const demo = async (moduleId) => {
+    setBusy(moduleId);
     setError(null);
     try {
-      await startDemo(flow.moduleId);
+      await startDemo(moduleId);
       window.location.hash = "/verde/agro/analiza";
     } catch (e) {
       setError(e);
-      setBusy(false);
+      setBusy(null);
     }
   };
 
-  if (!flow.moduleId) {
-    return <Missing href="#/verde/agro/categorie" label="Alege categoria">Mai întâi alege categoria investiției.</Missing>;
-  }
+  // The offer says what is bought: the app finds the category and asks for the rest of its documents.
+  const pickOffer = async (file) => {
+    setFile("OFFER", file);
+    force((n) => n + 1);
+    setBusy("classify");
+    setError(null);
+    setUnknown(false);
+    try {
+      const { moduleId } = await classifyOffer(file);
+      setUnknown(!moduleId);
+      if (moduleId !== flow.moduleId) patchFlow({ moduleId, answers: {} });
+    } catch (e) {
+      setError(e);
+    } finally {
+      setBusy(null);
+    }
+  };
 
-  // The offer is what the price and the technical data come from: without it there is nothing to analyse.
-  const offerDone = Boolean(fileOf("OFFER"));
+  const removeOffer = () => {
+    setFile("OFFER", null);
+    patchFlow({ moduleId: null, answers: {} });
+    setUnknown(false);
+    force((n) => n + 1);
+  };
+
   const missingRequired = module?.requiredDocs.filter((d) => d.required && !fileOf(d.docType)) ?? [];
+  const offerDoc = { docType: "OFFER", labelRo: "Oferta sau factura proformă, cu fișa tehnică", required: true };
 
   return (
     <>
       <header className="intro">
         <h1 className="page-title">Documente</h1>
         <p className="small muted">
-          Doar cele esențiale pentru categoria ta. Ce lipsește poți trimite și după: devine o condiție înainte de tragere, nu un motiv de respingere.
+          Începe cu oferta: din ea recunoaștem ce investiție vrei să faci. Ce lipsește poți trimite și după: devine o condiție înainte de tragere, nu un motiv de respingere.
         </p>
       </header>
-
-      <button type="button" className="btn btn--outline btn--small btn--start" onClick={demo} disabled={busy}>
-        <Icon name="upload" />
-        {busy ? "Se pornește…" : "Folosește documentele demo"}
-      </button>
-      <p className="small muted">Pornește dosarul demo al categoriei, cu firma și documentele lui fictive, și trece direct la analiză.</p>
 
       {modules.loading ? <Loading label="Încarc lista de documente…" /> : null}
       <ErrorCard error={modules.error} onRetry={modules.reload} />
       <ErrorCard error={error} />
 
-      {module ? (
-        <Group label={`Pentru ${module.nameRo.toLowerCase()}`}>
-          <ul className="card rows">
-            {module.requiredDocs.map((doc) => (
-              <DocRow
-                key={doc.docType}
-                doc={doc}
-                file={fileOf(doc.docType)}
-                onPick={(file) => {
-                  setFile(doc.docType, file);
-                  force((n) => n + 1);
-                }}
-                onRemove={() => {
-                  setFile(doc.docType, null);
-                  force((n) => n + 1);
-                }}
-              />
-            ))}
-          </ul>
-        </Group>
-      ) : null}
+      <Group label={module ? `Recunoscut: ${module.nameRo}` : "Oferta"}>
+        <ul className="card rows">
+          {(module ? module.requiredDocs : [offerDoc]).map((doc) => (
+            <DocRow
+              key={doc.docType}
+              doc={doc}
+              file={fileOf(doc.docType)}
+              onPick={(file) => (doc.docType === "OFFER" ? pickOffer(file) : (setFile(doc.docType, file), force((n) => n + 1)))}
+              onRemove={() => (doc.docType === "OFFER" ? removeOffer() : (setFile(doc.docType, null), force((n) => n + 1)))}
+            />
+          ))}
+        </ul>
+      </Group>
 
-      {offerDone && missingRequired.length ? (
+      {busy === "classify" ? <Loading label="Recunoaștem investiția…" /> : null}
+      {unknown ? <NoteCard icon="help">Nu am putut recunoaște investiția din ofertă. Încarcă oferta completă, cu descrierea și fișa tehnică a echipamentului.</NoteCard> : null}
+      {offer && module && missingRequired.length ? (
         <NoteCard icon="clock">Mai lipsesc {missingRequired.length} documente esențiale. Le poți trimite și după: banca le cere înainte de tragere.</NoteCard>
       ) : null}
       <NoteCard icon="lock">Documentele sunt criptate, nu devin publice și sunt folosite doar pentru acest dosar. Citim din ele doar datele tehnice.</NoteCard>
 
+      <Group label="Sau pornește un dosar demo">
+        <p className="small muted">Firma și documentele lui sunt fictive; treci direct la oferte.</p>
+        <div className="demo-buttons">
+          {DEMO_FARMS.map((farm) => (
+            <button key={farm.moduleId} type="button" className="btn btn--outline btn--small" disabled={busy !== null} onClick={() => demo(farm.moduleId)}>
+              <Icon name="upload" />
+              {busy === farm.moduleId ? "Se pornește…" : farm.name}
+            </button>
+          ))}
+        </div>
+      </Group>
+
       <Actions>
-        <NextButton href="#/verde/agro/intrebari" disabled={!offerDone}>
+        <NextButton href="#/verde/agro/intrebari" disabled={!offer || !module}>
           Continuă
         </NextButton>
-        {!offerDone ? <p className="small muted">Încarcă măcar oferta sau factura proformă ca să continui.</p> : null}
+        {!offer ? <p className="small muted">Încarcă oferta sau factura proformă ca să continui.</p> : null}
       </Actions>
     </>
   );

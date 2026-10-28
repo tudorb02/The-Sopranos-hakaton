@@ -216,7 +216,7 @@
       "sourceRo": "Prețul de vânzare a energiei în rețea: constante demo Product (data/demo/test-documents/reference/constants.json). Estimare echipă, de validat"
     },
     "nitrogenEurPerKg": {
-      "value": 1.0,
+      "value": 1,
       "sourceRo": "Prețul azotului mineral înlocuit: constante demo Product (data/demo/test-documents/reference/constants.json). Estimare echipă, de validat"
     },
     "fertiliserDigestateUses": {
@@ -243,5 +243,15 @@
     "horizonYears": 7,
     "standardLine": "rbro.invest.standard",
     "greenLine": "rbro.agri.green_investeu"
-  }
+  },
+  "detectionKeywords": [
+    "digestor",
+    "biogaz",
+    "gunoi de grajd",
+    "bovine",
+    "vaci",
+    "laguna",
+    "cogenerare",
+    "ferma de lapte"
+  ]
 }

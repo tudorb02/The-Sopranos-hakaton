@@ -228,5 +228,14 @@
     "horizonYears": 5,
     "standardLine": "rbro.invest.standard",
     "greenLine": "rbro.agri.green_investeu"
-  }
+  },
+  "detectionKeywords": [
+    "frigorific",
+    "uscator",
+    "sera",
+    "post-recolta",
+    "post recolta",
+    "izolatie termica",
+    "depozit"
+  ]
 }

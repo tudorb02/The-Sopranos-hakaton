@@ -124,8 +124,11 @@ export function Questions() {
     setSources(prefilled.sources);
   }, [prefilled]);
 
-  if (!flow.moduleId || !flow.cui) {
-    return <Missing href="#/verde/agro/firma" label="Începe cu firma">Mai întâi alege firma și categoria.</Missing>;
+  if (!flow.cui) {
+    return <Missing href="#/verde/agro/firma" label="Începe cu firma">Mai întâi alege firma.</Missing>;
+  }
+  if (!flow.moduleId) {
+    return <Missing href="#/verde/agro/documente" label="Încarcă oferta">Mai întâi încarcă oferta, ca să știm ce investiție faci.</Missing>;
   }
 
   const set = (id, value) => {

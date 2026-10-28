@@ -2,12 +2,12 @@
 // Only agriculture is available. The others show as coming soon, with no action, so the client sees
 // that agriculture is the first area of the platform, not the only one.
 
-// The client-facing voice of the three agents is one consultant that helps prepare the credit application.
+// The client-facing voice of the three agents is one voice that helps prepare the credit application.
 export const greenEntry = {
-  title: "Consultant pentru credit verde",
+  title: "Credit sustenabil",
   subtitle: "Începem cu agricultura",
   badge: "Nou",
-  text: "Îți pregătești cererea de credit direct în aplicație, cu un consultant AI: ce documente îți trebuie, cum devine investiția eligibilă pentru creditul verde și ce clauze să ceri. Banca mai dă doar aprobarea finală.",
+  text: "Îți pregătești cererea de credit direct în aplicație: ce documente îți trebuie, cum devine investiția eligibilă pentru creditul verde și ce clauze să ceri. Banca mai dă doar aprobarea finală.",
 };
 
 // status: "available" (opens the area's flow) or "soon".

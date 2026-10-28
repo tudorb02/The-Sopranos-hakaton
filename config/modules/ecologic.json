@@ -286,5 +286,17 @@
     "horizonYears": 5,
     "standardLine": "rbro.invest.machinery",
     "greenLine": "rbro.agri.credit_bio"
-  }
+  },
+  "detectionKeywords": [
+    "ecologic",
+    "conversie",
+    "certificare bio",
+    "agricultura bio",
+    "ecologica",
+    "control mecanic",
+    "prasitoare",
+    "grapa",
+    "buruien",
+    "utilaje-bio"
+  ]
 }

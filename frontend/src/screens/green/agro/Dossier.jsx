@@ -31,7 +31,7 @@ export function Dossier() {
 
   if (!runId) {
     return (
-      <Missing href="#/verde/agro/categorie" label="Începe un dosar">
+      <Missing href="#/verde/agro/documente" label="Începe un dosar">
         Nu ai niciun dosar început.
       </Missing>
     );
