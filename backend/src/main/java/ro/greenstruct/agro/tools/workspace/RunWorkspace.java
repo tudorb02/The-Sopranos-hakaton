@@ -71,6 +71,10 @@ public class RunWorkspace {
         return configuration;
     }
 
+    public synchronized List<Configuration> configurations() {
+        return List.copyOf(configurations.values());
+    }
+
     public synchronized void putProgramCheck(String programCode, JsonNode check) {
         programChecks.put(programCode, check);
     }
@@ -81,6 +85,10 @@ public class RunWorkspace {
 
     public synchronized void putOption(FinancingOption option) {
         options.put(option.optionId(), option);
+    }
+
+    public synchronized boolean hasOption(String optionId) {
+        return options.containsKey(optionId);
     }
 
     public synchronized FinancingOption option(String optionId) {

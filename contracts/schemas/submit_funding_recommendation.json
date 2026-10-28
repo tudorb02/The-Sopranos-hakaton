@@ -18,7 +18,7 @@
   "properties": {
     "options": {
       "type": "array",
-      "minItems": 2,
+      "minItems": 1,
       "maxItems": 3,
       "items": {
         "$ref": "#/$defs/option"

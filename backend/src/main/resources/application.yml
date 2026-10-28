@@ -40,6 +40,8 @@ greenstruct:
     uploads: ${java.io.tmpdir}/greenstruct-agro-uploads
   agents:
     timeout: 90s
+    # Agents that decide by rules and read recorded extractions (offline demo, tests); the Bedrock agents replace them.
+    rule-based: ${GREENSTRUCT_RULE_BASED_AGENTS:true}
   cors:
     allowed-origins:
       - http://localhost:5173

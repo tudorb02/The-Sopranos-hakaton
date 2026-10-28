@@ -2,3 +2,5 @@
 greenstruct:
   anaf:
     enabled: false
+  agents:
+    rule-based: false

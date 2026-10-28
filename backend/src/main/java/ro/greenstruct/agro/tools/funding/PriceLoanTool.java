@@ -56,10 +56,19 @@ public class PriceLoanTool implements ToolHandler {
     @Override
     public ToolOutput execute(JsonNode input, ToolContext context) {
         GreenTierResult tier = context.workspace().tier();
-        if (!tier.tier().isGreen()) {
-            throw new IllegalArgumentException("Nivelul este CLASIC: nu există credit verde de calculat");
-        }
         PricingParameters parameters = PricingSupport.parameters(context);
+        if (!tier.tier().isGreen()) {
+            // Tier CLASIC: no green loan, only the classic rate by component.
+            RateBreakdown classic = LoanPricingCalculator.classic(parameters);
+            context.workspace().putPricing("CLASIC", classic);
+            Calc index = context.calc("pricing.index", "Indicele EURIBOR 3M", parameters.indexPct(), Unit.PCT)
+                    .source(context.reference().pricing().path("index").path("sourceRo").asText(null)).add();
+            emit(context, "classic", classic, index);
+            ObjectNode none = context.newResult();
+            none.put("tier", tier.tier().name());
+            none.put("parametersDemo", true);
+            return context.ok(none, "Dobânda clasică, pe componente; nu există credit verde");
+        }
         LoanPricing pricing = LoanPricingCalculator.price(parameters, PricingSupport.green(context, tier.tier()));
         context.workspace().putPricing("CLASIC", pricing.classic());
         context.workspace().putPricing("VERDE", pricing.green());
