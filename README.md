@@ -636,7 +636,7 @@ La fiecare pas, backend-ul trimite un **eveniment live (SSE)** către ambele zon
 
 ```
 The-Sopranos-hakaton/  (branch B2B_Agro)
-├── frontend/                   # React (zona IMM + zona ofițer)
+├── frontend/                   # React + Vite, ecrane statice cu date fictive (Busola + fluxul credit verde agro); detalii în frontend/README.md
 ├── backend/                    # Spring Boot
 │   └── src/main/java/ro/greenstruct/agro/
 │       ├── api/                # REST + SSE, erori în formatul din contract

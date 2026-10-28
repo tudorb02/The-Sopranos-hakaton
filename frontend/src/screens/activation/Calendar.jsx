@@ -1,0 +1,86 @@
+import { Agenda, ChoiceChips, Group, IconTile, NoteCard, Section, Src, Ticks } from "../../components/ui.jsx";
+import { usePersona } from "../../persona.js";
+
+export function Calendar() {
+  const { calendar } = usePersona();
+  return (
+    <>
+      <header className="intro">
+        <p className="eyebrow">Opțional</p>
+        <h1 className="page-title">Ce urmează în calendarul tău</h1>
+        <p className="small muted">Zilele de naștere și evenimentele mari intră în buget. Îți spun din timp când vine o lună încărcată.</p>
+      </header>
+
+      <ul className="options">
+        {calendar.options.map((option, i) => (
+          <li key={option.id} className="card row">
+            <IconTile icon={option.icon} tone={i === 0 ? "yellow" : "sand"} />
+            <div className="row-main">
+              <span className="row-name">{option.title}</span>
+              <span className="row-note">{option.note}</span>
+            </div>
+            {option.href ? (
+              <a className="btn btn--small" href={option.href}>
+                {option.action}
+              </a>
+            ) : (
+              <button type="button" className="btn btn--outline btn--small">
+                {option.action}
+              </button>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <Group label="Ce citesc și ce nu">
+        <Ticks yes={calendar.reads} no={calendar.doesNotRead} />
+      </Group>
+
+      <NoteCard icon="lock">Acces doar pentru citire. Poți deconecta oricând din Profil → Permisiuni.</NoteCard>
+    </>
+  );
+}
+
+export function CalendarConnected() {
+  const { gift } = calendar;
+  return (
+    <>
+      <header className="intro">
+        <h1 className="page-title">Calendarul e conectat</h1>
+      </header>
+
+      <div className="card row">
+        <IconTile icon="calendar" tone="yellow" />
+        <div className="row-main">
+          <span className="row-name">Google Calendar</span>
+          <span className="row-note">Doar citire · zilele de naștere și evenimentele marcate</span>
+        </div>
+        <span className="status is-on">Conectat</span>
+      </div>
+
+      <Section title="Ce am găsit în lunile următoare">
+        <div className="card">
+          <Agenda items={calendar.found} />
+        </div>
+      </Section>
+
+      <section className="section" aria-labelledby="gift-question">
+        <div className="coach-q">
+          <IconTile icon="compass" tone="yellow" />
+          <h2 id="gift-question" className="msg msg--coach question-title">
+            {gift.question}
+          </h2>
+        </div>
+        {gift.groups.map((group) => (
+          <div key={group.label} className="field">
+            <p className="field-label">{group.label}</p>
+            <ChoiceChips label={group.label} options={group.options.map((label) => ({ label, selected: label === group.selected }))} />
+          </div>
+        ))}
+        <p className="small">
+          {gift.result} <Src kind="est" />
+        </p>
+      </section>
+    </>
+  );
+}
