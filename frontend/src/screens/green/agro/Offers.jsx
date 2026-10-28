@@ -124,7 +124,6 @@ export function Offers() {
             ) : (
               <p className="hero-sub">{funding.farmerExplanationRo}</p>
             )}
-            {wins ? <p className="hero-sub">{funding.farmerExplanationRo}</p> : null}
             <p className="hero-alert">
               <Icon name="leaf" />
               <span>

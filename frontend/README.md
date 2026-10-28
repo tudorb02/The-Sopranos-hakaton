@@ -2,7 +2,7 @@
 
 Ecranele statice ale coach-ului financiar, gândit ca funcție opțională în aplicația Smart Mobile.
 Coach-ul apare în tabul Produse și se activează doar dacă utilizatorul vrea. Nu face parte din onboarding-ul aplicației.
-Doar interfață: datele sunt fictive și nu există logică de business. Singurul comportament este navigarea între ecrane.
+Ecranele coach-ului (Busola, persoane fizice) sunt statice: date fictive, fără logică de business. Creditul verde (`#/verde/agro/...`) și zona ofițerului (`#/ofiter/...`) sunt conectate la backend-ul Spring (vezi „Cu backend-ul”).
 
 Demo-ul are doi clienți persoană fizică, cu același coach și date diferite:
 - Daria, salariată, cu salariul pe 5;
@@ -76,6 +76,48 @@ Data din primul card („Disponibil până pe …”) vine din profil:
 - fără venit stabil, ziua dinaintea următoarei încasări sigure (la Matei, banii de la familie, pe 1) sau o dată aleasă de utilizator.
 
 Veniturile estimate, cum e bursa, intră în calcul doar după ce ajung în cont. Vezi `cycle` în `src/data/demo.js` și `src/data/student.js`.
+
+## Cu backend-ul (creditul verde)
+
+Creditul verde și zona ofițerului lucrează pe API-ul din `contracts/openapi.yaml`; nicio cifră nu e calculată sau formatată în frontend, toate vin din `RunView.calcs[calcId].display`.
+
+```bash
+# 1. backend (offline, fără Bedrock și ANAF)
+cd backend && JAVA_HOME=$(/usr/libexec/java_home -v 21) GREENSTRUCT_ANAF_ENABLED=false GREENSTRUCT_ANALYSIS_DATE=2026-10-28 mvn spring-boot:run
+# 2. frontend; Vite trimite /api către http://localhost:8080 (VITE_BACKEND_URL schimbă ținta, de ex. Prism pe :4010)
+cd frontend && npm install && npm run dev
+```
+
+| Rută | Ce face |
+|---|---|
+| `#/verde/agro/firma` … `#/verde/agro/cerere` | cei 9 pași ai IMM-ului: CUI + acorduri, categoriile din `GET /api/modules` (cu „Dosar demo” pe fiecare), parcele pe harta SVG din GeoJSON, documente și întrebări din modul, analiza live (SSE), ofertele (`view=sme`), ce schimbi, trimiterea cererii |
+| `#/verde/agro/dosar` | starea dosarului (trimis / aprobat / monitorizare), documentele cerute de bancă, condițiile înainte de tragere, rezultatul la 12 luni |
+| `#/ofiter` | deschide un dosar după id, încarcă un dosar demo, dosare recente, portofoliul |
+| `#/ofiter/dosar/<runId>` | panourile din README §8 pe `view=full`: dosarul firmei și harta, pașii agenților, analiza tehnică, structurarea creditului, raportul verde, acțiuni (Aprobă, Cere documente, PDF, Simulează 12 luni), portofoliul |
+
+Comutatorul **IMM / Ofițer** de pe ecranele verzi păstrează id-ul dosarului în `sessionStorage`, ca o singură persoană să joace ambele roluri. IMM-ul nu vede fondurile, FEI dincolo de „fără ipotecă, datorită unei garanții europene”, DSCR sau descompunerea dobânzii; ecranele lui nu le afișează, iar liniile live sunt traduse din `lib/labels.js` (`TOOL_LINES_SME`).
+
+Verificări fără browser, cu backend-ul pornit:
+
+```bash
+node scripts/smoke.mjs          # client API + SSE: demo, evenimente, view=sme, trimitere, aprobare, monitorizare, portofoliu, PDF
+node scripts/screenshots.mjs    # Chrome headless prin DevTools (fără dependențe): parcurge fluxul cu click-uri reale și salvează capturi în /tmp/gs/shots
+```
+
+Fără credențiale AWS, doar rulările demo se termină; încărcarea propriilor PDF-uri cere Bedrock pentru citirea documentelor.
+
+## Structură cod nou
+
+```
+src/lib/api.js        clientul API (erori {error:{code,message}} ca ApiError, NETWORK/UNAVAILABLE când backend-ul nu răspunde)
+src/lib/sse.js        evenimentele live prin fetch streaming, cu reconectare ?after=<ultimul seq>
+src/lib/calc.js       rezolvă calcId -> display; opțiunile clasic / verde
+src/lib/hooks.js      useRun, useRunEvents, useModules, useFarm
+src/lib/session.js    schița cererii și dosarul curent (sessionStorage)
+src/lib/labels.js     texte românești pentru enum-uri (copie statică, fără cifre)
+src/screens/green/agro/   pașii IMM-ului   src/screens/officer/   zona ofițerului
+src/green-live.css    stilurile noi (fluxul IMM și zona ofițerului)
+```
 
 ## Cine vede datele și cum le protejăm
 

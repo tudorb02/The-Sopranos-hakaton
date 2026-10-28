@@ -591,3 +591,7 @@
   gap: var(--space-sm);
   align-items: center;
 }
+
+.officer .repay-chart {
+  max-height: 170px;
+}
