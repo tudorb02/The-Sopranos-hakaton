@@ -1,0 +1,15 @@
+**
+!server/
+!server/**
+server/node_modules/
+server/*.log
+server/.env
+server/.env.*
+!api/
+!api/node-openapi.yaml
+!frontend/
+!frontend/package.json
+!frontend/src/
+!frontend/src/lib/
+!frontend/src/lib/api.js
+!frontend/src/lib/forms.js

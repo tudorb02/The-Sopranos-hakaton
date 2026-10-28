@@ -1,0 +1,37 @@
+name: Node personal demo
+on:
+  push:
+    branches: [main, feat/server-node-api]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: nexxt_demo
+          POSTGRES_USER: nexxt
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U nexxt -d nexxt_demo"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      NODE_TEST_DATABASE_URL: postgresql://nexxt@localhost:5432/nexxt_demo
+      TZ: Europe/Bucharest
+      DEMO_TODAY: "2026-11-12"
+      CI: "true"
+      EXPO_PUBLIC_API_URL: /api/demo/v1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm --prefix server install --no-audit --no-fund
+      - run: npm --prefix server test
+      - run: npm --prefix frontend ci --no-audit --no-fund
+      - run: npm --prefix frontend run lint
+      - run: npm --prefix frontend run export:web

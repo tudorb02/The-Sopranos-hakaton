@@ -15,6 +15,6 @@
     "openapi": "node scripts/export-openapi.js",
     "seed:build": "node scripts/build-seed.js"
   },
-  "dependencies": { "express": "^5.1.0", "pg": "^8.16.3" },
-  "devDependencies": { "supertest": "^7.2.2", "vitest": "^3.2.4" }
+  "dependencies": { "express": "5.1.0", "pg": "8.16.3" },
+  "devDependencies": { "supertest": "7.2.2", "vitest": "3.2.4" }
 }

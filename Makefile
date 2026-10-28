@@ -1,4 +1,18 @@
+.DEFAULT_GOAL := setup
 .PHONY: setup up run migrate test seed openapi lint local-install local-test local-run
+.PHONY: node-up node-test node-seed node-openapi
+
+node-up:
+	docker compose up --build -d db server frontend
+
+node-test:
+	docker compose exec server sh -c 'NODE_TEST_DATABASE_URL="$$NODE_DATABASE_URL" npm test'
+
+node-seed:
+	docker compose exec server npm run seed
+
+node-openapi:
+	npm --prefix server run openapi
 
 setup:
 	@python3 -c 'import os, pathlib, secrets; p=pathlib.Path(".env"); fd=os.open(p, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600) if not p.exists() else None; fd is not None and os.write(fd, ("POSTGRES_PASSWORD=" + secrets.token_hex(24) + "\n").encode()); fd is not None and os.close(fd)'
