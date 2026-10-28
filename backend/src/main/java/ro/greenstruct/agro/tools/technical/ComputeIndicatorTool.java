@@ -66,7 +66,7 @@ public class ComputeIndicatorTool implements ToolHandler {
         result.put("configId", configId);
         result.put("thresholdResult", cfg.passesThreshold() ? "PASS" : "FAIL");
         result.put("meetsSafetyMargin", ConfigurationMetrics.meetsSafetyMargin(context, cfg));
-        if (cfg.metrics().containsKey("hp_per_ha")) {
+        if (cfg.metrics().containsKey("hp_per_ha") || cfg.metrics().containsKey("export_share_pct")) {
             result.put("sizing", ConfigurationMetrics.sizingOk(context, cfg.metrics()) ? "PASS" : "FAIL");
         }
         ArrayNode components = result.putArray("components");

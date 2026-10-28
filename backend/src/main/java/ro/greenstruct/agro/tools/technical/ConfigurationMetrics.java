@@ -48,19 +48,22 @@ public final class ConfigurationMetrics {
     }
 
     /**
-     * MIN_PCT: the indicator reaches the threshold. CERTIFICATION (organic) has no numeric threshold: the module's
-     * indicator_pct is the share of the farm certified or in conversion, 0 without a certificate or contract.
+     * MIN_PCT modules: indicator at or above the threshold. Modules without a percentage threshold (BY_NATURE,
+     * e.g. energy) are eligible as such: only the module's sizing and site checks decide. CERTIFICATION (organic) has
+     * no numeric threshold either: its indicator_pct is the share of the farm certified or in conversion, which is
+     * 0 without a certificate or a conversion contract, so it must be above 0.
      */
-    public static boolean meetsThreshold(ToolContext context, BigDecimal indicatorPct) {
-        if ("CERTIFICATION".equals(context.module().threshold().kind())) {
+    private static boolean meetsThreshold(ToolContext context, java.math.BigDecimal indicatorPct) {
+        String kind = context.module().threshold().kind();
+        if ("CERTIFICATION".equals(kind)) {
             return indicatorPct.signum() > 0;
         }
-        return indicatorPct.compareTo(RuleValues.thresholdPct(context)) >= 0;
+        return !"MIN_PCT".equals(kind) || indicatorPct.compareTo(RuleValues.thresholdPct(context)) >= 0;
     }
 
     public static boolean meetsSafetyMargin(ToolContext context, Configuration configuration) {
-        if ("CERTIFICATION".equals(context.module().threshold().kind())) {
-            return meetsThreshold(context, configuration.metric("indicator_pct"));
+        if (!"MIN_PCT".equals(context.module().threshold().kind())) {
+            return configuration.passesThreshold();
         }
         return configuration.metric("indicator_pct")
                 .compareTo(RuleValues.thresholdPct(context).add(RuleValues.safetyMarginPct(context))) >= 0;

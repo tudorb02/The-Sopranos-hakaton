@@ -16,7 +16,7 @@ data: {"seq":16,"runId":"run_irg7k2xq4m9p","type":"agent.tool_result", ...}
 - Prima conectare poate folosi `?after=<seq>` (ex. `after=RunView.lastEventSeq`), fiindcă `EventSource` nu poate seta header-e.
 - Serverul trimite întâi istoricul din buffer, apoi evenimentele live. Ordinea e garantată: `seq` crește cu 1, fără goluri.
 - Comentariile SSE (`: ping`) la ~15 s țin conexiunea deschisă; frontend-ul le ignoră.
-- Fluxul se închide după `run.completed` sau `run.failed`. Acțiunile ofițerului (aprobare) adaugă tranziții noi în același buffer; frontend-ul le primește dacă se reconectează sau dacă reîncarcă `GET /api/runs/{id}`.
+- Fluxul se închide după `run.completed` sau `run.failed`. Trimiterea cererii și aprobarea băncii adaugă tranziții noi în același buffer; frontend-ul le primește dacă se reconectează sau dacă reîncarcă `GET /api/runs/{id}`.
 
 ## Plicul
 
@@ -50,8 +50,8 @@ CREAT → DATE_FIRMA → AGENT_1 → AGENT_2 → AGENT_3 → GATA → TRIMIS →
 ```
 
 - `CREAT → … → GATA` le face sistemul (`actor: SYSTEM`); prima tranziție (`null → CREAT`) are `actor: FARMER`.
-- `GATA → TRIMIS` o face reprezentantul IMM (`POST /api/runs/{id}/submit` cu varianta aleasă, `actor: FARMER`).
-- `TRIMIS → APROBAT` o face ofițerul (`POST /api/runs/{id}/approve`, `actor: OFFICER`).
+- `GATA` = ofertele sunt gata. `GATA → TRIMIS` o face IMM-ul când alege varianta și trimite cererea (`POST /api/runs/{id}/submit`, `actor: FARMER`).
+- `TRIMIS → APROBAT` e aprobarea finală a băncii (`POST /api/runs/{id}/approve`, `actor: OFFICER`).
 - `APROBAT → MONITORIZARE`: după tragere. În demo, tragerea e simulată imediat după aprobare.
 - `POST /api/runs/{id}/request-documents` nu schimbă starea: dosarul rămâne `TRIMIS`, iar documentele apar în `RunView.pendingDocuments`.
 - Evenimentele unui agent apar doar cât dosarul e în starea lui (`TECHNICAL_AUDITOR` în `AGENT_1` etc.).
@@ -68,8 +68,8 @@ state.transition  AGENT_1 → AGENT_2
   ... la fel pentru FUNDING_OPTIMIZER și GREEN_UNDERWRITER ...
 state.transition  AGENT_3 → GATA
 run.completed
-state.transition  GATA → TRIMIS                  (IMM-ul trimite cererea)
-state.transition  TRIMIS → APROBAT → MONITORIZARE (după acțiunea ofițerului)
+state.transition  GATA → TRIMIS                   (după ce IMM-ul trimite cererea)
+state.transition  TRIMIS → APROBAT → MONITORIZARE (după aprobarea băncii)
 ```
 
 ## Cifrele: `calcs` și `calcId`

@@ -1,8 +1,6 @@
 package ro.greenstruct.agro.tools.funding;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,6 +11,10 @@ import ro.greenstruct.agro.engine.greentier.DnshStatus;
 import ro.greenstruct.agro.engine.greentier.GreenTierCalculator;
 import ro.greenstruct.agro.engine.greentier.GreenTierResult;
 import ro.greenstruct.agro.orchestration.AgentSlot;
+import ro.greenstruct.agro.tools.AssessedDnsh;
+import ro.greenstruct.agro.tools.Calc;
+import ro.greenstruct.agro.tools.Params;
+import ro.greenstruct.agro.tools.RuleValues;
 import ro.greenstruct.agro.tools.Schemas;
 import ro.greenstruct.agro.tools.ToolContext;
 import ro.greenstruct.agro.tools.ToolHandler;
@@ -21,8 +23,8 @@ import ro.greenstruct.agro.tools.Unit;
 import ro.greenstruct.agro.tools.workspace.Configuration;
 
 /**
- * README §4 step 8: Verde Plus, Verde, Verde cu upgrade or Clasic, from the technical assessment (indicator of the
- * requested and of the recommended configuration, DNSH) and the module's threshold.
+ * The green tier of README §4 step 8 for the configuration the green loan would finance; price_loan reads it for
+ * the tier's margin adjustment.
  */
 @Component
 public class DetermineGreenTierTool implements ToolHandler {
@@ -34,18 +36,21 @@ public class DetermineGreenTierTool implements ToolHandler {
 
     @Override
     public String description() {
-        return "Decides the green tier of the loan (VERDE_PLUS, VERDE, VERDE_CU_UPGRADE or CLASIC) from the technical "
-                + "assessment: indicator of the requested and of the recommended configuration against the "
-                + "threshold, and the DNSH status. Call it before price_loan.";
+        return "Decides the green tier of the green offer: VERDE_PLUS (indicator at least threshold x 1.5 and DNSH "
+                + "passed), VERDE, VERDE_CU_UPGRADE (the requested investment was below the threshold and the upgrade "
+                + "reaches it) or CLASIC. requestedConfigId is the investment as requested, financedConfigId the "
+                + "configuration of the green option. Call it before price_loan.";
     }
 
     @Override
     public JsonNode inputSchema() {
         return Schemas.parse("""
-                {"type": "object", "additionalProperties": false, "properties": {
-                  "acceptUpgrade": {"type": "boolean",
-                    "description": "Whether the farmer takes the recommended upgrade. Default true: there is no green without the upgrade."}}}
-                """);
+                {"type": "object", "additionalProperties": false, "required": ["requestedConfigId", "financedConfigId"],
+                 "properties": {
+                  "requestedConfigId": {"type": "string", "pattern": "^cfg_[a-z0-9_]{2,40}$"},
+                  "financedConfigId": {"type": "string", "pattern": "^cfg_[a-z0-9_]{2,40}$"},
+                  %s}}
+                """.formatted(AssessedDnsh.INPUT_SCHEMA));
     }
 
     @Override
@@ -55,54 +60,44 @@ public class DetermineGreenTierTool implements ToolHandler {
 
     @Override
     public ToolOutput execute(JsonNode input, ToolContext context) {
-        JsonNode assessment = context.run().agentOutputs().get(AgentSlot.TECHNICAL_AUDITOR);
-        if (assessment == null) {
-            throw new IllegalArgumentException("Evaluarea tehnică (Agentul 1) lipsește");
-        }
-        DnshStatus dnsh = DnshStatus.overall(dnshStatuses(assessment));
-        String initialId = assessment.path("initialConfigId").asText();
-        String recommendedId = assessment.path("recommendedConfigId").asText(initialId);
-        boolean acceptUpgrade = input.path("acceptUpgrade").asBoolean(true);
-        var threshold = context.module().threshold();
-        BigDecimal multiplier = PricingSupport.verdePlusMultiplier(context);
-
-        GreenTierResult result = switch (threshold.kind()) {
-            case "MIN_PCT" -> {
-                BigDecimal requested = context.workspace().configuration(initialId).metric("indicator_pct");
-                Optional<BigDecimal> upgraded = acceptUpgrade && !recommendedId.equals(initialId)
-                        ? Optional.of(context.workspace().configuration(recommendedId).metric("indicator_pct"))
-                        : Optional.empty();
-                yield GreenTierCalculator.forThreshold(threshold.value(), multiplier, requested, upgraded, dnsh);
-            }
+        Configuration requested = context.workspace().configuration(Params.requiredText(input, "requestedConfigId"));
+        Configuration financed = context.workspace().configuration(Params.requiredText(input, "financedConfigId"));
+        DnshStatus dnsh = AssessedDnsh.overall(context, input);
+        String kind = context.module().threshold().kind();
+        GreenTierResult tier = switch (kind) {
+            case "MIN_PCT" -> byThreshold(context, requested, financed, dnsh);
             case "BY_NATURE" -> GreenTierCalculator.byNature(dnsh);
-            case "CERTIFICATION" -> GreenTierCalculator.byCertification(hasCertification(context), dnsh);
-            default -> throw new IllegalStateException("Tip de prag necunoscut: " + threshold.kind());
+            default -> throw new IllegalArgumentException("Nivelul verde pentru criteriul " + kind
+                    + " nu e încă disponibil");
         };
-        context.workspace().putTier(result);
+        context.workspace().putGreenTier(tier);
 
-        if (result.financedIndicatorPct() != null) {
-            context.calc("tier.financed_indicator", "Indicatorul investiției finanțate", result.financedIndicatorPct(),
-                    Unit.PCT).formula("indicatorul configurației verzi (cerută sau cu upgrade acceptat)").add();
-            context.calc("tier.verde_plus_min", "Pragul pentru Verde Plus", result.verdePlusMinPct(), Unit.PCT)
-                    .formula("prag × multiplicator Verde Plus (config/pricing.json)")
-                    .source("config/pricing.json, greenTiers").add();
-        }
-        ObjectNode node = context.newResult();
-        node.put("tier", result.tier().name());
-        node.put("thresholdMet", result.thresholdMet());
-        node.put("upgradeNeeded", result.upgradeNeeded());
-        node.put("dnsh", dnsh.name());
-        return context.ok(node, "Nivelul verde: " + result.tier());
+        ObjectNode result = context.newResult();
+        result.put("tier", tier.tier().name());
+        result.put("thresholdMet", tier.thresholdMet());
+        result.put("upgradeNeeded", tier.upgradeNeeded());
+        result.put("dnshStatus", dnsh.name());
+        return context.ok(result, "Nivelul verde: " + tier.tier().name());
     }
 
-    private static List<DnshStatus> dnshStatuses(JsonNode assessment) {
-        List<DnshStatus> statuses = new ArrayList<>();
-        assessment.path("dnshChecks").forEach(check -> statuses.add(DnshStatus.valueOf(check.path("status").asText())));
-        return statuses;
-    }
+    private static GreenTierResult byThreshold(ToolContext context, Configuration requested, Configuration financed,
+                                               DnshStatus dnsh) {
+        JsonNode multiplierNode = context.reference().pricing().path("greenTiers").path("verdePlusThresholdMultiplier");
+        BigDecimal multiplier = Params.value(multiplierNode, "pricing.greenTiers.verdePlusThresholdMultiplier");
+        BigDecimal requestedPct = requested.metric("indicator_pct");
+        Optional<BigDecimal> upgraded = requested.configId().equals(financed.configId()) ? Optional.empty()
+                : Optional.of(financed.metric("indicator_pct"));
+        GreenTierResult tier = GreenTierCalculator.forThreshold(RuleValues.thresholdPct(context), multiplier,
+                requestedPct, upgraded, dnsh);
 
-    private static boolean hasCertification(ToolContext context) {
-        return context.run().request().documents().stream()
-                .anyMatch(doc -> "CERTIFICATION_CONTRACT".equals(doc.docType()));
+        Calc threshold = context.calc("green_tier.threshold", "Pragul verde", RuleValues.thresholdPct(context),
+                Unit.PCT).source(context.module().threshold().sourceRo()).add();
+        context.calc("green_tier.requested_indicator", "Indicatorul investiției cerute", requestedPct, Unit.PCT).add();
+        context.calc("green_tier.financed_indicator", "Indicatorul investiției finanțate de creditul verde",
+                tier.financedIndicatorPct(), Unit.PCT).add();
+        context.calc("green_tier.verde_plus_min", "Pragul pentru Verde Plus", tier.verdePlusMinPct(), Unit.PCT)
+                .formula("prag × multiplicator").source(multiplierNode.path("sourceRo").asText(null))
+                .dependsOn(threshold).add();
+        return tier;
     }
 }

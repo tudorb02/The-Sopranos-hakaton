@@ -2,7 +2,7 @@
   "moduleId": "energie",
   "nameRo": "Energie la fermă",
   "icon": "☀️",
-  "status": "CONFIG_ONLY",
+  "status": "DEMO_READY",
   "descriptionRo": "Panouri solare, pompe solare, agrivoltaic.",
   "examplesRo": [
     "panouri solare",
@@ -13,144 +13,76 @@
     "kind": "BY_NATURE",
     "value": null,
     "unit": null,
-    "sourceRo": "regenerabil prin natura investiției",
+    "sourceRo": "regenerabil prin natura investiției; se verifică dimensionarea după consum",
     "demo": true
   },
   "requiredDocs": [
     {
       "docType": "OFFER",
-      "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+      "labelRo": "Oferta / proforma și fișa tehnică a instalației",
       "required": true
     },
     {
       "docType": "CURRENT_EQUIPMENT",
-      "labelRo": "Ce se înlocuiește: fișă tehnică, poză cu eticheta sau descriere",
+      "labelRo": "Pompa actuală pe motorină: fișă tehnică, poză cu eticheta sau descriere",
       "required": false
     },
     {
       "docType": "ENERGY_INVOICES",
-      "labelRo": "Facturile de energie pe 12 luni",
+      "labelRo": "Facturile de energie electrică pe ultimele 12 luni",
       "required": true
     }
   ],
   "questionnaire": [
     {
-      "questionId": "crops_main",
-      "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
-      "type": "TEXT",
-      "prefillFrom": "APIA",
+      "questionId": "mounting",
+      "labelRo": "Unde se montează panourile?",
+      "type": "SINGLE_CHOICE",
+      "options": [
+        {
+          "value": "ACOPERIS",
+          "labelRo": "pe acoperiș"
+        },
+        {
+          "value": "TEREN_NEPRODUCTIV",
+          "labelRo": "pe teren neproductiv"
+        },
+        {
+          "value": "AGRIVOLTAIC",
+          "labelRo": "agrivoltaic"
+        },
+        {
+          "value": "TEREN_AGRICOL",
+          "labelRo": "pe teren agricol productiv"
+        }
+      ],
+      "prefillFrom": "NONE",
       "required": true
     },
     {
-      "questionId": "nitrogen_kg_ha",
-      "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)?",
+      "questionId": "available_area_m2",
+      "labelRo": "Ce suprafață aveți disponibilă pentru panouri (m²)?",
       "type": "NUMBER",
-      "unit": "KG_N_PER_HA",
       "prefillFrom": "NONE",
       "required": true
     },
     {
-      "questionId": "tillage",
-      "labelRo": "Cum lucrați solul?",
-      "type": "SINGLE_CHOICE",
-      "options": [
-        {
-          "value": "ARATURA",
-          "labelRo": "arătură"
-        },
-        {
-          "value": "MINIMA",
-          "labelRo": "lucrare minimă"
-        },
-        {
-          "value": "NO_TILL",
-          "labelRo": "no-till"
-        }
-      ],
+      "questionId": "daytime_share_pct",
+      "labelRo": "Ce parte din consumul de energie are loc ziua (aproximativ, %)?",
+      "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": true
     },
     {
-      "questionId": "cover_crops",
-      "labelRo": "Folosiți culturi de acoperire sau rotație?",
-      "type": "SINGLE_CHOICE",
-      "options": [
-        {
-          "value": "DA",
-          "labelRo": "da"
-        },
-        {
-          "value": "ROTATIE",
-          "labelRo": "doar rotație"
-        },
-        {
-          "value": "NU",
-          "labelRo": "nu"
-        }
-      ],
-      "prefillFrom": "APIA",
-      "required": false
-    },
-    {
-      "questionId": "irrigation_current",
-      "labelRo": "Irigați acum? Cu ce sistem?",
-      "type": "SINGLE_CHOICE",
-      "options": [
-        {
-          "value": "NU",
-          "labelRo": "nu irig"
-        },
-        {
-          "value": "ASPERSIE_VECHE",
-          "labelRo": "aspersie veche"
-        },
-        {
-          "value": "ASPERSIE",
-          "labelRo": "aspersie"
-        },
-        {
-          "value": "PICURARE",
-          "labelRo": "picurare"
-        },
-        {
-          "value": "BRAZDE",
-          "labelRo": "pe brazde"
-        }
-      ],
-      "prefillFrom": "APIA",
-      "required": true
-    },
-    {
-      "questionId": "crop_insurance",
-      "labelRo": "Aveți asigurare pentru culturi?",
-      "type": "BOOLEAN",
-      "prefillFrom": "NONE",
-      "required": true
-    },
-    {
-      "questionId": "certifications",
-      "labelRo": "Aveți certificări?",
-      "type": "MULTI_CHOICE",
-      "options": [
-        {
-          "value": "ECOLOGIC",
-          "labelRo": "ecologic"
-        },
-        {
-          "value": "GLOBALGAP",
-          "labelRo": "GlobalGAP"
-        },
-        {
-          "value": "NICIUNA",
-          "labelRo": "niciuna"
-        }
-      ],
+      "questionId": "diesel_pump_litres_year",
+      "labelRo": "Dacă înlocuiți o pompă pe motorină cu una solară: câți litri consumă pompa actuală pe an?",
+      "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": false
     },
     {
-      "questionId": "offtake_contracts",
-      "labelRo": "Aveți contracte de vânzare cu procesatori sau retaileri?",
+      "questionId": "has_grid_notice",
+      "labelRo": "Aveți avizul de racordare pentru vânzarea surplusului în rețea?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": false
@@ -164,7 +96,7 @@
     },
     {
       "questionId": "old_equipment_fate",
-      "labelRo": "Ce faceți cu utilajul vechi și cu deșeurile (ambalaje, folie)?",
+      "labelRo": "Ce faceți cu echipamentul vechi (pompa pe motorină, invertoare, cabluri)?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
@@ -188,5 +120,91 @@
       "required": true
     }
   ],
-  "calculator": null
+  "calculator": "energy",
+  "catalog": "catalog/energie.json",
+  "dnsh": [
+    {
+      "objective": "CLIMATE_ADAPTATION",
+      "checkRo": "Panourile nu sunt pe parcele cu risc ridicat de inundații sau grindină, sau sunt asigurate.",
+      "evidence": "PARCEL_RISK"
+    },
+    {
+      "objective": "WATER_MARINE_RESOURCES",
+      "checkRo": "Panourile se spală fără surse noi de apă și fără detergenți care ajung în ape.",
+      "evidence": "WATER_USE"
+    },
+    {
+      "objective": "CIRCULAR_ECONOMY",
+      "checkRo": "Panourile și invertoarele se predau la sfârșitul vieții la un colector autorizat de deșeuri electrice; echipamentul vechi este vândut sau predat unui colector autorizat.",
+      "evidence": "OLD_EQUIPMENT_FATE"
+    },
+    {
+      "objective": "POLLUTION_PREVENTION",
+      "checkRo": "Echipamentele sunt certificate (IEC 61215 / 61730) și nu conțin substanțe periculoase peste limitele UE.",
+      "evidence": "EQUIPMENT_CERTIFICATES"
+    },
+    {
+      "objective": "BIODIVERSITY",
+      "checkRo": "Parcelele nu sunt în arii Natura 2000 sau există aviz de mediu; panourile nu ocupă teren agricol productiv.",
+      "evidence": "NATURA_2000_PARCELS"
+    }
+  ],
+  "fundingPrograms": [
+    "FM_PV",
+    "INVESTEU_FEI"
+  ],
+  "labels": {
+    "PV_SYSTEM": {
+      "label": "TAXONOMY_ALIGNED",
+      "taxonomyActivity": "4.1",
+      "when": "ALWAYS"
+    },
+    "INSTALLATION_WORKS": {
+      "label": "TAXONOMY_ALIGNED",
+      "taxonomyActivity": "4.1",
+      "when": "ALWAYS"
+    },
+    "SOLAR_PUMP": {
+      "label": "TAXONOMY_ALIGNED",
+      "taxonomyActivity": "4.1",
+      "when": "ALWAYS"
+    }
+  },
+  "parameters": {
+    "pvYieldKwhPerKwp": {
+      "value": 1250,
+      "sourceRo": "Producția specifică a panourilor, sudul României; valoare de pornire din documentele de test Product (data/demo/test-documents/reference/constants.json), de înlocuit cu PVGIS pe locația fermei"
+    },
+    "monthlyProductionShare": {
+      "value": [0.035, 0.05, 0.08, 0.1, 0.12, 0.125, 0.13, 0.12, 0.09, 0.07, 0.045, 0.035],
+      "sourceRo": "Profilul lunar al producției, ianuarie–decembrie, suma 1; profil de demo (data/demo/test-documents/reference/constants.json), de înlocuit cu PVGIS"
+    },
+    "sellPriceEurPerKwh": {
+      "value": 0.06,
+      "sourceRo": "Prețul de vânzare a surplusului în rețea; valoare de demo (data/demo/test-documents/reference/constants.json), de confirmat cu mentorii"
+    },
+    "maxExportSharePct": {
+      "value": 30,
+      "sourceRo": "Regula de dimensionare din demo-ul Product: cel mult 30% din producție vândută în rețea; o instalație supradimensionată vinde ieftin"
+    },
+    "daytimeShareDefaultPct": {
+      "value": 55,
+      "sourceRo": "README §6, categoria 2: ponderea consumului de zi, ex. 55%; folosită doar dacă fermierul nu răspunde"
+    },
+    "areaM2PerKwp": {
+      "value": 5.5,
+      "sourceRo": "Suprafața de acoperiș pe kWp, din oferta de test Solar Câmpia Demo: 1.650 m² pentru 300 kWp; estimare, de validat"
+    },
+    "eligibleMountings": {
+      "value": ["ACOPERIS", "TEREN_NEPRODUCTIV", "AGRIVOLTAIC"],
+      "sourceRo": "README §6, categoria 2, pragul verde: acoperiș, teren neproductiv sau agrivoltaic; terenul agricol productiv nu e eligibil"
+    }
+  },
+  "substantialContribution": "CLIMATE_MITIGATION",
+  "financing": {
+    "termMonths": 84,
+    "horizonYears": 7,
+    "standardLine": "rbro.invest.standard",
+    "greenLine": "rbro.agri.green_investeu"
+  }
 }

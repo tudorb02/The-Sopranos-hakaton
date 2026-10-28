@@ -1,0 +1,42 @@
+{
+  "documentId": "doc_facturi_energie",
+  "documentType": "ENERGY_INVOICES",
+  "moduleId": "irigatii",
+  "currency": "RON",
+  "supplierName": "Furnizor energie (demo)",
+  "documentFields": [
+    {
+      "key": "PERIOD_FROM",
+      "rawValue": "01.10.2025",
+      "unit": "DATE",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "PERIOD_TO",
+      "rawValue": "30.09.2026",
+      "unit": "DATE",
+      "page": 12,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "ENERGY_KWH",
+      "rawValue": "105.230 kWh",
+      "unit": "KWH",
+      "page": 13,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "ENERGY_COST",
+      "rawValue": "104.598,62 lei",
+      "unit": "RON",
+      "page": 13,
+      "confidence": "MEDIUM"
+    }
+  ],
+  "lineItems": [],
+  "missingFields": [],
+  "warnings": [
+    "Facturile acoperă tot locul de consum, nu doar pompa. Abaterea se verifică la monitorizare."
+  ]
+}

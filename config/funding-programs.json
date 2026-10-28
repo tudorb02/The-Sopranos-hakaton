@@ -47,7 +47,8 @@
         "thresholdAfter": 45
       },
       "monthsUntilPaid": 12,
-      "sourceRo": "Ghidul solicitantului DR-12, versiunea 18.09.2026, afir.ro"
+      "sourceRo": "Ghidul solicitantului DR-12, versiunea 18.09.2026, afir.ro",
+      "sourceUrl": "https://www.afir.ro"
     },
     {
       "programCode": "DR_26",
@@ -72,7 +73,8 @@
         ],
         "requiresWaterMeter": true
       },
-      "sourceRo": "afir.ro, fișa DR-26"
+      "sourceRo": "afir.ro, fișa DR-26",
+      "sourceUrl": "https://www.afir.ro"
     },
     {
       "programCode": "DR_16",
@@ -99,7 +101,8 @@
           "0113"
         ]
       },
-      "sourceRo": "afir.ro, fișa DR-16"
+      "sourceRo": "afir.ro, fișa DR-16",
+      "sourceUrl": "https://www.afir.ro"
     },
     {
       "programCode": "FM_PV",
@@ -121,7 +124,8 @@
           "PV_SYSTEM"
         ]
       },
-      "sourceRo": "Economedia, 09.06.2026"
+      "sourceRo": "Economedia, 09.06.2026",
+      "sourceUrl": "https://www.afm.ro"
     },
     {
       "programCode": "INVESTEU_FEI",
@@ -133,7 +137,8 @@
       "eligibility": {
         "requiresGreenConfig": true
       },
-      "sourceRo": "Acord FEI cu Raiffeisen, 25.10.2023"
+      "sourceRo": "Acord FEI cu Raiffeisen, 25.10.2023",
+      "sourceUrl": "https://www.eif.org"
     },
     {
       "programCode": "FGCR",
@@ -150,7 +155,8 @@
           "SRL"
         ]
       },
-      "sourceRo": "fgcr.ro"
+      "sourceRo": "fgcr.ro",
+      "sourceUrl": "https://www.fgcr.ro"
     },
     {
       "programCode": "RABLA_AGRI",
@@ -161,7 +167,8 @@
         "noteRo": "Proiectul de buget AFM pentru 2026 nu prevede bani pentru program"
       },
       "eligibility": {},
-      "sourceRo": "agrointel.ro, 21.05.2026"
+      "sourceRo": "agrointel.ro, 21.05.2026",
+      "sourceUrl": "https://www.afm.ro"
     }
   ]
 }

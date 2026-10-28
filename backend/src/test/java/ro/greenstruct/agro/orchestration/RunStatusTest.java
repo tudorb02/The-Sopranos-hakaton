@@ -20,8 +20,9 @@ class RunStatusTest {
     void cannotSkipAgentsOrLeaveFinalStates() {
         assertThat(RunStatus.AGENT_1.canMoveTo(RunStatus.AGENT_3)).isFalse();
         assertThat(RunStatus.CREAT.canMoveTo(RunStatus.GATA)).isFalse();
-        assertThat(RunStatus.GATA.canMoveTo(RunStatus.ESUAT)).isFalse();
         assertThat(RunStatus.GATA.canMoveTo(RunStatus.APROBAT)).isFalse();
+        assertThat(RunStatus.GATA.canMoveTo(RunStatus.ESUAT)).isFalse();
+        assertThat(RunStatus.TRIMIS.canMoveTo(RunStatus.GATA)).isFalse();
         assertThat(RunStatus.ESUAT.canMoveTo(RunStatus.CREAT)).isFalse();
     }
 

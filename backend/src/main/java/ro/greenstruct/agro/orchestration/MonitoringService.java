@@ -49,7 +49,7 @@ public class MonitoringService {
         if (run.monitoring() != null) {
             throw new IllegalStateException("Monitorizarea a fost deja simulată pentru acest dosar");
         }
-        if (!"VERDE".equals(run.chosenVariant())) {
+        if (run.submission() == null || run.submission().variant() != Submission.Variant.VERDE) {
             throw new IllegalStateException("Dosarul are credit clasic: nu are impact verde de monitorizat");
         }
         JsonNode report = run.agentOutputs().get(AgentSlot.GREEN_UNDERWRITER);

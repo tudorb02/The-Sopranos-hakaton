@@ -8,6 +8,7 @@
 openapi.yaml:
   no-ambiguous-paths:
     - '#/paths/~1api~1runs~1{id}~1events'
+    - '#/paths/~1api~1runs~1{id}~1submit'
     - '#/paths/~1api~1runs~1{id}~1approve'
     - '#/paths/~1api~1runs~1{id}~1request-documents'
   operation-4xx-response:

@@ -3,7 +3,10 @@ package ro.greenstruct.agro.orchestration;
 import java.util.Map;
 import java.util.Set;
 
-/** Lifecycle of a dossier, as in the README: CREAT → DATE_FIRMA → AGENT_1 → AGENT_2 → AGENT_3 → GATA → TRIMIS → APROBAT → MONITORIZARE. */
+/**
+ * Lifecycle of a dossier, as in the README: CREAT → DATE_FIRMA → AGENT_1 → AGENT_2 → AGENT_3 → GATA → TRIMIS →
+ * APROBAT → MONITORIZARE. GATA = the offers are ready; TRIMIS = the farmer sent the chosen one to the bank.
+ */
 public enum RunStatus {
     CREAT, DATE_FIRMA, AGENT_1, AGENT_2, AGENT_3, GATA, TRIMIS, APROBAT, MONITORIZARE, ESUAT;
 

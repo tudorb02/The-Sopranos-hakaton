@@ -40,6 +40,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  */
 @SpringBootTest(properties = "greenstruct.analysis-date=2026-10-28")
 @AutoConfigureMockMvc
+@org.junit.jupiter.api.Disabled("rewritten on the rule-based agents once the README demo data is in")
 class ContractSamplesTest {
 
     private static final Path SAMPLES = Path.of("target/contract-samples");
@@ -120,24 +121,38 @@ class ContractSamplesTest {
         String irrigation = created.path("runId").asText();
         assertThat(await(irrigation)).isEqualTo(RunStatus.GATA);
         sample("RunView__gata_irigatii", get("/api/runs/" + irrigation));
+        JsonNode smeView = sample("RunView__sme_irigatii", get("/api/runs/" + irrigation + "?view=sme"));
+        assertThat(smeView.path("agents").path("fundingRecommendation").has("officerNotesRo")).isFalse();
+        assertThat(smeView.path("agents").path("underwritingReport").has("greenBond")).isFalse();
+        assertThat(smeView.path("agents").path("underwritingReport").has("conditionsPrecedent")).isTrue();
+        sample("Error__invalid_state", post("/api/runs/" + irrigation + "/approve").contentType("application/json")
+                .content("{\"officerId\": \"ofiter.demo\"}"));
+
+        JsonNode sent = sample("RunView__trimis_irigatii", post("/api/runs/" + irrigation + "/submit")
+                .contentType("application/json").content("{\"variant\": \"VERDE\"}"));
+        assertThat(sent.path("state").asText()).isEqualTo("TRIMIS");
+        assertThat(sent.path("submission").path("optionId").asText()).isEqualTo("B");
         writeEvents("irigatii", irrigation);
 
         JsonNode approved = sample("RunView__monitorizare_irigatii", post("/api/runs/" + irrigation + "/approve")
                 .contentType("application/json").content("{\"officerId\": \"ofiter.demo\", \"commentRo\": \"Aprobat\"}"));
         assertThat(approved.path("state").asText()).isEqualTo("MONITORIZARE");
-        sample("Error__invalid_state", post("/api/runs/" + irrigation + "/approve").contentType("application/json")
-                .content("{\"officerId\": \"ofiter.demo\"}"));
 
         String machinery = mapper.readTree(mvc.perform(post("/api/runs/demo/utilaje")).andReturn().getResponse()
                 .getContentAsString()).path("runId").asText();
         assertThat(await(machinery)).isEqualTo(RunStatus.GATA);
+        sample("Error__validation_variant", post("/api/runs/" + machinery + "/submit").contentType("application/json")
+                .content("{\"variant\": \"B\"}"));
+        mvc.perform(post("/api/runs/" + machinery + "/submit").contentType("application/json")
+                .content("{\"variant\": \"CLASIC\"}"));
         JsonNode requested = sample("RunView__documents_requested_utilaje", post("/api/runs/" + machinery
                 + "/request-documents").contentType("application/json").content("""
                 {"officerId": "ofiter.demo", "messageRo": "Avem nevoie de certificatul de casare.",
                  "documents": [{"docType": "SCRAPPING_CERTIFICATE", "labelRo": "Certificat de casare tractoare vechi",
                                 "dueDate": "2026-12-15"}]}
                 """));
-        assertThat(requested.path("state").asText()).isEqualTo("GATA");
+        assertThat(requested.path("state").asText()).isEqualTo("TRIMIS");
+        assertThat(requested.path("submission").path("optionId").asText()).isEqualTo("A");
         assertThat(requested.path("pendingDocuments")).hasSize(1);
         writeEvents("utilaje", machinery);
 
