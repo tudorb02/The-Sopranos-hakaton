@@ -26,12 +26,12 @@ export function Section({ title, aside, children }) {
   );
 }
 
-// Amount in the app's style: the integer large, ",00 LEI" small.
+// Amount in the app's style: the integer large, ",00 lei" small.
 export function Amount({ value, size = "lg" }) {
   return (
     <span className={`amount amount--${size}`}>
       <span className="amount-int">{num(value)}</span>
-      <span className="amount-dec">,00 LEI</span>
+      <span className="amount-dec">,00 lei</span>
     </span>
   );
 }

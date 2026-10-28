@@ -6,7 +6,7 @@ export function WeekStrip({ week }) {
   const summary = spentDays.map((day) => `${day.name} ${lei(day.lei)}`).join(", ");
   return (
     <figure className="week">
-      <div className="week-plot" role="img" aria-label={`${summary}. Ținta: ${lei(week.guidePerDay)} pe zi.`}>
+      <div className="week-plot" role="img" aria-label={`${summary}. Limita recomandată: ${lei(week.guidePerDay)} pe zi.`}>
         <span className="week-guide" style={{ "--p": pct(week.guidePerDay, week.scaleMax) }} />
         {week.days.map((day) => {
           const classes = ["day", day.today ? "is-today" : "", day.lei === undefined ? "is-future" : ""].filter(Boolean).join(" ");
@@ -25,7 +25,7 @@ export function WeekStrip({ week }) {
           </li>
         ))}
       </ol>
-      <figcaption className="small muted">Linia punctată: ținta de {lei(week.guidePerDay)} pe zi</figcaption>
+      <figcaption className="small muted">Linia punctată: limita recomandată de {lei(week.guidePerDay)} pe zi</figcaption>
     </figure>
   );
 }

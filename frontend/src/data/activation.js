@@ -20,7 +20,7 @@ export const products = [
 export const intro = {
   title: "Activează coach-ul financiar",
   lead: "Te ajut să vezi unde se duc banii, să-ți pui bugete pe categorii și să strângi pentru ce îți dorești.",
-  duration: "Cam 3 minute",
+  duration: "Durează circa 3 minute",
   does: [
     "Citesc extrasele de cont pe care mi le dai și îți arăt tiparele",
     "Te întreb doar ce nu pot vedea din tranzacții",
@@ -37,7 +37,7 @@ export const statements = {
   formats: "PDF, XLS sau CSV · până la 10 MB",
   files: [
     { name: "extras_nov2024-oct2025.pdf", meta: "12 luni · 968 de plăți", state: "done" },
-    { name: "extras_alta_banca_2026.csv", meta: "Se citește…", state: "reading", progress: 60 },
+    { name: "extras_alta_banca_2026.csv", meta: "Se procesează…", state: "reading", progress: 60 },
   ],
   howTo: [
     "Deschide aplicația sau internet banking-ul băncii",
@@ -105,7 +105,7 @@ export const questions = [
     options: [
       { label: "O achiziție", selected: true },
       { label: "O vacanță" },
-      { label: "O rezervă pentru neprevăzute" },
+      { label: "Un fond pentru urgențe" },
       { label: "Nimic anume acum" },
     ],
     fields: [
@@ -145,7 +145,7 @@ export const questions = [
       { label: "Doar rezumatul săptămânal" },
     ],
     fields: [
-      { label: "Liniște de la", value: "22:00" },
+      { label: "Fără notificări de la", value: "22:00" },
       { label: "până la", value: "08:00" },
       { label: "Rezumatul săptămânal", type: "select", value: "Duminică, la 19:00", options: ["Duminică, la 19:00", "Luni, la 08:00", "Vineri, la 18:00", "Fără rezumat"] },
     ],
@@ -159,13 +159,13 @@ export const questions = [
 ];
 
 export const analysis = {
-  title: "Mă uit prin ultimele 24 de luni",
-  lead: "12 luni importate din contul curent și 12 din extrasul atașat. Durează cam un minut.",
+  title: "Analizez ultimele 24 de luni",
+  lead: "12 luni importate din contul curent și 12 din extrasul atașat. Durează circa un minut.",
   items: [
     { label: "Venituri și ziua salariului", state: "done", note: "Salariu pe 5, în 24 din 24 de luni" },
     { label: "Plăți recurente și abonamente", state: "done", note: "9 plăți recurente, dintre care 3 abonamente" },
     { label: "Categorii pentru 1.946 de plăți", state: "running", note: "1.362 din 1.946", progress: 70 },
-    { label: "Obiceiuri și luni grele", state: "waiting", note: "Urmează" },
+    { label: "Obiceiuri și luni cu cheltuieli mari", state: "waiting", note: "Urmează" },
   ],
   note: "Poți închide aplicația. Îți scriu când e gata.",
 };
@@ -173,8 +173,8 @@ export const analysis = {
 export const findings = {
   lead: "Din 24 de luni de extrase, din calendar și din răspunsurile tale.",
   items: [
-    { text: "Rămâi cu sub 100 lei în cont de pe 27 până pe 5, în 5 din ultimele 6 luni.", src: "obs" },
-    { text: "Aproape în fiecare dimineață plătești ~30 lei la Boabe & Co: cam 600 lei pe lună.", note: "Te întreb despre asta în discuție.", src: "obs" },
+    { text: "Între 27 și 5 ale lunii ai sub 100 lei în cont, în 5 din ultimele 6 luni.", src: "obs" },
+    { text: "Aproape în fiecare dimineață plătești circa 30 lei la Boabe & Co: aproximativ 600 lei pe lună.", note: "Te întreb despre asta în discuție.", src: "obs" },
     { text: "FitZone Gym: 220 lei pe lună, iar aplicația sălii n-a mai fost deschisă din aprilie.", src: "obs" },
     { text: "În noiembrie ai 10 zile de naștere.", src: "obs", label: "din calendar" },
   ],

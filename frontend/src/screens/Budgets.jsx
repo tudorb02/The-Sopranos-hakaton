@@ -7,9 +7,9 @@ export default function Budgets() {
   return (
     <>
       <section className="card hero-card" aria-labelledby="budgets-title">
-        <p className="eyebrow">Ciclul de salariu · {cycle.label}</p>
+        <p className="eyebrow">Perioada de buget · {cycle.label}</p>
         <h1 id="budgets-title" className="hero-label">
-          Până pe {cycle.endsOn} mai ai disponibili
+          Disponibil până pe {cycle.endsOn}
         </h1>
         <Amount value={cycle.left} size="lg" />
         <p className="hero-sub">
@@ -40,7 +40,7 @@ export default function Budgets() {
       <InfoCard
         icon="help"
         title="O întrebare scurtă"
-        text={`Plata de ${lei(question.amount)} la ${question.merchant}, din ${question.date}: ce a fost?`}
+        text={`Ce reprezintă plata de ${lei(question.amount)} către ${question.merchant} din ${question.date}?`}
       >
         <div className="chips">
           {question.options.map((option) => (

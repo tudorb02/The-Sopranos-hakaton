@@ -15,7 +15,7 @@ export default function Profile() {
     <>
       <header className="intro">
         <h1 className="page-title">Ce știu despre tine</h1>
-        <p className="small muted">Corectează sau șterge orice rând. Datele astea nu se folosesc pentru credit sau reclame.</p>
+        <p className="small muted">Corectează sau șterge orice rând. Aceste date nu sunt folosite pentru evaluarea creditelor sau în scop de marketing.</p>
         <p className="src-legend">
           <Src kind="obs" label="observat în tranzacții" />
           <Src kind="said" label="spus de tine" />
@@ -88,7 +88,7 @@ export default function Profile() {
         </ul>
       </Group>
 
-      <Group label="Cum vorbim" action={CORRECT}>
+      <Group label="Cum comunicăm" action={CORRECT}>
         <Facts items={profile.talk} />
       </Group>
 

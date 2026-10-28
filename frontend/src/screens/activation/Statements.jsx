@@ -55,7 +55,7 @@ export function Statements() {
                 <span className="row-name file-name">{file.name}</span>
                 <span className="row-note">{file.meta}</span>
               </div>
-              <span className={file.state === "done" ? "status is-on" : "status"}>{file.state === "done" ? "Citit" : "Se citește"}</span>
+              <span className={file.state === "done" ? "status is-on" : "status"}>{file.state === "done" ? "Procesat" : "Se procesează"}</span>
               {file.state === "reading" ? <Meter value={file.progress} max={100} /> : null}
             </li>
           ))}

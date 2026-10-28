@@ -17,40 +17,40 @@ export default function Goals() {
           </div>
           <Src kind="agreed" />
         </div>
-        <p className="hero-label">Strâns până acum</p>
+        <p className="hero-label">Economisit până acum</p>
         <p className="amount-line">
           <Amount value={0} size="lg" />
           <span className="muted"> din {lei(goal.amount)}</span>
         </p>
         <Meter value={0} max={goal.amount} />
         <p className="hero-sub">
-          Gata pe <b>{goal.readyOn}</b> · prima depunere pe {goal.firstDeposit}
+          Obiectiv atins pe <b>{goal.readyOn}</b> · prima depunere pe {goal.firstDeposit}
         </p>
       </section>
 
-      <Section title="Planul pe luni">
+      <Section title="Planul lunar">
         <div className="card stack">
           <PlanChart plan={goal.plan} total={goal.amount} />
           <p className="small muted">{goal.reason}</p>
         </div>
       </Section>
 
-      <Section title="Din ce strângi" aside={<Src kind="est" label="estimat, ian.–mar." />}>
+      <Section title="Din ce economisești" aside={<Src kind="est" label="estimat, ian.–mar." />}>
         <ul className="card rows">
           {goal.funding.map((item) => (
-            <ValueRow key={item.name} name={item.name} value={`~${lei(item.lei)}`} />
+            <ValueRow key={item.name} name={item.name} value={`aprox. ${lei(item.lei)}`} />
           ))}
         </ul>
       </Section>
 
-      <Section title="Unde stau banii">
+      <Section title="Unde păstrezi banii">
         <div className="card stack">
           <div className="service-head">
             <p className="row-name">Cont de economii Super Acces Plus</p>
             <Src kind="agreed" />
           </div>
           <p className="small">
-            FixPay mută 700 lei pe 5 ianuarie și pe 5 februarie, apoi 600 lei pe 5 martie. Poți retrage oricând.
+            Prin FixPay se transferă automat 700 lei pe 5 ianuarie și pe 5 februarie, apoi 600 lei pe 5 martie. Poți retrage banii oricând.
           </p>
           <dl className="terms">
             <div>
@@ -59,7 +59,7 @@ export default function Goals() {
             </div>
             <div>
               <dt>Dobândă</dt>
-              <dd>2,00% pe an, variabilă, minus impozitul de 10%</dd>
+              <dd>2,00% pe an, variabilă; impozit pe dobândă 10%</dd>
             </div>
           </dl>
           <details className="why">
@@ -80,9 +80,9 @@ export default function Goals() {
 
       <section className="card empty" aria-labelledby="reserve-title">
         <h2 id="reserve-title" className="card-title">
-          Rezervă pentru neprevăzute
+          Fond pentru urgențe
         </h2>
-        <p className="small muted">Nu am vorbit încă despre asta. O rezervă te ajută când apare o cheltuială pe care n-ai planificat-o.</p>
+        <p className="small muted">Nu am vorbit încă despre asta. Un fond pentru urgențe te ajută când apare o cheltuială neprevăzută.</p>
         <a className="btn btn--outline" href="#/chat">
           Hai să vorbim
         </a>

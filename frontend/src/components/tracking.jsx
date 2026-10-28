@@ -13,7 +13,7 @@ export function CategoryTile({ id, size }) {
   );
 }
 
-// Signed amount in the app's style: "−30" large, ",00 LEI" small.
+// Signed amount in the app's style: "−30" large, ",00 lei" small.
 export function TxAmount({ value, size = "md" }) {
   const sign = value < 0 ? "−" : "+";
   return (
@@ -22,7 +22,7 @@ export function TxAmount({ value, size = "md" }) {
         {sign}
         {num(Math.abs(value))}
       </span>
-      <span className="amount-dec">,00 LEI</span>
+      <span className="amount-dec">,00 lei</span>
     </span>
   );
 }
@@ -70,10 +70,10 @@ export function TxRow({ tx }) {
         <span className="tx-main">
           <span className="tx-name">{title}</span>
           <span className="tx-meta">{meta}</span>
-          {tx.needsReview || tx.renamed || tx.recurring || tx.status === "În procesare" ? (
+          {tx.needsReview || tx.renamed || tx.recurring || tx.status === "În așteptare" ? (
             <span className="tx-flags">
               {tx.needsReview ? <span className="flag flag--review">De verificat</span> : null}
-              {tx.status === "În procesare" ? <span className="flag">În procesare</span> : null}
+              {tx.status === "În așteptare" ? <span className="flag">În așteptare</span> : null}
               {tx.recurring ? (
                 <span className="flag">
                   <Icon name="repeat" />

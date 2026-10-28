@@ -88,7 +88,7 @@ export default function App() {
     return (
       <FlowFrame
         key={route}
-        title="Detalii plată"
+        title="Detalii tranzacție"
         titleAs="p"
         backHref="#/cheltuieli"
         closeHref="#/cheltuieli"

@@ -26,7 +26,7 @@ export default function TransactionDetail({ id }) {
           {tx.day.label}, {tx.day.date} · {tx.time}
         </p>
         <p className="tx-hero-meta">
-          <span className={tx.status === "În procesare" ? "status" : "status is-on"}>{tx.status}</span>
+          <span className={tx.status === "În așteptare" ? "status" : "status is-on"}>{tx.status}</span>
           <span className="small muted">Card Visa •••• 1234</span>
         </p>
       </section>
@@ -36,8 +36,8 @@ export default function TransactionDetail({ id }) {
       </Group>
 
       <Group label="Cum vrei să apară">
-        <Field field={{ label: "Nume", value: tx.name, placeholder: "Ce ai cumpărat?" }} />
-        <p className="small muted group-hint">Numele se schimbă doar în coach. Extrasul rămâne neschimbat.</p>
+        <Field field={{ label: "Denumire", value: tx.name, placeholder: "Ce ai cumpărat?" }} />
+        <p className="small muted group-hint">Denumirea se schimbă doar în coach. Extrasul rămâne neschimbat.</p>
       </Group>
 
       <Group label="Categorie">
@@ -54,11 +54,11 @@ export default function TransactionDetail({ id }) {
       <Group label="Reguli">
         <div className="card switches">
           <Switch
-            label={`Aplică la toate plățile de la ${tx.merchant}`}
+            label={`Aplică pentru toate plățile către ${tx.merchant}`}
             hint={tx.history ?? "Plățile viitoare primesc același nume și aceeași categorie"}
             defaultChecked={Boolean(tx.rule)}
           />
-          <Switch label="Nu o număra la cheltuieli" hint="De exemplu, dacă îți dă cineva banii înapoi" defaultChecked={tx.category === "economii"} />
+          <Switch label="Exclude din cheltuieli" hint="De exemplu, dacă cineva îți returnează banii" defaultChecked={tx.category === "economii"} />
         </div>
       </Group>
 
@@ -69,7 +69,7 @@ export default function TransactionDetail({ id }) {
         </button>
         <button type="button" className="btn btn--outline btn--small">
           <Icon name="receipt" />
-          Atașează bonul
+          Atașează bonul fiscal
         </button>
       </div>
     </>

@@ -19,7 +19,7 @@ export const accounts = {
     type: "Persoană juridică",
     name: "ALFA SERV SRL",
     initial: "A",
-    detail: "Cont firmă RON · CUI 4•••••7",
+    detail: "Cont curent RON · CUI 4•••••7",
     href: "#/firma",
   },
 };
@@ -32,7 +32,7 @@ export const business = {
     text: "Lucrăm la el: încasări și plăți din extrasele firmei, facturi și termene, pregătirea unei finanțări.",
   },
   products: [
-    { icon: "card", name: "Conturi firmă" },
+    { icon: "card", name: "Conturi pentru firme" },
     { icon: "transfer", name: "Încasări POS și online" },
     { icon: "bank", name: "Finanțare" },
     { icon: "file", name: "Facturare și parteneri" },

@@ -1925,9 +1925,9 @@ main {
   --cat-1: #2a78d6; /* Alimente */
   --cat-2: #eb6834; /* Cafenele */
   --cat-3: #1baf7a; /* Livrări */
-  --cat-4: #6250d6; /* Ieșiri */
+  --cat-4: #6250d6; /* Restaurante */
   --cat-5: #e87ba4; /* Taxi */
-  --cat-grey: #a8a59f; /* Nesortat */
+  --cat-grey: #a8a59f; /* Fără categorie */
 }
 
 .cat-1 { --cat: var(--cat-1); }

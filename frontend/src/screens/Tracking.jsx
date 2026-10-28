@@ -12,7 +12,7 @@ export default function Tracking() {
       <section className="card hero-card" aria-labelledby="tracking-title">
         <p className="eyebrow">Cheltuieli · {spending.period}</p>
         <h1 id="tracking-title" className="hero-label">
-          Ai cheltuit din banii de cheltuit
+          Cheltuieli variabile din 5 noiembrie
         </h1>
         <Amount value={spending.total} size="xl" />
         <p className="hero-sub">

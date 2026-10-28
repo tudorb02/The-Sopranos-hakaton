@@ -15,18 +15,18 @@ export default function Summary() {
       <section className="card card--yellow hero-card" aria-labelledby="summary-title">
         <p className="eyebrow">{today.label}</p>
         <h1 id="summary-title" className="hero-label">
-          Până pe {cycle.endsOn} mai ai disponibili
+          Disponibil până pe {cycle.endsOn}
         </h1>
         <Amount value={cycle.left} size="xl" />
         <p className="hero-sub">
-          Cam {cycle.perDay} lei pe zi, {cycle.daysLeftLabel} · {cycle.endsOn} e {cycle.basis} <Src kind="est" />
+          Circa {cycle.perDay} lei pe zi, pentru următoarele {cycle.daysLeftLabel}. {cycle.basis} <Src kind="est" />
         </p>
         <QuickActions items={SHORTCUTS} primaryTone="ink" />
       </section>
 
       <InfoCard icon={lastMessage.icon} meta={lastMessage.meta} title={lastMessage.title} text={lastMessage.text} />
 
-      <Section title="Săptămâna asta" aside={<span className="small muted num">{lei(week.spent)} în {week.daysSoFar} zile</span>}>
+      <Section title="Săptămâna aceasta" aside={<span className="small muted num">{lei(week.spent)} în {week.daysSoFar} zile</span>}>
         <div className="card">
           <WeekStrip week={week} />
         </div>

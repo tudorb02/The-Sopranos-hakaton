@@ -3,12 +3,12 @@
 
 export const legal = {
   eyebrow: "Informare",
-  title: "Sfaturile și datele tale",
+  title: "Recomandările și datele tale",
   items: [
-    { icon: "compass", text: "Sfaturile sunt create doar pentru tine, din datele tale. Sunt orientative, iar deciziile îți aparțin." },
+    { icon: "compass", text: "Recomandările sunt personalizate pe baza datelor tale. Au caracter informativ, iar deciziile îți aparțin." },
     { icon: "chat", text: "Coach-ul este un asistent bazat pe inteligență artificială și poate greși. Nu oferă consultanță financiară sau de investiții." },
-    { icon: "lock", text: "Toate informațiile tale sunt criptate, la transmitere și la stocare." },
-    { icon: "shield", text: "Nu facem nicio operațiune fără acordul tău. Datele nu se folosesc pentru credit sau reclame și le poți șterge oricând." },
+    { icon: "lock", text: "Toate informațiile tale sunt criptate, atât la transmitere, cât și la stocare." },
+    { icon: "shield", text: "Nu efectuăm nicio operațiune fără acordul tău. Datele tale nu sunt folosite pentru evaluarea creditelor sau în scop de marketing și le poți șterge oricând." },
   ],
   strip: "Date criptate · Deciziile îți aparțin",
   data: [
