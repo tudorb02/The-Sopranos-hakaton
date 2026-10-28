@@ -172,6 +172,24 @@ class ToolChainTest {
         assertValue(run, "option_a.affordability_ratio", "21.47");
         assertValue(run, "option_b.affordability_ratio", "29.92");
 
+        call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
+        // (98,400 net cash flow + 36,910.89 / 5 savings) / (12 × 1,760.34) = 105,782.18 / 21,124.08 = 5.0077
+        assertValue(run, "option_a.dscr", "5.0077");
+        // Seasonal: 4 installments in every loan year. (98,400 + 142,464.97 / 5) / (4 × 7,359.90) = 4.3103
+        assertValue(run, "option_b.debt_service_year", "29439.60");
+        assertValue(run, "option_b.dscr", "4.3103");
+
+        assertThat(tools.execute(run, "determine_green_tier", mapper.createObjectNode()
+                .put("requestedConfigId", "cfg_initial").put("financedConfigId", "cfg_recommended")).messageRo())
+                .contains("Lipsește statusul DNSH");
+        JsonNode tier = call(run, "determine_green_tier", "{\"requestedConfigId\": \"cfg_initial\","
+                + " \"financedConfigId\": \"cfg_recommended\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
+        // The offer saves 15.03% (< 25%); with the upgrade 32.05%: above 25% but below 25% × 1.5 = 37.5%.
+        assertThat(tier.path("tier").asText()).isEqualTo("VERDE_CU_UPGRADE");
+        assertThat(tier.path("upgradeNeeded").asBoolean()).isTrue();
+        assertValue(run, "green_tier.verde_plus_min", "37.5");
+        assertValue(run, "green_tier.financed_indicator", "32.05");
+
         JsonNode labels = call(run, "get_labeling_rules", "{\"configId\": \"cfg_recommended\"}");
         assertThat(labels.path("rules")).anySatisfy(rule -> {
             assertThat(rule.path("category").asText()).isEqualTo("SOLAR_PUMP");
@@ -281,6 +299,20 @@ class ToolChainTest {
         call(run, "check_affordability", "{\"optionIds\": [\"A\", \"B\"]}");
         assertValue(run, "option_a.affordability_ratio", "38.56");
         assertValue(run, "option_b.affordability_ratio", "24.38");
+
+        call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
+        // Savings A = 84 × 6,748.84 paid − 531,097.62 net cost = 35,804.94 over 7 years = 5,114.99 a year:
+        // (210,000 + 5,114.99) / (12 × 6,748.84) = 215,114.99 / 80,986.08 = 2.6562
+        assertValue(run, "option_a.dscr", "2.6562");
+        // Savings B = 492,000 − 200,000 grant + 80,318.62 interest − 289,607.55 = 82,711.07 over 7 years; the bridge
+        // is repaid from the grant: (210,000 + 11,815.87) / (12 × 4,265.70) = 221,815.87 / 51,188.40 = 4.3333
+        assertValue(run, "option_b.dscr", "4.3333");
+
+        JsonNode tier = call(run, "determine_green_tier", "{\"requestedConfigId\": \"cfg_initial\","
+                + " \"financedConfigId\": \"cfg_recommended\", \"dnshStatus\": \"PASS_WITH_CONDITIONS\"}");
+        // New tractors alone 12.14% (< 20%); with precision 20.93%: above 20% but below 20% × 1.5 = 30%.
+        assertThat(tier.path("tier").asText()).isEqualTo("VERDE_CU_UPGRADE");
+        assertValue(run, "green_tier.verde_plus_min", "30");
 
         call(run, "calculate_impact", "{\"configId\": \"cfg_recommended\"}");
         assertValue(run, "label.green_amount", "52000");

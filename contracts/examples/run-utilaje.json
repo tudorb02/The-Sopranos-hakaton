@@ -8,8 +8,8 @@
     "state": "GATA",
     "mode": "LIVE",
     "createdAt": "2026-10-28T10:15:00.000Z",
-    "updatedAt": "2026-10-28T10:16:00.846Z",
-    "lastEventSeq": 59,
+    "updatedAt": "2026-10-28T10:16:04.091Z",
+    "lastEventSeq": 63,
     "farm": {
       "cui": "38264019",
       "company": {
@@ -417,14 +417,14 @@
         "status": "COMPLETED",
         "source": "LIVE",
         "startedAt": "2026-10-28T10:15:25.251Z",
-        "completedAt": "2026-10-28T10:15:43.369Z"
+        "completedAt": "2026-10-28T10:15:46.710Z"
       },
       {
         "agent": "GREEN_UNDERWRITER",
         "status": "DEGRADED",
         "source": "RETRY",
-        "startedAt": "2026-10-28T10:15:43.919Z",
-        "completedAt": "2026-10-28T10:16:00.346Z"
+        "startedAt": "2026-10-28T10:15:47.260Z",
+        "completedAt": "2026-10-28T10:16:03.591Z"
       }
     ],
     "agents": {
@@ -868,6 +868,8 @@
               "status": "PASS_WITH_WARNING",
               "ratioCalcId": "calc_47de5d2cb9e0",
               "limitCalcId": "calc_37d57ccd1156",
+              "dscrCalcId": "calc_90c1a9b1a2bf",
+              "debtServiceCalcId": "calc_8740b21af1c6",
               "noteRo": "Încape, dar e aproape de limita de 40%."
             },
             "greenEligible": false
@@ -956,6 +958,8 @@
               "status": "PASS",
               "ratioCalcId": "calc_188b575a43fc",
               "limitCalcId": "calc_37d57ccd1156",
+              "dscrCalcId": "calc_2b4ecb0583c6",
+              "debtServiceCalcId": "calc_65208950d82f",
               "noteRo": "Rata de cofinanțare încape confortabil; puntea se închide din grant."
             },
             "greenEligible": true
@@ -966,6 +970,16 @@
           "greenEligible": true,
           "netAdvantagePositive": true,
           "affordabilityPassed": true
+        },
+        "greenTier": {
+          "tier": "VERDE_CU_UPGRADE",
+          "thresholdMet": true,
+          "upgradeNeeded": true,
+          "dnshStatus": "PASS_WITH_CONDITIONS",
+          "thresholdCalcId": "calc_c3edcfa6c6c6",
+          "requestedIndicatorCalcId": "calc_b48650467d53",
+          "financedIndicatorCalcId": "calc_7f571b7ec323",
+          "verdePlusMinCalcId": "calc_ed8b744b6546"
         },
         "programChecks": [
           {
@@ -1901,6 +1915,48 @@
         "unit": "YEARS",
         "display": "38 ani",
         "sourceRo": "ONRC (mock)"
+      },
+      "calc_c3edcfa6c6c6": {
+        "calcId": "calc_c3edcfa6c6c6",
+        "tool": "determine_green_tier",
+        "key": "green_tier.threshold",
+        "labelRo": "Pragul verde",
+        "value": 20,
+        "unit": "PCT",
+        "display": "20,0%",
+        "sourceRo": "config/modules/utilaje.json (propunere, de confirmat cu Raiffeisen)"
+      },
+      "calc_b48650467d53": {
+        "calcId": "calc_b48650467d53",
+        "tool": "determine_green_tier",
+        "key": "green_tier.requested_indicator",
+        "labelRo": "Indicatorul investiției cerute",
+        "value": 12,
+        "unit": "PCT",
+        "display": "12,0%"
+      },
+      "calc_7f571b7ec323": {
+        "calcId": "calc_7f571b7ec323",
+        "tool": "determine_green_tier",
+        "key": "green_tier.financed_indicator",
+        "labelRo": "Indicatorul investiției finanțate de creditul verde",
+        "value": 20.8,
+        "unit": "PCT",
+        "display": "20,8%"
+      },
+      "calc_ed8b744b6546": {
+        "calcId": "calc_ed8b744b6546",
+        "tool": "determine_green_tier",
+        "key": "green_tier.verde_plus_min",
+        "labelRo": "Pragul pentru Verde Plus",
+        "value": 30,
+        "unit": "PCT",
+        "display": "30,0%",
+        "formula": "prag × multiplicator",
+        "sourceRo": "config/pricing.json: greenTiers.verdePlusThresholdMultiplier (README §4, pasul 8)",
+        "dependsOn": [
+          "calc_c3edcfa6c6c6"
+        ]
       },
       "calc_f2e9b78e2e84": {
         "calcId": "calc_f2e9b78e2e84",
@@ -3913,6 +3969,58 @@
         "formula": "rate cofinanțare pe 12 luni / cashflow net (puntea se închide din grant)",
         "dependsOn": [
           "calc_340271272546"
+        ]
+      },
+      "calc_8740b21af1c6": {
+        "calcId": "calc_8740b21af1c6",
+        "tool": "compute_dscr",
+        "key": "option_a.debt_service_year",
+        "labelRo": "Rate și dobânzi în cel mai greu an de credit",
+        "value": 80986.08,
+        "unit": "EUR_PER_YEAR",
+        "display": "80.986 EUR/an",
+        "dependsOn": [
+          "calc_19d8a2b0d048"
+        ]
+      },
+      "calc_90c1a9b1a2bf": {
+        "calcId": "calc_90c1a9b1a2bf",
+        "tool": "compute_dscr",
+        "key": "option_a.dscr",
+        "labelRo": "DSCR: acoperirea ratelor din cashflow și economii",
+        "value": 2.66,
+        "unit": "RATIO",
+        "display": "2,66",
+        "formula": "(cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului",
+        "sourceRo": "Open Banking (cashflow pe 12 luni)",
+        "dependsOn": [
+          "calc_8740b21af1c6"
+        ]
+      },
+      "calc_65208950d82f": {
+        "calcId": "calc_65208950d82f",
+        "tool": "compute_dscr",
+        "key": "option_b.debt_service_year",
+        "labelRo": "Rate și dobânzi în cel mai greu an de credit",
+        "value": 51188.4,
+        "unit": "EUR_PER_YEAR",
+        "display": "51.188 EUR/an",
+        "dependsOn": [
+          "calc_340271272546"
+        ]
+      },
+      "calc_2b4ecb0583c6": {
+        "calcId": "calc_2b4ecb0583c6",
+        "tool": "compute_dscr",
+        "key": "option_b.dscr",
+        "labelRo": "DSCR: acoperirea ratelor din cashflow și economii",
+        "value": 4.33,
+        "unit": "RATIO",
+        "display": "4,33",
+        "formula": "(cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului",
+        "sourceRo": "Open Banking (cashflow pe 12 luni)",
+        "dependsOn": [
+          "calc_65208950d82f"
         ]
       },
       "calc_7153b7543f33": {

@@ -9,6 +9,7 @@
     "options",
     "recommendedOptionId",
     "recommendationBasis",
+    "greenTier",
     "programChecks",
     "grantOutlook",
     "comparison",
@@ -45,6 +46,58 @@
         },
         "affordabilityPassed": {
           "type": "boolean"
+        }
+      }
+    },
+    "greenTier": {
+      "description": "Nivelul verde al ofertei verzi (README §4, pasul 8), din determine_green_tier: VERDE_PLUS = indicatorul ≥ prag × 1,5 și DNSH trecut; VERDE = prag atins, DNSH trecut sau cu condiții; VERDE_CU_UPGRADE = investiția cerută era sub prag, iar upgrade-ul îl atinge; CLASIC = sub prag. Pentru modulele fără prag procentual (eligibile prin natura lor) lipsesc cifrele.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tier",
+        "thresholdMet",
+        "upgradeNeeded",
+        "dnshStatus"
+      ],
+      "properties": {
+        "tier": {
+          "type": "string",
+          "enum": [
+            "VERDE_PLUS",
+            "VERDE",
+            "VERDE_CU_UPGRADE",
+            "CLASIC"
+          ]
+        },
+        "thresholdMet": {
+          "description": "Configurația finanțată de creditul verde atinge criteriul verde.",
+          "type": "boolean"
+        },
+        "upgradeNeeded": {
+          "description": "Investiția cerută nu atingea criteriul singură.",
+          "type": "boolean"
+        },
+        "dnshStatus": {
+          "description": "Statusul DNSH cel mai slab din evaluarea tehnică.",
+          "type": "string",
+          "enum": [
+            "PASS",
+            "PASS_WITH_CONDITIONS",
+            "MISSING_DATA",
+            "FAIL"
+          ]
+        },
+        "thresholdCalcId": {
+          "$ref": "#/$defs/calcRef"
+        },
+        "requestedIndicatorCalcId": {
+          "$ref": "#/$defs/calcRef"
+        },
+        "financedIndicatorCalcId": {
+          "$ref": "#/$defs/calcRef"
+        },
+        "verdePlusMinCalcId": {
+          "$ref": "#/$defs/calcRef"
         }
       }
     },
@@ -358,6 +411,7 @@
           "$ref": "#/$defs/optionId"
         },
         "kind": {
+          "description": "Cardul din POST /api/runs/{id}/submit: STANDARD = CLASIC; GREEN_PACKAGE și GREEN_PACKAGE_WITH_GRANT = VERDE (opțiunea verde recomandată, dacă sunt mai multe).",
           "type": "string",
           "enum": [
             "STANDARD",
@@ -460,6 +514,7 @@
             "status",
             "ratioCalcId",
             "limitCalcId",
+            "dscrCalcId",
             "noteRo"
           ],
           "properties": {
@@ -475,6 +530,14 @@
               "$ref": "#/$defs/calcRef"
             },
             "limitCalcId": {
+              "$ref": "#/$defs/calcRef"
+            },
+            "dscrCalcId": {
+              "description": "DSCR din compute_dscr: (cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului. Limita de 40% rămâne testul suplimentar.",
+              "$ref": "#/$defs/calcRef"
+            },
+            "debtServiceCalcId": {
+              "description": "Rate și dobânzi în cel mai greu an de credit.",
               "$ref": "#/$defs/calcRef"
             },
             "noteRo": {

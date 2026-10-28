@@ -8,8 +8,8 @@
     "state": "MONITORIZARE",
     "mode": "LIVE",
     "createdAt": "2026-10-28T09:30:00.000Z",
-    "updatedAt": "2026-10-28T09:31:47.930Z",
-    "lastEventSeq": 65,
+    "updatedAt": "2026-10-28T09:31:51.233Z",
+    "lastEventSeq": 69,
     "farm": {
       "cui": "45871203",
       "company": {
@@ -460,14 +460,14 @@
         "status": "COMPLETED",
         "source": "LIVE",
         "startedAt": "2026-10-28T09:30:31.263Z",
-        "completedAt": "2026-10-28T09:30:46.849Z"
+        "completedAt": "2026-10-28T09:30:50.158Z"
       },
       {
         "agent": "GREEN_UNDERWRITER",
         "status": "COMPLETED",
         "source": "LIVE",
-        "startedAt": "2026-10-28T09:30:47.399Z",
-        "completedAt": "2026-10-28T09:30:59.430Z"
+        "startedAt": "2026-10-28T09:30:50.708Z",
+        "completedAt": "2026-10-28T09:31:02.733Z"
       }
     ],
     "agents": {
@@ -1043,6 +1043,8 @@
               "status": "PASS_WITH_WARNING",
               "ratioCalcId": "calc_6182c52e1d85",
               "limitCalcId": "calc_2f508ed2e843",
+              "dscrCalcId": "calc_b3a763250d76",
+              "debtServiceCalcId": "calc_ebdc158f1422",
               "noteRo": "Încape pe an, dar ratele din februarie–aprilie cad în luni cu cashflow negativ și se plătesc din rezervă."
             },
             "greenEligible": false
@@ -1114,6 +1116,8 @@
               "status": "PASS",
               "ratioCalcId": "calc_f9a058ff199a",
               "limitCalcId": "calc_2f508ed2e843",
+              "dscrCalcId": "calc_b0cafd92f8f9",
+              "debtServiceCalcId": "calc_3a7b63e64371",
               "noteRo": "Ratele cad doar în lunile cu încasări mari (iulie–octombrie)."
             },
             "greenEligible": true
@@ -1124,6 +1128,16 @@
           "greenEligible": true,
           "netAdvantagePositive": true,
           "affordabilityPassed": true
+        },
+        "greenTier": {
+          "tier": "VERDE_CU_UPGRADE",
+          "thresholdMet": true,
+          "upgradeNeeded": true,
+          "dnshStatus": "PASS_WITH_CONDITIONS",
+          "thresholdCalcId": "calc_2abff80232ce",
+          "requestedIndicatorCalcId": "calc_6bcb8dcb510b",
+          "financedIndicatorCalcId": "calc_941a5004799f",
+          "verdePlusMinCalcId": "calc_275bfc9a8a7c"
         },
         "programChecks": [
           {
@@ -2241,6 +2255,48 @@
         "unit": "PCT",
         "display": "40,0%",
         "sourceRo": "config/financing-lines.json (demo)"
+      },
+      "calc_2abff80232ce": {
+        "calcId": "calc_2abff80232ce",
+        "tool": "determine_green_tier",
+        "key": "green_tier.threshold",
+        "labelRo": "Pragul verde",
+        "value": 25,
+        "unit": "PCT",
+        "display": "25,0%",
+        "sourceRo": "config/modules/irigatii.json (propunere, de confirmat cu Raiffeisen)"
+      },
+      "calc_6bcb8dcb510b": {
+        "calcId": "calc_6bcb8dcb510b",
+        "tool": "determine_green_tier",
+        "key": "green_tier.requested_indicator",
+        "labelRo": "Indicatorul investiției cerute",
+        "value": 15.03,
+        "unit": "PCT",
+        "display": "15,0%"
+      },
+      "calc_941a5004799f": {
+        "calcId": "calc_941a5004799f",
+        "tool": "determine_green_tier",
+        "key": "green_tier.financed_indicator",
+        "labelRo": "Indicatorul investiției finanțate de creditul verde",
+        "value": 32.05,
+        "unit": "PCT",
+        "display": "32,0%"
+      },
+      "calc_275bfc9a8a7c": {
+        "calcId": "calc_275bfc9a8a7c",
+        "tool": "determine_green_tier",
+        "key": "green_tier.verde_plus_min",
+        "labelRo": "Pragul pentru Verde Plus",
+        "value": 37.5,
+        "unit": "PCT",
+        "display": "37,5%",
+        "formula": "prag × multiplicator",
+        "sourceRo": "config/pricing.json: greenTiers.verdePlusThresholdMultiplier (README §4, pasul 8)",
+        "dependsOn": [
+          "calc_2abff80232ce"
+        ]
       },
       "calc_87740fb5047b": {
         "calcId": "calc_87740fb5047b",
@@ -3716,6 +3772,58 @@
           "calc_50e2bcd8bf71"
         ]
       },
+      "calc_ebdc158f1422": {
+        "calcId": "calc_ebdc158f1422",
+        "tool": "compute_dscr",
+        "key": "option_a.debt_service_year",
+        "labelRo": "Rate și dobânzi în cel mai greu an de credit",
+        "value": 21124.08,
+        "unit": "EUR_PER_YEAR",
+        "display": "21.124 EUR/an",
+        "dependsOn": [
+          "calc_a809f69f22d0"
+        ]
+      },
+      "calc_b3a763250d76": {
+        "calcId": "calc_b3a763250d76",
+        "tool": "compute_dscr",
+        "key": "option_a.dscr",
+        "labelRo": "DSCR: acoperirea ratelor din cashflow și economii",
+        "value": 5.01,
+        "unit": "RATIO",
+        "display": "5,01",
+        "formula": "(cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului",
+        "sourceRo": "Open Banking (cashflow pe 12 luni)",
+        "dependsOn": [
+          "calc_ebdc158f1422"
+        ]
+      },
+      "calc_3a7b63e64371": {
+        "calcId": "calc_3a7b63e64371",
+        "tool": "compute_dscr",
+        "key": "option_b.debt_service_year",
+        "labelRo": "Rate și dobânzi în cel mai greu an de credit",
+        "value": 29439.6,
+        "unit": "EUR_PER_YEAR",
+        "display": "29.440 EUR/an",
+        "dependsOn": [
+          "calc_50e2bcd8bf71"
+        ]
+      },
+      "calc_b0cafd92f8f9": {
+        "calcId": "calc_b0cafd92f8f9",
+        "tool": "compute_dscr",
+        "key": "option_b.dscr",
+        "labelRo": "DSCR: acoperirea ratelor din cashflow și economii",
+        "value": 4.31,
+        "unit": "RATIO",
+        "display": "4,31",
+        "formula": "(cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului",
+        "sourceRo": "Open Banking (cashflow pe 12 luni)",
+        "dependsOn": [
+          "calc_3a7b63e64371"
+        ]
+      },
       "calc_303a25937cc7": {
         "calcId": "calc_303a25937cc7",
         "tool": "calculate_impact",
@@ -3793,12 +3901,12 @@
     "submission": {
       "variant": "VERDE",
       "optionId": "B",
-      "submittedAt": "2026-10-28T09:31:39.930Z"
+      "submittedAt": "2026-10-28T09:31:43.233Z"
     },
     "officerActions": [
       {
         "action": "APPROVE",
-        "at": "2026-10-28T09:31:44.930Z",
+        "at": "2026-10-28T09:31:48.233Z",
         "officerId": "ofiter.demo",
         "commentRo": "Aprobat cu condițiile din raport."
       }

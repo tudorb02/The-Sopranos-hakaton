@@ -8,9 +8,11 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import ro.greenstruct.agro.engine.greentier.GreenTierResult;
+
 /**
  * Working memory of one dossier shared by the three agents' tools: parsed documents, the baseline,
- * configurations, eligibility results and financing options. Only tools write here.
+ * configurations, eligibility results, the green tier and financing options. Only tools write here.
  */
 public class RunWorkspace {
 
@@ -20,6 +22,7 @@ public class RunWorkspace {
     private final Map<String, FinancingOption> options = new LinkedHashMap<>();
     private final Map<String, JsonNode> programChecks = new LinkedHashMap<>();
     private Map<String, BigDecimal> baseline;
+    private GreenTierResult greenTier;
 
     public synchronized void putDocument(DocumentFacts facts) {
         documents.put(facts.documentId(), facts);
@@ -72,6 +75,17 @@ public class RunWorkspace {
 
     public synchronized Optional<JsonNode> programCheck(String programCode) {
         return Optional.ofNullable(programChecks.get(programCode));
+    }
+
+    public synchronized void putGreenTier(GreenTierResult tier) {
+        this.greenTier = tier;
+    }
+
+    public synchronized GreenTierResult greenTier() {
+        if (greenTier == null) {
+            throw new IllegalArgumentException("Apelează întâi determine_green_tier");
+        }
+        return greenTier;
     }
 
     public synchronized void putOption(FinancingOption option) {

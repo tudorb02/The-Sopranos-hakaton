@@ -1115,7 +1115,7 @@ components:
       type: object
       additionalProperties: false
       description: '`submit_funding_recommendation` fără `officerNotesRo`, notele pentru bancă (doar în `view=sme`).'
-      required: [options, recommendedOptionId, recommendationBasis, programChecks, grantOutlook, comparison, farmerExplanationRo]
+      required: [options, recommendedOptionId, recommendationBasis, greenTier, programChecks, grantOutlook, comparison, farmerExplanationRo]
       properties:
         options:
           $ref: './schemas/submit_funding_recommendation.json#/properties/options'
@@ -1123,6 +1123,8 @@ components:
           $ref: './schemas/submit_funding_recommendation.json#/properties/recommendedOptionId'
         recommendationBasis:
           $ref: './schemas/submit_funding_recommendation.json#/properties/recommendationBasis'
+        greenTier:
+          $ref: './schemas/submit_funding_recommendation.json#/properties/greenTier'
         programChecks:
           $ref: './schemas/submit_funding_recommendation.json#/properties/programChecks'
         grantOutlook:
