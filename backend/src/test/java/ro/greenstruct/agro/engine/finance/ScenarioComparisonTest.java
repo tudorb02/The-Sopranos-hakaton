@@ -24,4 +24,13 @@ class ScenarioComparisonTest {
         assertThat(money(comparison.netAdvantageEur())).isEqualByComparingTo("241532.20");
         assertThat(comparison.proposedIsBetter()).isTrue();
     }
+
+    @Test
+    void higherRunningCostsAddToTheNetCost() {
+        // 52,000 capex + 12,614.75 interest + 1,450 mortgage fees + 23,646.31 extra running cost = 89,711.06
+        ScenarioCost sprinkler = new ScenarioCost("A", new BigDecimal("52000"), BigDecimal.ZERO,
+                new BigDecimal("12614.75"), new BigDecimal("1450"), new BigDecimal("-23646.31"));
+
+        assertThat(money(sprinkler.netCostEur())).isEqualByComparingTo("89711.06");
+    }
 }

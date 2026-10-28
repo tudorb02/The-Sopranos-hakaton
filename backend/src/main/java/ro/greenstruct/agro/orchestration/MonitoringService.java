@@ -3,6 +3,7 @@ package ro.greenstruct.agro.orchestration;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +28,16 @@ public class MonitoringService {
 
     private static final String TOOL = "simulate_monitoring";
     private static final String SOURCE = "config/monitoring.json, config/pricing.json (parametri demo)";
+
+    /**
+     * Impact metrics where a higher measured value confirms the estimate. Consumption metrics (water used, pumping
+     * energy, CO₂ emitted, ...) are reported but not monitored here: for them a higher value would be worse.
+     */
+    private static final Set<String> BENEFIT_METRICS = Set.of(
+            "WATER_SAVING_PCT", "WATER_SAVED_M3", "ENERGY_SAVED_KWH", "GRID_ENERGY_REPLACED_KWH", "RENEWABLE_KWH",
+            "FUEL_SAVING_PCT", "FUEL_SAVED_L", "NITROGEN_SAVED_KG", "PRECISION_SHARE_PCT", "CO2_AVOIDED_T",
+            "WATER_COST_SAVED_EUR", "ENERGY_COST_SAVED_EUR", "FUEL_COST_SAVED_EUR", "INPUTS_COST_SAVED_EUR",
+            "CERTIFIED_AREA_HA");
 
     private final RunStore store;
     private final CalcStore calcs;
@@ -72,6 +83,10 @@ public class MonitoringService {
             Calc estimated = calcs.find(runId, impact.path("calcId").asText()).orElseThrow(() ->
                     new IllegalStateException("Cifra " + impact.path("calcId").asText() + " lipsește"));
             String metric = impact.path("metric").asText();
+            // a negative or zero "saving" is a cost increase or no effect: there is no benefit to confirm
+            if (!BENEFIT_METRICS.contains(metric) || estimated.value().signum() <= 0) {
+                continue;
+            }
             ImpactMonitoring.Comparison comparison = ImpactMonitoring.compare(estimated.value(), deviation, tolerance);
             Calc actual = calcs.create(runId, TOOL, "monitoring." + metric + ".actual",
                     "Impact real la 12 luni: " + estimated.labelRo(), comparison.actual(), estimated.unit(),

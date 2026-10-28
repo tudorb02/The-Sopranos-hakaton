@@ -21,7 +21,8 @@ public record ScenarioCost(
         requireNonNegative(grantEur, "grantEur");
         requireNonNegative(financingCostEur, "financingCostEur");
         requireNonNegative(feesEur, "feesEur");
-        requireNonNegative(operatingSavingsEur, "operatingSavingsEur");
+        // operatingSavingsEur may be negative: an investment can raise running costs
+        // (a sprinkler needs more pumping pressure than furrow irrigation), which adds to the net cost.
     }
 
     /** capex − grant + financing cost + fees − operating savings. */

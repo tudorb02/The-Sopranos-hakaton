@@ -32,6 +32,7 @@ greenstruct:
   record-golden: ${GREENSTRUCT_RECORD_GOLDEN:false}
   agent-runtime:
     max-iterations: 12       # Converse calls per agent (the technical auditor needs about 10 sequential steps)
+    max-tokens: 16000        # the submit_* payloads are longer than 4,096 output tokens and got cut off
     replay-delay: 350ms      # pause between replayed events, so the timeline looks live
   # Real ANAF lookup for any CUI that is not a demo farm; false = everything from data/demo/farms (offline demo).
   anaf:
