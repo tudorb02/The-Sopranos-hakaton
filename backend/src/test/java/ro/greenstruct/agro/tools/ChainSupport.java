@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ro.greenstruct.agro.farm.FarmProfileService;
-import ro.greenstruct.agro.orchestration.AgentSlot;
 import ro.greenstruct.agro.orchestration.Run;
 import ro.greenstruct.agro.orchestration.RunRequest;
 import ro.greenstruct.agro.orchestration.RunStatus;
@@ -76,17 +75,6 @@ final class ChainSupport {
         Calc calc = calcs.latestByKey(runId, key).orElseThrow(() -> new AssertionError("No calc " + key));
         assertThat(calc.calcId()).matches("^calc_[a-f0-9]{12}$");
         assertThat(calc.value()).as(key).isCloseTo(new BigDecimal(expected), within(CENTS));
-    }
-
-    /** What the technical auditor submits: the configurations compared and the DNSH statuses, for determine_green_tier. */
-    void storeTechnicalAssessment(String runId, String initialConfigId, String recommendedConfigId, String dnshStatus) {
-        var assessment = mapper.createObjectNode().put("initialConfigId", initialConfigId)
-                .put("recommendedConfigId", recommendedConfigId);
-        var checks = assessment.putArray("dnshChecks");
-        for (int i = 0; i < 5; i++) {
-            checks.addObject().put("status", dnshStatus);
-        }
-        runs.save(runs.find(runId).orElseThrow().withAgentOutput(AgentSlot.TECHNICAL_AUDITOR, assessment));
     }
 
     static Map<String, String> programs(JsonNode eligibility) {

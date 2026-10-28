@@ -33,7 +33,8 @@ import static ro.greenstruct.agro.engine.Decimals.MC;
 public class PostHarvestModule implements ModuleCalculator {
 
     /** Components whose data sheet carries the specific consumption and the refrigerant of the new equipment. */
-    private static final Set<String> EQUIPMENT = Set.of("REFRIGERATION_UNIT", "DRYER");
+    private static final Set<String> EQUIPMENT = Set.of("REFRIGERATION_UNIT", "DRYER", "GREENHOUSE_SCREEN",
+            "HEAT_RECOVERY");
 
     @Override
     public String id() {

@@ -186,12 +186,13 @@ class LivestockToolChainTest {
         chain.assertValue(run, "option_b.guarantee.amount", "207200");
 
         // 85% on a 50% threshold is above 50% × 1.5: Verde Plus
-        chain.storeTechnicalAssessment(run, "cfg_initial", "cfg_recommended", "PASS");
-        JsonNode tier = chain.call(run, "determine_green_tier", "{}");
+        JsonNode tier = chain.call(run, "determine_green_tier", "{\"requestedConfigId\": \"cfg_initial\","
+                + " \"financedConfigId\": \"cfg_recommended\", \"dnshStatus\": \"PASS\"}");
         assertThat(tier.path("tier").asText()).isEqualTo("VERDE_PLUS");
         assertThat(tier.path("upgradeNeeded").asBoolean()).isTrue();
-        chain.assertValue(run, "tier.financed_indicator", "85");
-        chain.assertValue(run, "tier.verde_plus_min", "75");
+        chain.assertValue(run, "green_tier.requested_indicator", "45");
+        chain.assertValue(run, "green_tier.financed_indicator", "85");
+        chain.assertValue(run, "green_tier.verde_plus_min", "75");
         // classic 2 + 1.2 + 1.35 + 1.08 + 1.5 + 1.77 = 8.9; green (70% guaranteed, Verde Plus):
         // 2 + 0.9 + 0.3375 + 0.324 + 1.35 + 1.77 − 0.4 = 6.2815
         chain.call(run, "price_loan", "{}");
