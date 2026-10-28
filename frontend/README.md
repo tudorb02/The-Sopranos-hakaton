@@ -1,9 +1,12 @@
 # Busola · frontend persoane fizice
 
-Ecranele statice ale coach-ului financiar, gândit ca funcție opțională în aplicația Smart Mobile.
+Ecranele coach-ului financiar, gândit ca funcție opțională în aplicația Smart Mobile.
 Aplicația e scrisă în React Native (Expo SDK 58) și rulează pe iOS, Android și în browser.
 Coach-ul apare în tabul Produse și se activează doar dacă utilizatorul vrea. Nu face parte din onboarding-ul aplicației.
-Doar interfață: datele sunt fictive și nu există logică de business. Singurul comportament este navigarea între ecrane.
+Datele personale fictive vin acum din API-ul Node/Express din `server/`, cu
+PostgreSQL în baza separată `nexxt_demo`. Totalurile și progresul se calculează
+pe server, iar modificările din UI se salvează. Partea de firmă/credit verde
+își păstrează datele și comportamentul local.
 
 Demo-ul are doi clienți persoană fizică, cu același coach și date diferite:
 - Daria, salariată, cu salariul pe 5;
@@ -15,9 +18,25 @@ Contul de persoană juridică, Legume Bărăgan SRL (o fermă de legume), deschi
 
 Necesită Node.js 20.19 sau mai nou (testat cu Node 26).
 
+Pentru varianta completă, din rădăcina repository-ului:
+
+```sh
+make setup
+make node-up
+```
+
+Deschide http://localhost:8081. Pornirea include automat migrarea și seed-ul
+API-ului Node. Backend-ul Python și baza lui rămân independente.
+
+Pentru dezvoltare cu Expo, pornește numai DB și API (lasă portul 8081 liber):
+
+```sh
+docker compose up --build -d db server
+```
+
 ```bash
 cd frontend
-npm install
+npm ci
 npm start          # serverul Expo; scanezi codul QR cu Expo Go (SDK 58) pe telefon
 npm run ios        # simulatorul iOS (necesită Xcode)
 npm run android    # emulatorul Android (necesită Android Studio)
@@ -26,6 +45,18 @@ npm run web        # în browser, la http://localhost:8081
 
 `npm run export:web` produce versiunea statică în `frontend/dist`. `npm run lint` verifică codul.
 Pe telefon e nevoie de Expo Go 58; o versiune mai veche nu deschide proiectul.
+
+În dezvoltarea web, clientul apelează implicit serverul de pe portul 3001 al
+aceleiași gazde. În imaginea Docker folosește proxy-ul de aceeași origine.
+Suprascriere: `EXPO_PUBLIC_API_URL=http://<gazda>:3001/api/demo/v1` înainte de
+pornirea Expo. Pentru emulatorul Android, gazda este de obicei `10.0.2.2`;
+pentru telefonul fizic, adresa LAN a calculatorului. Dacă folosești containerul,
+expunerea pe LAN trebuie configurată explicit prin `NODE_API_BIND=0.0.0.0`;
+implicit rămâne pe localhost. API-ul este pentru date demo, fără auth real.
+
+`make node-test`, din rădăcină, rulează Vitest + Supertest pe PostgreSQL.
+Endpointurile, schema și presupunerile sunt în [server/README.md](../server/README.md)
+și [docs/node-api-plan.md](../docs/node-api-plan.md).
 
 ## Ecrane
 
@@ -119,17 +150,18 @@ src/
   router.jsx            navigarea între rute (#/bugete), istoricul și butonul Înapoi
   theme.js              tokenurile de design: culori, fonturi, spații, raze
   motion.js             animațiile: blocurile urcă în pagină, barele cresc, starea „în lucru” se rotește
-  data/demo.js          datele fictive ale Dariei pentru coach; de înlocuit cu apeluri API
-  data/student.js       datele fictive ale lui Matei, cu aceleași forme ca fișierele Dariei
-  data/personas.js      cei doi clienți demo; ecranele îl citesc pe cel activ cu usePersona()
-  data/bank.js          serviciile și paginile raiffeisen.ro la care trimite coach-ul
-  data/activation.js    conținutul cardului din Produse și al pașilor de activare (Daria)
-  data/accounts.js      conturile demo din login și produsele firmei
-  data/tracking.js      categoriile, culorile lor și plățile Dariei din perioada curentă
+  lib/api.js            client HTTP, timeout, anulare, erori; păstrează formele din API
+  lib/files(.web).js    selectarea și citirea documentelor, nativ și web
+  components/PersonaProvider.jsx
+                        încarcă persoana activă și reîncarcă datele după salvare
+  components/ApiState.jsx
+                        încărcare, eroare cu reîncercare și starea salvării
+  data/bank.js          catalog static comun, păstrat deoarece creditul verde îl importă
+  data/accounts.js      contul demo PJ, textele loginului PJ și produsele firmei
   data/green/           creditul verde: domeniile (sectors.js), informarea (legal.js) și câte un pachet pe domeniu
                         (agro/: modulele, documentele, întrebările și dosarul demo; packs.js le leagă)
   persona.js            clientul activ, ales la login
-  data/legal.js         textul informării
+                        informarea coach-ului și categoriile vin din catalogul API
   components/           base (text, linkuri, carduri, rânduri, butoane), layout (Produse, coach, fluxuri), ui,
                         grafice, iconițe SVG, cardul de serviciu, piesele creditului verde (green.jsx)
                         și harta parcelelor (parcels.jsx)
@@ -166,6 +198,17 @@ src/
 - Un domeniu nou pentru creditul verde înseamnă un folder nou în `src/data/green/`, o linie în `packs.js` și, dacă e nevoie, o variantă a pasului „unde”. Ecranele comune nu se schimbă.
 - Cifrele ofertei vin, în implementarea reală, din motorul financiar (README-ul GreenStruct). Calculul valorilor demo e scris în comentariul din `src/data/green/agro/scenario.js`.
 
-- Înlocuiți datele din `src/data/` cu date din API, păstrând formele din `demo.js` și `student.js`. Ecranele citesc clientul activ prin `usePersona()`.
-- Butoanele (Importă extrasele, Conectează, Aprob) nu au încă acțiuni. Opțiunile din întrebări, comutatoarele, categoriile și variantele se pot alege, dar nimic nu se salvează.
-- Barele și indicatorii primesc procentul ca lățime sau înălțime (`pct()` din `lib/format.js`).
+- Ecranele personale citesc clientul activ prin `usePersona()`. Vechile module
+  `demo.js`, `student.js`, `personas.js`, `tracking.js`, `activation.js` și
+  `legal.js` au fost mutate în seed/catalog și eliminate din frontend.
+- Acțiunile personale se salvează prin `usePersonaApi()`: tranzacții și reguli,
+  împărțiri și bonuri, categorii/bugete noi, profil și permisiuni, întrebări,
+  documente, calendar/aplicații, decizii și mesaje. Salvează/Continuă nu navighează
+  după o eroare; draftul rămâne completat. Anulează nu trimite draftul.
+- API-ul folosește `DEMO_TODAY=2026-11-12`, păstrând starea inițială a ecranelor.
+  Compatibilitatea întregului obiect și a fiecărui ecran are teste automate.
+- Progresul personal și procentele vin din `/metrics`; funcția `pct()` rămâne
+  pentru geometria graficelor și componentele comune ale fluxului verde.
+- Operațiunile bancare, conectarea la surse externe și răspunsul AI nu sunt
+  simulate ca operațiuni reale: API-ul persistă datele și intențiile demo-ului.
+  Documentele se salvează, fără parser bancar. Nu se apelează motorul Python.

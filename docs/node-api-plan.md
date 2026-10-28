@@ -85,6 +85,10 @@ apoi modifică faptele și verifică recalcularea și persistența.
   2.455 lei deja plătiți. Cadourile de 380 lei se plătesc din pușculița de 1.200
   lei, separat de cele 739 lei cheltuieli variabile. Aceste plăți suplimentare
   nu apar artificial în lista inițială de 20 tranzacții.
+  Pentru a reconcilia exact cifra inițială, seed-ul folosește 2.400 chirie +
+  460 utilități + 55 StreamFlix + 25 MuzicaPlus + 80 alte obligații fictive.
+  Cele trei cadouri sunt plăți fictive de 100, 100 și 180 lei; sursa inițială
+  oferea numai totalul și numărul ocaziilor, nu tranzacțiile individuale.
 - Matei: sold inițial 361 lei + încasări 1.500 − economii 150 − cheltuieli
   1.071 = 640. Necesare rămase 503, opționale rămase 137. Fondul are 650 lei
   efectivi; cei 665 din planul lunii includ încă 15 lei proiectați, neîncasați.
@@ -97,3 +101,26 @@ apoi modifică faptele și verifică recalcularea și persistența.
   reactivarea reîncarcă explicit scenariul fictiv. Restartul nu îl reface tacit.
 - Textele juridice originale sunt păstrate pentru fidelitate vizuală; sunt
   propuneri de produs, nu o certificare a securității demo-ului.
+
+## Completări rezultate din implementare
+
+- GET `/personas/:persona/preferences` citește setările persistate;
+  GET `/personas/:persona/metrics` livrează procentele categoriilor și progresul
+  bugetelor, obiectivului și barelor din Profil. Astfel forma obiectului compus
+  original rămâne identică, iar valorile derivate nu sunt calculate de frontend.
+- GET `/openapi.json` publică noul contract. `api/openapi.yaml` al Python rămâne
+  neschimbat; contractul Node este în `api/node-openapi.yaml` (JSON valid YAML 1.2).
+- `data/bank.js` rămâne neschimbat în frontend: creditul verde îl importă direct.
+  La fel rămân textele și contul PJ din `data/accounts.js`; conturile PF vin din API.
+- Corecturile din Profil sunt declarații ale utilizatorului; nu rescriu sumele
+  înregistrate de bancă. Redenumirea/categoria schimbă doar afișarea și clasificarea.
+- Acceptarea ideii adaugă venit **proiectat**, din 2 ore × 50 lei × 4 săptămâni,
+  începând cu decembrie. Schimbă planul, fără a inventa încasări în cont.
+- Scrierile acceptă `Idempotency-Key`; repetarea aceleiași cereri nu dublează
+  mesajele, fișierele sau bugetele. `If-Match` poate preveni corecturile pe o
+  versiune veche. Nu se memorează răspunsuri cu totaluri calculate.
+- Fișierele sunt transmise JSON/base64 (limită 10 MiB decodat) și salvate ca
+  `BYTEA`, împreună cu metadatele. Nu sunt interpretate de motorul Python.
+- În mediul agentului, npm registry, socket-ul Docker și bind-ul de porturi sunt
+  blocate. Aceleași aserțiuni au un transport offline în proces, cu Express real
+  și SQLite real. `npm test` rămâne Vitest + Supertest; CI îl rulează pe PostgreSQL.
