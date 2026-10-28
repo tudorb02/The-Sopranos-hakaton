@@ -35,6 +35,7 @@ class RunOrchestratorTest {
         Agent fundingOptimizer(ObjectMapper mapper) {
             ObjectNode output = mapper.createObjectNode().put("recommendedOptionId", "B");
             output.putObject("comparison").put("netAdvantageCalcId", "calc_0123456789ab");
+            output.putArray("options").addObject().put("variant", "VERDE").put("greenTier", "VERDE");
             return stub(AgentSlot.FUNDING_OPTIMIZER, output);
         }
 
@@ -100,13 +101,19 @@ class RunOrchestratorTest {
     void officerApprovesOnlyAFinishedDossier() throws Exception {
         Run done = orchestrator.start(demoScenarios.load("utilaje")).completion().get(10, TimeUnit.SECONDS);
 
+        assertThatThrownBy(() -> orchestrator.approve(done.id(), "ofiter.demo", "prea devreme"))
+                .isInstanceOf(IllegalStateException.class);
+        Run submitted = orchestrator.submit(done.id(), "VERDE");
+        assertThat(submitted.status()).isEqualTo(RunStatus.TRIMIS);
+        assertThat(submitted.chosenVariant()).isEqualTo("VERDE");
+
         Run approved = orchestrator.approve(done.id(), "ofiter.demo", "OK");
 
         assertThat(approved.status()).isEqualTo(RunStatus.MONITORIZARE);
         assertThat(approved.officerActions()).singleElement()
                 .extracting(OfficerAction::action).isEqualTo(OfficerAction.Action.APPROVE);
         assertThat(hub.history(done.id())).extracting(e -> e.data().path("to").asText())
-                .contains("APROBAT", "MONITORIZARE");
+                .contains("TRIMIS", "APROBAT", "MONITORIZARE");
         assertThatThrownBy(() -> orchestrator.approve(done.id(), "ofiter.demo", "din nou"))
                 .isInstanceOf(IllegalStateException.class);
     }
