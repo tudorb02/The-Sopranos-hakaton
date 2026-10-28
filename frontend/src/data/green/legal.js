@@ -5,19 +5,19 @@ export const greenLegal = {
   eyebrow: "Informare",
   title: "Analiza și datele firmei",
   items: [
-    { icon: "compass", text: "Analiza e făcută de agenți AI și verificată de un ofițer de credit Raiffeisen. Decizia de credit aparține băncii." },
+    { icon: "compass", text: "Dosarul îl pregătești în aplicație, cu ajutorul agenților AI. Banca dă doar aprobarea finală." },
     { icon: "chat", text: "Cifrele sunt calculate de bancă, după reguli fixe. AI-ul citește documentele și scrie explicațiile, dar nu face calcule." },
     { icon: "lock", text: "Datele și documentele firmei sunt criptate, atât la transmitere, cât și la stocare, și sunt folosite doar pentru acest dosar." },
     { icon: "shield", text: "Ce lipsește din dosar devine o condiție înainte de tragere, nu un motiv de respingere." },
   ],
-  strip: "Date criptate · Decizia de credit aparține băncii",
+  strip: "Date criptate · Aprobarea finală o dă banca",
   // Who can see the dossier. A proposal for the legal team: every line must hold in the real implementation.
   access: {
     title: "Cine vede dosarul",
     items: [
       { icon: "lock", title: "Tu", text: "Vezi tot dosarul și fiecare cifră din el, cu sursa ei." },
       { icon: "compass", title: "Agenții AI", text: "Citesc documentele și datele firmei doar pentru acest dosar. Modelul nu învață din ele." },
-      { icon: "bank", title: "Ofițerul de credit", text: "Primește dosarul doar după ce apeși „Trimite cererea la bancă”. Până atunci, analiza o vezi doar tu." },
+      { icon: "bank", title: "Banca", text: "Primește dosarul gata pregătit doar după ce apeși „Trimite cererea la bancă”, pentru aprobarea finală. Până atunci, îl vezi doar tu." },
       { icon: "shield", title: "Fondul European de Investiții", text: "Dacă alegi creditul verde cu garanție, primește doar datele cerute pentru garanție: firma, creditul și investiția." },
     ],
   },
@@ -33,7 +33,7 @@ export const greenLegal = {
   log: {
     title: "Ultimele accesări",
     items: [
-      { who: "Ofițerul de credit", what: "A deschis dosarul, după ce l-ai trimis", when: "12 nov., 11:02" },
+      { who: "Banca", what: "A primit dosarul, pentru aprobarea finală", when: "12 nov., 11:02" },
       { who: "Agenții AI", what: "Au citit oferta și facturile de energie", when: "12 nov., 10:21" },
       { who: "Tu", what: "Ai încărcat documentele", when: "12 nov., 10:15" },
     ],
@@ -64,7 +64,7 @@ export const greenLegal = {
   // The short version, shown at the step where the company gives its consents.
   promise: {
     title: "Dosarul rămâne privat",
-    items: ["Criptat, la transmitere și la stocare", "Nu devine public și nu ajunge la alte firme", "Ofițerul de credit îl vede doar după ce îl trimiți"],
+    items: ["Criptat, la transmitere și la stocare", "Nu devine public și nu ajunge la alte firme", "Banca îl primește doar când îl trimiți, pentru aprobare"],
     link: "Cine vede dosarul și cum îl protejăm",
   },
   dataTitle: "Ce date folosim",

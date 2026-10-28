@@ -7,7 +7,7 @@ export const greenEntry = {
   title: "Consultant pentru credit verde",
   subtitle: "Începem cu agricultura",
   badge: "Nou",
-  text: "Un consultant AI te ajută să pregătești cererea de credit pentru investiția ta: ce documente îți trebuie, cum devine investiția eligibilă pentru creditul verde și ce clauze să ceri, ca dosarul să aibă cele mai bune șanse și cele mai bune condiții.",
+  text: "Îți pregătești cererea de credit direct în aplicație, cu un consultant AI: ce documente îți trebuie, cum devine investiția eligibilă pentru creditul verde și ce clauze să ceri. Banca mai dă doar aprobarea finală.",
 };
 
 // status: "available" (opens the area's flow) or "soon".

@@ -7,7 +7,7 @@ export const sectorName = "Agricultură";
 // The client-facing voice of the three agents is one consultant that helps prepare the credit application.
 export const intro = {
   title: "Pregătim împreună cererea de credit",
-  lead: "Consultantul îți arată, pe lângă creditul clasic, un credit verde cu dobândă mai mică și ce să schimbi la investiție ca să devină verde. Îți spune ce îi crește șansele dosarului și ce clauze să ceri. Decizia o ia un ofițer de credit.",
+  lead: "Pregătești tot dosarul în aplicație, cu un consultant. Îți arată, pe lângă creditul clasic, un credit verde cu dobândă mai mică, ce să schimbi ca investiția să devină verde și ce clauze să ceri. Banca mai dă doar aprobarea finală.",
   duration: "Circa 10 minute, cu documentele la îndemână",
   steps: [
     "Confirmi datele firmei, luate din ANAF, APIA și din conturi",
@@ -25,7 +25,7 @@ export const intro = {
   ],
   doesNot: [
     "Nu ascunde și nu înfrumusețează date: dosarul trebuie să fie corect",
-    "Nu promite aprobarea: decizia o ia un ofițer de credit",
+    "Nu promite aprobarea: aprobarea finală o dă banca",
     "Nu face calculele: cifrele le calculează banca, după formule fixe",
   ],
   bring: ["Oferta sau factura proformă, cu fișa tehnică", "Pentru irigații: autorizația de gospodărire a apelor (ANAR)"],

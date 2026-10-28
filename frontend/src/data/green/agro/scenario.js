@@ -85,7 +85,7 @@ export const analysis = {
   phases: [
     { label: "Verificăm investiția", state: "done", note: "Indicatorul verde, pragul și verificările de mediu" },
     { label: "Construim creditele", state: "done", note: "Creditul clasic și cel verde, cu fondul potrivit" },
-    { label: "Pregătim dosarul pentru bancă", state: "running", note: "Raportul pentru ofițerul de credit", progress: 80 },
+    { label: "Pregătim dosarul pentru bancă", state: "running", note: "Dosarul complet, gata de trimis la aprobare", progress: 80 },
   ],
   messages: [
     { phase: "Verificăm investiția", text: "Am citit oferta: aspersie clasică pentru 40 ha, 85.000 EUR." },
@@ -155,7 +155,7 @@ export const offer = {
     why: "Irigațiile cu picurare și senzori sunt o investiție verde documentată: 40% economie de apă, cu impactul calculat.",
     without: "Fără garanție, banca ar cere ipotecă pe teren, ca la creditul clasic.",
   },
-  notice: "Ofertele sunt orientative. Când trimiți cererea, dosarul ajunge la un ofițer de credit Raiffeisen, care stabilește dobânda finală și aprobarea.",
+  notice: "Ofertele sunt orientative. Când trimiți cererea, banca dă aprobarea finală și confirmă dobânda.",
 };
 
 // What to change so the investment becomes green (README §4, step 4).
@@ -177,7 +177,7 @@ export const changes = {
 // dossier meets; it is not a probability of approval, which only the bank's assessment gives.
 export const advice = {
   title: "Trimite cererea",
-  lead: "Alege varianta, apoi vezi ce mai poți îmbunătăți și ce clauze să ceri. Nu e o promisiune de aprobare: decizia o ia un ofițer de credit.",
+  lead: "Alege varianta, vezi ce mai poți îmbunătăți și ce clauze ceri. Cererea pleacă gata pregătită: banca mai dă doar aprobarea finală.",
   variants: [
     { id: "verde", name: "Credit verde", note: "Picurare și senzori · 6,3% · rate după recoltă", selected: true, badge: "Recomandat" },
     { id: "clasic", name: "Credit clasic", note: "Aspersie clasică · 8,9% · rate lunare egale" },
@@ -196,10 +196,10 @@ export const advice = {
     ],
   },
   actions: [
-    { icon: "upload", title: "Adaugă facturile de energie pentru pompare", text: "Sunt opționale, dar fac estimarea economiilor mai precisă, iar ofițerul are mai puține întrebări.", button: "Încarcă" },
+    { icon: "upload", title: "Adaugă facturile de energie pentru pompare", text: "Sunt opționale, dar fac estimarea economiilor mai precisă, iar aprobarea finală merge mai repede.", button: "Încarcă" },
     { icon: "file", title: "Atașează contractele de vânzare pentru 2027", text: "Arată de unde vin banii pentru rate și întăresc analiza capacității de plată.", button: "Atașează" },
   ],
-  // status: "offer" (already in the green offer), "ask" (to request from the officer) or "proposal" (a new idea
+  // status: "offer" (already in the green offer), "ask" (the client adds it to the request) or "proposal" (a new idea
   // of the GreenStruct team, not an existing Raiffeisen product: README §4, step 6).
   clauses: [
     { title: "Grație până la prima recoltă, apoi rate după recoltă", text: "Până în iulie 2027 plătești doar dobânda, apoi ratele vin în iulie–octombrie.", status: "offer" },
@@ -214,19 +214,19 @@ export const advice = {
     { when: "După instalare", what: "Procesul-verbal de punere în funcțiune", note: "Cu poze geolocalizate" },
     { when: "La 12 luni", what: "Consumul real de apă", note: "Comparat cu estimarea din dosar" },
   ],
-  note: "Consultantul e un serviciu al băncii și îți spune deschis ce îți crește șansele. Nu înfrumusețează datele: tot ce trimiți trebuie să fie corect. Clauzele de cerut și propunerile depind de decizia băncii.",
+  note: "Consultantul e un serviciu al băncii și îți spune deschis ce îți crește șansele. Nu înfrumusețează datele: tot ce trimiți trebuie să fie corect. Clauzele cerute și propunerile le confirmă banca la aprobarea finală.",
 };
 
 export const dossier = {
   href: "#/verde/agro/dosar",
-  row: { title: "Irigații · 40 ha", note: "Agricultură · trimisă pe 12 noiembrie", status: "În analiză" },
+  row: { title: "Irigații · 40 ha", note: "Agricultură · trimisă pe 12 noiembrie", status: "La aprobare" },
   eyebrow: "Agricultură · Irigații · 40 ha · Verde Plus",
-  title: "Cerere trimisă, în analiză",
-  text: "Ai trimis cererea pentru creditul verde pe 12 noiembrie. Un ofițer de credit verifică dosarul și îți scrie aici dacă are nevoie de ceva.",
+  title: "Dosar trimis, la aprobarea finală",
+  text: "Ai pregătit dosarul cu consultantul și l-ai trimis pe 12 noiembrie. E complet, așa că banca mai are de dat doar aprobarea finală. Îți scriem aici când e gata.",
   steps: [
-    { label: "Trimisă", note: "12 noiembrie", state: "done" },
-    { label: "În analiză", note: "La ofițerul de credit", state: "running" },
-    { label: "Aprobată", note: "Urmează", state: "waiting" },
+    { label: "Dosar pregătit", note: "În aplicație, cu consultantul", state: "done" },
+    { label: "Trimis la bancă", note: "12 noiembrie", state: "done" },
+    { label: "Aprobarea finală", note: "La bancă", state: "running" },
     { label: "Monitorizare", note: "După instalare", state: "waiting" },
   ],
   impact: [

@@ -350,15 +350,9 @@ export function Changes({ pack }) {
   );
 }
 
-// status of a clause: already in the green offer, to ask the officer for, or a new proposal (README §4, step 6).
-const CLAUSE_STATUS = {
-  offer: { label: "În oferta verde", className: "status is-on" },
-  ask: { label: "De cerut", className: "status status--outline" },
-  proposal: { label: "Propunere nouă", className: "status" },
-};
-
-// The consultant checks the request before it goes to the bank: the variant, how ready the dossier is, what to
-// improve, which clauses to ask for and what the client commits to.
+// The consultant checks the request before it goes to the bank, which only gives the final approval: the variant,
+// how ready the dossier is, what to improve, the clauses (those already in the green offer, and those the client
+// adds to the request) and what the client commits to.
 export function Request({ pack }) {
   const { advice } = pack;
   const { readiness } = advice;
@@ -430,18 +424,31 @@ export function Request({ pack }) {
         </ul>
       </Section>
 
-      <Section title="Clauzele pe care ți le recomand">
+      <Section title="Clauzele din oferta verde">
         <ul className="card rows">
-          {advice.clauses.map((clause) => (
-            <li key={clause.title} className="row">
-              <div className="row-main">
-                <span className="row-name">{clause.title}</span>
-                <span className="row-note">{clause.text}</span>
-                <span className={CLAUSE_STATUS[clause.status].className}>{CLAUSE_STATUS[clause.status].label}</span>
-              </div>
-            </li>
-          ))}
+          {advice.clauses
+            .filter((clause) => clause.status === "offer")
+            .map((clause) => (
+              <li key={clause.title} className="row">
+                <div className="row-main">
+                  <span className="row-name">{clause.title}</span>
+                  <span className="row-note">{clause.text}</span>
+                  <span className="status is-on">În oferta verde</span>
+                </div>
+              </li>
+            ))}
         </ul>
+      </Section>
+
+      <Section title="Clauzele pe care le ceri">
+        <div className="card switches">
+          {advice.clauses
+            .filter((clause) => clause.status !== "offer")
+            .map((clause) => (
+              <Switch key={clause.title} label={clause.status === "proposal" ? `${clause.title} (propunere)` : clause.title} hint={clause.text} defaultChecked />
+            ))}
+        </div>
+        <p className="small muted">Le adaugi acum în cerere. Banca le confirmă la aprobarea finală.</p>
       </Section>
 
       <Section title="Ce te obligi să faci, cu creditul verde">
