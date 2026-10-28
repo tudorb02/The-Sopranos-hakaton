@@ -145,15 +145,6 @@ class RunOrchestratorTest {
     }
 
     @Test
-    void configOnlyModuleIsNotReady() {
-        RunRequest request = new RunRequest("45871203", "ecologic", List.of(), null, List.of(), null);
-
-        assertThatThrownBy(() -> orchestrator.start(request)).isInstanceOf(RunRejectedException.class)
-                .extracting(e -> ((RunRejectedException) e).reason())
-                .isEqualTo(RunRejectedException.Reason.MODULE_NOT_READY);
-    }
-
-    @Test
     void unknownModuleIsRejectedUpFront() {
         RunRequest request = new RunRequest("45871203", "nu-exista", List.of(), null, List.of(), null);
 

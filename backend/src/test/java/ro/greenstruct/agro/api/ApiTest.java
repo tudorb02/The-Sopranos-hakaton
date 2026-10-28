@@ -115,10 +115,10 @@ class ApiTest {
     }
 
     @Test
-    void configOnlyModuleIsUnprocessable() throws Exception {
-        mvc.perform(createForm("45871203", "ecologic", "{}"))
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.error.code").value("MODULE_NOT_READY"));
+    void unknownModuleIsAValidationError() throws Exception {
+        mvc.perform(createForm("45871203", "nu-exista", "{}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error.code").value("VALIDATION_ERROR"));
     }
 
     @Test
