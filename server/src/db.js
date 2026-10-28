@@ -5,13 +5,15 @@ import pg from "pg";
 // PostgreSQL DATE is a calendar day, not a midnight in the host machine's zone.
 pg.types.setTypeParser(1082, (value) => value);
 
-export const json = (value) => value == null ? value : typeof value === "string" ? JSON.parse(value) : value;
-export const day = (value) => value instanceof Date ? value.toISOString().slice(0, 10) : value;
+export const json = (value) =>
+  value == null ? value : typeof value === "string" ? JSON.parse(value) : value;
+export const day = (value) => (value instanceof Date ? value.toISOString().slice(0, 10) : value);
 export const uid = randomUUID;
 
 export function poolFromEnv() {
   if (!process.env.NODE_DATABASE_URL) throw new Error("NODE_DATABASE_URL is required");
-  if (new URL(process.env.NODE_DATABASE_URL).pathname !== "/nexxt_demo") throw new Error("The Node service must use the separate nexxt_demo database");
+  if (new URL(process.env.NODE_DATABASE_URL).pathname !== "/nexxt_demo")
+    throw new Error("The Node service must use the separate nexxt_demo database");
   return new pg.Pool({ connectionString: process.env.NODE_DATABASE_URL, max: 10 });
 }
 
@@ -23,10 +25,15 @@ export async function ensureDatabase() {
   try {
     const existing = await admin.query("SELECT 1 FROM pg_database WHERE datname=$1", [target]);
     if (!existing.rowCount) {
-      try { await admin.query('CREATE DATABASE "nexxt_demo"'); }
-      catch (error) { if (error.code !== "42P04") throw error; }
+      try {
+        await admin.query('CREATE DATABASE "nexxt_demo"');
+      } catch (error) {
+        if (error.code !== "42P04") throw error;
+      }
     }
-  } finally { await admin.end(); }
+  } finally {
+    await admin.end();
+  }
 }
 
 export async function transaction(pool, work) {
@@ -39,7 +46,9 @@ export async function transaction(pool, work) {
   } catch (error) {
     await client.query("ROLLBACK");
     throw error;
-  } finally { client.release(); }
+  } finally {
+    client.release();
+  }
 }
 
 export async function migrate(pool) {
@@ -57,5 +66,8 @@ export async function migrate(pool) {
 
 export async function insert(client, table, fields) {
   const keys = Object.keys(fields);
-  return client.query(`INSERT INTO ${table} (${keys.join(",")}) VALUES (${keys.map((_, index) => `$${index + 1}`).join(",")})`, Object.values(fields));
+  return client.query(
+    `INSERT INTO ${table} (${keys.join(",")}) VALUES (${keys.map((_, index) => `$${index + 1}`).join(",")})`,
+    Object.values(fields),
+  );
 }

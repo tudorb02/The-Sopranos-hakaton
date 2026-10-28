@@ -8,7 +8,8 @@ export function minor(value) {
 
 export function safeInteger(value) {
   const number = Number(value);
-  if (!Number.isSafeInteger(number) || BigInt(number) !== BigInt(value)) throw new RangeError("Suma depășește limita acceptată.");
+  if (!Number.isSafeInteger(number) || BigInt(number) !== BigInt(value))
+    throw new RangeError("Suma depășește limita acceptată.");
   return number;
 }
 
@@ -20,6 +21,8 @@ export function lei(value) {
 }
 
 export const sum = (values) => safeInteger(values.reduce((total, value) => total + BigInt(value), 0n));
-export const roundLei = (amount, divisor = 1) => Number((BigInt(amount) + BigInt(divisor) * 50n) / (BigInt(divisor) * 100n));
-export const percent = (part, whole) => whole > 0 ? Number((BigInt(part) * 100n + BigInt(whole) / 2n) / BigInt(whole)) : 0;
+export const roundLei = (amount, divisor = 1) =>
+  Number((BigInt(amount) + BigInt(divisor) * 50n) / (BigInt(divisor) * 100n));
+export const percent = (part, whole) =>
+  whole > 0 ? Number((BigInt(part) * 100n + BigInt(whole) / 2n) / BigInt(whole)) : 0;
 export const ro = (value) => String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
