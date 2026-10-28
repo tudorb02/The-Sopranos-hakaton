@@ -136,8 +136,8 @@ class AnafCompanyRegistryTest {
     void demoFarmsNeverReachAnaf() {
         CompanyRecord demo = registry.company("38264019").orElseThrow();
 
-        assertThat(demo.company().name()).isEqualTo("Agro Câmpia Bărăganului SRL");
-        // derived from the demo file: 9 employees, turnover 612,000 EUR, assets 2,480,000 EUR
+        assertThat(demo.company().name()).isEqualTo("Cereale Câmpia Demo SRL");
+        // derived from the demo file: 9 employees, turnover 690,000 EUR, assets 1,350,000 EUR
         assertThat(demo.company().smeStatus()).isEqualTo(SmeStatus.SME);
         assertThat(demo.source().mode()).isEqualTo("MOCK");
         server.verify();

@@ -1,0 +1,56 @@
+{
+  "documentId": "doc_fisa_tractor_vechi",
+  "documentType": "CURRENT_EQUIPMENT",
+  "moduleId": "utilaje",
+  "currency": "EUR",
+  "supplierName": "Cereale Câmpia Demo SRL",
+  "documentFields": [
+    {
+      "key": "DOCUMENT_NUMBER",
+      "rawValue": "FT-UT-07",
+      "unit": "TEXT",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "DOCUMENT_DATE",
+      "rawValue": "16.10.2026",
+      "unit": "DATE",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "MACHINE_TYPE",
+      "rawValue": "tractor agricol",
+      "unit": "TEXT",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "MANUFACTURE_YEAR",
+      "rawValue": "2004",
+      "unit": "YEAR",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "ENGINE_POWER_HP",
+      "rawValue": "240 CP",
+      "unit": "HP",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "key": "EMISSION_STAGE",
+      "rawValue": "Stage II",
+      "unit": "TEXT",
+      "page": 1,
+      "confidence": "HIGH"
+    }
+  ],
+  "lineItems": [],
+  "missingFields": [],
+  "warnings": [
+    "Fișa indică consumul total al fermei în ultimele 12 luni: 46.800 l (78 l/ha)."
+  ]
+}

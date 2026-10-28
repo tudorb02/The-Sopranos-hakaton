@@ -2,44 +2,48 @@
   "documentId": "doc_facturi_motorina",
   "documentType": "FUEL_INVOICES",
   "moduleId": "utilaje",
-  "currency": "RON",
-  "supplierName": "Distribuitor carburanți (demo)",
+  "currency": "EUR",
+  "supplierName": "Petro Demo Distribuție SRL",
   "documentFields": [
     {
+      "key": "SUPPLIER_NAME",
+      "rawValue": "Petro Demo Distribuție SRL",
+      "unit": "TEXT",
+      "page": 1,
+      "confidence": "HIGH"
+    },
+    {
       "key": "PERIOD_FROM",
-      "rawValue": "01.10.2025",
+      "rawValue": "octombrie 2025",
       "unit": "DATE",
       "page": 1,
       "confidence": "HIGH"
     },
     {
       "key": "PERIOD_TO",
-      "rawValue": "30.09.2026",
+      "rawValue": "septembrie 2026",
       "unit": "DATE",
-      "page": 9,
+      "page": 12,
       "confidence": "HIGH"
     },
     {
       "key": "FUEL_LITRES",
-      "rawValue": "36.180 l",
+      "rawValue": "46.800 l",
       "unit": "L",
-      "page": 10,
-      "confidence": "HIGH"
+      "page": 12,
+      "confidence": "MEDIUM"
     },
     {
       "key": "FUEL_COST",
-      "rawValue": "372.654,00 lei",
-      "unit": "RON",
-      "page": 10,
-      "confidence": "HIGH"
+      "rawValue": "58.500 EUR",
+      "unit": "EUR",
+      "page": 12,
+      "confidence": "MEDIUM"
     }
   ],
   "lineItems": [],
-  "missingFields": [
-    {
-      "key": "FERTILIZER_KG_N",
-      "reasonRo": "Facturile de îngrășăminte nu au fost încărcate; folosesc doza declarată în chestionar."
-    }
-  ],
-  "warnings": []
+  "missingFields": [],
+  "warnings": [
+    "Cele 12 facturi lunare (5.200 + 3.100 + 900 + 600 + 1.200 + 5.800 + 6.400 + 3.500 + 2.600 + 7.900 + 4.700 + 4.900 l) nu au total: litrii sunt însumați din ele, la 1,25 EUR/l fără TVA."
+  ]
 }

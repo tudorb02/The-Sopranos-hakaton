@@ -54,10 +54,10 @@ class ApiTest {
     void returnsTheFarmProfileForADemoCui() throws Exception {
         mvc.perform(get("/api/farms/38264019"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.company.name").value("Agro Câmpia Bărăganului SRL"))
+                .andExpect(jsonPath("$.company.name").value("Cereale Câmpia Demo SRL"))
                 .andExpect(jsonPath("$.company.manager.age").value(38))
-                .andExpect(jsonPath("$.parcels.features.length()").value(4))
-                .andExpect(jsonPath("$.cashflow.annualNetEur").value(210000));
+                .andExpect(jsonPath("$.parcels.features.length()").value(3))
+                .andExpect(jsonPath("$.cashflow.annualNetEur").value(74000));
     }
 
     @Test
