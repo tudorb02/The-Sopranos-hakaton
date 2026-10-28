@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import ro.greenstruct.agro.demo.DemoScenarioService;
 import ro.greenstruct.agro.orchestration.MonitoringService;
 import ro.greenstruct.agro.orchestration.PendingDocument;
+import ro.greenstruct.agro.orchestration.ReportService;
 import ro.greenstruct.agro.orchestration.Run;
 import ro.greenstruct.agro.orchestration.RunNotFoundException;
 import ro.greenstruct.agro.orchestration.RunOrchestrator;
@@ -53,10 +54,11 @@ public class RunController {
     private final DocumentStore documents;
     private final DemoScenarioService demoScenarios;
     private final MonitoringService monitoring;
+    private final ReportService reports;
     private final ObjectMapper mapper;
 
     public RunController(RunOrchestrator orchestrator, RunStore runs, RunViewMapper views, SseHub hub,
-                         DocumentStore documents, DemoScenarioService demoScenarios, MonitoringService monitoring, ObjectMapper mapper) {
+                         DocumentStore documents, DemoScenarioService demoScenarios, MonitoringService monitoring, ReportService reports, ObjectMapper mapper) {
         this.orchestrator = orchestrator;
         this.runs = runs;
         this.views = views;
@@ -64,6 +66,7 @@ public class RunController {
         this.documents = documents;
         this.demoScenarios = demoScenarios;
         this.monitoring = monitoring;
+        this.reports = reports;
         this.mapper = mapper;
     }
 
@@ -138,6 +141,14 @@ public class RunController {
     @GetMapping("/{id}")
     public RunView get(@PathVariable String id, @RequestParam(value = "view", required = false) String view) {
         return views.toView(runs.find(id).orElseThrow(() -> new RunNotFoundException(id)), view(view));
+    }
+
+    /** The green report, once the officer approved the dossier (README §8). */
+    @GetMapping(path = "/{id}/report.pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> report(@PathVariable String id) {
+        Run run = runs.find(id).orElseThrow(() -> new RunNotFoundException(id));
+        return ResponseEntity.ok().header("Content-Disposition", "inline; filename=\"raport-verde-" + id + ".pdf\"")
+                .contentType(MediaType.APPLICATION_PDF).body(reports.build(run));
     }
 
     @PostMapping("/{id}/simulate-monitoring")

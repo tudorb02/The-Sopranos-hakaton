@@ -22,6 +22,11 @@ public class RunStore {
         return Optional.ofNullable(runs.get(id));
     }
 
+    /** Every dossier, oldest first. */
+    public java.util.List<Run> all() {
+        return runs.values().stream().sorted(java.util.Comparator.comparing(Run::createdAt)).toList();
+    }
+
     /** Atomic read-modify-write of one dossier. */
     public Run update(String id, UnaryOperator<Run> change) {
         Run updated = runs.computeIfPresent(id, (key, run) -> change.apply(run));
