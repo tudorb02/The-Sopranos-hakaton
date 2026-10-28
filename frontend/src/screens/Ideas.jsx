@@ -6,11 +6,12 @@ import { StyleSheet, View } from "react-native";
 import { Btn, BtnRow, Card, Intro, Row, RowMain, RowName, RowNote, Rows, Small, Status, T } from "../components/base.jsx";
 import { ExternalLink } from "../components/services.jsx";
 import { Aside, Disclosure, GoalHead, IconTile, NoteCard, Section, Src } from "../components/ui.jsx";
-import { usePersona } from "../persona.js";
+import { usePersona, usePersonaApi } from "../persona.js";
 import { space, text } from "../theme.js";
 
 export default function Ideas() {
   const { ideas } = usePersona();
+  const api = usePersonaApi();
   const { featured } = ideas;
   return (
     <>
@@ -36,11 +37,12 @@ export default function Ideas() {
         </Disclosure>
         <BtnRow>
           {featured.actions.map((action, i) => (
-            <Btn key={action} small variant={i === 0 ? "ink" : "text"} onYellow={i > 0}>
+            <Btn key={action} small variant={i === 0 ? "ink" : "text"} onYellow={i > 0} disabled={api.busy} onPress={() => api.mutate("/ideas/decision", { decision: i === 0 ? "accepted" : "dismissed" }, "POST")}>
               {action}
             </Btn>
           ))}
         </BtnRow>
+        {featured.decision ? <Small accessibilityLiveRegion="polite">{featured.decision === "accepted" ? "Ideea este adăugată în plan." : "Ai ales să nu urmezi această idee."}</Small> : null}
       </Card>
 
       {ideas.groups.map((group) => (

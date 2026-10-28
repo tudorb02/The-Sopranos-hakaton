@@ -1,5 +1,6 @@
 // Spending tracker: what was spent this budget period by category, what needs a look, and every payment by day.
 
+import { useEffect, useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 
 import { Eyebrow, Link, RowMain, RowName, RowNote, Rows, Small, T } from "../components/base.jsx";
@@ -7,11 +8,28 @@ import { Icon } from "../components/icons.jsx";
 import { CategoryLegend, ShareBar, TxRow } from "../components/tracking.jsx";
 import { Amount, ChoiceChips, HeroCard, HeroLabel, HeroSub, IconTile, Split, Src } from "../components/ui.jsx";
 import { lei } from "../lib/format.js";
-import { usePersona } from "../persona.js";
+import { usePersona, usePersonaApi } from "../persona.js";
+import { personaPath, request } from "../lib/api.js";
+import { ApiState } from "../components/ApiState.jsx";
 import { color, fontFamily, radius, space, text } from "../theme.js";
 
 export default function Tracking() {
-  const { days, filters, review, spending } = usePersona();
+  const persona = usePersona(), api = usePersonaApi();
+  const [remote, setRemote] = useState(null), [query, setQuery] = useState(""), [filter, setFilter] = useState("all");
+  const [attempt, retry] = useState(0);
+  const searching = Boolean(query) || filter !== "all";
+  const key = `${api.id}:${query}:${filter}:${attempt}`;
+  useEffect(() => {
+    if (!searching) return;
+    const controller = new AbortController();
+    const timer = setTimeout(() => request(personaPath(api.id, `/tracking?q=${encodeURIComponent(query)}&filter=${filter}`), { signal: controller.signal }).then((data) => { if (!controller.signal.aborted) setRemote({ key, data }); }).catch((error) => { if (!controller.signal.aborted) setRemote({ key, error }); }), 200);
+    return () => { clearTimeout(timer); controller.abort(); };
+  }, [api.id, persona, query, filter, key, searching]);
+  const pending = searching && remote?.key !== key;
+  const error = searching && remote?.key === key ? remote.error : null;
+  const packet = searching ? remote?.key === key && remote.data ? remote.data : { ...persona, days: [] } : persona;
+  const { days, filters, review, spending } = packet;
+  const filterKeys = ["all", "expenses", "income", "uncategorized", "recurring"];
   return (
     <>
       <HeroCard>
@@ -30,14 +48,14 @@ export default function Tracking() {
         </Split>
       </HeroCard>
 
-      <Link href={`#/cheltuieli/${review.id}`} style={s.review} pressedStyle={{ backgroundColor: color.yellow }}>
+      {review ? <Link href={`#/cheltuieli/${review.id}`} style={s.review} pressedStyle={{ backgroundColor: color.yellow }}>
         <IconTile icon="help" tone="yellow" />
         <RowMain>
           <RowName>{review.title}</RowName>
           <RowNote>{review.text}</RowNote>
         </RowMain>
         <Icon name="chevron" size={20} color={color.ink3} />
-      </Link>
+      </Link> : null}
 
       <View style={s.searchRow}>
         <View style={s.search}>
@@ -47,11 +65,16 @@ export default function Tracking() {
             placeholder="Caută comerciant, sumă sau etichetă"
             placeholderTextColor={color.ink3}
             returnKeyType="search"
+            value={query}
+            onChangeText={setQuery}
             style={s.searchInput}
           />
         </View>
-        <ChoiceChips label="Filtre" options={filters} scroll />
+        <ChoiceChips label="Filtre" options={filters.map((option, index) => ({ ...option, selected: filterKeys[index] === filter }))} onChange={(_option, index) => setFilter(filterKeys[index])} scroll />
       </View>
+      {pending ? <Small accessibilityLiveRegion="polite">Caut plățile…</Small> : null}
+      {error ? <ApiState error={error} retry={() => retry((value) => value + 1)} /> : null}
+      {!pending && !error && !days.length ? <Small muted>Nicio plată nu corespunde filtrelor alese.</Small> : null}
 
       {days.map((day) => (
         <View key={day.date} style={s.section} accessibilityLabel={`${day.label}, ${day.date}`}>

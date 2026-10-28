@@ -1,6 +1,5 @@
-// Demo accounts for the simulated sign-in. No credentials are asked for or stored.
-// Each personal account opens the same Coach with its own data (#/intra/<id>, see data/personas.js);
-// the business one, a vegetable farm, opens the green credit for investments (design/pj-greenstruct.md).
+// Business demo account and shared sign-in copy. Personal accounts now come from the Node API.
+// No credentials are asked for or stored. The farm keeps its local green-credit flow.
 
 export const login = {
   title: "Bine ai revenit",
@@ -9,10 +8,6 @@ export const login = {
 };
 
 export const accounts = {
-  pf: [
-    { id: "pf", profile: "Salariat", name: "Daria Ionescu", initial: "D", detail: "Cont curent RON · RO12 RZBR •••• 1234", href: "#/intra/pf" },
-    { id: "student", profile: "Student", name: "Matei Popescu", initial: "M", detail: "Cont curent RON · RO45 RZBR •••• 5678", href: "#/intra/student" },
-  ],
   pj: [{ id: "pj", profile: "Fermă de legume", name: "Legume Bărăgan SRL", initial: "L", detail: "Cont curent RON · CUI 4•••••7", href: "#/firma" }],
 };
 

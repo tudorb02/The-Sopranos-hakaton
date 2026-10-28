@@ -39,7 +39,7 @@ function Details({ service }) {
 }
 
 // compact: the costs and the reason fold under "Costuri și detalii" (Profil, chat).
-export function ServiceCard({ service, compact = false }) {
+export function ServiceCard({ service, compact = false, onAction, busy = false }) {
   const whyLabel = service.whyLabel ?? "De ce îți propun asta";
   return (
     <Card style={s.service} accessibilityLabel={service.name}>
@@ -87,12 +87,13 @@ export function ServiceCard({ service, compact = false }) {
       {service.actions ? (
         <BtnRow>
           {service.actions.map((action, i) => (
-            <Btn key={action} small variant={i === 0 ? "yellow" : "text"}>
+            <Btn key={action} small variant={i === 0 ? "yellow" : "text"} onPress={onAction ? () => onAction(service, action) : undefined} disabled={busy}>
               {action}
             </Btn>
           ))}
         </BtnRow>
       ) : null}
+      {service.decision ? <Small accessibilityLiveRegion="polite">Alegerea ta: {service.decision}</Small> : null}
     </Card>
   );
 }

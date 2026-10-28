@@ -1,22 +1,29 @@
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Btn, Card, Intro, Row, RowMain, RowName, RowNote, RowValue, Rows, Small, Stack, Status, T, TextLink } from "../components/base.jsx";
 import { ServiceCard } from "../components/services.jsx";
-import { Chips, Disclaimer, Facts, Group, Meter, Src, Switch, Switches, ValueRow } from "../components/ui.jsx";
-import { legal } from "../data/legal.js";
+import { Chips, Disclaimer, Facts, Field, Group, Meter, Src, Switch, Switches, ValueRow } from "../components/ui.jsx";
 import { lei } from "../lib/format.js";
-import { usePersona } from "../persona.js";
+import { usePersona, usePersonaApi } from "../persona.js";
+import { useRouter } from "../router.jsx";
 import { color, space, text } from "../theme.js";
 
-const Correct = () => (
-  <Btn variant="text" small style={s.groupBtn}>
+const Correct = ({ onPress }) => (
+  <Btn variant="text" small style={s.groupBtn} onPress={onPress}>
     Corectează
   </Btn>
 );
 
 export default function Profile() {
-  const { profile, services } = usePersona();
-  const top = Math.max(...profile.spending.map((item) => item.lei));
+  const { profile, services, legal } = usePersona();
+  const api = usePersonaApi(), { navigate } = useRouter();
+  const [editing, setEditing] = useState(null), [draft, setDraft] = useState([]), [deactivating, setDeactivating] = useState(false);
+  const edit = (section) => { setEditing(section); setDraft(profile[section].map((item) => ({ label: item.label, value: item.value }))); };
+  const editor = (section) => editing === section ? <View style={{ gap: space.sm }}>{draft.map((item, index) => <Field key={item.label} field={{ label: item.label, value: item.value }} onChange={(value) => setDraft((old) => old.map((row, i) => i === index ? { ...row, value } : row))} />)}
+    <Btn disabled={api.busy} onPress={async () => { if (await api.mutate(`/profile/${section}`, { items: draft })) setEditing(null); }}>Salvează</Btn>
+    <Btn variant="text" onPress={() => setEditing(null)}>Anulează</Btn></View> : <Facts items={profile[section]} />;
+  const onService = (service, action) => api.mutate(`/services/${service.id}`, { action });
   return (
     <>
       <Intro title="Ce știu despre tine">
@@ -47,12 +54,12 @@ export default function Profile() {
         </Rows>
       </Group>
 
-      <Group label="Despre tine" action={<Correct />}>
-        <Facts items={profile.about} />
+      <Group label="Despre tine" action={<Correct onPress={() => edit("about")} />}>
+        {editor("about")}
       </Group>
 
-      <Group label="Banii tăi" action={<Correct />}>
-        <Facts items={profile.money} />
+      <Group label="Banii tăi" action={<Correct onPress={() => edit("money")} />}>
+        {editor("money")}
       </Group>
 
       <Group label="Unde se duc banii · media pe lună">
@@ -66,7 +73,7 @@ export default function Profile() {
                 </RowMain>
                 <RowValue>{lei(item.lei)}</RowValue>
               </View>
-              <Meter value={item.lei} max={top} />
+              <Meter percent={api.metrics.profile[item.name]} />
             </View>
           ))}
         </Rows>
@@ -98,14 +105,14 @@ export default function Profile() {
         </Rows>
       </Group>
 
-      <Group label="Cum comunicăm" action={<Correct />}>
-        <Facts items={profile.talk} />
+      <Group label="Cum comunicăm" action={<Correct onPress={() => edit("talk")} />}>
+        {editor("talk")}
       </Group>
 
       <Group label="Confidențialitate">
         <Switches>
           {legal.screenPrivacy.map((item) => (
-            <Switch key={item.id} label={item.label} hint={item.hint} defaultChecked={item.on} />
+            <Switch key={item.id} label={item.label} hint={item.hint} checked={item.on} disabled={api.busy} onChange={(value) => api.mutate("/preferences", { privacy: { [item.id]: value } })} />
           ))}
         </Switches>
       </Group>
@@ -113,18 +120,18 @@ export default function Profile() {
       <Group label="Permisiuni">
         <Switches>
           {profile.permissions.map((item) => (
-            <Switch key={item.id} label={item.label} hint={item.hint} defaultChecked={item.on} />
+            <Switch key={item.id} label={item.label} hint={item.hint} checked={item.on} disabled={api.busy} onChange={(value) => api.mutate("/preferences", { permissions: { [item.id]: value } })} />
           ))}
         </Switches>
       </Group>
 
       <Group label="Servicii care te-ar ajuta">
         <Switches>
-          <Switch label="Sugestii din serviciile băncii" hint={services.hint} defaultChecked={services.on} />
+          <Switch label="Sugestii din serviciile băncii" hint={services.hint} checked={services.on} disabled={api.busy} onChange={(value) => api.mutate("/preferences", { services_on: value })} />
         </Switches>
         <View style={{ gap: space.sm }}>
           {services.items.map((service) => (
-            <ServiceCard key={service.id} service={service} compact />
+            <ServiceCard key={service.id} service={service} compact onAction={onService} busy={api.busy} />
           ))}
         </View>
       </Group>
@@ -132,7 +139,7 @@ export default function Profile() {
       <Group label="Ce nu știu încă">
         <Card>
           <Stack>
-            <Chips items={profile.unknown} />
+            <Chips items={profile.unknown} onSelect={async (topic) => { if (await api.mutate("/chat/messages", { text: `Aș vrea să vorbim despre: ${topic}.` }, "POST")) navigate("#/chat"); }} />
             <Small muted>Te întreb doar dacă vrei. Alege un subiect și vorbim.</Small>
           </Stack>
         </Card>
@@ -141,10 +148,11 @@ export default function Profile() {
       <Disclaimer legal={legal} link />
 
       <View style={s.deactivate}>
-        <Btn variant="danger">Dezactivează coach-ul</Btn>
+        <Btn variant="danger" onPress={() => setDeactivating(true)} disabled={api.busy}>Dezactivează coach-ul</Btn>
         <Small muted style={{ textAlign: "center" }}>
           Extrasele importate și răspunsurile tale se șterg. Contul și cardurile nu sunt afectate.
         </Small>
+        {deactivating ? <><Small>Confirmi ștergerea datelor din coach?</Small><Btn variant="danger" disabled={api.busy} onPress={() => api.mutate("/coach", undefined, "DELETE")}>Da, șterge datele coach-ului</Btn><Btn variant="text" onPress={() => setDeactivating(false)}>Anulează</Btn></> : null}
       </View>
     </>
   );

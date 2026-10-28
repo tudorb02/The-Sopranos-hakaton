@@ -5,11 +5,13 @@ import { PlanChart } from "../components/charts.jsx";
 import { ServiceCard } from "../components/services.jsx";
 import { Amount, Aside, GoalHead, HeroCard, HeroLabel, HeroSub, Meter, Section, Src, ValueRow } from "../components/ui.jsx";
 import { lei } from "../lib/format.js";
-import { usePersona } from "../persona.js";
+import { usePersona, usePersonaApi } from "../persona.js";
 import { color, radius, space } from "../theme.js";
 
 export default function Goals() {
   const { goal, nextGoals, pots, reserve, services } = usePersona();
+  const api = usePersonaApi();
+  const onService = (service, action) => api.mutate(`/services/${service.id}`, { action });
   const serviceById = (id) => services.items.find((item) => item.id === id);
   const suggestion = goal.suggestion ? serviceById(goal.suggestion) : null;
   return (
@@ -21,7 +23,7 @@ export default function Goals() {
           <Amount value={goal.saved} size="lg" />
           <T style={{ color: color.ink3 }}> din {lei(goal.amount)}</T>
         </View>
-        <Meter value={goal.saved} max={goal.amount} style={{ marginVertical: space.xs }} />
+        <Meter value={goal.saved} max={goal.amount} percent={api.metrics.goal} style={{ marginVertical: space.xs }} />
         <HeroSub>
           {goal.due.label} <T style={{ fontWeight: 600, color: color.ink }}>{goal.due.date}</T> · {goal.due.note}
         </HeroSub>
@@ -57,12 +59,12 @@ export default function Goals() {
       ) : null}
 
       <Section title="Unde păstrezi banii">
-        <ServiceCard service={serviceById(goal.storage)} />
+        <ServiceCard service={serviceById(goal.storage)} onAction={onService} busy={api.busy} />
       </Section>
 
       {suggestion ? (
         <Section title="Sugestie din serviciile băncii" aside={<Aside>cel mult una pe săptămână</Aside>}>
-          <ServiceCard service={suggestion} />
+          <ServiceCard service={suggestion} onAction={onService} busy={api.busy} />
         </Section>
       ) : null}
 

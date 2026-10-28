@@ -1,10 +1,14 @@
+import { useCallback, useEffect } from "react";
 import { Intro, Small } from "../../components/base.jsx";
 import { Group, Switch, Switches, Ticks } from "../../components/ui.jsx";
 import { lei } from "../../lib/format.js";
-import { usePersona } from "../../persona.js";
+import { usePersona, usePersonaApi } from "../../persona.js";
 
 export function Apps() {
   const { apps } = usePersona();
+  const api = usePersonaApi();
+  const save = useCallback(() => api.mutate("/preferences", { permissions: { screen: apps.items.some((app) => app.on) } }), [api, apps.items]);
+  useEffect(() => api.registerSubmit(save), [api, save]);
   return (
     <>
       <Intro eyebrow="Opțional" title="Folosești ce plătești?">
@@ -14,7 +18,7 @@ export function Apps() {
       <Group label="Alege ce urmăresc">
         <Switches>
           {apps.items.map((app) => (
-            <Switch key={app.name} label={`${app.name} · ${lei(app.lei)} pe lună`} hint={app.note} defaultChecked={app.on} />
+            <Switch key={app.name} label={`${app.name} · ${lei(app.lei)} pe lună`} hint={app.note} checked={app.on} disabled={api.busy} onChange={(value) => api.mutate(`/apps/${encodeURIComponent(app.name)}`, { on: value })} />
           ))}
         </Switches>
       </Group>

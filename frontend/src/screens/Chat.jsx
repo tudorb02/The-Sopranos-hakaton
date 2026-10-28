@@ -1,14 +1,15 @@
+import { useState } from "react";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
 import { Btn, BtnRow, Eyebrow, RowName, T } from "../components/base.jsx";
 import { Icon } from "../components/icons.jsx";
 import { ServiceCard } from "../components/services.jsx";
 import { DisclaimerStrip } from "../components/ui.jsx";
-import { legal } from "../data/legal.js";
-import { usePersona } from "../persona.js";
+import { usePersona, usePersonaApi } from "../persona.js";
 import { caps, color, fontFamily, radius, shadowCard, space, text } from "../theme.js";
 
-function Proposal({ item }) {
+function Proposal({ item, index }) {
+  const api = usePersonaApi();
   return (
     <View style={s.proposal}>
       <Eyebrow>Propunere</Eyebrow>
@@ -25,7 +26,7 @@ function Proposal({ item }) {
       ) : (
         <BtnRow>
           {item.actions.map((action, i) => (
-            <Btn key={action} small variant={i === 0 ? "yellow" : "text"}>
+            <Btn key={action} small variant={i === 0 ? "yellow" : "text"} disabled={api.busy} onPress={() => api.mutate(`/chat/${index}/decision`, { action }, "POST")}>
               {action}
             </Btn>
           ))}
@@ -35,7 +36,8 @@ function Proposal({ item }) {
   );
 }
 
-function Message({ item, services }) {
+function Message({ item, services, index }) {
+  const api = usePersonaApi();
   if (item.type === "divider") return <T style={s.divider}>{item.text}</T>;
   if (item.type === "me") {
     return (
@@ -44,11 +46,11 @@ function Message({ item, services }) {
       </View>
     );
   }
-  if (item.type === "proposal") return <Proposal item={item} />;
+  if (item.type === "proposal") return <Proposal item={item} index={index} />;
   if (item.type === "service") {
     return (
       <View style={s.service}>
-        <ServiceCard service={services.items.find((service) => service.id === item.id)} compact />
+        <ServiceCard service={services.items.find((service) => service.id === item.id)} compact busy={api.busy} onAction={(service, action) => api.mutate(`/services/${service.id}`, { action })} />
       </View>
     );
   }
@@ -71,13 +73,13 @@ function Message({ item, services }) {
 }
 
 export default function Chat() {
-  const { chat, services } = usePersona();
+  const { chat, services, legal } = usePersona();
   return (
     <>
       <DisclaimerStrip legal={legal} card />
       <View style={s.thread} accessibilityLabel="Mesaje">
         {chat.map((item, i) => (
-          <Message key={i} item={item} services={services} />
+          <Message key={i} item={item} services={services} index={i} />
         ))}
       </View>
     </>
@@ -86,10 +88,13 @@ export default function Chat() {
 
 // The message box at the bottom of the chat; nothing is sent yet.
 export function Composer() {
+  const [message, setMessage] = useState("");
+  const api = usePersonaApi();
+  const send = async () => { if (message.trim() && !api.busy && await api.mutate("/chat/messages", { text: message }, "POST")) setMessage(""); };
   return (
     <>
-      <TextInput accessibilityLabel="Mesajul tău" placeholder="Scrie un mesaj…" placeholderTextColor={color.ink3} autoComplete="off" style={s.input} />
-      <Pressable accessibilityRole="button" accessibilityLabel="Trimite" style={({ pressed }) => [s.send, pressed && { backgroundColor: color.yellowHover }]}>
+      <TextInput accessibilityLabel="Mesajul tău" placeholder="Scrie un mesaj…" placeholderTextColor={color.ink3} autoComplete="off" style={s.input} value={message} onChangeText={setMessage} onSubmitEditing={send} editable={!api.busy} />
+      <Pressable accessibilityRole="button" accessibilityLabel="Trimite" disabled={api.busy || !message.trim()} onPress={send} style={({ pressed }) => [s.send, pressed && { backgroundColor: color.yellowHover }]}>
         <Icon name="send" size={20} />
       </Pressable>
     </>
