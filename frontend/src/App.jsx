@@ -1,4 +1,5 @@
-// Static screens only: the hash (#/bugete) picks the screen. No data loading or business logic yet.
+// The hash (#/bugete) picks the screen. The personal Busola screens are static; the green-credit flow (#/verde/...) and the
+// officer zone (#/ofiter/...) talk to the GreenStruct backend (src/lib/api.js).
 // The demo starts at a simulated sign-in. Each personal account opens the same optional Coach in Produse
 // with its own client's data (Daria, salary; Matei, student); the business account opens the green credit
 // for investments, agriculture first (design/pj-greenstruct.md).
@@ -6,6 +7,7 @@
 import { useEffect, useState } from "react";
 
 import { BareFrame, FlowActions, FlowFrame, ProductsFrame, SectionFrame } from "./components/layout.jsx";
+import { RoleSwitch } from "./components/live.jsx";
 import { DisclaimerStrip } from "./components/ui.jsx";
 import { business } from "./data/accounts.js";
 import { greenLegal } from "./data/green/legal.js";
@@ -23,6 +25,8 @@ import { Sectors } from "./screens/green/Sectors.jsx";
 import Ideas from "./screens/Ideas.jsx";
 import Legal from "./screens/Legal.jsx";
 import Login from "./screens/Login.jsx";
+import { OfficerDossier } from "./screens/officer/Dossier.jsx";
+import { OfficerHome } from "./screens/officer/Home.jsx";
 import Products from "./screens/Products.jsx";
 import Profile from "./screens/Profile.jsx";
 import Summary from "./screens/Summary.jsx";
@@ -37,16 +41,19 @@ const PAYMENT_PREFIX = "cheltuieli/";
 const ACTIVATION_PREFIX = "activare";
 // #/verde/<area>/<step>: the green-credit flow of one area of the platform.
 const GREEN_PREFIX = "verde/";
+// #/ofiter and #/ofiter/dosar/<runId>: the bank officer's zone (README §8), wider than the phone column.
+const OFFICER_PREFIX = "ofiter";
+const OFFICER_DOSSIER = "ofiter/dosar/";
 // #/intra/<id> signs in as that demo client, then opens Produse.
 const ENTRY_PREFIX = "intra/";
 
 function hashKey() {
-  return window.location.hash.replace(/^#\/?/, "");
+  return window.location.hash.replace(/^#\/?/, "").replace(/\/$/, "");
 }
 
 function routeFromHash() {
   const key = hashKey();
-  if (OTHER_ROUTES.includes(key) || key in SECTION_SCREENS || key.startsWith(ACTIVATION_PREFIX) || key.startsWith(PAYMENT_PREFIX) || key.startsWith(GREEN_PREFIX)) return key;
+  if (OTHER_ROUTES.includes(key) || key in SECTION_SCREENS || key.startsWith(ACTIVATION_PREFIX) || key.startsWith(PAYMENT_PREFIX) || key.startsWith(GREEN_PREFIX) || key === OFFICER_PREFIX || key.startsWith(OFFICER_DOSSIER)) return key;
   return "login";
 }
 
@@ -91,6 +98,9 @@ function Screens({ route }) {
       </BareFrame>
     );
   }
+
+  if (route === OFFICER_PREFIX) return <OfficerHome />;
+  if (route.startsWith(OFFICER_DOSSIER)) return <OfficerDossier key={route} runId={route.slice(OFFICER_DOSSIER.length)} />;
 
   if (route === "produse") {
     return (
@@ -167,7 +177,7 @@ function Screens({ route }) {
         </FlowFrame>
       );
     }
-    const { Screen, back, step, footer, title = "Credit verde" } = steps[route];
+    const { Screen, back, step, footer, actions, title = "Credit verde" } = steps[route];
     return (
       <FlowFrame
         key={route}
@@ -179,10 +189,11 @@ function Screens({ route }) {
         footer={
           <>
             {strip}
-            <FlowActions {...footer} />
+            {actions ? <div id="green-actions" className="flow-actions" /> : <FlowActions {...footer} />}
           </>
         }
       >
+        <RoleSwitch role="imm" />
         <Screen pack={greenPacks[sector]} />
       </FlowFrame>
     );

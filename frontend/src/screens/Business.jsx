@@ -4,11 +4,41 @@
 import { Icon } from "../components/icons.jsx";
 import { Group, IconTile, NoteCard } from "../components/ui.jsx";
 import { business } from "../data/accounts.js";
-import { greenPacks } from "../data/green/packs.js";
 import { greenEntry } from "../data/green/sectors.js";
+import { useRun } from "../lib/hooks.js";
+import { MODULE_ICONS, STATE_RO } from "../lib/labels.js";
+import { currentRunId } from "../lib/session.js";
+
+// The request of this session, if any, with its state from the API.
+function CurrentRequest() {
+  const runId = currentRunId();
+  const { run } = useRun(runId, "sme");
+  if (!runId) {
+    return (
+      <ul className="card rows">
+        <li className="row">
+          <span className="row-name muted">Nu ai nicio cerere încă.</span>
+        </li>
+      </ul>
+    );
+  }
+  return (
+    <ul className="card rows">
+      <li>
+        <a className="row row--link" href="#/verde/agro/dosar">
+          <IconTile icon={MODULE_ICONS[run?.moduleId] ?? "leaf"} tone="sand" />
+          <span className="row-main">
+            <span className="row-name">{run ? `${run.farm.company.name}` : "Cererea ta"}</span>
+            <span className="row-note">Agricultură · {runId}</span>
+          </span>
+          <span className="status is-on">{run ? STATE_RO[run.state] : "…"}</span>
+        </a>
+      </li>
+    </ul>
+  );
+}
 
 export default function Business() {
-  const { dossier } = greenPacks.agro;
   return (
     <>
       <section className="card card--yellow coach-entry" aria-labelledby="green-entry-title">
@@ -27,25 +57,14 @@ export default function Business() {
           <a className="btn btn--ink btn--small" href="#/verde">
             Începe
           </a>
-          <a className="btn btn--text btn--small btn--on-yellow" href="#/verde/agro/oferte">
-            Vezi un exemplu
+          <a className="btn btn--text btn--small btn--on-yellow" href="#/ofiter">
+            Zona ofițer (demo)
           </a>
         </div>
       </section>
 
       <Group label="Cererile tale">
-        <ul className="card rows">
-          <li>
-            <a className="row row--link" href={dossier.href}>
-              <IconTile icon="drop" tone="sand" />
-              <span className="row-main">
-                <span className="row-name">{dossier.row.title}</span>
-                <span className="row-note">{dossier.row.note}</span>
-              </span>
-              <span className="status is-on">{dossier.row.status}</span>
-            </a>
-          </li>
-        </ul>
+        <CurrentRequest />
       </Group>
 
       <Group label="Produsele firmei">
