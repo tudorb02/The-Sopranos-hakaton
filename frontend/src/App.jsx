@@ -18,14 +18,17 @@ import Login from "./screens/Login.jsx";
 import Products from "./screens/Products.jsx";
 import Profile from "./screens/Profile.jsx";
 import Summary from "./screens/Summary.jsx";
+import Tracking from "./screens/Tracking.jsx";
+import TransactionDetail from "./screens/TransactionDetail.jsx";
 
-// Pages of the Coach. The chat, the statements and the notice open full screen, like a payment flow.
-const SECTION_SCREENS = { rezumat: Summary, bugete: Budgets, obiective: Goals, profil: Profile };
+// Pages of the Coach. The chat, a payment's details, the statements and the notice open full screen.
+const SECTION_SCREENS = { rezumat: Summary, cheltuieli: Tracking, bugete: Budgets, obiective: Goals, profil: Profile };
 const OTHER_ROUTES = ["login", "login/pj", "produse", "firma", "chat", "extrase", "informare"];
+const PAYMENT_PREFIX = "cheltuieli/";
 
 function routeFromHash() {
   const key = window.location.hash.replace(/^#\/?/, "");
-  if (OTHER_ROUTES.includes(key) || key in SECTION_SCREENS || key in ACTIVATION) return key;
+  if (OTHER_ROUTES.includes(key) || key in SECTION_SCREENS || key in ACTIVATION || key.startsWith(PAYMENT_PREFIX)) return key;
   return "login";
 }
 
@@ -77,6 +80,21 @@ export default function App() {
     return (
       <FlowFrame title="Extrase de cont" titleAs="p" closeHref="#/profil" footer={<FlowActions next="#/profil" nextLabel="Gata" />}>
         <Statements />
+      </FlowFrame>
+    );
+  }
+
+  if (route.startsWith(PAYMENT_PREFIX)) {
+    return (
+      <FlowFrame
+        key={route}
+        title="Detalii plată"
+        titleAs="p"
+        backHref="#/cheltuieli"
+        closeHref="#/cheltuieli"
+        footer={<FlowActions next="#/cheltuieli" nextLabel="Salvează" skip="#/cheltuieli" skipLabel="Anulează" />}
+      >
+        <TransactionDetail id={route.slice(PAYMENT_PREFIX.length)} />
       </FlowFrame>
     );
   }

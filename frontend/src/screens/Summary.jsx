@@ -4,8 +4,8 @@ import { agenda, budgets, cycle, insight, lastMessage, today, week } from "../da
 import { lei } from "../lib/format.js";
 
 const SHORTCUTS = [
+  { href: "#/cheltuieli", icon: "receipt", label: "Cheltuieli" },
   { href: "#/bugete", icon: "pie", label: "Bugete" },
-  { href: "#/obiective", icon: "target", label: "Obiective" },
   { href: "#/chat", icon: "chat", label: "Întreabă" },
 ];
 

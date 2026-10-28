@@ -1926,6 +1926,334 @@ main {
   text-align: center;
 }
 
+/* ---------- spending tracker ---------- */
+
+/* Category colours: validated categorical palette (adjacent CVD ΔE ≥ 9.2, normal ≥ 27.6 on the card surface).
+   Order is fixed per category, never by rank. Two slots sit under 3:1, so labels and amounts are always shown. */
+:root {
+  --cat-1: #2a78d6; /* Alimente */
+  --cat-2: #eb6834; /* Cafenele */
+  --cat-3: #1baf7a; /* Livrări */
+  --cat-4: #6250d6; /* Ieșiri */
+  --cat-5: #e87ba4; /* Taxi */
+  --cat-grey: #a8a59f; /* Nesortat */
+}
+
+.cat-1 { --cat: var(--cat-1); }
+.cat-2 { --cat: var(--cat-2); }
+.cat-3 { --cat: var(--cat-3); }
+.cat-4 { --cat: var(--cat-4); }
+.cat-5 { --cat: var(--cat-5); }
+.cat-none { --cat: var(--cat-grey); }
+
+.cat-tile {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--cat) 16%, var(--surface));
+  color: color-mix(in oklab, var(--cat) 60%, var(--ink));
+}
+
+.cat-tile .icon {
+  width: 21px;
+  height: 21px;
+}
+
+.cat-tile.cat-fixed {
+  background: var(--sand);
+  color: var(--ink);
+}
+
+.cat-tile.cat-income {
+  background: var(--teal-wash);
+  color: var(--teal);
+}
+
+.cat-tile--lg {
+  width: 56px;
+  height: 56px;
+  margin-bottom: var(--space-xs);
+}
+
+.cat-tile--lg .icon {
+  width: 28px;
+  height: 28px;
+}
+
+.share {
+  display: flex;
+  gap: 2px;
+  height: 12px;
+}
+
+.share > span {
+  flex-basis: 0;
+  min-width: 4px;
+  border-radius: 2px;
+  background: var(--cat);
+}
+
+.share > span:first-child {
+  border-radius: 4px 2px 2px 4px;
+}
+
+.share > span:last-child {
+  border-radius: 2px 4px 4px 2px;
+}
+
+.cat-legend {
+  display: grid;
+  gap: 6px;
+  font-size: var(--text-sm);
+}
+
+.cat-legend li {
+  display: grid;
+  grid-template-columns: auto 1fr auto 2.75rem;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.cat-legend li > :last-child {
+  text-align: right;
+}
+
+.cat-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cat);
+}
+
+.review {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--yellow-soft);
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.review:hover {
+  background: color-mix(in oklab, var(--yellow-soft) 60%, var(--yellow));
+}
+
+.search-row {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 46px;
+  padding: 0 var(--space-md);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  color: var(--ink-3);
+}
+
+.search:focus-within {
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  color: var(--ink);
+}
+
+.search-row .chips {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.search-row .chip {
+  flex: none;
+}
+
+.day-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-inline: var(--space-2xs);
+  font-size: var(--text-sm);
+  color: var(--ink-3);
+}
+
+.day-head b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.tx-list {
+  overflow: hidden;
+}
+
+.tx {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  color: inherit;
+  text-decoration: none;
+}
+
+.tx:hover {
+  background: color-mix(in oklab, var(--sand) 45%, var(--surface));
+}
+
+.tx-main {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.tx-name {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tx-meta {
+  overflow: hidden;
+  font-size: var(--text-sm);
+  color: var(--ink-3);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tx-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--sand);
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.flag .icon {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2;
+}
+
+.flag--review {
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+.amount--sm .amount-int {
+  font-size: var(--text-md);
+}
+
+.amount--sm .amount-dec {
+  font-size: 11px;
+}
+
+.amount--md .amount-int {
+  font-size: var(--text-lg);
+}
+
+.amount--md .amount-dec {
+  font-size: var(--text-cap);
+}
+
+.amount.is-income .amount-int,
+.amount.is-income .amount-dec {
+  color: var(--teal);
+}
+
+.tx-hero {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+}
+
+.tx-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+}
+
+.raw-line {
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+
+.cat-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: var(--space-xs);
+}
+
+.cat-option {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: var(--space-sm) var(--space-2xs);
+  border: 0;
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cat-option:hover {
+  box-shadow: inset 0 0 0 1.5px var(--ink-3);
+}
+
+.cat-option[aria-pressed="true"] {
+  background: var(--yellow-soft);
+  box-shadow: inset 0 0 0 2.5px var(--ink);
+}
+
+.cat-option .flag {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+.cat-option--new {
+  color: var(--teal);
+}
+
+.tx-actions .btn .icon {
+  width: 18px;
+  height: 18px;
+}
+
 /* ---------- notice (informare) ---------- */
 
 .disclaimer {

@@ -67,10 +67,10 @@ export const budgets = [
 ];
 
 export const unbudgeted = {
-  total: 319,
+  total: 314,
   items: [
     { name: "Alimente", icon: "cart", lei: 154, note: "Plus tichetele de masă" },
-    { name: "Taxi", icon: "car", lei: 45 },
+    { name: "Taxi", icon: "car", lei: 40 },
     { name: "Nesortate", icon: "help", lei: 120, note: "O plată de lămurit" },
   ],
 };

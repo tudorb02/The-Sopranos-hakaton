@@ -49,6 +49,9 @@ export default function Budgets() {
             </button>
           ))}
         </div>
+        <a className="link" href="#/cheltuieli/t14">
+          Deschide plata
+        </a>
       </InfoCard>
 
       <details className="card disclosure">

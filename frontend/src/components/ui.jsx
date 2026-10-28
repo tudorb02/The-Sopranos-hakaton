@@ -276,7 +276,7 @@ export function Field({ field }) {
   const id = useId();
   let control;
   if (field.type === "textarea") {
-    control = <textarea id={id} rows={3} defaultValue={field.value} />;
+    control = <textarea id={id} rows={3} defaultValue={field.value} placeholder={field.placeholder} />;
   } else if (field.type === "select") {
     control = (
       <select id={id} defaultValue={field.value}>
@@ -286,7 +286,15 @@ export function Field({ field }) {
       </select>
     );
   } else {
-    control = <input id={id} type={field.type ?? "text"} defaultValue={field.value} inputMode={field.numeric ? "numeric" : undefined} />;
+    control = (
+      <input
+        id={id}
+        type={field.type ?? "text"}
+        defaultValue={field.value}
+        placeholder={field.placeholder}
+        inputMode={field.numeric ? "numeric" : undefined}
+      />
+    );
   }
   return (
     <div className="field">

@@ -33,6 +33,8 @@ Deschide http://localhost:5173. `npm run build` produce versiunea statică în `
 | `#/activare/analiza` | Pasul 5: analiza celor 24 de luni |
 | `#/activare/gata` | Ce a găsit coach-ul și primul pas propus |
 | `#/rezumat` | „Până pe 4 decembrie mai ai disponibili…”, săptămâna curentă, ultimul mesaj, bugete, observații, ce urmează |
+| `#/cheltuieli` | Urmărirea cheltuielilor: total pe ciclu împărțit pe categorii, plăți de verificat, căutare, filtre, plățile grupate pe zile |
+| `#/cheltuieli/t1` … `t20` | Detaliile unei plăți: redenumire (de exemplu „Espresso” în loc de „CAFEAEXPRES SRL”), categorie, notă, etichete, regulă pentru același comerciant, „Nu o număra la cheltuieli”, împărțire, bon |
 | `#/bugete` | Împărțirea salariului, bugete pe categorii, cheltuieli fără buget, o întrebare despre o plată nesortată |
 | `#/obiective` | Obiectivul „Laptop”: plan pe luni, din ce se strâng banii, unde stau banii |
 | `#/profil` | „Ce știu despre tine”: extrasele, date cu sursa lor, permisiuni, sugestii de servicii, dezactivare |
@@ -56,6 +58,7 @@ src/
   data/demo.js          datele fictive ale coach-ului; de înlocuit cu apeluri API
   data/activation.js    conținutul cardului din Produse și al pașilor de activare
   data/accounts.js      conturile demo din login și produsele firmei
+  data/tracking.js      plățile din ciclul curent, categoriile și culorile lor
   data/legal.js         textul informării
   components/           layout (Produse, coach, fluxuri), ui, grafice, iconițe
   screens/              ecranele coach-ului și tabul Produse
@@ -75,6 +78,11 @@ src/
   - barele de progres, pașii parcurși și răspunsurile alese;
   - bifele și statusurile active.
 - Culorile observate pe raiffeisen.ro sunt definite în OKLCH în `styles.css`: galben #FEE600, text #2B2D33, teal #037080, fundal #F1EDE6.
+- Ecranul de cheltuieli preia tiparele aplicațiilor mari de finanțe personale:
+  - din Revolut: căutare, filtre și listă pe zile;
+  - din Monzo: culori pe categorii;
+  - din Copilot Money: plăți de verificat și reguli pe comerciant.
+- Culorile categoriilor sunt validate pentru daltonism și au ordine fixă pe categorie: albastru Alimente, portocaliu Cafenele, verde Livrări, violet Ieșiri, roz Taxi, gri Nesortat. Galbenul de brand nu e folosit ca și culoare de categorie.
 - Fontul este Hanken Grotesk (licență OFL, inclus prin npm), în locul fontului proprietar al băncii. Funcționează și fără internet.
 - Nu folosim logo-ul, ilustrațiile sau fontul Raiffeisen.
 - Celelalte taburi din bara de jos (Acasă, Plăți, Carduri) sunt doar decor.

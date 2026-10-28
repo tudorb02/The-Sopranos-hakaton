@@ -4,6 +4,7 @@ import { DisclaimerStrip } from "./ui.jsx";
 
 const COACH_PAGES = [
   { id: "rezumat", label: "Rezumat" },
+  { id: "cheltuieli", label: "Cheltuieli" },
   { id: "bugete", label: "Bugete" },
   { id: "obiective", label: "Obiective" },
   { id: "profil", label: "Profil" },
