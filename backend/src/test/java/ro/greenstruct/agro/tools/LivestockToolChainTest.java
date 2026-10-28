@@ -163,7 +163,9 @@ class LivestockToolChainTest {
         // 3,300 × 0.15 = 495 left; 2,805 saved; × 27 / 1,000 = 75.735 t
         chain.assertValue(run, "cfg_recommended.methane_new", "495");
         chain.assertValue(run, "cfg_recommended.co2_avoided", "75.735");
-        chain.assertValue(run, "cfg_recommended.savings_energy", "30300");
+        // the covered tank recovers 10% more biogas: 225,000 × 1.10 = 247,500 kWh;
+        // 120,000 used on the farm × 0.20 + 127,500 sold × 0.06 = 24,000 + 7,650 = 31,650 EUR
+        chain.assertValue(run, "cfg_recommended.savings_energy", "31650");
 
         JsonNode dnsh = chain.call(run, "check_dnsh_inputs", "{\"configId\": \"cfg_recommended\"}");
         assertThat(dnsh.path("permitPresent").asBoolean()).isTrue();
@@ -194,39 +196,39 @@ class LivestockToolChainTest {
         chain.assertValue(run, "green_tier.financed_indicator", "85");
         chain.assertValue(run, "green_tier.verde_plus_min", "75");
         // classic 2 + 1.2 + 1.35 + 1.08 + 1.5 + 1.77 = 8.9; green (70% guaranteed, Verde Plus):
-        // 2 + 0.9 + 0.3375 + 0.324 + 1.35 + 1.77 − 0.4 = 6.2815
+        // 2.618 + 1.1 + 0.3375 + 0.324 + 1.35 + 1.77 − 0.4 = 7.0995
         chain.call(run, "price_loan", "{}");
-        chain.assertValue(run, "pricing.classic.rate", "8.9");
-        chain.assertValue(run, "pricing.green.rate", "6.2815");
+        chain.assertValue(run, "pricing.classic.rate", "9.518");
+        chain.assertValue(run, "pricing.green.rate", "7.0995");
 
         // PMT = P·r / (1 − (1 + r)^−84), r = rate / 12
         chain.call(run, "build_scenario", "{\"optionId\": \"A\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        chain.assertValue(run, "option_a.installment", "4330.36");
-        chain.assertValue(run, "option_a.total_interest", "93750.33");
+        chain.assertValue(run, "option_a.installment", "4415.36");
+        chain.assertValue(run, "option_a.total_interest", "100890.60");
         chain.assertValue(run, "option_a.collateral_costs", "4110");
         chain.assertValue(run, "option_a.savings_horizon", "254100");
-        chain.assertValue(run, "option_a.net_cost", "113760.33");
+        chain.assertValue(run, "option_a.net_cost", "120900.60");
         chain.call(run, "build_scenario", "{\"optionId\": \"B\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        chain.assertValue(run, "option_b.installment", "4364.19");
-        chain.assertValue(run, "option_b.total_interest", "70591.83");
-        chain.assertValue(run, "option_b.savings_horizon", "254100");
-        chain.assertValue(run, "option_b.net_cost", "112491.83");
+        chain.assertValue(run, "option_b.installment", "4481.84");
+        chain.assertValue(run, "option_b.total_interest", "80474.93");
+        chain.assertValue(run, "option_b.savings_horizon", "263550");
+        chain.assertValue(run, "option_b.net_cost", "112924.93");
 
         // (48,000 net cash flow + 36,300 savings) / (12 × installment)
         chain.call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
-        chain.assertValue(run, "option_a.dscr", "1.6223");
-        chain.assertValue(run, "option_b.dscr", "1.6097");
+        chain.assertValue(run, "option_a.dscr", "1.5910");
+        chain.assertValue(run, "option_b.dscr", "1.5925");
 
         JsonNode comparison = chain.call(run, "compare_scenarios", "{\"optionIds\": [\"A\", \"B\"]}");
         assertThat(comparison.path("better").asText()).isEqualTo("B");
-        chain.assertValue(run, "compare.net_advantage", "1268.50");
+        chain.assertValue(run, "compare.net_advantage", "7975.67");
 
         chain.call(run, "calculate_impact", "{\"configId\": \"cfg_recommended\"}");
         // digester 142,000 + cogeneration 78,000 + cover 26,000 = 246,000 of 296,000
         chain.assertValue(run, "label.green_amount", "246000");
         chain.assertValue(run, "label.taxonomy_amount", "78000");
         chain.assertValue(run, "label.green_share", "83.11");
-        chain.assertValue(run, "impact.energy_horizon", "1575000");
+        chain.assertValue(run, "impact.energy_horizon", "1732500");
         // 75.735 t × 7 years
         chain.assertValue(run, "impact.co2_horizon", "530.145");
     }

@@ -63,9 +63,9 @@ class RuleBasedPipelineTest {
         JsonNode technical = run.agentOutputs().get(AgentSlot.TECHNICAL_AUDITOR);
         JsonNode funding = run.agentOutputs().get(AgentSlot.FUNDING_OPTIMIZER);
         JsonNode report = run.agentOutputs().get(AgentSlot.GREEN_UNDERWRITER);
-        // README §12: sprinkler 20% fails, drip + sensors 40% passes as Verde Plus
+        // sprinkler 20% fails; soil moisture sensors on the same sprinkler reach 28% for +7,700 EUR
         assertThat(technical.path("recommendationType").asText()).isEqualTo("UPGRADE_TO_PASS");
-        assertThat(funding.path("greenTier").path("tier").asText()).isEqualTo("VERDE_PLUS");
+        assertThat(funding.path("greenTier").path("tier").asText()).isEqualTo("VERDE_CU_UPGRADE");
         assertThat(funding.path("recommendedOptionId").asText()).isEqualTo("B");
         assertThat(report.path("fund").path("fundId").asText()).isEqualTo("F1");
 

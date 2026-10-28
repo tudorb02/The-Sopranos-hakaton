@@ -192,39 +192,39 @@ class OrganicToolChainTest {
         JsonNode tier = call(run, "determine_green_tier", "{\"requestedConfigId\": \"cfg_initial\", \"financedConfigId\": \"cfg_initial\"}");
         assertThat(tier.path("tier").asText()).isEqualTo("VERDE");
         call(run, "price_loan", "{}");
-        // EURIBOR 2 + funding 0.9 + risk 2.5% × 45% × 30% + capital 22.5% × 12% × 12% + operational 1.35 + profit 1.77
-        // − programme 0.4 + tier VERDE 0.2 = 6.4815%
-        assertValue(run, "pricing.green.rate", "6.4815");
-        assertValue(run, "pricing.classic.rate", "8.9");
+        // EURIBOR 2.618 + funding 1.1 + risk 2.5% × 45% × 30% + capital 22.5% × 12% × 12% + operational 1.35 + profit 1.77
+        // − programme 0.4 + tier VERDE 0.2 = 7.2995%
+        assertValue(run, "pricing.green.rate", "7.2995");
+        assertValue(run, "pricing.classic.rate", "9.518");
 
         call(run, "build_scenario", "{\"optionId\": \"A\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        // PMT(78,000; 8.9%/12; 60)
-        assertValue(run, "option_a.installment", "1615.37");
+        // PMT(78,000; 9.518%/12; 60)
+        assertValue(run, "option_a.installment", "1638.83");
         call(run, "build_scenario", "{\"optionId\": \"B\", \"scheduleType\": \"SEASONAL\"}");
         // the gap of 2027 and January 2028 keeps the loan in grace for the full 12 months; payments then only in
-        // Oct-Nov-Dec (the farm's cash-in months): 12 equal installments whose present value at 6.4815% is 78,000
+        // Oct-Nov-Dec (the farm's cash-in months): 12 equal installments whose present value at 7.2995% is 78,000 (periods 21–23, 33–35, 45–47, 57–59 of a loan from February)
         assertValue(run, "option_b.grace_months", "12");
         assertValue(run, "option_b.grace", "20");
-        assertValue(run, "option_b.installment", "8041.79");
-        assertValue(run, "option_b.total_interest", "18501.43");
+        assertValue(run, "option_b.installment", "8257.01");
+        assertValue(run, "option_b.total_interest", "21084.07");
         // average margin gain over 5 years: 83,614 / 5
         assertValue(run, "option_b.savings.margin_eur", "16722.80");
         assertValue(run, "option_b.savings_horizon", "83614");
 
         JsonNode gap = call(run, "compute_liquidity_gap", "{\"optionIds\": [\"B\"]}");
-        // 2027: grace, no instalments; 2028: + 3 × 8,041.79 in Oct-Dec; 2029 on: certified, small residual gaps
+        // 2027: grace, no instalments; 2028: + 3 × 8,257.01 in Oct-Dec; 2029 on: certified, small residual gaps
         assertValue(run, "option_b.gap.y1", "36020.07");
-        assertValue(run, "option_b.gap.y2", "45579.35");
-        assertValue(run, "option_b.gap.y3", "6431.60");
-        assertValue(run, "option_b.gap.peak", "13506.12");
+        assertValue(run, "option_b.gap.y2", "46009.79");
+        assertValue(run, "option_b.gap.y3", "6646.82");
+        assertValue(run, "option_b.gap.peak", "13721.34");
         assertValue(run, "option_b.gap.coverage_y1", "40320");
         assertThat(gap.path("B").path("firstYearCovered").asBoolean()).isTrue();
         // 2028 (second conversion year, first instalments) is 5,259 EUR above the pre-financing capacity
         assertThat(gap.path("B").path("allYearsCovered").asBoolean()).isFalse();
 
         call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
-        // (39,000 net cash flow + 16,722.80 average margin gain) / 24,125.36 (3 × 8,041.79 per loan year)
-        assertValue(run, "option_b.dscr", "2.31");
+        // (39,000 net cash flow + 16,722.80 average margin gain) / 24,771.03 (3 × 8,257.01 per loan year)
+        assertValue(run, "option_b.dscr", "2.2495");
         JsonNode affordability = call(run, "check_affordability", "{\"optionIds\": [\"B\"]}");
         assertThat(affordability.path("B").path("result").asText()).isEqualTo("PASS");
 

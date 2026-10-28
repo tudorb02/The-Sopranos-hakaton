@@ -128,14 +128,16 @@ class RuleBasedScenariosTest {
     }
 
     @Test
-    void irrigationStartsBelowTheThresholdAndDripWithSensorsPassesAsVerdePlus() throws Exception {
+    void irrigationStartsBelowTheThresholdAndSensorsOnTheSprinklerPass() throws Exception {
         Run run = readyAndValid("irigatii");
         assertThat(technical(run).path("recommendationType").asText()).isEqualTo("UPGRADE_TO_PASS");
         assertThat(configuration(run, "INITIAL").path("thresholdResult").asText()).isEqualTo("FAIL");
         assertThat(configuration(run, "RECOMMENDED").path("thresholdResult").asText()).isEqualTo("PASS");
         assertValue(run, "cfg_initial.indicator", "20");
-        assertValue(run, "cfg_recommended.indicator", "40");
-        assertThat(tier(run)).isEqualTo("VERDE_PLUS");
+        // 146,100 × 0.9 / 0.75 = 175,320 m³; 1 − 175,320 / 243,500 = 28%: the cheapest package over 25% + 2
+        assertValue(run, "cfg_recommended.indicator", "28");
+        assertValue(run, "cfg_recommended.total_cost", "59700");
+        assertThat(tier(run)).isEqualTo("VERDE_CU_UPGRADE");
         assertThat(report(run).path("fund").path("fundId").asText()).isEqualTo("F1");
         lifecycleReachesMonitoring(run);
     }

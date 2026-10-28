@@ -219,12 +219,12 @@ Marja = Cost de finanțare
 |---|---|---|---|
 | Cost de risc: PD 3% → 2,5%, LGD 45%, garanție `g` = 70% | 3% × 45% = **1,35%** | 2,5% × 45% × 30% = **0,34%** | **−1,01 pp** |
 | Cost de capital: RW 75%, rată de capital 12%, cost 12% | 75% × 12% × 12% = **1,08%** | 22,5% × 12% × 12% = **0,32%** | **−0,76 pp** |
-| Cost de finanțare (finanțare verde dedicată) | | | **−0,30 pp** |
+| Cost de finanțare (finanțare verde dedicată; studiile găsesc 4–15 puncte de bază) | | | **−0,10 pp** |
 | Cost operațional (analiză automată) | | | **−0,15 pp** |
 | Subvenție sau comision redus pe program (dacă există) | | | **−0,40 pp** |
-| **Total** | | | **≈ −2,6 pp** |
+| **Total** | | | **≈ −2,4 pp** |
 
-Cu acești parametri, un credit clasic de **8,9%** devine un credit verde de **~6,3%**.
+Cu EURIBOR 3M la 2,618% (fixingul din 27.10.2026) și acești parametri, un credit clasic de **9,52%** devine un credit verde de **~7,10%**; la nivelul „Verde cu upgrade” se adaugă +0,20 pp, deci **7,30%**.
 
 > **Propunere de produs (nu e un produs Raiffeisen existent):** *bonus de impact*. Dacă la 12 luni impactul real confirmă estimarea, marja mai scade o treaptă (ex. −0,25 pp). Așa banca are date de impact măsurate pentru raportarea obligațiunilor verzi, iar clientul e motivat să folosească investiția corect.
 
@@ -236,7 +236,7 @@ Cu acești parametri, un credit clasic de **8,9%** devine un credit verde de **~
 | Rate după calendarul încasărilor | perioadă de grație (doar dobândă) până la prima recoltă după investiție, apoi plăți concentrate în lunile cu încasări (detectate din Open Banking), cu **aceeași valoare actualizată** ca anuitatea |
 | Economii lunare | `cantitatea economisită × prețul` (apă, kWh, litri, kg N) |
 | Costul ipotecii (doar la creditul clasic) | `evaluare + notar + înscriere + asigurare anuală × ani` (config) |
-| **DSCR** | `(cashflow operațional anual + economii anuale) / (rate + dobânzi pe an)` |
+| **DSCR** | `(cashflow operațional anual + economii anuale) / (rate + dobânzi pe an)`, în cel mai greu an al creditului. **Capacitatea de plată trece la DSCR ≥ 1,25** (`config/financing-lines.json`); ratele pe 12 luni față de cashflow-ul de azi (40%) rămân doar informative, pentru că un credit de investiții se plătește și din economiile investiției |
 | **Avantajul net al creditului verde** pe toată durata | `(economii − plăți − costuri)_verde − (economii − plăți − costuri)_clasic` |
 
 ### Pasul 8 — Stabilim nivelul verde și recomandarea
@@ -338,11 +338,14 @@ Eficiențe de pornire (config): brazde η = 0,60 · aspersie η = 0,75 · picura
 
 **D. Cum îl îndrumăm**
 
-| Investiția | Economie de apă față de brazde | Rezultat |
-|---|---|---|
-| Aspersie clasică (cerută de IMM) | `1 − 0,60 / 0,75` = **20%** | ❌ sub prag |
-| Picurare | `1 − 0,60 / 0,90` = **33%** | ✅ Verde |
-| Picurare + senzori de umiditate | `1 − (1 − 0,10) × 0,60 / 0,90` = **40%** | ✅ Verde Plus (≥ 37,5%) |
+| Investiția | Economie de apă față de brazde | Cost (demo) | Rezultat |
+|---|---|---|---|
+| Aspersie clasică (cerută de IMM) | `1 − 0,60 / 0,75` = **20%** | 52.000 EUR | ❌ sub prag |
+| **Aspersie + senzori de umiditate** | `1 − (1 − 0,10) × 0,60 / 0,75` = **28%** | **59.700 EUR** (+15%) | ✅ Verde cu upgrade, **recomandat**: cel mai ieftin pachet care trece pragul |
+| Picurare | `1 − 0,60 / 0,90` = **33%** | 80.700 EUR (+55%) | ✅ Verde |
+| Picurare + senzori de umiditate | `1 − (1 − 0,10) × 0,60 / 0,90` = **40%** | 87.200 EUR (+68%) | ✅ Verde Plus (≥ 37,5%) |
+
+Aplicația recomandă **cel mai ieftin pachet care trece pragul** (cu o marjă de siguranță de 2 pp), ca suma creditului să rămână aproape de investiția cerută. Un pachet Verde Plus e propus în locul lui doar dacă e cu cel mult 15% mai scump (`config/pricing.json`). Variantele mai mari rămân vizibile ca alternative.
 
 Alte upgrade-uri din catalog: programare automată · pompă cu variator de turație · pompă solară (vezi categoria 2).
 
@@ -445,7 +448,7 @@ Alte upgrade-uri din catalog: programare automată · pompă cu variator de tura
 | 2 | Metanul după investiție | `CH₄_nou = CH₄_vechi × (1 − reducerea sistemului nou)` (din catalog) |
 | 3 | **Reducerea de emisii (indicator verde)** | `1 − CH₄_nou / CH₄_vechi` |
 | 4 | CO₂e evitat (t/an) | `(CH₄_vechi − CH₄_nou) × 27 / 1000` |
-| 5 | Energie produsă (kWh/an) | `capete × kWh pe cap (specie)` (din config / fișa digestorului) |
+| 5 | Energie produsă (kWh/an) | `capete × kWh pe cap (specie)` (din config / fișa digestorului) × `(1 + recuperare de gaz)`: acoperirea etanșă a bazinului de digestat aduce +10% biogaz la cogenerare (valoare demo, literatura dă 5–15%) |
 | 6 | Economie în EUR / an | `kWh consumați la fermă × preț + kWh vânduți × preț_vânzare + kg N din digestat × preț_N` |
 
 **C. Pragul verde:** reducere de emisii **≥ 50%** pe gestionarea gunoiului de grajd **și** gunoiul e valorificat (energie sau îngrășământ).
@@ -707,7 +710,7 @@ Motorul de calcul **rulează mereu live**, pentru că e cod local. Până apar c
 | Moment | Ce arătăm | Durată |
 |---|---|---|
 | **Problema** | Raiffeisen are bani verzi, fermierii au nevoie de ei, dar verificarea manuală e prea scumpă | 20 sec |
-| **Rularea principală (live)** | **Fermă de legume, 40 ha, sud-est.** Irigă prin brazde și cere aspersie clasică (20% economie de apă, sub prag) → aplicația propune picurare + senzori (40%, Verde Plus) → clasic vs. verde, cu descompunerea dobânzii și rate după recoltă → raportul ofițerului cu harta, fondul și categoria din cadrul obligațiunilor verzi | ~2 min |
+| **Rularea principală (live)** | **Fermă de legume, 40 ha, sud-est.** Irigă prin brazde și cere aspersie clasică (20% economie de apă, sub prag) → aplicația propune senzori de umiditate pe aceeași aspersie (28%, Verde cu upgrade, 59.700 EUR în loc de 52.000) → clasic vs. verde, cu descompunerea dobânzii și rate după recoltă → raportul ofițerului cu harta, fondul și categoria din cadrul obligațiunilor verzi | ~2 min |
 | **A doua rulare (live)** | **Juriul alege una din celelalte 5 categorii**, iar noi rulăm pe loc ferma ei demo | ~30 sec |
 | **Pentru bancă** | panoul de portofoliu: credite verzi, sume pe fiecare fond, impact | 20 sec |
 
@@ -742,7 +745,7 @@ Deciziile luate pentru versiunea de hackathon. Ce nu e scris aici urmează restu
 | **„Aprobă”** | schimbă statusul în ambele zone și generează raportul PDF. Fără integrare cu sistemele băncii |
 | **„Simulează 12 luni”** | buton în zona ofițerului: încarcă date de monitorizare simulate, arată impactul real față de cel estimat și bonusul de impact, actualizează portofoliul |
 | **Moneda: EUR** | indice EURIBOR 3M. Moneda rămâne parametru în config |
-| **Durata creditului** | 5 ani pentru irigații, utilaje, post-recoltă și ecologic · 7 ani pentru fotovoltaice și biogaz · grație de maximum 12 luni, până la prima recoltă după investiție (config pe categorie) |
+| **Durata creditului** | 5 ani pentru irigații, utilaje și ecologic · 7 ani pentru fotovoltaice, biogaz și post-recoltă (echipamentele de depozitare durează ~15 ani, iar pe 5 ani upgrade-ul nu se recupera) · grație de maximum 12 luni, până la prima recoltă după investiție (config pe categorie) |
 | **Parametri demo** | pragurile și parametrii dobânzii sunt cei ilustrativi din acest document, marcați „parametri demo” în zona ofițerului, până răspund mentorii |
 | **Limba** | interfața e în română; codul, variabilele și commit-urile sunt în engleză |
 | **Branding** | „Raiffeisen” apare ca text, cu o temă de culori proprie. Logo-ul oficial se adaugă doar cu acordul organizatorilor |

@@ -1,11 +1,11 @@
 {
   "version": "2026-10-28",
-  "noteRo": "Dobânda pe componente (README §4, pasul 6): dobânda = indice + marjă; marja = cost de finanțare + PD × LGD × (1 − g) + RW_efectiv × rata de capital × costul capitalului + cost operațional + profit țintă. Valorile sunt cele ilustrative din README, alese ca un credit clasic de 8,90% să devină un credit verde de ~6,3%. Banca își pune aici parametrii reali. Ajustările verzi se adună la marjă (negativ = dobândă mai mică). Procentul garanției FEI (g) vine din funds.json (F1). Costurile ipotecii (evaluare, notar, înscriere, asigurare) rămân la liniile de finanțare din financing-lines.json: collateralUpfrontEur și collateralAnnualEur.",
+  "noteRo": "Dobânda pe componente (README §4, pasul 6): dobânda = indice + marjă; marja = cost de finanțare + PD × LGD × (1 − g) + RW_efectiv × rata de capital × costul capitalului + cost operațional + profit țintă. Parametrii de risc și de cost sunt ilustrativi; indicele e fixingul EURIBOR real, iar avantajul de finanțare verde e cel din studii (−0,10 pp). Banca își pune aici parametrii reali. Ajustările verzi se adună la marjă (negativ = dobândă mai mică). Procentul garanției FEI (g) vine din funds.json (F1). Costurile ipotecii (evaluare, notar, înscriere, asigurare) rămân la liniile de finanțare din financing-lines.json: collateralUpfrontEur și collateralAnnualEur.",
   "currency": "EUR",
   "index": {
     "name": "EURIBOR_3M",
-    "value": 2,
-    "sourceRo": "EURIBOR 3M (EMMI), valoare ilustrativă rotunjită, în jurul nivelului din 2025–2026; se înlocuiește cu fixingul din ziua analizei (README §13: moneda EUR, indice EURIBOR 3M)",
+    "value": 2.618,
+    "sourceRo": "EURIBOR 3M (EMMI), fixingul din 27.10.2026 (euribor-rates.eu); se actualizează cu fixingul din ziua analizei (README §13: moneda EUR, indice EURIBOR 3M)",
     "demo": true
   },
   "classic": {
@@ -37,8 +37,8 @@
       "demo": true
     },
     "fundingCostAdjustmentPp": {
-      "value": -0.3,
-      "sourceRo": "README §4, pasul 6: finanțare verde dedicată din obligațiunile verzi cumpărate și de BERD și IFC (F2), −0,30 pp",
+      "value": -0.1,
+      "sourceRo": "Finanțare verde dedicată din obligațiunile verzi (F2), −0,10 pp: studiile găsesc un greenium de 4–15 puncte de bază în Europa (ABN AMRO 2025, AXA IM, Banque de France); valoare prudentă, de confirmat cu trezoreria băncii",
       "demo": true
     },
     "operationalCostAdjustmentPp": {

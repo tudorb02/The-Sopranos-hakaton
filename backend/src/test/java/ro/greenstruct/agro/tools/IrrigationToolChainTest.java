@@ -89,7 +89,11 @@ class IrrigationToolChainTest {
 
         JsonNode search = chain.call(run, "search_upgrades", "{\"baseConfigId\": \"cfg_initial\"}");
         assertThat(search.path("candidates")).extracting(c -> c.path("packageId").asText())
-                .contains("pkg_drip", "pkg_drip_sensors").doesNotContain("pkg_sensors");
+                .contains("pkg_sensors", "pkg_drip", "pkg_drip_sensors");
+        // sensors on the offered sprinkler: 52,000 + 6,500 + 1,200 (meter) = 59,700;
+        // 146,100 × 0.9 / 0.75 = 175,320 m³, 1 − 175,320 / 243,500 = 28%
+        chain.assertValue(run, "cand.sensors.cost", "59700");
+        chain.assertValue(run, "cand.sensors.pct", "28");
         // drip replaces the sprinkler and the pipes, keeps the pump: 11,500 + 68,000 + 1,200 (meter, required by DNSH)
         chain.assertValue(run, "cand.drip.cost", "80700");
         chain.assertValue(run, "cand.drip.pct", "33.33");
@@ -138,22 +142,22 @@ class IrrigationToolChainTest {
         assertThat(tier.path("tier").asText()).isEqualTo("VERDE_PLUS");
 
         chain.call(run, "price_loan", "{}");
-        // classic: 2.00 + 1.20 + 3% × 45% + 75% × 12% × 12% + 1.50 + 1.77 = 8.90
-        chain.assertValue(run, "pricing.classic.rate", "8.90");
+        // classic: 2.618 + 1.20 + 3% × 45% + 75% × 12% × 12% + 1.50 + 1.77 = 9.518
+        chain.assertValue(run, "pricing.classic.rate", "9.518");
         chain.assertValue(run, "pricing.classic.risk_cost", "1.35");
         chain.assertValue(run, "pricing.classic.capital_cost", "1.08");
-        // green: 2.00 + (1.20 − 0.30) + 2.5% × 45% × 30% + 22.5% × 12% × 12% + (1.50 − 0.15) + 1.77 − 0.40 = 6.2815
+        // green: 2.618 + (1.20 − 0.10) + 2.5% × 45% × 30% + 22.5% × 12% × 12% + (1.50 − 0.15) + 1.77 − 0.40 = 7.0995
         chain.assertValue(run, "pricing.green.risk_cost", "0.34");
         chain.assertValue(run, "pricing.green.capital_cost", "0.32");
-        chain.assertValue(run, "pricing.green.rate", "6.28");
+        chain.assertValue(run, "pricing.green.rate", "7.0995");
         chain.assertValue(run, "pricing.diff.risk_cost", "-1.01");
         chain.assertValue(run, "pricing.diff.capital_cost", "-0.76");
-        chain.assertValue(run, "pricing.diff.total", "-2.62");
+        chain.assertValue(run, "pricing.diff.total", "-2.4185");
 
         chain.call(run, "build_scenario", "{\"optionId\": \"A\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        // 52,000 over 60 months at 8.9%: 1,076.91 per month, 12,614.75 interest; mortgage 1,450 + 5 × 380 = 3,350
-        chain.assertValue(run, "option_a.installment", "1076.91");
-        chain.assertValue(run, "option_a.total_interest", "12614.75");
+        // 52,000 over 60 months at 9.518%: 1,092.55 per month, 13,553.26 interest; mortgage 1,450 + 5 × 380 = 3,350
+        chain.assertValue(run, "option_a.installment", "1092.55");
+        chain.assertValue(run, "option_a.total_interest", "13553.26");
         chain.assertValue(run, "option_a.collateral_costs", "3350");
     }
 }

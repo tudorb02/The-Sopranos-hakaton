@@ -9,9 +9,10 @@
       "role": "INDICATOR",
       "costEur": 26000,
       "effect": {
-        "methaneReductionPct": 85
+        "methaneReductionPct": 85,
+        "energyUpliftPct": 10
       },
-      "sourceRo": "Catalogul demo Product (data/demo/test-documents/reference/upgrades.json, LIV-COVER): preț estimat, reducere totală 85% împreună cu digestorul"
+      "sourceRo": "Catalogul demo Product (data/demo/test-documents/reference/upgrades.json, LIV-COVER): preț estimat, reducere totală 85% împreună cu digestorul. energyUpliftPct: biogazul rezidual din bazinul acoperit ajunge la cogenerare, +10% energie (valoare demo; literatura dă de obicei 5–15%), de confirmat"
     }
   ]
 }
