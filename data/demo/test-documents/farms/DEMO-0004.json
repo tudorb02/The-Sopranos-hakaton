@@ -1,0 +1,112 @@
+{
+  "id": "DEMO-0004",
+  "category": "livestock",
+  "story": "Fermă de 150 de vaci de lapte care cere un digestor de 30 kWe. Cu bazinul de digestat neacoperit, digestorul reduce metanul doar cu 45% (sub pragul de 50%); cu acoperirea etanșă a bazinului ajunge la 85%.",
+  "anaf": {
+    "cui": "DEMO-0004",
+    "name": "Ferma de Lapte Valea Demo SRL",
+    "caen": "0141",
+    "caenLabel": "Creșterea bovinelor de lapte",
+    "address": "Com. Demo, Jud. Bistrița-Năsăud",
+    "employees": 11,
+    "turnoverEur": 640000,
+    "totalAssetsEur": 980000,
+    "netProfitEur": 48000
+  },
+  "apia": {
+    "subsidiesEur": 31000,
+    "parcels": [
+      { "id": "P1", "crop": "incintă fermă (grajduri, platformă gunoi)", "ha": 2.5, "lat": 47.148, "lon": 24.512 },
+      { "id": "P2", "crop": "pajiște / furaje", "ha": 85, "lat": 47.156, "lon": 24.531 }
+    ]
+  },
+  "ansvsa": { "species": "bovine de lapte", "heads": 150 },
+  "location": { "drought": "scăzut", "hail": "mediu", "flood": "mediu", "natura2000": false, "nitrateZone": true, "waterStress": "scăzut" },
+  "openBanking": {
+    "months": ["2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"],
+    "inflowsEur": [52000, 51000, 54000, 50000, 49000, 52000, 53000, 55000, 56000, 55000, 54000, 59000],
+    "outflowsEur": [48000, 47000, 50000, 47000, 46000, 49000, 49000, 51000, 52000, 51000, 50000, 52000]
+  },
+  "answers": {
+    "manureStorage": "platformă descoperită pentru gunoiul solid + bazin descoperit pentru dejecții lichide",
+    "digestateUse": "îngrășământ pe pajiștile proprii",
+    "methaneKgPerHeadYear": 22,
+    "oldEquipment": "nu se înlocuiește niciun echipament"
+  },
+  "request": {
+    "description": "Instalație de biogaz 30 kWe, cu cogenerare",
+    "priceEur": 270000,
+    "methaneReduction": 0.45,
+    "electricityKwhYear": 225000
+  },
+  "expected": {
+    "currentMethaneKgYear": 3300,
+    "farmConsumptionKwhYear": 120000,
+    "requested": { "methaneReduction": 0.45, "co2eAvoidedT": 40.1, "passes": false },
+    "green": { "upgrades": ["LIV-COVER"], "investmentEur": 296000, "methaneReduction": 0.85, "co2eAvoidedT": 75.74, "electricityKwhYear": 225000, "tier": "Verde" },
+    "threshold": 0.5
+  },
+  "documents": [
+    {
+      "file": "01_oferta_digestor.pdf",
+      "title": "Ofertă de preț și fișă tehnică",
+      "issuer": { "name": "BioEnergie Ferma Demo SRL", "address": "Str. Exemplu 4, Bistrița" },
+      "number": "OF-BG-2026-019",
+      "date": "2026-10-09",
+      "sections": [
+        { "heading": "Obiect", "text": "Instalație de biogaz la scară mică pentru dejecțiile a 150 de vaci de lapte, cu motor de cogenerare (curent + căldură)." },
+        { "heading": "Componente și preț", "table": { "columns": ["Poz.", "Denumire", "Cant.", "Preț (EUR, fără TVA)"], "rows": [
+          ["1", "Digestor anaerob din beton, cu agitatoare", "1 buc.", "142.000"],
+          ["2", "Unitate de cogenerare 30 kWe / 45 kWt", "1 buc.", "78.000"],
+          ["3", "Pompe, conducte, automatizare, racordare", "1 set", "50.000"],
+          ["", "TOTAL", "", "270.000"] ] } },
+        { "heading": "Parametri tehnici", "rows": [
+          ["Putere electrică", "30 kWe"],
+          ["Ore de funcționare estimate", "7.500 h / an"],
+          ["Energie electrică produsă", "≈ 225.000 kWh / an"],
+          ["Stocarea digestatului", "bazin existent, neacoperit (nu face obiectul ofertei)"],
+          ["Reducerea emisiilor de metan din gestionarea dejecțiilor (estimare furnizor)", "45%"] ] },
+        { "heading": "Condiții", "text": "Valabilitate ofertă: 60 de zile. Execuție: 5 luni de la emiterea autorizației de construire." }
+      ]
+    },
+    {
+      "file": "02_autorizatie_mediu.pdf",
+      "title": "Autorizație de mediu",
+      "issuer": { "name": "Agenția pentru Protecția Mediului DEMO", "address": "emitent fictiv, pentru test" },
+      "number": "AM-DEMO-42/2024",
+      "date": "2024-06-17",
+      "sections": [
+        { "heading": "Titular", "text": "Ferma de Lapte Valea Demo SRL, CUI DEMO-0004" },
+        { "heading": "Activitate autorizată", "rows": [
+          ["Activitate", "creșterea bovinelor de lapte, capacitate maximă 180 de capete"],
+          ["Amplasament", "zonă vulnerabilă la nitrați"],
+          ["Valabilitate", "supusă vizei anuale"] ] },
+        { "heading": "Obligații", "text": "Stocarea dejecțiilor pe platforme impermeabilizate. Aplicarea pe teren conform Codului de bune practici agricole și planului de fertilizare. Orice instalație nouă de tratare a dejecțiilor se notifică autorității." }
+      ]
+    },
+    {
+      "file": "03_facturi_energie_12_luni.pdf",
+      "kind": "invoiceSeries",
+      "title": "Factură energie electrică",
+      "issuer": { "name": "Energie Demo Furnizare SA", "address": "furnizor fictiv" },
+      "item": "Energie electrică activă – loc de consum: ferma de vaci",
+      "unit": "kWh",
+      "unitPriceEur": 0.19,
+      "vatPct": 21,
+      "invoices": [
+        { "number": "ED-25-10-4410", "date": "2025-11-05", "period": "octombrie 2025", "qty": 9800 },
+        { "number": "ED-25-11-4410", "date": "2025-12-05", "period": "noiembrie 2025", "qty": 9600 },
+        { "number": "ED-25-12-4410", "date": "2026-01-05", "period": "decembrie 2025", "qty": 9900 },
+        { "number": "ED-26-01-4410", "date": "2026-02-05", "period": "ianuarie 2026", "qty": 10100 },
+        { "number": "ED-26-02-4410", "date": "2026-03-05", "period": "februarie 2026", "qty": 9500 },
+        { "number": "ED-26-03-4410", "date": "2026-04-05", "period": "martie 2026", "qty": 9800 },
+        { "number": "ED-26-04-4410", "date": "2026-05-05", "period": "aprilie 2026", "qty": 9700 },
+        { "number": "ED-26-05-4410", "date": "2026-06-05", "period": "mai 2026", "qty": 10200 },
+        { "number": "ED-26-06-4410", "date": "2026-07-05", "period": "iunie 2026", "qty": 10500 },
+        { "number": "ED-26-07-4410", "date": "2026-08-05", "period": "iulie 2026", "qty": 11000 },
+        { "number": "ED-26-08-4410", "date": "2026-09-05", "period": "august 2026", "qty": 10600 },
+        { "number": "ED-26-09-4410", "date": "2026-10-05", "period": "septembrie 2026", "qty": 9300 }
+      ]
+    }
+  ]
+}

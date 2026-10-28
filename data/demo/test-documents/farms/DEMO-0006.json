@@ -1,0 +1,119 @@
+{
+  "id": "DEMO-0006",
+  "category": "organic",
+  "story": "Fermă convențională de 120 ha care trece la agricultura ecologică din 2027 și cumpără utilaje pentru combaterea mecanică a buruienilor. Eligibilă prin contractul de certificare. În primii doi ani de conversie marja scade față de agricultura convențională (−27.540 EUR și −19.550 EUR), apoi crește (+43.568 EUR/an). Aplicația compară conversia integrală cu cea etapizată: cea integrală câștigă mai mult pe 4 ani (+40.046 EUR față de +18.262 EUR), dacă golul din primii doi ani e acoperit prin grație și prefinanțarea APIA.",
+  "anaf": {
+    "cui": "DEMO-0006",
+    "name": "Ferma Bio Mureș Demo SRL",
+    "caen": "0111",
+    "caenLabel": "Cultivarea cerealelor (exclusiv orez), plantelor leguminoase și a plantelor producătoare de semințe oleaginoase",
+    "address": "Com. Demo, Jud. Mureș",
+    "employees": 5,
+    "turnoverEur": 168000,
+    "totalAssetsEur": 420000,
+    "netProfitEur": 21000
+  },
+  "apia": {
+    "subsidiesEur": 24000,
+    "parcels": [
+      { "id": "P1", "crop": "grâu", "ha": 50, "lat": 46.512, "lon": 24.402 },
+      { "id": "P2", "crop": "porumb", "ha": 40, "lat": 46.521, "lon": 24.428 },
+      { "id": "P3", "crop": "soia", "ha": 30, "lat": 46.503, "lon": 24.417 }
+    ]
+  },
+  "location": { "drought": "mediu", "hail": "mediu", "flood": "scăzut", "natura2000": false, "nitrateZone": false, "waterStress": "scăzut" },
+  "openBanking": {
+    "months": ["2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"],
+    "inflowsEur": [38000, 24000, 30000, 2000, 2000, 3000, 2000, 3000, 6000, 34000, 26000, 22000],
+    "outflowsEur": [16000, 12000, 8000, 7000, 12000, 22000, 18000, 10000, 9000, 14000, 13000, 12000]
+  },
+  "answers": {
+    "conversionHa": 120,
+    "conversionStartYear": 2027,
+    "practices": ["rotație de culturi", "culturi de acoperire pe 40 ha"],
+    "nitrogenKgPerHa": 130,
+    "crops": [
+      { "crop": "grâu", "ha": 50, "yieldTPerHa": 6.0, "priceEurPerT": 210 },
+      { "crop": "porumb", "ha": 40, "yieldTPerHa": 8.0, "priceEurPerT": 190 },
+      { "crop": "soia", "ha": 30, "yieldTPerHa": 3.0, "priceEurPerT": 400 }
+    ],
+    "oldEquipment": "nu se înlocuiește niciun echipament"
+  },
+  "request": {
+    "description": "Utilaje pentru combaterea mecanică a buruienilor (prășitoare cu ghidare prin cameră + grapă cu colți elastici)",
+    "priceEur": 78000
+  },
+  "expected": {
+    "conventionalMarginEurYear": 45800,
+    "marginVsConventionalEur": {
+      "fullConversion": { "2027": -27540, "2028": -19550, "2029": 43568, "2030": 43568, "total4Years": 40046 },
+      "phasedConversion": { "2027": -13770, "2028": -23545, "2029": 12009, "2030": 43568, "total4Years": 18262 }
+    },
+    "nitrogenAvoidedKgYear": 15640,
+    "co2eAvoidedT": 67.1,
+    "green": { "investmentEur": 78000, "tier": "Verde", "eligibility": "contract cu organism de certificare" },
+    "threshold": "certificare ecologică sau contract de conversie"
+  },
+  "documents": [
+    {
+      "file": "01_oferta_utilaje_bio.pdf",
+      "title": "Ofertă de preț și fișă tehnică",
+      "issuer": { "name": "Agro Mecanic Demo SRL", "address": "Str. Exemplu 6, Târgu Mureș" },
+      "number": "OF-MB-2026-058",
+      "date": "2026-10-11",
+      "sections": [
+        { "heading": "Obiect", "text": "Utilaje pentru combaterea mecanică a buruienilor, pentru trecerea la agricultura ecologică." },
+        { "heading": "Componente și preț", "table": { "columns": ["Poz.", "Denumire", "Cant.", "Preț (EUR, fără TVA)"], "rows": [
+          ["1", "Prășitoare 6 rânduri, cu ghidare prin cameră", "1 buc.", "46.000"],
+          ["2", "Grapă cu colți elastici, lățime de lucru 12 m", "1 buc.", "32.000"],
+          ["", "TOTAL", "", "78.000"] ] } },
+        { "heading": "Parametri tehnici", "rows": [
+          ["Culturi", "porumb, soia, floarea-soarelui (prășitoare); cereale păioase (grapă)"],
+          ["Capacitate de lucru", "≈ 4 ha/h (prășitoare), ≈ 10 ha/h (grapă)"],
+          ["Putere necesară la tractor", "min. 120 CP"] ] },
+        { "heading": "Condiții", "text": "Valabilitate ofertă: 45 de zile. Livrare: februarie 2027, înainte de primul sezon de conversie." }
+      ]
+    },
+    {
+      "file": "02_contract_certificare.pdf",
+      "title": "Contract de inspecție și certificare în agricultura ecologică",
+      "issuer": { "name": "Organism de Certificare Bio DEMO", "address": "organism fictiv, pentru test" },
+      "number": "OC-DEMO-2026-0917",
+      "date": "2026-09-17",
+      "sections": [
+        { "heading": "Părți", "text": "Organism de Certificare Bio DEMO și Ferma Bio Mureș Demo SRL, CUI DEMO-0006." },
+        { "heading": "Obiect", "rows": [
+          ["Suprafață înscrisă în conversie", "120 ha teren arabil (parcelele P1, P2, P3)"],
+          ["Începutul perioadei de conversie", "01.01.2027"],
+          ["Durata conversiei (culturi anuale)", "2 ani"],
+          ["Cadru legal", "Regulamentul (UE) 2018/848 privind producția ecologică"] ] },
+        { "heading": "Obligații", "text": "Inspecție anuală, evidența intrărilor și a lucrărilor, interdicția îngrășămintelor chimice de sinteză și a pesticidelor neautorizate în agricultura ecologică." }
+      ]
+    },
+    {
+      "file": "03_plan_conversie.pdf",
+      "title": "Plan de conversie la agricultura ecologică",
+      "issuer": { "name": "Ferma Bio Mureș Demo SRL", "address": "document întocmit de fermă" },
+      "number": "PC-2026-01",
+      "date": "2026-10-01",
+      "sections": [
+        { "heading": "Calendar", "table": { "columns": ["An", "Statut", "Suprafață", "Culturi"], "rows": [
+          ["2027", "conversie, anul 1", "120 ha", "grâu 50 ha, porumb 40 ha, soia 30 ha"],
+          ["2028", "conversie, anul 2", "120 ha", "rotație: soia, grâu, porumb"],
+          ["2029", "certificat ecologic", "120 ha", "rotație + culturi de acoperire"] ] } },
+        { "heading": "Practici", "text": "Fertilizare organică (gunoi de grajd compostat, leguminoase în rotație), combatere mecanică a buruienilor, culturi de acoperire pe timp de iarnă." }
+      ]
+    },
+    {
+      "file": "04_facturi_ingrasaminte.pdf",
+      "kind": "invoiceSeries",
+      "title": "Factură îngrășăminte",
+      "issuer": { "name": "Agro Inputuri Demo SRL", "address": "distribuitor fictiv" },
+      "vatPct": 21,
+      "invoices": [
+        { "number": "AI-26-0277", "date": "2026-03-02", "period": "martie 2026", "item": "Azotat de amoniu 34% N", "unit": "kg", "qty": 26000, "unitPriceEur": 0.36 },
+        { "number": "AI-26-0451", "date": "2026-04-22", "period": "aprilie 2026", "item": "Azotat de amoniu 34% N", "unit": "kg", "qty": 20000, "unitPriceEur": 0.36 }
+      ]
+    }
+  ]
+}

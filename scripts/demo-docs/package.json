@@ -1,0 +1,13 @@
+{
+  "name": "demo-docs",
+  "private": true,
+  "type": "module",
+  "description": "Generates and verifies the fictional demo documents for the 6 GreenStruct Agro farms",
+  "scripts": {
+    "verify": "node verify.mjs",
+    "generate": "node verify.mjs && node generate.mjs"
+  },
+  "dependencies": {
+    "pdfkit": "0.17.2"
+  }
+}

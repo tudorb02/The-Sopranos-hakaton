@@ -1,0 +1,113 @@
+{
+  "id": "DEMO-0001",
+  "category": "irrigation",
+  "story": "Fermă de legume din sud-est care irigă prin brazde și cere aspersie clasică. Aspersia economisește 20% apă (sub pragul de 25%); picurarea cu senzori ajunge la 40%.",
+  "anaf": {
+    "cui": "DEMO-0001",
+    "name": "Legume Bărăgan Demo SRL",
+    "caen": "0113",
+    "caenLabel": "Cultivarea legumelor",
+    "address": "Com. Demo, Jud. Călărași",
+    "employees": 14,
+    "turnoverEur": 520000,
+    "totalAssetsEur": 610000,
+    "netProfitEur": 58000
+  },
+  "apia": {
+    "subsidiesEur": 9600,
+    "parcels": [
+      { "id": "P1", "crop": "tomate", "ha": 16, "lat": 44.215, "lon": 27.305 },
+      { "id": "P2", "crop": "ardei", "ha": 14, "lat": 44.211, "lon": 27.318 },
+      { "id": "P3", "crop": "varză", "ha": 10, "lat": 44.205, "lon": 27.309 }
+    ]
+  },
+  "location": { "drought": "ridicat", "hail": "mediu", "flood": "scăzut", "natura2000": false, "nitrateZone": false, "waterStress": "moderat", "et0SeasonMm": 700, "effectiveRainSeasonMm": 200 },
+  "openBanking": {
+    "months": ["2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"],
+    "inflowsEur": [78000, 22000, 17600, 4000, 5000, 6000, 12000, 30000, 72000, 98000, 105000, 80000],
+    "outflowsEur": [42000, 30000, 25000, 22000, 28000, 45000, 52000, 48000, 40000, 42000, 44000, 40000]
+  },
+  "answers": {
+    "currentSystem": "brazde",
+    "waterSource": "puț forat",
+    "liftHeightM": 35,
+    "pumpEfficiency": 0.65,
+    "crops": [
+      { "crop": "tomate", "ha": 16, "kc": 0.85 },
+      { "crop": "ardei", "ha": 14, "kc": 0.8 },
+      { "crop": "varză", "ha": 10, "kc": 0.75 }
+    ],
+    "oldEquipment": "pompa veche se predă la reciclare autorizată"
+  },
+  "request": {
+    "description": "Sistem de irigare prin aspersie cu tambur, 40 ha",
+    "system": "aspersie",
+    "priceEur": 52000
+  },
+  "expected": {
+    "netIrrigationNeedM3": 146100,
+    "currentWithdrawalM3": 243500,
+    "requested": { "withdrawalM3": 194800, "waterSaving": 0.2, "pumpingKwh": 57166, "passes": false },
+    "green": { "upgrades": ["IRR-DRIP", "IRR-SENS"], "investmentEur": 74500, "withdrawalM3": 146100, "waterSaving": 0.4, "pumpingKwh": 30625, "tier": "Verde Plus" },
+    "currentPumpingKwh": 35729,
+    "threshold": 0.25
+  },
+  "documents": [
+    {
+      "file": "01_oferta_aspersie.pdf",
+      "title": "Ofertă de preț și fișă tehnică",
+      "issuer": { "name": "Irigații Câmpia Demo SRL", "address": "Str. Exemplu 1, Slobozia" },
+      "number": "OF-2026-0412",
+      "date": "2026-10-12",
+      "sections": [
+        { "heading": "Obiect", "text": "Sistem de irigare prin aspersie cu tambur pentru 40 ha de legume (tomate, ardei, varză)." },
+        { "heading": "Componente și preț", "table": { "columns": ["Poz.", "Denumire", "Cant.", "Preț (EUR, fără TVA)"], "rows": [
+          ["1", "Mașină de irigat cu tambur, furtun 110 mm x 400 m", "3 buc.", "33.000"],
+          ["2", "Electropompă 55 kW, cu tablou de comandă", "1 buc.", "11.500"],
+          ["3", "Conductă de aducțiune PEHD 160 mm și hidranți", "1 set", "7.500"],
+          ["", "TOTAL", "", "52.000"] ] } },
+        { "heading": "Parametri tehnici", "rows": [
+          ["Tip sistem", "aspersie cu tambur"],
+          ["Suprafață acoperită", "40 ha"],
+          ["Eficiența aplicării apei (declarată)", "75%"],
+          ["Presiune de lucru la aspersor", "3,5 bar (≈ 35 m coloană de apă)"],
+          ["Debit nominal", "90 m³/h"] ] },
+        { "heading": "Condiții", "text": "Valabilitate ofertă: 60 de zile. Termen de livrare: 6 săptămâni. Garanție: 24 de luni." }
+      ]
+    },
+    {
+      "file": "02_autorizatie_gospodarire_ape.pdf",
+      "title": "Autorizație de gospodărire a apelor",
+      "issuer": { "name": "Administrația Bazinală de Apă DEMO", "address": "emitent fictiv, pentru test" },
+      "number": "AGA-DEMO-118/2025",
+      "date": "2025-03-04",
+      "sections": [
+        { "heading": "Titular", "text": "Legume Bărăgan Demo SRL, CUI DEMO-0001" },
+        { "heading": "Folosință autorizată", "rows": [
+          ["Scop", "irigarea culturilor de legume"],
+          ["Sursă", "puț forat, adâncime 60 m, nivel dinamic 35 m"],
+          ["Volum maxim anual autorizat", "280.000 m³"],
+          ["Debit maxim", "100 m³/h"],
+          ["Valabilitate", "04.03.2025 – 03.03.2030"] ] },
+        { "heading": "Obligații", "text": "Contorizarea volumelor extrase și raportarea anuală a acestora. Respectarea volumului maxim autorizat." }
+      ]
+    },
+    {
+      "file": "03_facturi_energie_pompare.pdf",
+      "kind": "invoiceSeries",
+      "title": "Factură energie electrică",
+      "issuer": { "name": "Energie Demo Furnizare SA", "address": "furnizor fictiv" },
+      "item": "Energie electrică activă – loc de consum: stație de pompare irigații",
+      "unit": "kWh",
+      "unitPriceEur": 0.19,
+      "vatPct": 21,
+      "invoices": [
+        { "number": "ED-26-05-1101", "date": "2026-06-05", "period": "mai 2026", "qty": 4300 },
+        { "number": "ED-26-06-1101", "date": "2026-07-05", "period": "iunie 2026", "qty": 7900 },
+        { "number": "ED-26-07-1101", "date": "2026-08-05", "period": "iulie 2026", "qty": 10200 },
+        { "number": "ED-26-08-1101", "date": "2026-09-05", "period": "august 2026", "qty": 9100 },
+        { "number": "ED-26-09-1101", "date": "2026-10-05", "period": "septembrie 2026", "qty": 4229 }
+      ]
+    }
+  ]
+}

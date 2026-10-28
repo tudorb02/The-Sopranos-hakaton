@@ -1,0 +1,111 @@
+{
+  "id": "DEMO-0005",
+  "category": "post_harvest",
+  "story": "Livadă de meri care înlocuiește agregatul frigorific al depozitului. Agregatul ofertat (cu R404A) reduce consumul doar cu 12,1% (sub pragul de 20%) și are un agent frigorific cu GWP mare. Cu agregat pe propan (R290) și panouri de izolație noi, economia ajunge la 29,6%.",
+  "anaf": {
+    "cui": "DEMO-0005",
+    "name": "Livezile Argeș Demo SRL",
+    "caen": "0124",
+    "caenLabel": "Cultivarea fructelor semințoase și sâmburoase",
+    "address": "Com. Demo, Jud. Argeș",
+    "employees": 16,
+    "turnoverEur": 410000,
+    "totalAssetsEur": 760000,
+    "netProfitEur": 39000
+  },
+  "apia": {
+    "subsidiesEur": 7400,
+    "parcels": [
+      { "id": "P1", "crop": "meri", "ha": 35, "lat": 44.902, "lon": 24.868 },
+      { "id": "P2", "crop": "incintă depozit", "ha": 0.8, "lat": 44.897, "lon": 24.875 }
+    ]
+  },
+  "location": { "drought": "mediu", "hail": "ridicat", "flood": "scăzut", "natura2000": false, "nitrateZone": false, "waterStress": "scăzut" },
+  "openBanking": {
+    "months": ["2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"],
+    "inflowsEur": [52000, 48000, 55000, 46000, 44000, 40000, 12000, 6000, 5000, 8000, 34000, 60000],
+    "outflowsEur": [34000, 30000, 28000, 24000, 24000, 30000, 34000, 32000, 30000, 30000, 36000, 40000]
+  },
+  "answers": {
+    "storedProduct": "mere",
+    "tonnesPerYear": 650,
+    "operatingMonths": 7,
+    "oldEquipment": "agregatul vechi se predă la reciclare autorizată, cu recuperarea agentului frigorific"
+  },
+  "request": {
+    "description": "Agregat frigorific nou pentru depozitul de 650 t",
+    "priceEur": 118000,
+    "specificConsumptionKwhPerT": 115,
+    "refrigerant": "R404A",
+    "refrigerantGwp": 3922
+  },
+  "expected": {
+    "currentConsumptionKwhYear": 85000,
+    "currentSpecificKwhPerT": 130.77,
+    "requested": { "specificKwhPerT": 115, "energySaving": 0.121, "refrigerantGwp": 3922, "passes": false },
+    "green": { "upgrades": ["PH-R290", "PH-PANEL"], "investmentEur": 142000, "specificKwhPerT": 92, "energySaving": 0.296, "kwhSavedYear": 25200, "co2AvoidedT": 6.55, "refrigerantGwp": 3, "tier": "Verde" },
+    "threshold": 0.2
+  },
+  "documents": [
+    {
+      "file": "01_oferta_agregat_frigorific.pdf",
+      "title": "Ofertă de preț și fișă tehnică",
+      "issuer": { "name": "Frig Industrial Demo SRL", "address": "Str. Exemplu 5, Pitești" },
+      "number": "OF-FR-2026-140",
+      "date": "2026-10-14",
+      "sections": [
+        { "heading": "Obiect", "text": "Înlocuirea agregatului frigorific pentru depozitul de mere (6 celule, capacitate 650 t)." },
+        { "heading": "Componente și preț", "table": { "columns": ["Poz.", "Denumire", "Cant.", "Preț (EUR, fără TVA)"], "rows": [
+          ["1", "Agregat frigorific cu compresoare semiermetice, agent R404A", "1 buc.", "74.000"],
+          ["2", "Vaporizatoare pentru celule", "6 buc.", "26.000"],
+          ["3", "Automatizare, montaj, punere în funcțiune", "1 set", "18.000"],
+          ["", "TOTAL", "", "118.000"] ] } },
+        { "heading": "Parametri tehnici", "rows": [
+          ["Agent frigorific", "R404A (GWP 3.922)"],
+          ["Consum specific estimat", "115 kWh / tonă / sezon"],
+          ["Temperatura de păstrare", "+1 °C"],
+          ["Durata sezonului de păstrare", "7 luni"] ] },
+        { "heading": "Condiții", "text": "Valabilitate ofertă: 30 de zile. Montaj înainte de recoltarea din septembrie." }
+      ]
+    },
+    {
+      "file": "02_facturi_energie_12_luni.pdf",
+      "kind": "invoiceSeries",
+      "title": "Factură energie electrică",
+      "issuer": { "name": "Energie Demo Furnizare SA", "address": "furnizor fictiv" },
+      "item": "Energie electrică activă – loc de consum: depozit frigorific (contor separat)",
+      "unit": "kWh",
+      "unitPriceEur": 0.19,
+      "vatPct": 21,
+      "invoices": [
+        { "number": "ED-25-10-5512", "date": "2025-11-05", "period": "octombrie 2025", "qty": 15000 },
+        { "number": "ED-25-11-5512", "date": "2025-12-05", "period": "noiembrie 2025", "qty": 13500 },
+        { "number": "ED-25-12-5512", "date": "2026-01-05", "period": "decembrie 2025", "qty": 12000 },
+        { "number": "ED-26-01-5512", "date": "2026-02-05", "period": "ianuarie 2026", "qty": 11500 },
+        { "number": "ED-26-02-5512", "date": "2026-03-05", "period": "februarie 2026", "qty": 11000 },
+        { "number": "ED-26-03-5512", "date": "2026-04-05", "period": "martie 2026", "qty": 9000 },
+        { "number": "ED-26-04-5512", "date": "2026-05-05", "period": "aprilie 2026", "qty": 1500 },
+        { "number": "ED-26-05-5512", "date": "2026-06-05", "period": "mai 2026", "qty": 500 },
+        { "number": "ED-26-06-5512", "date": "2026-07-05", "period": "iunie 2026", "qty": 500 },
+        { "number": "ED-26-07-5512", "date": "2026-08-05", "period": "iulie 2026", "qty": 500 },
+        { "number": "ED-26-08-5512", "date": "2026-09-05", "period": "august 2026", "qty": 1000 },
+        { "number": "ED-26-09-5512", "date": "2026-10-05", "period": "septembrie 2026", "qty": 9000 }
+      ]
+    },
+    {
+      "file": "03_fisa_echipament_vechi.pdf",
+      "title": "Fișa tehnică a echipamentului înlocuit",
+      "issuer": { "name": "Livezile Argeș Demo SRL", "address": "document întocmit de fermă" },
+      "number": "FT-FR-01",
+      "date": "2026-10-16",
+      "sections": [
+        { "heading": "Echipament", "rows": [
+          ["Tip", "agregat frigorific cu compresoare semiermetice"],
+          ["An de punere în funcțiune", "2006"],
+          ["Agent frigorific", "R404A (GWP 3.922)"],
+          ["Cantitate de agent", "180 kg"] ] },
+        { "heading": "Consum", "text": "Consumul depozitului în ultimele 12 luni (contor separat): 85.000 kWh pentru 650 t de mere, adică 130,8 kWh/t." }
+      ]
+    }
+  ]
+}

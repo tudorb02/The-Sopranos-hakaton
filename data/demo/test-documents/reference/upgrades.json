@@ -1,0 +1,25 @@
+{
+  "_note": "Demo upgrade catalog. Prices are estimates; the green credit requires an updated supplier offer before disbursement.",
+  "irrigation": [
+    { "code": "IRR-DRIP", "name": "Sistem de irigare prin picurare (în locul aspersiei)", "unit": "ha", "priceEurPerUnit": 1700, "effect": { "system": "picurare" } },
+    { "code": "IRR-SENS", "name": "Senzori de umiditate în sol + programare automată", "unit": "fermă", "priceEur": 6500, "effect": { "sensorReduction": 0.1 } }
+  ],
+  "energy": [
+    { "code": "PV-100", "name": "Instalație fotovoltaică 100 kWp", "kwp": 100, "priceEur": 72000 },
+    { "code": "PV-150", "name": "Instalație fotovoltaică 150 kWp", "kwp": 150, "priceEur": 108000 },
+    { "code": "PV-200", "name": "Instalație fotovoltaică 200 kWp", "kwp": 200, "priceEur": 144000 },
+    { "code": "PV-300", "name": "Instalație fotovoltaică 300 kWp", "kwp": 300, "priceEur": 210000 }
+  ],
+  "machinery": [
+    { "code": "MCH-GPS", "name": "Pilot automat GPS RTK (mai puține suprapuneri)", "priceEur": 16000, "effect": { "dieselReduction": 0.09, "nitrogenReduction": 0.05 } },
+    { "code": "MCH-VRA", "name": "Modul de dozare variabilă a îngrășămintelor", "priceEur": 11000, "effect": { "nitrogenReduction": 0.12 } }
+  ],
+  "livestock": [
+    { "code": "LIV-COVER", "name": "Acoperire etanșă a bazinului de digestat, cu recuperarea gazului", "priceEur": 26000, "effect": { "methaneReductionTotal": 0.85 } }
+  ],
+  "post_harvest": [
+    { "code": "PH-R290", "name": "Agregat frigorific cu propan (R290) în locul celui cu R404A", "priceEur": 9000, "effect": { "refrigerant": "R290", "refrigerantGwp": 3 } },
+    { "code": "PH-PANEL", "name": "Panouri de izolație noi + recuperare de căldură", "priceEur": 15000, "effect": { "note": "împreună cu PH-R290: 92 kWh/t" } }
+  ],
+  "organic": []
+}

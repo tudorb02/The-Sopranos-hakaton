@@ -1,0 +1,123 @@
+{
+  "id": "DEMO-0003",
+  "category": "machinery",
+  "story": "Fermă de cereale de 600 ha care înlocuiește un tractor vechi. Tractorul nou reduce motorina cu 12,8% (sub pragul de 20%); cu pilot automat GPS RTK ajunge la 20,7%.",
+  "anaf": {
+    "cui": "DEMO-0003",
+    "name": "Cereale Câmpia Demo SRL",
+    "caen": "0111",
+    "caenLabel": "Cultivarea cerealelor (exclusiv orez), plantelor leguminoase și a plantelor producătoare de semințe oleaginoase",
+    "address": "Com. Demo, Jud. Ialomița",
+    "employees": 9,
+    "turnoverEur": 690000,
+    "totalAssetsEur": 1350000,
+    "netProfitEur": 74000
+  },
+  "apia": {
+    "subsidiesEur": 120000,
+    "parcels": [
+      { "id": "P1", "crop": "grâu", "ha": 250, "lat": 44.612, "lon": 27.401 },
+      { "id": "P2", "crop": "porumb", "ha": 200, "lat": 44.598, "lon": 27.432 },
+      { "id": "P3", "crop": "floarea-soarelui", "ha": 150, "lat": 44.585, "lon": 27.409 }
+    ]
+  },
+  "location": { "drought": "ridicat", "hail": "mediu", "flood": "scăzut", "natura2000": false, "nitrateZone": true, "waterStress": "moderat" },
+  "openBanking": {
+    "months": ["2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"],
+    "inflowsEur": [148000, 96000, 82000, 9000, 6000, 8000, 7000, 9000, 15000, 168000, 92000, 70000],
+    "outflowsEur": [62000, 48000, 30000, 26000, 52000, 88000, 76000, 44000, 36000, 64000, 58000, 52000]
+  },
+  "answers": {
+    "replacedMachine": { "type": "tractor", "year": 2004, "powerHp": 240 },
+    "haWorkedPerYear": 600,
+    "tillage": "arătură",
+    "nitrogenKgPerHa": 140,
+    "oldEquipment": "tractorul vechi se vinde"
+  },
+  "request": {
+    "description": "Tractor 300 CP, Stage V",
+    "priceEur": 185000,
+    "dieselLitresPerHa": 68
+  },
+  "expected": {
+    "currentDieselLitres": 46800,
+    "currentDieselLitresPerHa": 78,
+    "currentNitrogenKg": 84020,
+    "requested": { "dieselLitresPerHa": 68, "dieselReduction": 0.128, "passes": false },
+    "green": { "upgrades": ["MCH-GPS"], "investmentEur": 201000, "dieselLitresPerHa": 61.88, "dieselReduction": 0.207, "nitrogenReduction": 0.05, "dieselSavedLitresYear": 9672, "nitrogenSavedKgYear": 4201, "co2eAvoidedT": 43.94, "tier": "Verde" },
+    "threshold": 0.2
+  },
+  "documents": [
+    {
+      "file": "01_oferta_tractor.pdf",
+      "title": "Ofertă de preț și fișă tehnică",
+      "issuer": { "name": "Agro Utilaje Demo SRL", "address": "Str. Exemplu 3, Urziceni" },
+      "number": "OF-TR-2026-231",
+      "date": "2026-10-15",
+      "sections": [
+        { "heading": "Obiect", "text": "Tractor agricol nou, 300 CP, motor conform normei UE de emisii Stage V." },
+        { "heading": "Preț", "table": { "columns": ["Poz.", "Denumire", "Cant.", "Preț (EUR, fără TVA)"], "rows": [
+          ["1", "Tractor 300 CP, transmisie CVT, Stage V", "1 buc.", "185.000"],
+          ["", "TOTAL", "", "185.000"] ] } },
+        { "heading": "Parametri tehnici", "rows": [
+          ["Putere nominală", "300 CP (221 kW)"],
+          ["Normă de emisii", "Stage V"],
+          ["Consum estimat pentru tehnologia fermei (arătură, pregătire, semănat, erbicidat, fertilizat)", "68 l/ha"],
+          ["Pilot automat GPS", "neinclus (opțional)"] ] },
+        { "heading": "Condiții", "text": "Valabilitate ofertă: 30 de zile. Livrare: 8 săptămâni. Garanție: 36 de luni." }
+      ]
+    },
+    {
+      "file": "02_facturi_motorina_12_luni.pdf",
+      "kind": "invoiceSeries",
+      "title": "Factură motorină",
+      "issuer": { "name": "Petro Demo Distribuție SRL", "address": "distribuitor fictiv" },
+      "item": "Motorină pentru utilaje agricole",
+      "unit": "litri",
+      "unitPriceEur": 1.25,
+      "vatPct": 21,
+      "invoices": [
+        { "number": "PD-25-10-0390", "date": "2025-10-31", "period": "octombrie 2025", "qty": 5200 },
+        { "number": "PD-25-11-0390", "date": "2025-11-30", "period": "noiembrie 2025", "qty": 3100 },
+        { "number": "PD-25-12-0390", "date": "2025-12-31", "period": "decembrie 2025", "qty": 900 },
+        { "number": "PD-26-01-0390", "date": "2026-01-31", "period": "ianuarie 2026", "qty": 600 },
+        { "number": "PD-26-02-0390", "date": "2026-02-28", "period": "februarie 2026", "qty": 1200 },
+        { "number": "PD-26-03-0390", "date": "2026-03-31", "period": "martie 2026", "qty": 5800 },
+        { "number": "PD-26-04-0390", "date": "2026-04-30", "period": "aprilie 2026", "qty": 6400 },
+        { "number": "PD-26-05-0390", "date": "2026-05-31", "period": "mai 2026", "qty": 3500 },
+        { "number": "PD-26-06-0390", "date": "2026-06-30", "period": "iunie 2026", "qty": 2600 },
+        { "number": "PD-26-07-0390", "date": "2026-07-31", "period": "iulie 2026", "qty": 7900 },
+        { "number": "PD-26-08-0390", "date": "2026-08-31", "period": "august 2026", "qty": 4700 },
+        { "number": "PD-26-09-0390", "date": "2026-09-30", "period": "septembrie 2026", "qty": 4900 }
+      ]
+    },
+    {
+      "file": "03_facturi_ingrasaminte.pdf",
+      "kind": "invoiceSeries",
+      "title": "Factură îngrășăminte",
+      "issuer": { "name": "Agro Inputuri Demo SRL", "address": "distribuitor fictiv" },
+      "vatPct": 21,
+      "invoices": [
+        { "number": "AI-26-0211", "date": "2026-02-20", "period": "februarie 2026", "item": "Azotat de amoniu 34% N", "unit": "kg", "qty": 62000, "unitPriceEur": 0.36 },
+        { "number": "AI-26-0388", "date": "2026-03-18", "period": "martie 2026", "item": "Azotat de amoniu 34% N", "unit": "kg", "qty": 62000, "unitPriceEur": 0.36 },
+        { "number": "AI-26-0415", "date": "2026-04-10", "period": "aprilie 2026", "item": "Uree 46% N", "unit": "kg", "qty": 91000, "unitPriceEur": 0.46 }
+      ]
+    },
+    {
+      "file": "04_fisa_tractor_vechi.pdf",
+      "title": "Fișa tehnică a utilajului înlocuit",
+      "issuer": { "name": "Cereale Câmpia Demo SRL", "address": "document întocmit de fermă" },
+      "number": "FT-UT-07",
+      "date": "2026-10-16",
+      "sections": [
+        { "heading": "Utilaj", "rows": [
+          ["Tip", "tractor agricol"],
+          ["An de fabricație", "2004"],
+          ["Putere nominală", "240 CP"],
+          ["Normă de emisii", "Stage II"],
+          ["Ore de funcționare", "14.800"] ] },
+        { "heading": "Utilizare", "text": "Folosit pentru toate lucrările pe cele 600 ha. Consumul total de motorină al fermei în ultimele 12 luni: 46.800 l (78 l/ha)." }
+      ]
+    }
+  ]
+}

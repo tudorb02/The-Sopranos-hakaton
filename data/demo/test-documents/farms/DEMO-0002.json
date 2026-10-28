@@ -1,0 +1,94 @@
+{
+  "id": "DEMO-0002",
+  "category": "energy",
+  "story": "Fermă de păsări cu facturi mari la energie, care cere o instalație fotovoltaică de 300 kWp. E eligibilă direct, dar instalația e supradimensionată: ar vinde în rețea 68% din producție, la preț mic. Redimensionarea la 100 kWp coboară exportul la 20% și scurtează recuperarea investiției de la 5,5 la 3,5 ani.",
+  "anaf": {
+    "cui": "DEMO-0002",
+    "name": "Avicola Dealul Verde Demo SRL",
+    "caen": "0147",
+    "caenLabel": "Creșterea păsărilor",
+    "address": "Com. Demo, Jud. Prahova",
+    "employees": 22,
+    "turnoverEur": 1450000,
+    "totalAssetsEur": 1900000,
+    "netProfitEur": 96000
+  },
+  "apia": {
+    "subsidiesEur": 0,
+    "parcels": [
+      { "id": "P1", "crop": "incintă fermă (hale)", "ha": 3.2, "lat": 44.952, "lon": 26.118 }
+    ]
+  },
+  "location": { "drought": "mediu", "hail": "mediu", "flood": "scăzut", "natura2000": false, "nitrateZone": false, "waterStress": "scăzut" },
+  "openBanking": {
+    "months": ["2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"],
+    "inflowsEur": [118000, 121000, 132000, 116000, 114000, 119000, 120000, 122000, 121000, 123000, 122000, 122000],
+    "outflowsEur": [110000, 112000, 121000, 109000, 107000, 111000, 112000, 113000, 112000, 115000, 114000, 113000]
+  },
+  "answers": {
+    "mounting": "acoperiș hale",
+    "availableAreaM2": 2600,
+    "purpose": "consum propriu, surplusul se vinde",
+    "daytimeConsumptionShare": 0.55,
+    "oldEquipment": "nu se înlocuiește niciun echipament"
+  },
+  "request": {
+    "description": "Instalație fotovoltaică pe acoperiș, 300 kWp",
+    "kwp": 300,
+    "priceEur": 210000
+  },
+  "expected": {
+    "annualConsumptionKwh": 215000,
+    "requested": { "kwp": 300, "productionKwh": 375000, "selfConsumedKwh": 118250, "exportedKwh": 256750, "exportShare": 0.68, "savingEurYear": 37873, "paybackYears": 5.5 },
+    "green": { "kwp": 100, "investmentEur": 72000, "productionKwh": 125000, "selfConsumedKwh": 100375, "exportedKwh": 24625, "exportShare": 0.2, "savingEurYear": 20549, "paybackYears": 3.5, "co2AvoidedT": 32.5, "tier": "Verde" },
+    "threshold": "eligibil prin natura investiției"
+  },
+  "documents": [
+    {
+      "file": "01_oferta_fotovoltaice_300kWp.pdf",
+      "title": "Ofertă de preț și fișă tehnică",
+      "issuer": { "name": "Solar Câmpia Demo SRL", "address": "Str. Exemplu 2, Ploiești" },
+      "number": "OF-PV-2026-077",
+      "date": "2026-10-08",
+      "sections": [
+        { "heading": "Obiect", "text": "Instalație fotovoltaică montată pe acoperișul halelor, racordată la rețea, pentru consum propriu și vânzarea surplusului." },
+        { "heading": "Componente și preț", "table": { "columns": ["Poz.", "Denumire", "Cant.", "Preț (EUR, fără TVA)"], "rows": [
+          ["1", "Panouri fotovoltaice monocristaline 550 Wp, certificate IEC 61215 / 61730", "546 buc.", "98.000"],
+          ["2", "Invertoare trifazate 100 kW", "3 buc.", "42.000"],
+          ["3", "Structură de montaj pe acoperiș, cabluri, protecții", "1 set", "48.000"],
+          ["4", "Proiectare, montaj, punere în funcțiune, dosar de racordare", "1 set", "22.000"],
+          ["", "TOTAL", "", "210.000"] ] } },
+        { "heading": "Parametri tehnici", "rows": [
+          ["Putere instalată", "300 kWp"],
+          ["Producție estimată", "375 MWh / an (1.250 kWh/kWp)"],
+          ["Suprafață de acoperiș necesară", "≈ 1.650 m²"],
+          ["Garanție panouri", "12 ani produs, 25 de ani performanță"] ] },
+        { "heading": "Condiții", "text": "Valabilitate ofertă: 45 de zile. Termen de execuție: 10 săptămâni de la avizul de racordare." }
+      ]
+    },
+    {
+      "file": "02_facturi_energie_12_luni.pdf",
+      "kind": "invoiceSeries",
+      "title": "Factură energie electrică",
+      "issuer": { "name": "Energie Demo Furnizare SA", "address": "furnizor fictiv" },
+      "item": "Energie electrică activă – loc de consum: ferma avicolă",
+      "unit": "kWh",
+      "unitPriceEur": 0.19,
+      "vatPct": 21,
+      "invoices": [
+        { "number": "ED-25-10-2207", "date": "2025-11-05", "period": "octombrie 2025", "qty": 15000 },
+        { "number": "ED-25-11-2207", "date": "2025-12-05", "period": "noiembrie 2025", "qty": 15500 },
+        { "number": "ED-25-12-2207", "date": "2026-01-05", "period": "decembrie 2025", "qty": 18500 },
+        { "number": "ED-26-01-2207", "date": "2026-02-05", "period": "ianuarie 2026", "qty": 19000 },
+        { "number": "ED-26-02-2207", "date": "2026-03-05", "period": "februarie 2026", "qty": 17000 },
+        { "number": "ED-26-03-2207", "date": "2026-04-05", "period": "martie 2026", "qty": 16000 },
+        { "number": "ED-26-04-2207", "date": "2026-05-05", "period": "aprilie 2026", "qty": 15000 },
+        { "number": "ED-26-05-2207", "date": "2026-06-05", "period": "mai 2026", "qty": 17000 },
+        { "number": "ED-26-06-2207", "date": "2026-07-05", "period": "iunie 2026", "qty": 20000 },
+        { "number": "ED-26-07-2207", "date": "2026-08-05", "period": "iulie 2026", "qty": 23000 },
+        { "number": "ED-26-08-2207", "date": "2026-09-05", "period": "august 2026", "qty": 22000 },
+        { "number": "ED-26-09-2207", "date": "2026-10-05", "period": "septembrie 2026", "qty": 17000 }
+      ]
+    }
+  ]
+}

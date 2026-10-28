@@ -1,0 +1,44 @@
+{
+  "_note": "Demo starting values. Every value must be confirmed or replaced (see README §14). 'source' says where each value comes from.",
+  "emissionFactors": {
+    "gridElectricityTco2PerMwh": { "value": 0.26, "source": "demo assumption, replace with the value the bank uses" },
+    "naturalGasTco2PerMwh": { "value": 0.2, "source": "combustion factor, demo" },
+    "dieselKgCo2PerLitre": { "value": 2.68, "source": "standard combustion factor" },
+    "nitrogenKgCo2ePerKgN": { "value": 4.29, "source": "IPCC direct N2O: 1% of N applied x 44/28 x GWP 273" },
+    "methaneGwp": { "value": 27, "source": "IPCC AR6" }
+  },
+  "physics": {
+    "pumpingKwhPerM3PerM": { "value": 0.002725, "source": "rho x g / 3,600,000" }
+  },
+  "irrigation": {
+    "applicationEfficiency": { "brazde": 0.6, "aspersie": 0.75, "picurare": 0.9, "source": "demo starting values" },
+    "pressureHeadM": { "brazde": 0, "aspersie": 35, "picurare": 15, "source": "demo starting values" },
+    "soilMoistureSensorReduction": { "value": 0.1, "source": "demo starting value" }
+  },
+  "solar": {
+    "specificYieldKwhPerKwpYear": { "value": 1250, "source": "demo starting value for southern Romania" },
+    "monthlyProductionShare": {
+      "values": [0.035, 0.05, 0.08, 0.1, 0.12, 0.125, 0.13, 0.12, 0.09, 0.07, 0.045, 0.035],
+      "_order": "January to December",
+      "source": "demo profile, sums to 1"
+    },
+    "maxExportShareForSizing": { "value": 0.3, "source": "demo sizing rule" }
+  },
+  "prices": {
+    "electricityEurPerKwh": { "value": 0.19, "source": "demo" },
+    "electricityExportEurPerKwh": { "value": 0.06, "source": "demo" },
+    "dieselEurPerLitre": { "value": 1.25, "source": "demo" },
+    "nitrogenEurPerKgN": { "value": 1.0, "source": "demo" },
+    "irrigationWaterEurPerM3": { "value": 0.02, "source": "demo" }
+  },
+  "organic": {
+    "yieldFactorConversionYear1": { "value": 0.7, "source": "demo" },
+    "yieldFactorConversionYear2": { "value": 0.75, "source": "demo" },
+    "yieldFactorCertified": { "value": 0.8, "source": "demo" },
+    "organicPricePremium": { "value": 0.45, "source": "demo" },
+    "costPerHaConventionalEur": { "value": 950, "source": "demo" },
+    "costPerHaOrganicEur": { "value": 1000, "source": "demo, includes organic fertilisation and certification" },
+    "conversionPaymentEurPerHa": { "value": 220, "source": "demo, confirm with the current PNS rules" },
+    "maintenancePaymentEurPerHa": { "value": 200, "source": "demo, confirm with the current PNS rules" }
+  }
+}
