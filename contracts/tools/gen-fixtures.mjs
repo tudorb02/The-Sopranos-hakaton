@@ -150,6 +150,24 @@ const A2 = 'FUNDING_OPTIMIZER';
 const A3 = 'GREEN_UNDERWRITER';
 const field = (key, rawValue, unit, page, confidence = 'HIGH') => ({ key, rawValue, unit, page, confidence });
 
+// README §4 step 8, in the order of the Java GreenTierCalculator: CLASIC, VERDE_PLUS, VERDE_CU_UPGRADE, VERDE.
+const DNSH_ORDER = ['PASS', 'PASS_WITH_CONDITIONS', 'MISSING_DATA', 'FAIL'];
+const worstDnsh = (checks) => DNSH_ORDER[Math.max(...checks.map((c) => DNSH_ORDER.indexOf(c.status)))];
+function greenTierOf(thresholdPct, multiplier, requestedPct, financedPct, dnsh) {
+  if (financedPct < thresholdPct || dnsh === 'FAIL') return 'CLASIC';
+  if (financedPct >= thresholdPct * multiplier && dnsh === 'PASS') return 'VERDE_PLUS';
+  return requestedPct < thresholdPct ? 'VERDE_CU_UPGRADE' : 'VERDE';
+}
+
+// README §4 step 7: (annual net cash flow + annual savings) / debt service of the heaviest full loan year.
+function dscrOf(series, annualNetCf, savingsYear) {
+  const payments = series.map((p) => p.values.payment);
+  const years = payments.length < 12 ? [payments]
+    : Array.from({ length: Math.floor(payments.length / 12) }, (_, y) => payments.slice(y * 12, (y + 1) * 12));
+  const heaviest = Math.max(...years.map((year) => year.reduce((sum, v) => sum + v, 0)));
+  return { heaviest, dscr: (annualNetCf + savingsYear) / heaviest };
+}
+
 // =====================================================================
 // Scenario 1: irigatii — 40 ha vegetable farm, south-east
 // =====================================================================
@@ -446,6 +464,21 @@ function buildIrigatii() {
     ],
   });
 
+  const verdePlusMultiplier = 1.5;
+  const requestedPct = (1 - wSpr / wOld) * 100;
+  const financedPct = (1 - wDrip / wOld) * 100;
+  const dnshOverall = worstDnsh(assessment.dnshChecks);
+  const tierName = greenTierOf(P.threshold, verdePlusMultiplier, requestedPct, financedPct, dnshOverall);
+  const tierThr = R.calc('determine_green_tier', 'green_tier.threshold', 'Pragul verde', P.threshold, 'PCT', { sourceRo: 'config/modules/irigatii.json (propunere, de confirmat cu Raiffeisen)' });
+  const tierReq = R.calc('determine_green_tier', 'green_tier.requested_indicator', 'Indicatorul investiției cerute', requestedPct, 'PCT');
+  const tierFin = R.calc('determine_green_tier', 'green_tier.financed_indicator', 'Indicatorul investiției finanțate de creditul verde', financedPct, 'PCT');
+  const tierPlus = R.calc('determine_green_tier', 'green_tier.verde_plus_min', 'Pragul pentru Verde Plus', P.threshold * verdePlusMultiplier, 'PCT', { formula: 'prag × multiplicator', sourceRo: 'config/pricing.json: greenTiers.verdePlusThresholdMultiplier (README §4, pasul 8)', dependsOn: [tierThr] });
+  const tier = {
+    tier: tierName, thresholdMet: financedPct >= P.threshold, upgradeNeeded: requestedPct < P.threshold, dnshStatus: dnshOverall,
+    thresholdCalcId: tierThr.calcId, requestedIndicatorCalcId: tierReq.calcId, financedIndicatorCalcId: tierFin.calcId, verdePlusMinCalcId: tierPlus.calcId,
+  };
+  R.tool(A2, 'determine_green_tier', 3, { requestedConfigId: 'cfg_initial', financedConfigId: 'cfg_recommended' }, '🔧 Stabilesc nivelul verde', `🔧 ${tierName === 'VERDE_CU_UPGRADE' ? 'Verde cu upgrade' : tierName}: ${tierFin.display} față de pragul de ${tierThr.display}; Verde Plus cere ${tierPlus.display} și DNSH fără condiții`, () => [tierThr, tierReq, tierFin, tierPlus], { tier: tierName, thresholdMet: tier.thresholdMet, upgradeNeeded: tier.upgradeNeeded, dnshStatus: dnshOverall });
+
   R.thought(A2, 'Pentru irigații nu există azi o sesiune AFIR deschisă: DR-26 și DR-16 au ghid, dar nicio sesiune în 2026, iar DR-12 nu se aplică (administrator de 52 de ani). Construiesc pachetul verde fără grant: credit verde cu garanție InvestEU și rate după recoltă (iulie–octombrie, din Open Banking).', 3);
 
   const stackGreenAmt = R.calc('build_funding_stack', 'option_b.green_loan.amount', 'Credit verde', recCostTotal, 'EUR', { dependsOn: [recCost] });
@@ -497,6 +530,14 @@ function buildIrigatii() {
   const bRatio = R.calc('check_affordability', 'option_b.affordability_ratio', 'Serviciu anual datorie / cashflow net anual, B', ((schB.installment * 4) / P.annualNetCf) * 100, 'PCT', { formula: 'rate sezoniere pe an / cashflow net din Open Banking', dependsOn: [bInst] });
   R.tool(A2, 'check_affordability', 6, { optionIds: ['A', 'B'], cashflowSource: 'OPEN_BANKING' }, '🔧 Verific dacă rata încape în cashflow', '🔧 Ambele încap. A cade și în lunile februarie–aprilie, când cashflow-ul e negativ', () => [aRatio, bRatio], { A: 'PASS_WITH_WARNING', B: 'PASS' });
 
+  const dsA = dscrOf(schA.series, P.annualNetCf, aSav);
+  const dsB = dscrOf(schB.series, P.annualNetCf, bSav);
+  const aDs = R.calc('compute_dscr', 'option_a.debt_service_year', 'Rate și dobânzi în cel mai greu an de credit', dsA.heaviest, 'EUR_PER_YEAR', { dependsOn: [aInst] });
+  const aDscr = R.calc('compute_dscr', 'option_a.dscr', 'DSCR: acoperirea ratelor din cashflow și economii', dsA.dscr, 'RATIO', { formula: '(cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului', sourceRo: 'Open Banking (cashflow pe 12 luni)', dependsOn: [aDs] });
+  const bDs = R.calc('compute_dscr', 'option_b.debt_service_year', 'Rate și dobânzi în cel mai greu an de credit', dsB.heaviest, 'EUR_PER_YEAR', { dependsOn: [bInst] });
+  const bDscr = R.calc('compute_dscr', 'option_b.dscr', 'DSCR: acoperirea ratelor din cashflow și economii', dsB.dscr, 'RATIO', { formula: '(cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului', sourceRo: 'Open Banking (cashflow pe 12 luni)', dependsOn: [bDs] });
+  R.tool(A2, 'compute_dscr', 6, { optionIds: ['A', 'B'] }, '🔧 Calculez DSCR-ul fiecărei variante', `🔧 DSCR: A ${aDscr.display}, B ${bDscr.display}`, () => [aDs, aDscr, bDs, bDscr], { optionIds: ['A', 'B'] });
+
   const funding = {
     options: [
       {
@@ -509,7 +550,7 @@ function buildIrigatii() {
         collateral: ['MORTGAGE'],
         totals: { totalPaymentsCalcId: aTotal.calcId, totalInterestCalcId: aInterest.calcId, collateralCostsCalcId: aColl.calcId, savingsOverHorizonCalcId: aSavH.calcId, netCostCalcId: aNet.calcId },
         annualSavings: [{ metric: 'WATER_COST_SAVED_EUR', calcId: aWaterEur.calcId }, { metric: 'ENERGY_COST_SAVED_EUR', calcId: aEnergyEur.calcId }],
-        affordability: { status: 'PASS_WITH_WARNING', ratioCalcId: aRatio.calcId, limitCalcId: affLimit.calcId, noteRo: 'Încape pe an, dar ratele din februarie–aprilie cad în luni cu cashflow negativ și se plătesc din rezervă.' },
+        affordability: { status: 'PASS_WITH_WARNING', ratioCalcId: aRatio.calcId, limitCalcId: affLimit.calcId, dscrCalcId: aDscr.calcId, debtServiceCalcId: aDs.calcId, noteRo: 'Încape pe an, dar ratele din februarie–aprilie cad în luni cu cashflow negativ și se plătesc din rezervă.' },
         greenEligible: false,
       },
       {
@@ -523,12 +564,13 @@ function buildIrigatii() {
         collateral: ['GUARANTEE_INVESTEU_FEI', 'PLEDGE_EQUIPMENT'],
         totals: { totalPaymentsCalcId: bTotal.calcId, totalInterestCalcId: bInterest.calcId, collateralCostsCalcId: bColl.calcId, savingsOverHorizonCalcId: bSavH.calcId, netCostCalcId: bNet.calcId },
         annualSavings: [{ metric: 'WATER_COST_SAVED_EUR', calcId: bWaterEur.calcId }, { metric: 'ENERGY_COST_SAVED_EUR', calcId: bEnergyEur.calcId }],
-        affordability: { status: 'PASS', ratioCalcId: bRatio.calcId, limitCalcId: affLimit.calcId, noteRo: 'Ratele cad doar în lunile cu încasări mari (iulie–octombrie).' },
+        affordability: { status: 'PASS', ratioCalcId: bRatio.calcId, limitCalcId: affLimit.calcId, dscrCalcId: bDscr.calcId, debtServiceCalcId: bDs.calcId, noteRo: 'Ratele cad doar în lunile cu încasări mari (iulie–octombrie).' },
         greenEligible: true,
       },
     ],
     recommendedOptionId: 'B',
     recommendationBasis: { greenEligible: true, netAdvantagePositive: true, affordabilityPassed: true },
+    greenTier: tier,
     programChecks: [
       { programCode: 'DR_26', result: 'ELIGIBLE', session: 'NOT_OPEN', checkedAt: '2026-10-28', sourceUrl: 'https://www.afir.ro/', criteria: [{ criterion: 'WATER_METERING', result: 'PASS', noteRo: 'Contorul e inclus în configurația recomandată.' }, { criterion: 'MIN_WATER_SAVING', result: 'PASS', calcId: recPct.calcId }, { criterion: 'SESSION_OPEN', result: 'FAIL', noteRo: 'Ghid publicat, nicio sesiune în 2026.' }], noteRo: 'Proiectul s-ar potrivi, dar nu există sesiune deschisă.' },
       { programCode: 'DR_16', result: 'ELIGIBLE', session: 'NOT_OPEN', checkedAt: '2026-10-28', sourceUrl: 'https://www.afir.ro/', criteria: [{ criterion: 'SECTOR_ELIGIBLE', result: 'PASS', noteRo: 'Legume.' }, { criterion: 'SESSION_OPEN', result: 'FAIL' }], noteRo: 'Ghid publicat, nicio sesiune în 2026.' },
@@ -576,6 +618,32 @@ function buildIrigatii() {
   const co2H = R.calc('calculate_impact', 'impact.co2_horizon', 'CO₂ evitat pe 5 ani', (((P.invoiceKwh - gridLeft) * P.gridFactor) / 1000) * P.horizonYears, 'T_CO2', { dependsOn: [recCo2, horizon] });
   R.tool(A3, 'calculate_impact', 2, { configId: 'cfg_recommended', horizon: 'FROM_CONFIG' }, '🔧 Calculez impactul de mediu', `🔧 ${recSaved.display} apă, ${recGridSaved.display} din rețea, ${recCo2.display} evitate`, () => [greenAmt, transAmt, greenPct, waterH, co2H], {});
 
+  const fundCov = R.calc('select_fund', 'fund.coverage', 'Acoperirea garanției F1', P.feiCoverage, 'PCT', { sourceRo: 'config/funds.json: F1, acordul FEI cu Raiffeisen din 2023 (procentul pentru 2026, de confirmat)' });
+  R.tool(A3, 'select_fund', 3, { optionId: 'B' }, '🔧 Aleg fondul care susține creditul verde', '🔧 F1, garanția FEI InvestEU de sustenabilitate: fondul principal pentru irigații', () => [fundCov], {
+    fundId: 'F1', nameRo: 'Garanția FEI InvestEU de sustenabilitate', kind: 'GUARANTEE', role: 'PRIMARY',
+    alternatives: [
+      { fundId: 'F4', nameRo: 'Finanțare pentru irigații cu FEI (cu RWA Raiffeisen Agro)', status: 'TO_CONFIRM' },
+      { fundId: 'F6', nameRo: 'Granturi AFIR / PNS', status: 'NOT_AVAILABLE' },
+    ],
+  });
+  R.tool(A3, 'check_fund_requirements', 3, { fundId: 'F1', optionId: 'B' }, '🔧 Bifez cerințele fondului F1', '🔧 F1: 6 din 7 cerințe îndeplinite; DNSH are condiții înainte de tragere', null, {
+    fundId: 'F1',
+    requirements: [
+      { requirementId: 'SME_STATUS', level: 'REQUIRED', status: 'MET', reasonRo: 'Firma e IMM după bilanțul de la ANAF (angajați, cifră de afaceri, active).' },
+      { requirementId: 'ELIGIBLE_CATEGORY', level: 'REQUIRED', status: 'MET', reasonRo: 'Categoria Irigații e legată de fond (README §3.3).' },
+      { requirementId: 'TECHNICAL_THRESHOLD', level: 'REQUIRED', status: 'MET', reasonRo: 'Configurația finanțată trece pragul verde, calculat de motor din documente.' },
+      { requirementId: 'DNSH', level: 'PROBABLE', status: 'TO_CONFIRM', reasonRo: 'DNSH trecut cu condiții înainte de tragere.' },
+      { requirementId: 'IMPACT_QUANTIFIED', level: 'REQUIRED', status: 'MET', reasonRo: 'Impactul e calculat de motor pe acest credit.' },
+      { requirementId: 'CLIENT_BENEFIT', level: 'REQUIRED', status: 'MET', reasonRo: 'Dobândă mai mică decât la creditul clasic și fără ipotecă.' },
+      { requirementId: 'PERIODIC_REPORTING', level: 'REQUIRED', status: 'MET', reasonRo: 'Dosarul are indicatori de monitorizare la 12 luni, din contoare și facturi.' },
+    ],
+    allMet: false,
+  });
+  R.tool(A3, 'get_bond_category', 3, {}, '🔧 Caut categoria din cadrul obligațiunilor verzi', '🔧 Categoria propusă: Agriculture and forestry', null, {
+    categories: [{ categoryId: 'AGRICULTURE_FORESTRY', nameEn: 'Agriculture and forestry', nameRo: 'Agricultură și silvicultură' }],
+    proposed: 'AGRICULTURE_FORESTRY', sourceRo: 'README §3.1: categoriile cadrului de obligațiuni verzi și sustenabile Raiffeisen (Sustainalytics, Second Party Opinion 2024)',
+  });
+
   const report = {
     decision: 'ELIGIBLE_WITH_CONDITIONS',
     moduleId: 'irigatii',
@@ -589,6 +657,22 @@ function buildIrigatii() {
     ],
     greenShare: { greenAmountCalcId: greenAmt.calcId, transitionAmountCalcId: transAmt.calcId, greenSharePctCalcId: greenPct.calcId },
     greenBond: { category: 'AGRICULTURE_FORESTRY', status: 'TO_CONFIRM', eligibleAmountCalcId: greenAmt.calcId, noteRo: 'Categoria „Agriculture and forestry” exista în cadrul RBRO 2022; cadrul RBI 2025 nu o mai are. De confirmat cu echipa Green Bonds. Pompa solară se poate încadra separat la energie regenerabilă.' },
+    fund: {
+      fundId: 'F1', role: 'PRIMARY',
+      requirements: [
+        { requirementId: 'SME_STATUS', level: 'REQUIRED', status: 'MET', noteRo: 'IMM după bilanțul ANAF pe 2025.' },
+        { requirementId: 'ELIGIBLE_CATEGORY', level: 'REQUIRED', status: 'MET', noteRo: 'Irigațiile intră în investițiile verzi acoperite de garanție.' },
+        { requirementId: 'TECHNICAL_THRESHOLD', level: 'REQUIRED', status: 'MET', evidenceCalcIds: [recPct.calcId, threshold.calcId], noteRo: 'Economia de apă a configurației recomandate trece pragul de 25%.' },
+        { requirementId: 'DNSH', level: 'PROBABLE', status: 'TO_CONFIRM', conditionId: 'cp_fertigation_plan', noteRo: 'Trecut cu condiții: planul de fertirigare și reciclarea tuburilor de picurare.' },
+        { requirementId: 'IMPACT_QUANTIFIED', level: 'REQUIRED', status: 'MET', evidenceCalcIds: [recSaved.calcId, recCo2.calcId], noteRo: 'Apa economisită și CO₂ evitat, calculate pe acest credit.' },
+        { requirementId: 'CLIENT_BENEFIT', level: 'REQUIRED', status: 'MET', noteRo: 'Dobândă mai mică și fără ipotecă față de creditul clasic.' },
+        { requirementId: 'PERIODIC_REPORTING', level: 'REQUIRED', status: 'MET', noteRo: 'Contorul de apă și facturile de energie, la 12 luni.' },
+      ],
+      alternatives: [
+        { fundId: 'F4', status: 'TO_CONFIRM', noteRo: 'Finanțarea pentru irigații cu FEI poate înlocui F1 dacă mai e activă; de confirmat cu Raiffeisen.' },
+        { fundId: 'F6', status: 'NOT_AVAILABLE', noteRo: 'Nicio sesiune AFIR deschisă pentru care ferma e eligibilă.' },
+      ],
+    },
     substantialContribution: 'WATER_MARINE_RESOURCES',
     dnsh: [
       { objective: 'CLIMATE_MITIGATION', status: 'PASS', justificationRo: 'Pompa solară înlocuiește aproape tot consumul din rețea; emisiile scad față de situația actuală.', evidence: ['ENERGY_INVOICES', 'TECHNICAL_SHEET'] },
@@ -608,11 +692,11 @@ function buildIrigatii() {
     ],
     conditionsPrecedent: [
       { conditionId: 'cp_investeu_guarantee', type: 'GUARANTEE_APPROVAL', documentType: 'GUARANTEE_APPROVAL', descriptionRo: 'Includerea creditului în portofoliul garantat InvestEU (FEI).', timing: 'BEFORE_SIGNING', blocking: true },
-      { conditionId: 'cp_fertigation_plan', type: 'DOCUMENT', documentType: 'OTHER', descriptionRo: 'Plan de fertirigare pentru parcelele ct_0415_01 și ct_0415_02 (zonă vulnerabilă la nitrați).', timing: 'BEFORE_FIRST_DISBURSEMENT', blocking: false },
+      { conditionId: 'cp_fertigation_plan', type: 'DOCUMENT', documentType: 'OTHER', descriptionRo: 'Plan de fertirigare pentru parcelele ct_0415_01 și ct_0415_02 (zonă vulnerabilă la nitrați).', timing: 'BEFORE_FIRST_DISBURSEMENT', blocking: false, missingFieldKey: 'fertigation_plan' },
       { conditionId: 'cp_final_invoice', type: 'INVOICE_MATCH', documentType: 'FINAL_INVOICE', descriptionRo: 'Factura finală corespunde configurației aprobate: picurare, senzori, contor, pompă solară 25 kWp.', timing: 'BEFORE_FINAL_DISBURSEMENT', blocking: true },
       { conditionId: 'cp_drip_recycling', type: 'DOCUMENT', documentType: 'OTHER', descriptionRo: 'Angajamentul furnizorului de a prelua tuburile de picurare uzate la reciclare.', timing: 'BEFORE_FINAL_DISBURSEMENT', blocking: false },
       { conditionId: 'cp_commissioning', type: 'DOCUMENT', documentType: 'COMMISSIONING_REPORT', descriptionRo: 'Proces-verbal de punere în funcțiune și poze geolocalizate.', timing: 'AFTER_INSTALLATION', blocking: false },
-      { conditionId: 'cp_water_meter', type: 'TECHNICAL_SPEC', documentType: 'WATER_METER_CERTIFICATE', descriptionRo: 'Certificatul metrologic al contorului de apă montat.', timing: 'AFTER_INSTALLATION', blocking: false },
+      { conditionId: 'cp_water_meter', type: 'TECHNICAL_SPEC', documentType: 'WATER_METER_CERTIFICATE', descriptionRo: 'Certificatul metrologic al contorului de apă montat.', timing: 'AFTER_INSTALLATION', blocking: false, missingFieldKey: 'water_meter' },
     ],
     monitoringKpis: [
       { kpiId: 'kpi_water_use', metric: 'WATER_USE_M3', targetCalcId: recWater.calcId, frequency: 'ANNUAL', firstDue: 'MONTH_12', dataSource: 'WATER_METER', descriptionRo: 'Consumul real de apă, citit de pe contor, comparat cu estimarea.' },
@@ -633,15 +717,16 @@ function buildIrigatii() {
       { stepRo: 'La 12 luni: citirea contorului de apă și facturile de energie.' },
     ],
   };
-  R.completed(A3, 'submit_underwriting_report', '✅ Agentul 3 a terminat: eligibil verde cu condiții', report, 3, 21600);
+  R.completed(A3, 'submit_underwriting_report', '✅ Agentul 3 a terminat: eligibil verde cu condiții', report, 6, 21600);
 
-  R.state('AGENT_3', 'GATA', 'Dosarul e gata pentru ofițerul de credit', {}, 300);
+  R.state('AGENT_3', 'GATA', 'Ofertele sunt gata; fermierul alege varianta și trimite cererea', {}, 300);
   const t0 = Date.parse('2026-10-28T09:30:00.000Z');
   R.emit('run.completed', null, `Analiză completă: eligibil cu condiții, recomandăm B (+${cmpAdv.display} în 5 ani)`, {
     state: 'GATA', durationMs: R.t - t0 + 200, decision: 'ELIGIBLE_WITH_CONDITIONS', recommendedOptionId: 'B', netAdvantageCalcId: cmpAdv.calcId,
     sources: { TECHNICAL_AUDITOR: 'LIVE', FUNDING_OPTIMIZER: 'LIVE', GREEN_UNDERWRITER: 'LIVE' },
   }, 200);
-  R.state('GATA', 'APROBAT', 'Ofițerul a aprobat dosarul cu condițiile propuse', { actor: 'OFFICER', reasonRo: 'Aprobat cu cele 6 condiții din raport.' }, 45000);
+  R.state('GATA', 'TRIMIS', 'Cererea a fost trimisă la bancă: Credit verde', { actor: 'FARMER' }, 40000);
+  R.state('TRIMIS', 'APROBAT', 'Banca a aprobat dosarul cu condițiile propuse', { actor: 'OFFICER', reasonRo: 'Aprobat cu cele 6 condiții din raport.' }, 5000);
   R.state('APROBAT', 'MONITORIZARE', 'Tragere simulată în demo; încep verificările de monitorizare', { reasonRo: 'Demo: tragerea e simulată imediat după aprobare.' }, 3000);
 
   return { R, assessment, funding, report, extractions: [extractionOffer, extractionPermit, extractionEnergy] };
@@ -870,6 +955,21 @@ function buildUtilaje() {
     ],
   });
 
+  const verdePlusMultiplier = 1.5;
+  const requestedPct = P.tractorSaving * 100;
+  const financedPct = (bL / baseL) * 100;
+  const dnshOverall = worstDnsh(assessment.dnshChecks);
+  const tierName = greenTierOf(P.threshold, verdePlusMultiplier, requestedPct, financedPct, dnshOverall);
+  const tierThr = R.calc('determine_green_tier', 'green_tier.threshold', 'Pragul verde', P.threshold, 'PCT', { sourceRo: 'config/modules/utilaje.json (propunere, de confirmat cu Raiffeisen)' });
+  const tierReq = R.calc('determine_green_tier', 'green_tier.requested_indicator', 'Indicatorul investiției cerute', requestedPct, 'PCT');
+  const tierFin = R.calc('determine_green_tier', 'green_tier.financed_indicator', 'Indicatorul investiției finanțate de creditul verde', financedPct, 'PCT');
+  const tierPlus = R.calc('determine_green_tier', 'green_tier.verde_plus_min', 'Pragul pentru Verde Plus', P.threshold * verdePlusMultiplier, 'PCT', { formula: 'prag × multiplicator', sourceRo: 'config/pricing.json: greenTiers.verdePlusThresholdMultiplier (README §4, pasul 8)', dependsOn: [tierThr] });
+  const tier = {
+    tier: tierName, thresholdMet: financedPct >= P.threshold, upgradeNeeded: requestedPct < P.threshold, dnshStatus: dnshOverall,
+    thresholdCalcId: tierThr.calcId, requestedIndicatorCalcId: tierReq.calcId, financedIndicatorCalcId: tierFin.calcId, verdePlusMinCalcId: tierPlus.calcId,
+  };
+  R.tool(A2, 'determine_green_tier', 3, { requestedConfigId: 'cfg_initial', financedConfigId: 'cfg_recommended' }, '🔧 Stabilesc nivelul verde', `🔧 ${tierName === 'VERDE_CU_UPGRADE' ? 'Verde cu upgrade' : tierName}: ${tierFin.display} față de pragul de ${tierThr.display}; Verde Plus cere ${tierPlus.display} și DNSH fără condiții`, () => [tierThr, tierReq, tierFin, tierPlus], { tier: tierName, thresholdMet: tier.thresholdMet, upgradeNeeded: tier.upgradeNeeded, dnshStatus: dnshOverall });
+
   R.thought(A2, 'Ferma e eligibilă la DR-12: SRL, administrator de 38 de ani, instalat în 2023, utilaje noi. Intensitatea e 65% pentru că nu avem dovada competențelor; cu 80% grantul ar rămâne tot la plafonul de 200.000 EUR. Compun: grant + credit de cofinanțare cu garanție FGCR + punte până la plata grantului.', 3);
 
   const grant = Math.min((P.grantIntensity / 100) * recTotal, P.grantCap);
@@ -928,6 +1028,14 @@ function buildUtilaje() {
   const bRatio = R.calc('check_affordability', 'option_b.affordability_ratio', 'Serviciu anual datorie / cashflow net anual, B', ((schB.installment * 12) / P.annualNetCf) * 100, 'PCT', { formula: 'rate cofinanțare pe 12 luni / cashflow net (puntea se închide din grant)', dependsOn: [bInst] });
   R.tool(A2, 'check_affordability', 6, { optionIds: ['A', 'B'], cashflowSource: 'OPEN_BANKING' }, '🔧 Verific dacă rata încape în cashflow', `🔧 A: ${aRatio.display} din cashflow, aproape de limită. B: ${bRatio.display}`, () => [aRatio, bRatio], { A: 'PASS_WITH_WARNING', B: 'PASS' });
 
+  const dsA = dscrOf(schA.series, P.annualNetCf, aFuelEur);
+  const dsB = dscrOf(schB.series, P.annualNetCf, bFuelEur + bInputsEur);
+  const aDs = R.calc('compute_dscr', 'option_a.debt_service_year', 'Rate și dobânzi în cel mai greu an de credit', dsA.heaviest, 'EUR_PER_YEAR', { dependsOn: [aInst] });
+  const aDscr = R.calc('compute_dscr', 'option_a.dscr', 'DSCR: acoperirea ratelor din cashflow și economii', dsA.dscr, 'RATIO', { formula: '(cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului', sourceRo: 'Open Banking (cashflow pe 12 luni)', dependsOn: [aDs] });
+  const bDs = R.calc('compute_dscr', 'option_b.debt_service_year', 'Rate și dobânzi în cel mai greu an de credit', dsB.heaviest, 'EUR_PER_YEAR', { dependsOn: [bInst] });
+  const bDscr = R.calc('compute_dscr', 'option_b.dscr', 'DSCR: acoperirea ratelor din cashflow și economii', dsB.dscr, 'RATIO', { formula: '(cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului', sourceRo: 'Open Banking (cashflow pe 12 luni)', dependsOn: [bDs] });
+  R.tool(A2, 'compute_dscr', 6, { optionIds: ['A', 'B'] }, '🔧 Calculez DSCR-ul fiecărei variante', `🔧 DSCR: A ${aDscr.display}, B ${bDscr.display}`, () => [aDs, aDscr, bDs, bDscr], { optionIds: ['A', 'B'] });
+
   // first submit rejected by schema validation, then corrected
   const badToolUseId = `tooluse_${hash12(`${R.runId}|submit_funding_recommendation|bad`)}`;
   R.emit('agent.tool_result', A2, '⚠️ Output respins de validare: lipsește grantOutlook. Agentul se corectează', {
@@ -947,7 +1055,7 @@ function buildUtilaje() {
         collateral: ['PLEDGE_EQUIPMENT', 'MORTGAGE'],
         totals: { totalPaymentsCalcId: aTotal.calcId, totalInterestCalcId: aInt.calcId, savingsOverHorizonCalcId: aSavH.calcId, netCostCalcId: aNet.calcId },
         annualSavings: [{ metric: 'FUEL_COST_SAVED_EUR', calcId: aFuel.calcId }],
-        affordability: { status: 'PASS_WITH_WARNING', ratioCalcId: aRatio.calcId, limitCalcId: affLimit.calcId, noteRo: 'Încape, dar e aproape de limita de 40%.' },
+        affordability: { status: 'PASS_WITH_WARNING', ratioCalcId: aRatio.calcId, limitCalcId: affLimit.calcId, dscrCalcId: aDscr.calcId, debtServiceCalcId: aDs.calcId, noteRo: 'Încape, dar e aproape de limita de 40%.' },
         greenEligible: false,
       },
       {
@@ -963,12 +1071,13 @@ function buildUtilaje() {
         collateral: ['GUARANTEE_FGCR', 'PLEDGE_EQUIPMENT', 'GRANT_ASSIGNMENT'],
         totals: { totalPaymentsCalcId: bTotal.calcId, totalInterestCalcId: bInt.calcId, savingsOverHorizonCalcId: bSavH.calcId, netCostCalcId: bNet.calcId },
         annualSavings: [{ metric: 'FUEL_COST_SAVED_EUR', calcId: bFuel.calcId }, { metric: 'INPUTS_COST_SAVED_EUR', calcId: bInputs.calcId }],
-        affordability: { status: 'PASS', ratioCalcId: bRatio.calcId, limitCalcId: affLimit.calcId, noteRo: 'Rata de cofinanțare încape confortabil; puntea se închide din grant.' },
+        affordability: { status: 'PASS', ratioCalcId: bRatio.calcId, limitCalcId: affLimit.calcId, dscrCalcId: bDscr.calcId, debtServiceCalcId: bDs.calcId, noteRo: 'Rata de cofinanțare încape confortabil; puntea se închide din grant.' },
         greenEligible: true,
       },
     ],
     recommendedOptionId: 'B',
     recommendationBasis: { greenEligible: true, netAdvantagePositive: true, affordabilityPassed: true },
+    greenTier: tier,
     programChecks: [
       {
         programCode: 'DR_12', result: 'ELIGIBLE', session: 'OPEN', deadline: '2026-12-02T16:00:00+02:00', checkedAt: '2026-10-28', sourceUrl: 'https://www.afir.ro/domenii-de-interventie/detalii-si-anexe-dr-12/',
@@ -1028,6 +1137,21 @@ function buildUtilaje() {
   const co2H = R.calc('calculate_impact', 'impact.co2_horizon', 'CO₂ evitat pe 7 ani', ((bL * P.co2PerL) / 1000) * P.horizonYears, 'T_CO2', { dependsOn: [rCo2, horizon] });
   R.tool(A3, 'calculate_impact', 2, { configId: 'cfg_recommended', horizon: 'FROM_CONFIG' }, '🔧 Calculez impactul de mediu', `🔧 ${rSaved.display} motorină, ${rN.display}, ${rCo2.display} evitate`, () => [greenAmt, transAmt, greenPct, fuelH, co2H], {});
 
+  R.tool(A3, 'select_fund', 3, { optionId: 'B' }, '🔧 Aleg fondul care susține varianta B', '🔧 F6, granturi AFIR / PNS: alternativa pentru utilaje, prin grantul DR-12 și creditul de cofinanțare', null, {
+    fundId: 'F6', nameRo: 'Granturi AFIR / PNS', kind: 'PUBLIC_GRANT', role: 'ALTERNATIVE',
+    alternatives: [{ fundId: 'F1', nameRo: 'Garanția FEI InvestEU de sustenabilitate', status: 'AVAILABLE' }],
+  });
+  R.tool(A3, 'check_fund_requirements', 3, { fundId: 'F6', optionId: 'B' }, '🔧 Bifez cerințele fondului F6', '🔧 F6 nu are cerințe verzi proprii: condițiile vin din ghidul DR-12', null, {
+    fundId: 'F6', requirements: [], allMet: true,
+  });
+  R.tool(A3, 'get_bond_category', 3, {}, '🔧 Caut categoria din cadrul obligațiunilor verzi', '🔧 Categoria propusă: Agriculture and forestry; alternativ Energy efficiency', null, {
+    categories: [
+      { categoryId: 'AGRICULTURE_FORESTRY', nameEn: 'Agriculture and forestry', nameRo: 'Agricultură și silvicultură' },
+      { categoryId: 'ENERGY_EFFICIENCY', nameEn: 'Energy efficiency', nameRo: 'Eficiență energetică' },
+    ],
+    proposed: 'AGRICULTURE_FORESTRY', sourceRo: 'README §3.1: categoriile cadrului de obligațiuni verzi și sustenabile Raiffeisen (Sustainalytics, Second Party Opinion 2024)',
+  });
+
   const report = {
     decision: 'ELIGIBLE_WITH_CONDITIONS',
     moduleId: 'utilaje',
@@ -1040,6 +1164,10 @@ function buildUtilaje() {
     ],
     greenShare: { greenAmountCalcId: greenAmt.calcId, transitionAmountCalcId: transAmt.calcId, greenSharePctCalcId: greenPct.calcId },
     greenBond: { category: 'AGRICULTURE_FORESTRY', status: 'TO_CONFIRM', eligibleAmountCalcId: greenAmt.calcId, noteRo: 'Doar pachetul de precizie poate intra în portofoliul verde; tractoarele diesel sunt excluse. Categoria agricultură trebuie confirmată cu echipa Green Bonds (cadrul RBI 2025).' },
+    fund: {
+      fundId: 'F6', role: 'ALTERNATIVE', requirements: [],
+      alternatives: [{ fundId: 'F1', status: 'AVAILABLE', noteRo: 'Garanția FEI InvestEU, fondul principal pentru utilaje, dacă fermierul renunță la grant.' }],
+    },
     substantialContribution: 'CLIMATE_MITIGATION',
     dnsh: [
       { objective: 'CLIMATE_ADAPTATION', status: 'PASS', justificationRo: 'Investiția nu crește expunerea fermei la riscuri climatice.', evidence: [] },
@@ -1063,7 +1191,7 @@ function buildUtilaje() {
       { conditionId: 'cp_competences', type: 'DOCUMENT', documentType: 'OTHER', descriptionRo: 'Dovada competențelor profesionale ale administratorului (ar ridica intensitatea la 80%; plafonul rămâne 200.000 EUR).', timing: 'BEFORE_SIGNING', blocking: false },
       { conditionId: 'cp_afir_contract', type: 'GRANT_APPROVAL', documentType: 'AFIR_FINANCING_CONTRACT', descriptionRo: 'Contractul de finanțare AFIR semnat (pentru tragerea din punte).', timing: 'BEFORE_FIRST_DISBURSEMENT', blocking: true },
       { conditionId: 'cp_final_invoice', type: 'INVOICE_MATCH', documentType: 'FINAL_INVOICE', descriptionRo: 'Factura finală include tractoarele și pachetul de precizie aprobat (RTK, section control, doză variabilă).', timing: 'BEFORE_FINAL_DISBURSEMENT', blocking: true },
-      { conditionId: 'cp_scrapping', type: 'DOCUMENT', documentType: 'SCRAPPING_CERTIFICATE', descriptionRo: 'Certificatele de dezmembrare pentru cele 4 tractoare vechi.', timing: 'AFTER_INSTALLATION', blocking: false },
+      { conditionId: 'cp_scrapping', type: 'DOCUMENT', documentType: 'SCRAPPING_CERTIFICATE', descriptionRo: 'Certificatele de dezmembrare pentru cele 4 tractoare vechi.', timing: 'AFTER_INSTALLATION', blocking: false, missingFieldKey: 'scrapping_certificate' },
     ],
     monitoringKpis: [
       { kpiId: 'kpi_fuel_use', metric: 'FUEL_USE_L', targetCalcId: rFuelUse.calcId, frequency: 'ANNUAL', firstDue: 'MONTH_12', dataSource: 'OPEN_BANKING', descriptionRo: 'Motorina cumpărată, din tranzacții și facturi, comparată cu estimarea.' },
@@ -1088,7 +1216,7 @@ function buildUtilaje() {
   };
   R.completed(A3, 'submit_underwriting_report', '✅ Agentul 3 a terminat: eligibil cu condiții; tractoare = tranziție, precizie = verde de piață', report, 3, 24800, 'RETRY');
 
-  R.state('AGENT_3', 'GATA', 'Dosarul e gata pentru ofițerul de credit', {}, 300);
+  R.state('AGENT_3', 'GATA', 'Ofertele sunt gata; fermierul alege varianta și trimite cererea', {}, 300);
   const t0 = Date.parse('2026-10-28T10:15:00.000Z');
   R.emit('run.completed', null, `Analiză completă: eligibil cu condiții, recomandăm B (+${cmpAdv.display} în 7 ani)`, {
     state: 'GATA', durationMs: R.t - t0 + 200, decision: 'ELIGIBLE_WITH_CONDITIONS', recommendedOptionId: 'B', netAdvantageCalcId: cmpAdv.calcId,
@@ -1206,7 +1334,7 @@ function modules() {
   ];
 }
 
-function runView(built, { cui, moduleId, scenario, farm, documents, questionnaire, parcelIds, officerActions }) {
+function runView(built, { cui, moduleId, scenario, farm, documents, questionnaire, parcelIds, submission, officerActions }) {
   const { R } = built;
   const last = R.events[R.events.length - 1];
   const states = R.events.filter((e) => e.type === 'state.transition');
@@ -1222,7 +1350,7 @@ function runView(built, { cui, moduleId, scenario, farm, documents, questionnair
     farm, parcelIds, documents, questionnaire, agentStatus,
     agents: { extractions: built.extractions, technicalAssessment: built.assessment, fundingRecommendation: built.funding, underwritingReport: built.report },
     calcs: Object.fromEntries(R.calcs),
-    officerActions, pendingDocuments: [], error: null,
+    submission, officerActions, pendingDocuments: [], error: null,
   };
 }
 
@@ -1241,8 +1369,8 @@ const fUtl = farmUtilaje();
 writeFileSync(join(ROOT, 'examples/modules.json'), example('Cele 6 module', modules()));
 writeFileSync(join(ROOT, 'examples/farm-irigatii.json'), example('Fermă de legume, 40 ha, Constanța', fIrg));
 writeFileSync(join(ROOT, 'examples/farm-utilaje.json'), example('Fermă de cereale, 400 ha, Călărași', fUtl));
-const approveAt = irg.R.events.find((e) => e.type === 'state.transition' && e.data.to === 'APROBAT').at;
-writeFileSync(join(ROOT, 'examples/run-irigatii.json'), example('Dosarul demo de irigații, după aprobare (din fixtures/irigatii.ndjson)', runView(irg, {
+const transitionAt = (built, to) => built.R.events.find((e) => e.type === 'state.transition' && e.data.to === to).at;
+writeFileSync(join(ROOT, 'examples/run-irigatii.json'), example('Dosarul demo de irigații, trimis și aprobat (din fixtures/irigatii.ndjson)', runView(irg, {
   cui: fIrg.cui, moduleId: 'irigatii', scenario: 'irigatii', farm: fIrg,
   parcelIds: fIrg.parcels.features.map((f) => f.id),
   documents: [
@@ -1251,9 +1379,10 @@ writeFileSync(join(ROOT, 'examples/run-irigatii.json'), example('Dosarul demo de
     { documentId: 'doc_facturi_energie', docType: 'ENERGY_INVOICES', fileName: 'facturi-energie-12-luni.pdf', sizeBytes: 1290455 },
   ],
   questionnaire: { crops_main: 'tomate, ardei, castraveți, varză, ceapă; 35-38 t/ha', nitrogen_kg_ha: 180, tillage: 'MINIMA', cover_crops: 'ROTATIE', irrigation_current: 'ASPERSIE_VECHE', crop_insurance: false, certifications: ['GLOBALGAP'], offtake_contracts: true, cashin_months: ['JUL', 'AUG', 'SEP', 'OCT'], old_equipment_fate: 'VANZARE', water_source: 'ANIF' },
-  officerActions: [{ action: 'APPROVE', at: approveAt, officerId: 'ofiter.demo', commentRo: 'Aprobat cu condițiile din raport.' }],
+  submission: { variant: 'VERDE', optionId: 'B', submittedAt: transitionAt(irg, 'TRIMIS') },
+  officerActions: [{ action: 'APPROVE', at: transitionAt(irg, 'APROBAT'), officerId: 'ofiter.demo', commentRo: 'Aprobat cu condițiile din raport.' }],
 })));
-writeFileSync(join(ROOT, 'examples/run-utilaje.json'), example('Dosarul demo de utilaje, gata pentru ofițer (din fixtures/utilaje.ndjson)', runView(utl, {
+writeFileSync(join(ROOT, 'examples/run-utilaje.json'), example('Dosarul demo de utilaje, cu ofertele gata (din fixtures/utilaje.ndjson)', runView(utl, {
   cui: fUtl.cui, moduleId: 'utilaje', scenario: 'utilaje', farm: fUtl,
   parcelIds: fUtl.parcels.features.map((f) => f.id),
   documents: [
@@ -1261,6 +1390,7 @@ writeFileSync(join(ROOT, 'examples/run-utilaje.json'), example('Dosarul demo de 
     { documentId: 'doc_facturi_motorina', docType: 'FUEL_INVOICES', fileName: 'facturi-motorina-12-luni.pdf', sizeBytes: 988120 },
   ],
   questionnaire: { crops_main: 'grâu 6,1 t/ha; porumb 7,4 t/ha; floarea-soarelui 2,8 t/ha; rapiță 3,2 t/ha', nitrogen_kg_ha: 150, tillage: 'ARATURA', cover_crops: 'ROTATIE', irrigation_current: 'NU', crop_insurance: true, certifications: ['NICIUNA'], offtake_contracts: true, cashin_months: ['JUL', 'AUG', 'SEP', 'OCT'], old_equipment_fate: 'CASARE', hours_per_year: 650, manager_competences: false },
+  submission: null,
   officerActions: [],
 })));
 

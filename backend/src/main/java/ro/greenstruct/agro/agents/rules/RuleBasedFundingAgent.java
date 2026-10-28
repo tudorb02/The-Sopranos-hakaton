@@ -299,7 +299,7 @@ public class RuleBasedFundingAgent implements RuleAgent {
     }
 
     private String greenTier(ToolFlow flow) {
-        return workspaces.forRun(flow.run().id()).tier().tier().name();
+        return workspaces.forRun(flow.run().id()).greenTier().tier().name();
     }
 
     private ObjectNode rateBreakdown(ToolFlow flow, boolean classic) {

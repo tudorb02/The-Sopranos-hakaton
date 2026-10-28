@@ -224,8 +224,8 @@ final class TestKit {
     static Run run(String runId, String demoScenario) {
         Run base = run(demoScenario);
         return new Run(runId, base.status(), base.createdAt(), base.updatedAt(), base.request(),
-                base.missingDocuments(), base.farmProfile(), base.agentOutputs(), base.steps(), base.officerActions(),
-                base.pendingDocuments(), base.error(), base.chosenVariant(), base.monitoring());
+                base.missingDocuments(), base.farmProfile(), base.agentOutputs(), base.steps(), base.submission(), base.officerActions(),
+                base.pendingDocuments(), base.error(), base.monitoring());
     }
 
     record Events(SseHub hub, AgentContext context, String runId) {

@@ -2,9 +2,11 @@ package ro.greenstruct.agro.orchestration;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -96,30 +98,44 @@ public class RunOrchestrator {
     }
 
     /**
-     * GATA → TRIMIS by the farmer's representative, with the variant chosen (README §7 step 9). VERDE needs a green
-     * option: when the investment is below the threshold, choosing it means accepting the upgrade (README §13).
+     * GATA → TRIMIS by the farmer, with the card they chose. CLASIC is the standard option; VERDE is the green
+     * option the funding agent recommends (or its only green option) and exists only if it is green-eligible.
      */
-    public Run submit(String runId, String variant) {
-        if (!"CLASIC".equals(variant) && !"VERDE".equals(variant)) {
-            throw new IllegalArgumentException("Varianta trebuie să fie CLASIC sau VERDE");
-        }
+    public Run submit(String runId, Submission.Variant variant) {
         requireStatus(runId, RunStatus.GATA, "trimis");
-        Run run = store.find(runId).orElseThrow(() -> new RunNotFoundException(runId));
-        if ("VERDE".equals(variant) && !hasGreenOption(run)) {
-            throw new IllegalStateException("Dosarul nu are credit verde: investiția nu atinge pragul verde");
-        }
-        store.update(runId, r -> r.withChosenVariant(variant).withStatus(RunStatus.TRIMIS));
+        JsonNode funding = store.find(runId).orElseThrow(() -> new RunNotFoundException(runId)).agentOutputs()
+                .getOrDefault(AgentSlot.FUNDING_OPTIMIZER, MissingNode.getInstance());
+        String optionId = optionFor(funding, variant).orElseThrow(() -> new IllegalStateException(
+                variant == Submission.Variant.VERDE
+                        ? "Dosarul nu are o ofertă de credit verde: investiția nu atinge pragul verde"
+                        : "Dosarul nu are o ofertă de credit clasic"));
+        Run submitted = store.update(runId, run -> run.withStatus(RunStatus.TRIMIS)
+                .withSubmission(new Submission(variant, optionId, Instant.now())));
         events.transition(runId, RunStatus.GATA, RunStatus.TRIMIS, Actor.FARMER,
-                "Cererea a fost trimisă la bancă: credit " + ("VERDE".equals(variant) ? "verde" : "clasic"), List.of());
-        return store.find(runId).orElseThrow(() -> new RunNotFoundException(runId));
+                "Cererea a fost trimisă la bancă: " + variant.labelRo(), List.of());
+        return submitted;
     }
 
-    /** TRIMIS → APROBAT by the officer; in the demo the drawdown is simulated at once, so → MONITORIZARE. */
+    static Optional<String> optionFor(JsonNode funding, Submission.Variant variant) {
+        List<JsonNode> matching = new ArrayList<>();
+        for (JsonNode option : funding.path("options")) {
+            boolean available = variant == Submission.Variant.CLASIC || option.path("greenEligible").asBoolean();
+            if (Submission.Variant.ofKind(option.path("kind").asText()) == variant && available) {
+                matching.add(option);
+            }
+        }
+        String recommended = funding.path("recommendedOptionId").asText();
+        return matching.stream().filter(option -> option.path("optionId").asText().equals(recommended)).findFirst()
+                .or(() -> matching.stream().findFirst())
+                .map(option -> option.path("optionId").asText());
+    }
+
+    /** TRIMIS → APROBAT by the bank; in the demo the drawdown is simulated at once, so → MONITORIZARE. */
     public Run approve(String runId, String officerId, String commentRo) {
         requireStatus(runId, RunStatus.TRIMIS, "aprobat");
         store.update(runId, run -> run.withStatus(RunStatus.APROBAT).withOfficerAction(
                 new OfficerAction(OfficerAction.Action.APPROVE, Instant.now(), officerId, commentRo), List.of()));
-        events.transition(runId, RunStatus.TRIMIS, RunStatus.APROBAT, Actor.OFFICER, "Ofițerul a aprobat dosarul",
+        events.transition(runId, RunStatus.TRIMIS, RunStatus.APROBAT, Actor.OFFICER, "Banca a aprobat dosarul",
                 List.of());
         Run monitored = store.update(runId, run -> run.withStatus(RunStatus.MONITORIZARE));
         events.transition(runId, RunStatus.APROBAT, RunStatus.MONITORIZARE, Actor.SYSTEM,
@@ -127,20 +143,7 @@ public class RunOrchestrator {
         return monitored;
     }
 
-    private static boolean hasGreenOption(Run run) {
-        JsonNode funding = run.agentOutputs().get(AgentSlot.FUNDING_OPTIMIZER);
-        if (funding == null) {
-            return false;
-        }
-        for (JsonNode option : funding.path("options")) {
-            if ("VERDE".equals(option.path("variant").asText()) && !"CLASIC".equals(option.path("greenTier").asText())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** The dossier stays GATA; the requested documents show up for the farmer. */
+    /** Only on a dossier sent to the bank, which stays TRIMIS; the requested documents show up for the farmer. */
     public Run requestDocuments(String runId, String officerId, String messageRo, List<PendingDocument> documents) {
         if (documents.isEmpty()) {
             throw new IllegalArgumentException("Lista de documente cerute este goală");
@@ -163,7 +166,8 @@ public class RunOrchestrator {
                 sources.put(slot, runAgent(runId, slot));
             }
             current = RunStatus.GATA;
-            Run done = move(runId, RunStatus.GATA, "Analiza e gata; dosarul așteaptă ofițerul de credit", List.of());
+            Run done = move(runId, RunStatus.GATA, "Ofertele sunt gata; fermierul alege varianta și trimite cererea",
+                    List.of());
             JsonNode funding = done.agentOutputs().getOrDefault(AgentSlot.FUNDING_OPTIMIZER, MissingNode.getInstance());
             JsonNode report = done.agentOutputs().getOrDefault(AgentSlot.GREEN_UNDERWRITER, MissingNode.getInstance());
             events.runCompleted(runId, elapsedMs(startedNanos), report.path("decision").asText(null),

@@ -77,7 +77,7 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
         JsonNode technical = run.agentOutputs().get(AgentSlot.TECHNICAL_AUDITOR);
         JsonNode funding = run.agentOutputs().get(AgentSlot.FUNDING_OPTIMIZER);
         String configId = technical.path("recommendedConfigId").asText();
-        GreenTier tier = workspaces.forRun(run.id()).tier().tier();
+        GreenTier tier = workspaces.forRun(run.id()).greenTier().tier();
         boolean hasGreenOption = tier.isGreen() && workspaces.forRun(run.id()).hasOption("B");
 
         ToolOutput labels = flow.call("get_labeling_rules", flow.input().put("configId", configId),

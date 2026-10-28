@@ -55,7 +55,7 @@ public class PriceLoanTool implements ToolHandler {
 
     @Override
     public ToolOutput execute(JsonNode input, ToolContext context) {
-        GreenTierResult tier = context.workspace().tier();
+        GreenTierResult tier = context.workspace().greenTier();
         PricingParameters parameters = PricingSupport.parameters(context);
         if (!tier.tier().isGreen()) {
             // Tier CLASIC: no green loan, only the classic rate by component.
