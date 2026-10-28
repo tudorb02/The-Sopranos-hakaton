@@ -1,6 +1,9 @@
 spring:
   application:
     name: greenstruct-agro
+  # Local secrets and settings from the repo-root .env (git-ignored; see .env.example). Missing file = defaults.
+  config:
+    import: optional:file:../.env[.properties]
   threads:
     virtual:
       enabled: true
@@ -20,7 +23,7 @@ greenstruct:
   analysis-date: ${GREENSTRUCT_ANALYSIS_DATE:}
   mode: ${GREENSTRUCT_MODE:HYBRID}
   bedrock:
-    region: eu-central-1
+    region: ${GREENSTRUCT_BEDROCK_REGION:eu-central-1}
     agent-model-id: ${GREENSTRUCT_AGENT_MODEL_ID:}
     extraction-model-id: ${GREENSTRUCT_EXTRACTION_MODEL_ID:}
   # Real ANAF lookup for any CUI that is not a demo farm; false = everything from data/demo/farms (offline demo).

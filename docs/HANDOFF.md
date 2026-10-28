@@ -293,9 +293,10 @@ Ferma ecologică nu are economii de energie. Riscul ei e lichiditatea, deci rata
 Fără ea, niciun dosar nu trece de Agent 1.
 
 - **AWS:**
-  - regiunea `eu-central-1`;
-  - modelele Claude activate (Sonnet pentru agenți, Haiku pentru extracție), prin inference profiles `eu.*`;
-  - permisiunea `bedrock:InvokeModel`.
+  - echipa are o **cheie Bedrock pe termen scurt**, pe regiunea `us-west-2` (12 ore). O pui în `.env` la rădăcina repo-ului, după `.env.example`; backend-ul o citește la pornire;
+  - modelele verificate cu cheia: `us.anthropic.claude-sonnet-5-5` pentru agenți și `us.anthropic.claude-haiku-5-5` pentru extracție (Converse, 28.10.2026);
+  - regiunea e US: doar date demo fictive. Pentru o regiune UE e nevoie de altă cheie și de profilurile `eu.*`;
+  - AWS SDK v2 citește cheia din variabila `AWS_BEARER_TOKEN_BEDROCK`. Spring o încarcă doar ca proprietate, deci clientul Bedrock trebuie să o primească explicit (token provider), ca să meargă și din `.env`.
 - **Cod:**
   - dependența AWS SDK v2 `bedrockruntime`;
   - `bedrock/BedrockGateway` + `ToolLoop` (Converse, max. 8 iterații, se termină la `submit_*`, eroarea de schemă se trimite înapoi agentului);
