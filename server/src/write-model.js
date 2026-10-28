@@ -1,7 +1,10 @@
-import { insert, json, uid } from "./db.js";
+import { failStatement, importAccount, ParserError, parseWithPython, runAnalysis, storeStatementRows } from "./coach.js";
+import { insert, uid } from "./db.js";
 import { exactKeys, requireValue, textValue } from "./errors.js";
-import { safeInteger } from "./money.js";
-import { catalog } from "./seed.js";
+import { localInstant } from "./history.js";
+import { cycleStart } from "./history.js";
+import { localTime, present } from "./read-model.js";
+import { catalog, kindOf } from "./seed.js";
 
 const encode = JSON.stringify;
 const int = (value, max = 9007199254740991) => Number.isSafeInteger(value) && value > 0 && value <= max;
@@ -9,26 +12,37 @@ const boolean = (value) => typeof value === "boolean";
 const categories = (model) => ({ ...catalog.categories, ...(model.preferences.categories ?? {}) });
 const ensureCategory = (model, key) =>
   requireValue(Object.hasOwn(categories(model), key), "Categoria nu există.");
+// Writes happen on the demo day (DEMO_TODAY) at the current Bucharest time of day.
+export function nowAt(today) {
+  const now = new Date();
+  const offset = localInstant(today, "12:00").slice(-6);
+  const seconds = String(now.getUTCSeconds()).padStart(2, "0");
+  const millis = String(now.getUTCMilliseconds()).padStart(3, "0");
+  return `${today}T${localTime(now)}:${seconds}.${millis}${offset}`;
+}
+const visible = (model, tx) =>
+  tx.import_id || (tx.account_key === "current" && tx.local_date >= cycleStart(model.today, model.persona.income_day));
 const findTx = (model, key) => {
-  const tx = model.transactions.find(
-    (row) => row.legacy_id === key && row.scope === "current" && row.visible,
-  );
+  const tx = model.transactions.find((row) => row.legacy_id === key && visible(model, row));
   requireValue(tx, "Tranzacția nu există în acest cont.", 404);
   return tx;
 };
 async function updatePreferences(db, model) {
-  await db.query("UPDATE personas SET preferences=$1 WHERE id=$2", [
-    encode(model.preferences),
-    model.persona.id,
-  ]);
+  await db.query("UPDATE personas SET preferences=$1 WHERE id=$2", [encode(model.preferences), model.persona.id]);
 }
 async function updateTemplates(db, model) {
   await db.query("UPDATE personas SET templates=$1 WHERE id=$2", [encode(model.templates), model.persona.id]);
 }
 async function decision(db, model, key, payload) {
   await db.query(
-    "INSERT INTO decisions(id,persona_id,decision_key,payload) VALUES($1,$2,$3,$4) ON CONFLICT(persona_id,decision_key) DO UPDATE SET payload=excluded.payload",
-    [uid(), model.persona.id, key, encode(payload)],
+    "INSERT INTO decisions(id,persona_id,decision_key,payload,created_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(persona_id,decision_key) DO UPDATE SET payload=excluded.payload",
+    [uid(), model.persona.id, key, encode(payload), nowAt(model.today)],
+  );
+}
+async function remember(db, model, key, kind, content) {
+  await db.query(
+    "INSERT INTO user_memory(id,persona_id,memory_key,kind,content,created_at) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(persona_id,memory_key) DO UPDATE SET content=excluded.content,created_at=excluded.created_at",
+    [uid(), model.persona.id, key, kind, content, nowAt(model.today)],
   );
 }
 
@@ -36,101 +50,66 @@ export async function patchTransaction(db, model, key, body) {
   exactKeys(body, ["name", "category", "note", "tags", "rule", "excluded"]);
   requireValue(Object.keys(body).length > 0, "Nu ai trimis nicio modificare.");
   const tx = findTx(model, key),
-    payload = { ...json(tx.presentation) };
+    display = { ...tx.display };
   if ("name" in body) {
     requireValue(textValue(body.name, 160), "Denumirea e prea lungă.");
-    payload.name = body.name;
-    payload.renamed = body.name !== tx.merchant;
+    display.name = body.name;
   }
   if ("note" in body) {
     requireValue(textValue(body.note, 2000), "Nota e prea lungă.");
-    payload.note = body.note;
+    display.note = body.note;
   }
   if ("tags" in body) {
     requireValue(
-      Array.isArray(body.tags) &&
-        body.tags.length <= 20 &&
-        body.tags.every((tag) => textValue(tag, 40) && tag.trim()),
+      Array.isArray(body.tags) && body.tags.length <= 20 && body.tags.every((tag) => textValue(tag, 40) && tag.trim()),
       "Etichetele sunt invalide.",
     );
-    payload.tags = [...new Set(body.tags)];
+    display.tags = [...new Set(body.tags)];
   }
-  if ("rule" in body) {
-    requireValue(boolean(body.rule), "Regula trebuie să fie adevărat/fals.");
-    payload.rule = body.rule;
-  }
+  if ("rule" in body) requireValue(boolean(body.rule), "Regula trebuie să fie adevărat/fals.");
   if ("excluded" in body) requireValue(boolean(body.excluded), "Excluderea trebuie să fie adevărat/fals.");
   const category = body.category ?? tx.category;
   ensureCategory(model, category);
-  if (category !== "nesortat") {
-    delete payload.needsReview;
-    delete payload.suggestion;
-  }
-  const kind =
-    safeInteger(tx.amount_minor) > 0
-      ? "income"
-      : category === "economii"
-        ? "saving"
-        : ["locuinta", "abonamente", ...(model.persona.mode === "student" ? ["transport"] : [])].includes(
-              category,
-            )
-          ? "fixed"
-          : "variable";
-  await db.query(
-    "UPDATE transactions SET category=$1,kind=$2,excluded=$3,presentation=$4,splits=$5 WHERE id=$6",
-    [
-      category,
-      kind,
-      body.excluded ?? Boolean(tx.excluded),
-      encode(payload),
-      category === tx.category ? encode(json(tx.splits)) : "[]",
-      tx.id,
-    ],
-  );
+  const clearReview = (value) => {
+    if (category !== "nesortat") {
+      delete value.needsReview;
+      delete value.suggestion;
+    }
+    return value;
+  };
+  const kind = kindOf(model, category, tx.amount_minor, tx.pot_key);
+  await db.query("UPDATE transactions SET category=$1,kind=$2,excluded=$3,display=$4,splits=$5 WHERE id=$6", [
+    category,
+    kind,
+    body.excluded ?? Boolean(tx.excluded),
+    encode(clearReview(display)),
+    category === tx.category ? encode(tx.splits) : "[]",
+    tx.id,
+  ]);
   if (body.rule === true) {
     await db.query(
-      "INSERT INTO merchant_rules(id,persona_id,merchant,payload) VALUES($1,$2,$3,$4) ON CONFLICT(persona_id,merchant) DO UPDATE SET payload=excluded.payload",
-      [uid(), model.persona.id, tx.merchant, encode({ category, name: payload.name })],
+      "INSERT INTO merchant_rules(id,persona_id,merchant_id,category,display_name,created_at) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(persona_id,merchant_id) DO UPDATE SET category=excluded.category,display_name=excluded.display_name",
+      [uid(), model.persona.id, tx.merchant_id, category, display.name ?? null, nowAt(model.today)],
     );
-    for (const other of model.transactions.filter(
-      (row) => row.scope === "current" && row.visible && row.merchant === tx.merchant && row.id !== tx.id,
-    )) {
-      const otherPayload = {
-        ...json(other.presentation),
-        name: payload.name,
-        renamed: payload.renamed,
-        rule: true,
-      };
-      if (category !== "nesortat") {
-        delete otherPayload.needsReview;
-        delete otherPayload.suggestion;
-      }
-      await db.query("UPDATE transactions SET category=$1,kind=$2,presentation=$3,splits=$4 WHERE id=$5", [
+    for (const other of model.transactions.filter((row) => row.merchant_id === tx.merchant_id && row.id !== tx.id && visible(model, row))) {
+      const otherDisplay = clearReview({ ...other.display, ...(display.name !== undefined ? { name: display.name } : {}) });
+      await db.query("UPDATE transactions SET category=$1,kind=$2,display=$3,splits=$4 WHERE id=$5", [
         category,
-        kind,
-        encode(otherPayload),
+        kindOf(model, category, other.amount_minor, other.pot_key),
+        encode(otherDisplay),
         "[]",
         other.id,
       ]);
     }
   } else if (body.rule === false)
-    await db.query("DELETE FROM merchant_rules WHERE persona_id=$1 AND merchant=$2", [
-      model.persona.id,
-      tx.merchant,
-    ]);
+    await db.query("DELETE FROM merchant_rules WHERE persona_id=$1 AND merchant_id=$2", [model.persona.id, tx.merchant_id]);
 }
 
 export async function splitTransaction(db, model, key, body) {
   exactKeys(body, ["parts"]);
   const tx = findTx(model, key);
-  requireValue(
-    safeInteger(tx.amount_minor) < 0 && ["fixed", "variable"].includes(tx.kind),
-    "Poți împărți doar o cheltuială.",
-  );
-  requireValue(
-    Array.isArray(body.parts) && body.parts.length >= 2 && body.parts.length <= 10,
-    "Alege între 2 și 10 părți.",
-  );
+  requireValue(tx.amount_minor < 0 && ["fixed", "variable"].includes(tx.kind), "Poți împărți doar o cheltuială.");
+  requireValue(Array.isArray(body.parts) && body.parts.length >= 2 && body.parts.length <= 10, "Alege între 2 și 10 părți.");
   let total = 0n;
   for (const part of body.parts) {
     exactKeys(part, ["category", "amount_minor"]);
@@ -171,89 +150,57 @@ export async function writeBudget(db, model, body, key) {
   requireValue(["amount", "count"].includes(kind), "Bugetul poate limita suma sau numărul de plăți.");
   const period = body.period ?? existing?.period ?? "cycle";
   requireValue(["week", "cycle"].includes(period), "Perioadă invalidă.");
-  const limit =
-      body.limit_minor ?? (existing?.limit_minor == null ? null : safeInteger(existing.limit_minor)),
+  const limit = body.limit_minor ?? existing?.limit_minor ?? null,
     count = body.count_limit ?? existing?.count_limit;
   requireValue(kind === "count" ? int(count, 100) : int(limit), "Completează o limită pozitivă.");
-  const name = body.name ?? json(existing?.presentation ?? "{}").name ?? categories(model)[category].label;
+  const name = body.name ?? existing?.name ?? categories(model)[category].label;
   requireValue(textValue(name, 100) && name.trim(), "Nume de buget invalid.");
+  const style = kind === "count" ? "count" : existing?.note_style === "count" ? null : existing?.note_style ?? null;
   if (existing) {
     await db.query(
-      "UPDATE budgets SET category=$1,kind=$2,period=$3,limit_minor=$4,count_limit=$5,presentation=$6 WHERE id=$7",
-      [
-        category,
-        kind,
-        period,
-        kind === "amount" ? limit : null,
-        kind === "count" ? count : null,
-        encode({ ...json(existing.presentation), name, kind }),
-        existing.id,
-      ],
+      "UPDATE budgets SET category=$1,kind=$2,period=$3,limit_minor=$4,count_limit=$5,name=$6,note_style=$7,paused_until=NULL WHERE id=$8",
+      [category, kind, period, kind === "amount" ? limit : null, kind === "count" ? count : null, name.trim(), style, existing.id],
     );
   } else {
-    requireValue(
-      !model.budgets.some((budget) => budget.category === category),
-      "Există deja un buget pentru această categorie.",
-    );
-    const budgetKey = `budget-${uid()}`;
+    requireValue(!model.budgets.some((budget) => budget.category === category), "Există deja un buget pentru această categorie.");
     await insert(db, "budgets", {
       id: uid(),
       persona_id: model.persona.id,
-      budget_key: budgetKey,
+      budget_key: `budget-${uid()}`,
       category,
+      name: name.trim(),
+      icon: categories(model)[category].icon,
       kind,
       period,
       limit_minor: kind === "amount" ? limit : null,
       count_limit: kind === "count" ? count : null,
-      presentation: encode({
-        id: budgetKey,
-        name: name.trim(),
-        icon: categories(model)[category].icon,
-        kind,
-        note: "Stabilit de tine",
-        ...(model.persona.mode === "student" ? { group: "optionale" } : {}),
-      }),
+      group_key: model.persona.budget_method === "envelopes" ? "optionale" : null,
+      on_home: false,
+      note_style: kind === "count" ? "count" : null,
       sort_order: model.budgets.length,
+      created_at: nowAt(model.today),
     });
   }
 }
 
+// Corrections are the user's own statements; they override what the coach inferred.
 export async function patchProfile(db, model, section, body) {
   requireValue(["about", "money", "talk"].includes(section), "Secțiunea nu poate fi corectată.");
   exactKeys(body, ["items"]);
   requireValue(Array.isArray(body.items), "Trimite lista de câmpuri.");
-  const originals = model.templates.profile[section];
-  requireValue(body.items.length === originals.length, "Lista de câmpuri este incompletă.");
+  const shown = present(model, model.today).profile[section];
   const seen = new Set();
   for (const item of body.items) {
-    exactKeys(item, ["label", "value"]);
-    requireValue(
-      textValue(item.value, 1000) &&
-        originals.some((row) => row.label === item.label) &&
-        !seen.has(item.label),
-      "Câmp de profil invalid.",
-    );
-    seen.add(item.label);
-  }
-  model.templates.profile[section] = originals.map((row) => {
-    const value = body.items.find((item) => item.label === row.label).value;
-    return { ...row, value, ...(value !== row.value && row.src ? { src: "said" } : {}) };
-  });
-  await updateTemplates(db, model);
-  if (section === "about") {
-    const name = body.items.find((item) => item.label === "Prenume")?.value.trim();
-    if (name) {
+    exactKeys(item, ["id", "label", "value"]);
+    const row = shown.find((entry) => (item.id ? entry.id === item.id : entry.label === item.label));
+    requireValue(row && textValue(item.value, 1000) && !seen.has(row.id), "Câmp de profil invalid.");
+    seen.add(row.id);
+    if (item.value !== row.value) await remember(db, model, `profile.${section}.${row.id}`, "correction", item.value);
+    if (row.id === "firstName" && item.value.trim() && item.value !== row.value) {
+      const name = item.value.trim();
       requireValue(name.length <= 80, "Prenumele este prea lung.");
-      const client = json(model.account.client),
-        account = json(model.account.presentation);
-      client.name = client.name.replace(client.firstName, name);
-      client.firstName = name;
-      client.initial = name[0];
-      account.name = client.name;
-      account.initial = client.initial;
-      await db.query("UPDATE demo_accounts SET client=$1,presentation=$2 WHERE id=$3", [
-        encode(client),
-        encode(account),
+      await db.query("UPDATE demo_accounts SET client=$1 WHERE id=$2", [
+        encode({ ...model.account.client, firstName: name }),
         model.account.id,
       ]);
     }
@@ -264,10 +211,7 @@ export async function patchPreferences(db, model, body) {
   exactKeys(body, ["permissions", "privacy", "services_on"]);
   for (const collection of ["permissions", "privacy"])
     if (collection in body) {
-      requireValue(
-        body[collection] && typeof body[collection] === "object" && !Array.isArray(body[collection]),
-        "Setări invalide.",
-      );
+      requireValue(body[collection] && typeof body[collection] === "object" && !Array.isArray(body[collection]), "Setări invalide.");
       for (const [key, value] of Object.entries(body[collection])) {
         const existing = model.preferences[collection].find((item) => item.id === key);
         requireValue(existing && boolean(value), "Setare necunoscută sau invalidă.");
@@ -282,25 +226,20 @@ export async function patchPreferences(db, model, body) {
 }
 
 export async function patchCalendar(db, model, body) {
-  exactKeys(body, ["connected", "gift_choices"]);
+  exactKeys(body, ["connected", "gift_choices_minor"]);
   if ("connected" in body) {
     requireValue(["google", "phone", null].includes(body.connected), "Sursă de calendar invalidă.");
     model.preferences.calendar_connected = body.connected;
   }
-  if ("gift_choices" in body) {
+  if ("gift_choices_minor" in body) {
     const groups = model.templates.calendar.gift.groups;
     requireValue(
-      Array.isArray(body.gift_choices) &&
-        body.gift_choices.length === groups.length &&
-        body.gift_choices.every(
-          (choice, index) =>
-            typeof choice === "string" &&
-            /^\d+(?:[.,]\d{1,2})? lei$/.test(choice) &&
-            (groups[index].options.includes(choice) || groups[index].options.includes("Altă sumă")),
-        ),
-      "Alege o sumă numerică din opțiunile disponibile.",
+      Array.isArray(body.gift_choices_minor) &&
+        body.gift_choices_minor.length === groups.length &&
+        body.gift_choices_minor.every((choice) => int(choice, 100000000)),
+      "Alege o sumă pozitivă, în bani, pentru fiecare grup.",
     );
-    model.preferences.gift_choices = body.gift_choices;
+    model.preferences.gift_choices_minor = body.gift_choices_minor;
   }
   await updatePreferences(db, model);
 }
@@ -311,29 +250,32 @@ export async function patchApp(db, model, key, body) {
   const app = model.subscriptions.find((sub) => sub.subscription_key === key);
   requireValue(app, "Abonamentul nu există.", 404);
   await db.query("UPDATE subscriptions SET monitored=$1 WHERE id=$2", [body.on, app.id]);
+  // Screen Time is on while at least one app is monitored.
+  const screen = model.preferences.permissions.find((item) => item.id === "screen");
+  if (screen) {
+    screen.on = model.subscriptions.some((sub) => (sub.id === app.id ? body.on : sub.monitored));
+    await updatePreferences(db, model);
+  }
 }
 
 export async function writeAnswer(db, model, key, body) {
   exactKeys(body, ["selected", "fields"]);
   const question = model.questions.find((row) => row.question_key === key);
   requireValue(question, "Întrebarea nu există.", 404);
-  const definition = json(question.definition);
+  const definition = question.definition;
   requireValue(
     Array.isArray(body.selected) &&
-      body.selected.every((choice) => definition.options.some((option) => option.label === choice)),
+      body.selected.every((choice) => definition.options.some((option) => option.label === choice)) &&
+      (definition.multiple || body.selected.length <= 1),
     "Opțiuni invalide.",
   );
-  requireValue(
-    body.fields && typeof body.fields === "object" && !Array.isArray(body.fields),
-    "Câmpuri invalide.",
-  );
+  requireValue(body.fields && typeof body.fields === "object" && !Array.isArray(body.fields), "Câmpuri invalide.");
   const fields = definition.fields ?? [];
-  for (const [key, value] of Object.entries(body.fields)) {
-    const field = fields.find((field) => field.label === key);
+  for (const [label, value] of Object.entries(body.fields)) {
+    const field = fields.find((item) => item.label === label);
     requireValue(field && textValue(value, 2000), "Câmp invalid.");
     if (field.type === "select") requireValue(field.options.includes(value), "Opțiune invalidă.");
-    if (field.numeric && value)
-      requireValue(/^\d+(?:[.,]\d{1,2})?$/.test(value), "Completează o sumă pozitivă.");
+    if (field.numeric && value) requireValue(/^\d+(?:[.,]\d{1,2})?$/.test(value), "Completează o sumă pozitivă.");
   }
   requireValue(Object.keys(body.fields).length === fields.length, "Completează toate câmpurile întrebării.");
   await db.query("UPDATE questions SET answer=$1 WHERE id=$2", [
@@ -346,96 +288,97 @@ export async function serviceDecision(db, model, key, body) {
   exactKeys(body, ["action"]);
   const service = model.services.find((item) => item.service_key === key);
   requireValue(service, "Serviciul nu există.", 404);
-  requireValue(json(service.payload).actions?.includes(body.action), "Acțiune invalidă.");
-  await db.query("UPDATE services SET decision=$1 WHERE id=$2", [body.action, service.id]);
+  requireValue(service.payload.actions?.includes(body.action), "Acțiune invalidă.");
+  await db.query("UPDATE services SET decision=$1,decided_at=$2 WHERE id=$3", [body.action, nowAt(model.today), service.id]);
 }
 
 export async function ideaDecision(db, model, body) {
   exactKeys(body, ["decision"]);
-  requireValue(
-    model.templates.ideas && ["accepted", "dismissed"].includes(body.decision),
-    "Decizie invalidă.",
-  );
+  requireValue(model.templates.ideas && ["accepted", "dismissed"].includes(body.decision), "Decizie invalidă.");
   await decision(db, model, "idea", body);
 }
 
+// The message is stored; the demo has no AI replies, and the client shows that explicitly.
 export async function addMessage(db, model, body) {
   exactKeys(body, ["text"]);
-  requireValue(
-    textValue(body.text, 4000) && body.text.trim(),
-    "Scrie un mesaj de maximum 4.000 de caractere.",
-  );
+  requireValue(textValue(body.text, 4000) && body.text.trim(), "Scrie un mesaj de maximum 4.000 de caractere.");
   const position = Math.max(-1, ...model.messages.map((message) => message.position)) + 1;
+  const at = nowAt(model.today);
   await insert(db, "messages", {
     id: uid(),
     persona_id: model.persona.id,
     position,
-    payload: encode({ type: "me", text: body.text.trim() }),
+    role: "user",
+    kind: "text",
+    body: encode({ text: body.text.trim() }),
+    read_at: at,
+    created_at: at,
   });
 }
 
-export async function proposalDecision(db, model, position, body, today) {
+export async function markChatRead(db, model, body) {
+  exactKeys(body ?? {}, []);
+  await db.query("UPDATE messages SET read_at=$1 WHERE persona_id=$2 AND read_at IS NULL", [nowAt(model.today), model.persona.id]);
+}
+
+export async function proposalDecision(db, model, position, body) {
   exactKeys(body, ["action"]);
-  const message = model.messages.find((message) => message.position === Number(position));
-  const payload = message ? { ...json(message.payload) } : null;
+  const message = model.messages.find((row) => row.position === Number(position));
   requireValue(
-    payload?.type === "proposal" && payload.actions?.includes(body.action),
+    message?.kind === "proposal" && !message.decision && message.body.actions?.includes(body.action),
     "Propunerea sau acțiunea nu există.",
     404,
   );
-  payload.done = `${body.action} · ${today}`;
-  await db.query("UPDATE messages SET payload=$1 WHERE id=$2", [encode(payload), message.id]);
-  await decision(db, model, `proposal:${position}`, body);
+  await db.query("UPDATE messages SET decision=$1,decided_at=$2 WHERE id=$3", [body.action, nowAt(model.today), message.id]);
 }
 
 export async function importStatements(db, model, body) {
-  exactKeys(body, ["period"]);
-  requireValue(model.templates.statements.periods.includes(body.period), "Perioadă invalidă.");
-  await decision(db, model, `import:${body.period}`, body);
-  model.templates.statements.imported = {
-    title: "Import demo finalizat",
-    meta: `${body.period} · datele demo existente sunt păstrate fără duplicate`,
-  };
-  await updateTemplates(db, model);
+  exactKeys(body, ["months"]);
+  requireValue(model.templates.statements.period_months.includes(body.months), "Perioadă invalidă.");
+  await importAccount(db, model, body.months, nowAt(model.today));
 }
 
-export async function addDocument(db, model, body, key) {
+export async function startAnalysis(db, model, body) {
+  exactKeys(body ?? {}, []);
+  requireValue(model.imports.some((item) => item.status === "done"), "Importă mai întâi extrasele.", 409);
+  await runAnalysis(db, model, nowAt(model.today));
+}
+
+const STATEMENT_FORMATS = ["pdf", "csv", "xls", "xlsx"];
+export async function addDocument(db, model, body, key, options = {}) {
   exactKeys(body, ["name", "mime", "content_base64"]);
-  if (key) findTx(model, key);
-  requireValue(
-    textValue(body.name, 180) && body.name.trim() && !/[\\/]/.test(body.name),
-    "Nume de fișier invalid.",
-  );
+  const tx = key ? findTx(model, key) : null;
+  requireValue(textValue(body.name, 180) && body.name.trim() && !/[\\/]/.test(body.name), "Nume de fișier invalid.");
   requireValue(
     typeof body.content_base64 === "string" && /^[A-Za-z0-9+/]*={0,2}$/.test(body.content_base64),
     "Conținut de fișier invalid.",
   );
   const content = Buffer.from(body.content_base64, "base64");
-  requireValue(
-    content.length > 0 && content.length <= 10 * 1024 * 1024,
-    "Fișierul trebuie să aibă între 1 octet și 10 MiB.",
-  );
-  const allowed = key ? ["pdf", "jpg", "jpeg", "png"] : ["pdf", "csv", "xls", "xlsx"];
-  requireValue(allowed.includes(body.name.toLowerCase().split(".").at(-1)), "Format de fișier neacceptat.");
+  requireValue(content.length > 0 && content.length <= 10 * 1024 * 1024, "Fișierul trebuie să aibă între 1 octet și 10 MiB.");
+  const extension = body.name.toLowerCase().split(".").at(-1);
+  requireValue((key ? ["pdf", "jpg", "jpeg", "png"] : STATEMENT_FORMATS).includes(extension), "Format de fișier neacceptat.");
   requireValue(textValue(body.mime, 100), "Tip de fișier invalid.");
-  const presentation = { name: body.name, meta: `${content.length} octeți · salvat în demo`, state: "done" };
+  const id = uid();
+  const at = nowAt(model.today);
   await insert(db, "documents", {
-    id: uid(),
+    id,
     persona_id: model.persona.id,
     kind: key ? "receipt" : "statement",
-    transaction_key: key ?? null,
+    transaction_id: tx?.id ?? null,
     name: body.name,
     mime: body.mime,
+    size_bytes: content.length,
     content,
-    presentation: encode(presentation),
-    sort_order: model.documents.length,
+    status: key ? "stored" : extension === "csv" ? "stored" : "unsupported",
+    created_at: at,
   });
-  if (key) {
-    const tx = findTx(model, key);
-    await db.query("UPDATE transactions SET presentation=$1 WHERE id=$2", [
-      encode({ ...json(tx.presentation), receipt: { name: body.name, size: content.length } }),
-      tx.id,
-    ]);
+  if (key || extension !== "csv") return;
+  try {
+    const parsed = await parseWithPython(model.account.slug, { name: body.name, content }, options);
+    await storeStatementRows(db, model, id, parsed, at);
+  } catch (error) {
+    if (!(error instanceof ParserError)) throw error;
+    await failStatement(db, model, id, error.code, at);
   }
 }
 

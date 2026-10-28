@@ -18,7 +18,7 @@ export function metrics(data) {
         ),
       ]),
     ),
-    goal: ratio(data.goal.saved, data.goal.amount),
+    goal: data.goal ? ratio(data.goal.saved, data.goal.amount) : 0,
     profile: Object.fromEntries(data.profile.spending.map((item) => [item.name, ratio(item.lei, largest)])),
   };
 }

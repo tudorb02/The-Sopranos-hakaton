@@ -74,6 +74,21 @@
       "label": "Venit",
       "icon": "arrow",
       "tone": "cat-income"
+    },
+    "utilitati": {
+      "label": "Utilități",
+      "icon": "home",
+      "tone": "cat-fixed"
+    },
+    "haine": {
+      "label": "Haine",
+      "icon": "shirt",
+      "tone": "cat-fixed"
+    },
+    "altele": {
+      "label": "Altele",
+      "icon": "tag",
+      "tone": "cat-fixed"
     }
   },
   "legal": {
@@ -134,23 +149,6 @@
     },
     "log": {
       "title": "Ultimele accesări",
-      "items": [
-        {
-          "who": "Coach-ul",
-          "what": "A citit plățile de ieri, pentru rezumatul de azi",
-          "when": "Azi, 07:00"
-        },
-        {
-          "who": "Tu",
-          "what": "Ai deschis Profilul",
-          "when": "Ieri, 21:14"
-        },
-        {
-          "who": "Coach-ul",
-          "what": "A citit calendarul pentru săptămâna viitoare",
-          "when": "10 nov., 07:00"
-        }
-      ],
       "note": "Niciun angajat al băncii nu a deschis profilul tău din coach."
     },
     "security": {

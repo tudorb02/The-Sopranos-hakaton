@@ -50,10 +50,10 @@ test("client aborts requests on cancellation and timeout", async () => {
 
 test("student expense and interests questions preserve multiple selected answers", () => {
   assert.deepEqual(
-    toggleQuestionChoice({ id: "necesare" }, ["Cămin", "Alimente", "Transport"], "Transport"),
+    toggleQuestionChoice({ id: "necesare", multiple: true }, ["Cămin", "Alimente", "Transport"], "Transport"),
     ["Cămin", "Alimente"],
   );
-  assert.deepEqual(toggleQuestionChoice({ id: "idei" }, ["Venituri"], "Burse"), ["Venituri", "Burse"]);
+  assert.deepEqual(toggleQuestionChoice({ id: "idei", multiple: true }, ["Venituri"], "Burse"), ["Venituri", "Burse"]);
   assert.deepEqual(toggleQuestionChoice({ id: "notificari" }, ["O dată pe zi"], "Doar important"), [
     "Doar important",
   ]);

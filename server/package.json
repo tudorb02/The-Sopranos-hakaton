@@ -12,8 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:offline": "BUSOLA_OFFLINE_TESTS=1 node --test tests/*.test.js",
-    "openapi": "node scripts/export-openapi.js",
-    "seed:build": "node scripts/build-seed.js"
+    "openapi": "node scripts/export-openapi.js"
   },
   "dependencies": { "express": "5.1.0", "pg": "8.16.3" },
   "devDependencies": { "supertest": "7.2.2", "vitest": "3.2.4" }

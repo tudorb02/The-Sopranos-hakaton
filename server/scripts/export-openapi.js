@@ -1,11 +1,34 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { SCREEN_FIELDS } from "../src/read-model.js";
+import { migrate } from "../src/db.js";
+import { loadModel, present, SCREEN_FIELDS } from "../src/read-model.js";
+import { catalog, scenarios, seed, seedPersona } from "../src/seed.js";
+import { sqlitePool } from "../tests/sqlite.js";
+
+// Response schemas are inferred from real responses: the seeded personas and a freshly
+// reactivated coach (before import and analysis), so optional and nullable fields are explicit.
+async function samples() {
+  const db = sqlitePool();
+  try {
+    await migrate(db);
+    await seed(db);
+    const result = {};
+    for (const slug of Object.keys(scenarios)) {
+      const seeded = present(await loadModel(db, slug), "2026-11-12");
+      const account = (await db.query("SELECT * FROM demo_accounts WHERE slug=$1", [slug])).rows[0];
+      await db.query("DELETE FROM personas WHERE account_id=$1", [account.id]);
+      await seedPersona(db, account, scenarios[slug], { activate: false, createdAt: "2026-11-12T10:00:00+02:00" });
+      result[slug] = [seeded, present(await loadModel(db, slug), "2026-11-12")];
+    }
+    const accounts = (await db.query("SELECT presentation,client,iban_masked FROM demo_accounts")).rows;
+    return { personas: result, accounts: { login: catalog.login, accounts: accounts.map((row) => ({ ...JSON.parse(row.presentation), name: "", initial: "", detail: "" })) } };
+  } finally {
+    await db.end();
+  }
+}
 
 export async function buildOpenApi() {
-  const baseline = JSON.parse(
-    await readFile(new URL("../tests/fixtures/frontend-baseline.json", import.meta.url), "utf8"),
-  );
+  const baseline = await samples();
   const schemas = {};
   const ref = (name) => ({ $ref: `#/components/schemas/${name}` });
   const infer = (value) => inferMany([value]);
@@ -35,16 +58,15 @@ export async function buildOpenApi() {
     return variants.length === 1 ? variants[0] : { anyOf: variants };
   }
   const packets = {};
-  for (const [slug, data] of Object.entries(baseline.personas)) {
+  for (const [slug, states] of Object.entries(baseline.personas)) {
     const props = {};
-    for (const [key, value] of Object.entries(data)) {
+    const keys = [...new Set(states.flatMap(Object.keys))];
+    for (const key of keys) {
       const name = `${slug}_${key}`;
-      schemas[name] = ["review", "question"].includes(key)
-        ? { anyOf: [infer(value), { type: "null" }] }
-        : infer(value);
+      schemas[name] = inferMany(states.filter((data) => key in data).map((data) => data[key]));
       props[key] = ref(name);
     }
-    schemas[slug] = { type: "object", properties: props, required: Object.keys(props) };
+    schemas[slug] = { type: "object", properties: props, required: keys.filter((key) => states.every((data) => key in data)) };
     packets[slug] = props;
   }
   const object = (properties, required = Object.keys(properties)) => ({
@@ -139,7 +161,8 @@ export async function buildOpenApi() {
   });
   add("post", `${root}/transactions/{id}/receipt`, full, document);
   add("post", `${root}/statements`, full, document);
-  add("post", `${root}/imports`, full, object({ period: string }));
+  add("post", `${root}/imports`, full, object({ months: { type: "integer", enum: [12, 6, 3] } }));
+  add("post", `${root}/analysis`, full, object({}, []));
   add("post", `${root}/categories`, full, object({ label: string }));
   const budget = object(
     {
@@ -158,7 +181,7 @@ export async function buildOpenApi() {
     "patch",
     `${root}/profile/{section}`,
     full,
-    object({ items: array(object({ label: string, value: string })) }),
+    object({ items: array(object({ id: string, label: string, value: string }, ["value"])) }),
   );
   add(
     "patch",
@@ -180,7 +203,7 @@ export async function buildOpenApi() {
     object(
       {
         connected: { type: ["string", "null"], enum: ["google", "phone", null] },
-        gift_choices: array(string),
+        gift_choices_minor: array(integer),
       },
       [],
     ),
@@ -201,6 +224,7 @@ export async function buildOpenApi() {
     object({ text: { type: "string", minLength: 1, maxLength: 4000 } }),
   );
   add("post", `${root}/chat/{index}/decision`, full, object({ action: string }));
+  add("post", `${root}/chat/read`, full, object({}, []));
   add("post", `${root}/coach`, full, object({}, []));
   add("delete", `${root}/coach`, undefined, undefined, "204");
   for (const methods of Object.values(paths))
@@ -214,9 +238,9 @@ export async function buildOpenApi() {
     openapi: "3.1.0",
     info: {
       title: "Busola Personal Demo API",
-      version: "1.0.0",
+      version: "2.0.0",
       description:
-        "Demo local Daria/Matei. Date fictive, fără autentificare reală. Formele și valorile în lei ale frontend-ului sunt păstrate; DB și calculele folosesc exclusiv bani întregi. DEMO_TODAY este ziua de referință.",
+        "Demo local Daria/Matei. Date fictive, fără autentificare reală. DB-ul păstrează fapte (tranzacții, importuri, analize, evenimente) în bani întregi; textele și totalurile ecranelor sunt calculate la citire. Extrasele CSV sunt citite prin backend-ul Python. DEMO_TODAY este ziua de referință.",
     },
     servers: [{ url: "/api/demo/v1" }],
     paths,

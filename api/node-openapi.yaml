@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Busola Personal Demo API",
-    "version": "1.0.0",
-    "description": "Demo local Daria/Matei. Date fictive, fără autentificare reală. Formele și valorile în lei ale frontend-ului sunt păstrate; DB și calculele folosesc exclusiv bani întregi. DEMO_TODAY este ziua de referință."
+    "version": "2.0.0",
+    "description": "Demo local Daria/Matei. Date fictive, fără autentificare reală. DB-ul păstrează fapte (tranzacții, importuri, analize, evenimente) în bani întregi; textele și totalurile ecranelor sunt calculate la citire. Extrasele CSV sunt citite prin backend-ul Python. DEMO_TODAY este ziua de referință."
   },
   "servers": [
     {
@@ -59,10 +59,10 @@
                           "initial": {
                             "type": "string"
                           },
-                          "detail": {
+                          "href": {
                             "type": "string"
                           },
-                          "href": {
+                          "detail": {
                             "type": "string"
                           }
                         },
@@ -71,8 +71,8 @@
                           "profile",
                           "name",
                           "initial",
-                          "detail",
-                          "href"
+                          "href",
+                          "detail"
                         ]
                       }
                     }
@@ -1899,12 +1899,16 @@
                         "chat": {
                           "$ref": "#/components/schemas/pf_chat"
                         },
+                        "chatStatus": {
+                          "$ref": "#/components/schemas/pf_chatStatus"
+                        },
                         "services": {
                           "$ref": "#/components/schemas/pf_services"
                         }
                       },
                       "required": [
                         "chat",
+                        "chatStatus",
                         "services"
                       ]
                     },
@@ -1914,12 +1918,16 @@
                         "chat": {
                           "$ref": "#/components/schemas/student_chat"
                         },
+                        "chatStatus": {
+                          "$ref": "#/components/schemas/student_chatStatus"
+                        },
                         "services": {
                           "$ref": "#/components/schemas/student_services"
                         }
                       },
                       "required": [
                         "chat",
+                        "chatStatus",
                         "services"
                       ]
                     }
@@ -2889,13 +2897,143 @@
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
-                  "period": {
-                    "type": "string"
+                  "months": {
+                    "type": "integer",
+                    "enum": [
+                      12,
+                      6,
+                      3
+                    ]
                   }
                 },
                 "required": [
-                  "period"
+                  "months"
                 ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/pf"
+                    },
+                    {
+                      "$ref": "#/components/schemas/student"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/personas/{persona}/analysis": {
+      "post": {
+        "operationId": "post__personas_persona_analysis",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pf",
+                "student"
+              ]
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-Match",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
               }
             }
           }
@@ -3329,6 +3467,9 @@
                       "type": "object",
                       "additionalProperties": false,
                       "properties": {
+                        "id": {
+                          "type": "string"
+                        },
                         "label": {
                           "type": "string"
                         },
@@ -3337,7 +3478,6 @@
                         }
                       },
                       "required": [
-                        "label",
                         "value"
                       ]
                     }
@@ -3481,10 +3621,12 @@
                       null
                     ]
                   },
-                  "gift_choices": {
+                  "gift_choices_minor": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 9007199254740991
                     }
                   }
                 },
@@ -4408,6 +4550,131 @@
         }
       }
     },
+    "/personas/{persona}/chat/read": {
+      "post": {
+        "operationId": "post__personas_persona_chat_read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "persona",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pf",
+                "student"
+              ]
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-Match",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/pf"
+                    },
+                    {
+                      "$ref": "#/components/schemas/student"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/personas/{persona}/coach": {
       "post": {
         "operationId": "post__personas_persona_coach",
@@ -4618,527 +4885,42 @@
   },
   "components": {
     "schemas": {
-      "pf_analysis": {
+      "pf_today": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string"
-          },
-          "lead": {
-            "type": "string"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "state": {
-                  "type": "string"
-                },
-                "note": {
-                  "type": "string"
-                },
-                "progress": {
-                  "type": "number"
-                }
-              },
-              "required": [
-                "label",
-                "state",
-                "note"
-              ]
-            }
-          },
-          "note": {
+          "label": {
             "type": "string"
           }
         },
         "required": [
-          "title",
-          "lead",
-          "items",
-          "note"
+          "label"
         ]
       },
-      "pf_apps": {
+      "pf_client": {
         "type": "object",
         "properties": {
-          "found": {
+          "firstName": {
             "type": "string"
           },
-          "items": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "lei": {
-                  "type": "number"
-                },
-                "note": {
-                  "type": "string"
-                },
-                "on": {
-                  "type": "boolean"
-                }
-              },
-              "required": [
-                "name",
-                "lei",
-                "note",
-                "on"
-              ]
-            }
+          "name": {
+            "type": "string"
           },
-          "learns": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "initial": {
+            "type": "string"
           },
-          "doesNotLearn": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "segment": {
+            "type": "string"
           },
-          "platform": {
+          "card": {
             "type": "string"
           }
         },
         "required": [
-          "found",
-          "items",
-          "learns",
-          "doesNotLearn",
-          "platform"
-        ]
-      },
-      "pf_calendar": {
-        "type": "object",
-        "properties": {
-          "options": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "icon": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "note": {
-                  "type": "string"
-                },
-                "action": {
-                  "type": "string"
-                },
-                "href": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "id",
-                "icon",
-                "title",
-                "note",
-                "action"
-              ]
-            }
-          },
-          "reads": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "doesNotRead": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "found": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "day": {
-                  "type": "string"
-                },
-                "month": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "note": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "day",
-                "month",
-                "title",
-                "note"
-              ]
-            }
-          },
-          "gift": {
-            "type": "object",
-            "properties": {
-              "question": {
-                "type": "string"
-              },
-              "groups": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "label": {
-                      "type": "string"
-                    },
-                    "options": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "selected": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "label",
-                    "options",
-                    "selected"
-                  ]
-                }
-              },
-              "result": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "question",
-              "groups",
-              "result"
-            ]
-          }
-        },
-        "required": [
-          "options",
-          "reads",
-          "doesNotRead",
-          "found",
-          "gift"
-        ]
-      },
-      "pf_entry": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "badge": {
-            "type": "string"
-          },
-          "subtitle": {
-            "type": "string"
-          },
-          "text": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "title",
-          "badge",
-          "subtitle",
-          "text"
-        ]
-      },
-      "pf_findings": {
-        "type": "object",
-        "properties": {
-          "lead": {
-            "type": "string"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string"
-                },
-                "src": {
-                  "type": "string"
-                },
-                "note": {
-                  "type": "string"
-                },
-                "label": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "text",
-                "src"
-              ]
-            }
-          },
-          "firstStep": {
-            "type": "object",
-            "properties": {
-              "icon": {
-                "type": "string"
-              },
-              "title": {
-                "type": "string"
-              },
-              "text": {
-                "type": "string"
-              },
-              "action": {
-                "type": "string"
-              },
-              "href": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "icon",
-              "title",
-              "text",
-              "action",
-              "href"
-            ]
-          }
-        },
-        "required": [
-          "lead",
-          "items",
-          "firstStep"
-        ]
-      },
-      "pf_intro": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "lead": {
-            "type": "string"
-          },
-          "duration": {
-            "type": "string"
-          },
-          "does": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "title",
-          "lead",
-          "duration",
-          "does"
-        ]
-      },
-      "pf_products": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "icon": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "icon",
-            "name"
-          ]
-        }
-      },
-      "pf_questions": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "hint": {
-              "type": "string"
-            },
-            "options": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "label": {
-                    "type": "string"
-                  },
-                  "selected": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "label"
-                ]
-              }
-            },
-            "fields": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "label": {
-                    "type": "string"
-                  },
-                  "type": {
-                    "type": "string"
-                  },
-                  "value": {
-                    "type": "string"
-                  },
-                  "suffix": {
-                    "type": "string"
-                  },
-                  "numeric": {
-                    "type": "boolean"
-                  },
-                  "options": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "required": [
-                  "label",
-                  "value"
-                ]
-              }
-            }
-          },
-          "required": [
-            "id",
-            "title",
-            "options"
-          ]
-        }
-      },
-      "pf_statements": {
-        "type": "object",
-        "properties": {
-          "lead": {
-            "type": "string"
-          },
-          "account": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "iban": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "name",
-              "iban"
-            ]
-          },
-          "periods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "imported": {
-            "type": "object",
-            "properties": {
-              "title": {
-                "type": "string"
-              },
-              "meta": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "title",
-              "meta"
-            ]
-          },
-          "attachHint": {
-            "type": "string"
-          },
-          "formats": {
-            "type": "string"
-          },
-          "files": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "meta": {
-                  "type": "string"
-                },
-                "state": {
-                  "type": "string"
-                },
-                "progress": {
-                  "type": "number"
-                }
-              },
-              "required": [
-                "name",
-                "meta",
-                "state"
-              ]
-            }
-          },
-          "howTo": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "privacy": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "lead",
-          "account",
-          "periods",
-          "imported",
-          "attachHint",
-          "formats",
-          "files",
-          "howTo",
-          "privacy"
+          "firstName",
+          "name",
+          "initial",
+          "segment",
+          "card"
         ]
       },
       "pf_categories": {
@@ -5428,6 +5210,63 @@
               "icon",
               "tone"
             ]
+          },
+          "utilitati": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "icon": {
+                "type": "string"
+              },
+              "tone": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "icon",
+              "tone"
+            ]
+          },
+          "haine": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "icon": {
+                "type": "string"
+              },
+              "tone": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "icon",
+              "tone"
+            ]
+          },
+          "altele": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "icon": {
+                "type": "string"
+              },
+              "tone": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "icon",
+              "tone"
+            ]
           }
         },
         "required": [
@@ -5445,188 +5284,25 @@
           "studii",
           "telefon",
           "economii",
-          "venit"
+          "venit",
+          "utilitati",
+          "haine",
+          "altele"
         ]
       },
-      "pf_categoryNotes": {
+      "pf_cycle": {
         "type": "object",
         "properties": {
-          "cafenele": {
+          "label": {
             "type": "string"
           },
-          "nesortat": {
+          "endsOn": {
             "type": "string"
           },
-          "locuinta": {
+          "basis": {
             "type": "string"
           },
-          "abonamente": {
-            "type": "string"
-          },
-          "economii": {
-            "type": "string"
-          },
-          "venit": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "cafenele",
-          "nesortat",
-          "locuinta",
-          "abonamente",
-          "economii",
-          "venit"
-        ]
-      },
-      "pf_days": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "label": {
-              "type": "string"
-            },
-            "date": {
-              "type": "string"
-            },
-            "total": {
-              "type": "number"
-            },
-            "items": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string"
-                  },
-                  "time": {
-                    "type": "string"
-                  },
-                  "merchant": {
-                    "type": "string"
-                  },
-                  "raw": {
-                    "type": "string"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "category": {
-                    "type": "string"
-                  },
-                  "lei": {
-                    "type": "number"
-                  },
-                  "renamed": {
-                    "type": "boolean"
-                  },
-                  "rule": {
-                    "type": "boolean"
-                  },
-                  "tags": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "note": {
-                    "type": "string"
-                  },
-                  "status": {
-                    "type": "string"
-                  },
-                  "history": {
-                    "type": "string"
-                  },
-                  "recurring": {
-                    "type": "boolean"
-                  },
-                  "needsReview": {
-                    "type": "boolean"
-                  },
-                  "suggestion": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "id",
-                  "time",
-                  "merchant",
-                  "raw",
-                  "name",
-                  "category",
-                  "lei",
-                  "status"
-                ]
-              }
-            }
-          },
-          "required": [
-            "label",
-            "date",
-            "total",
-            "items"
-          ]
-        }
-      },
-      "pf_filters": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "label": {
-              "type": "string"
-            },
-            "selected": {
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "label"
-          ]
-        }
-      },
-      "pf_pickerCategories": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "pf_review": {
-        "anyOf": [
-          {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "title": {
-                "type": "string"
-              },
-              "text": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "id",
-              "title",
-              "text"
-            ]
-          },
-          {
-            "type": "null"
-          }
-        ]
-      },
-      "pf_spending": {
-        "type": "object",
-        "properties": {
-          "period": {
-            "type": "string"
-          },
-          "title": {
+          "totalNote": {
             "type": "string"
           },
           "total": {
@@ -5635,120 +5311,61 @@
           "fixed": {
             "type": "number"
           },
-          "fixedNote": {
-            "type": "string"
+          "setAside": {
+            "type": "number"
           },
-          "compare": {
-            "type": "string"
+          "spendable": {
+            "type": "number"
           },
-          "parts": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "lei": {
-                  "type": "number"
-                }
-              },
-              "required": [
-                "id",
-                "lei"
-              ]
-            }
+          "spent": {
+            "type": "number"
+          },
+          "left": {
+            "type": "number"
+          },
+          "perDay": {
+            "type": "number"
+          },
+          "daysLeftLabel": {
+            "type": "string"
           }
         },
         "required": [
-          "period",
-          "title",
+          "label",
+          "endsOn",
+          "basis",
+          "totalNote",
           "total",
           "fixed",
-          "fixedNote",
-          "compare",
-          "parts"
+          "setAside",
+          "spendable",
+          "spent",
+          "left",
+          "perDay",
+          "daysLeftLabel"
         ]
       },
-      "pf_tagSuggestions": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "pf_agenda": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "day": {
-              "type": "string"
+      "pf_insight": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "figure": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              }
             },
-            "month": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "note": {
-              "type": "string"
-            }
+            "required": [
+              "figure",
+              "text"
+            ]
           },
-          "required": [
-            "day",
-            "month",
-            "title",
-            "note"
-          ]
-        }
-      },
-      "pf_allocation": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "label": {
-              "type": "string"
-            },
-            "lei": {
-              "type": "number"
-            },
-            "tone": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "id",
-            "label",
-            "lei",
-            "tone"
-          ]
-        }
-      },
-      "pf_budgetGroups": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "src": {
-              "type": "string"
-            },
-            "note": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "title",
-            "src",
-            "note"
-          ]
-        }
+          {
+            "type": "null"
+          }
+        ]
       },
       "pf_budgets": {
         "type": "array",
@@ -5798,133 +5415,416 @@
           ]
         }
       },
-      "pf_chat": {
+      "pf_allocation": {
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
-            "type": {
+            "id": {
               "type": "string"
             },
-            "text": {
+            "label": {
+              "type": "string"
+            },
+            "tone": {
+              "type": "string"
+            },
+            "lei": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "id",
+            "label",
+            "tone",
+            "lei"
+          ]
+        }
+      },
+      "pf_budgetGroups": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "src": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "src",
+            "note"
+          ]
+        }
+      },
+      "pf_lastMessage": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "type": "string"
+          },
+          "meta": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "icon",
+          "meta",
+          "title",
+          "text"
+        ]
+      },
+      "pf_week": {
+        "type": "object",
+        "properties": {
+          "spent": {
+            "type": "number"
+          },
+          "daysSoFar": {
+            "type": "number"
+          },
+          "guidePerDay": {
+            "type": "number"
+          },
+          "days": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "d": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "lei": {
+                  "type": "number"
+                },
+                "today": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "d",
+                "name"
+              ]
+            }
+          },
+          "scaleMax": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "spent",
+          "daysSoFar",
+          "guidePerDay",
+          "days",
+          "scaleMax"
+        ]
+      },
+      "pf_agenda": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "day": {
+              "type": "string"
+            },
+            "month": {
               "type": "string"
             },
             "title": {
               "type": "string"
             },
-            "lines": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "done": {
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "day",
+            "month",
+            "title",
+            "note"
+          ]
+        }
+      },
+      "pf_unbudgeted": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "lei": {
+                  "type": "number"
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "icon",
+                "lei"
+              ]
+            }
+          }
+        },
+        "required": [
+          "total",
+          "items"
+        ]
+      },
+      "pf_days": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
               "type": "string"
             },
-            "steps": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "after": {
+            "date": {
               "type": "string"
             },
-            "id": {
-              "type": "string"
+            "total": {
+              "type": "number"
             },
-            "actions": {
+            "items": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "raw": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "renamed": {
+                    "type": "boolean"
+                  },
+                  "rule": {
+                    "type": "boolean"
+                  },
+                  "history": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
+                  "merchant": {
+                    "type": "string"
+                  },
+                  "lei": {
+                    "type": "number"
+                  },
+                  "recurring": {
+                    "type": "boolean"
+                  },
+                  "needsReview": {
+                    "type": "boolean"
+                  },
+                  "suggestion": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "time",
+                  "name",
+                  "raw",
+                  "status",
+                  "state",
+                  "category",
+                  "merchant",
+                  "lei"
+                ]
               }
             }
           },
           "required": [
-            "type"
+            "label",
+            "date",
+            "total",
+            "items"
           ]
         }
       },
-      "pf_client": {
+      "pf_spending": {
         "type": "object",
         "properties": {
-          "firstName": {
+          "period": {
             "type": "string"
           },
-          "name": {
-            "type": "string"
-          },
-          "initial": {
-            "type": "string"
-          },
-          "segment": {
-            "type": "string"
-          },
-          "card": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "firstName",
-          "name",
-          "initial",
-          "segment",
-          "card"
-        ]
-      },
-      "pf_cycle": {
-        "type": "object",
-        "properties": {
-          "label": {
-            "type": "string"
-          },
-          "endsOn": {
-            "type": "string"
-          },
-          "basis": {
+          "title": {
             "type": "string"
           },
           "total": {
             "type": "number"
           },
-          "totalNote": {
-            "type": "string"
-          },
           "fixed": {
             "type": "number"
           },
-          "setAside": {
-            "type": "number"
+          "fixedNote": {
+            "type": "string"
           },
-          "spendable": {
-            "type": "number"
+          "compare": {
+            "type": "string"
           },
-          "spent": {
-            "type": "number"
+          "parts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "lei": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "id",
+                "lei"
+              ]
+            }
+          }
+        },
+        "required": [
+          "period",
+          "title",
+          "total",
+          "fixed",
+          "fixedNote",
+          "parts"
+        ]
+      },
+      "pf_filters": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "selected": {
+              "type": "boolean"
+            }
           },
-          "left": {
-            "type": "number"
+          "required": [
+            "id",
+            "label"
+          ]
+        }
+      },
+      "pf_review": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
           },
-          "perDay": {
-            "type": "number"
+          "title": {
+            "type": "string"
           },
-          "daysLeftLabel": {
+          "text": {
             "type": "string"
           }
         },
         "required": [
-          "label",
-          "endsOn",
-          "basis",
-          "total",
-          "totalNote",
-          "fixed",
-          "setAside",
-          "spendable",
-          "spent",
-          "left",
-          "perDay",
-          "daysLeftLabel"
+          "id",
+          "title",
+          "text"
+        ]
+      },
+      "pf_question": {
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ]
+            }
+          },
+          "txId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "merchant": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "options",
+          "txId",
+          "amount",
+          "merchant",
+          "date"
         ]
       },
       "pf_goal": {
@@ -6028,44 +5928,6 @@
           "storage"
         ]
       },
-      "pf_insight": {
-        "type": "object",
-        "properties": {
-          "figure": {
-            "type": "string"
-          },
-          "text": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "figure",
-          "text"
-        ]
-      },
-      "pf_lastMessage": {
-        "type": "object",
-        "properties": {
-          "icon": {
-            "type": "string"
-          },
-          "meta": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "text": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "icon",
-          "meta",
-          "title",
-          "text"
-        ]
-      },
       "pf_nextGoals": {
         "type": "array",
         "items": {}
@@ -6078,27 +5940,74 @@
             "name": {
               "type": "string"
             },
+            "note": {
+              "type": "string"
+            },
             "icon": {
               "type": "string"
             },
             "lei": {
               "type": "number"
-            },
-            "note": {
-              "type": "string"
             }
           },
           "required": [
             "name",
+            "note",
             "icon",
-            "lei",
-            "note"
+            "lei"
           ]
         }
+      },
+      "pf_reserve": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "text",
+          "action",
+          "href"
+        ]
       },
       "pf_profile": {
         "type": "object",
         "properties": {
+          "subscriptions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "lei": {
+                  "type": "number"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "lei"
+              ]
+            }
+          },
           "statements": {
             "type": "array",
             "items": {
@@ -6130,6 +6039,9 @@
             "items": {
               "type": "object",
               "properties": {
+                "id": {
+                  "type": "string"
+                },
                 "label": {
                   "type": "string"
                 },
@@ -6141,6 +6053,7 @@
                 }
               },
               "required": [
+                "id",
                 "label",
                 "value",
                 "src"
@@ -6152,6 +6065,9 @@
             "items": {
               "type": "object",
               "properties": {
+                "id": {
+                  "type": "string"
+                },
                 "label": {
                   "type": "string"
                 },
@@ -6163,10 +6079,39 @@
                 }
               },
               "required": [
+                "id",
                 "label",
                 "value",
                 "src"
               ]
+            }
+          },
+          "talk": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "label",
+                "value"
+              ]
+            }
+          },
+          "unknown": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           },
           "income": {
@@ -6214,48 +6159,6 @@
               ]
             }
           },
-          "subscriptions": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "lei": {
-                  "type": "number"
-                },
-                "note": {
-                  "type": "string"
-                },
-                "status": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "name",
-                "lei"
-              ]
-            }
-          },
-          "talk": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
-          },
           "permissions": {
             "type": "array",
             "items": {
@@ -6281,558 +6184,39 @@
                 "on"
               ]
             }
-          },
-          "unknown": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         },
         "required": [
+          "subscriptions",
           "statements",
           "about",
           "money",
+          "talk",
+          "unknown",
           "income",
           "spending",
           "observed",
-          "subscriptions",
-          "talk",
-          "permissions",
-          "unknown"
+          "permissions"
         ]
       },
-      "pf_question": {
-        "anyOf": [
-          {
-            "type": "object",
-            "properties": {
-              "amount": {
-                "type": "number"
-              },
-              "merchant": {
-                "type": "string"
-              },
-              "date": {
-                "type": "string"
-              },
-              "options": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "txId": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "amount",
-              "merchant",
-              "date",
-              "options",
-              "txId"
-            ]
-          },
-          {
-            "type": "null"
-          }
-        ]
-      },
-      "pf_reserve": {
+      "pf_apps": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string"
-          },
-          "text": {
-            "type": "string"
-          },
-          "action": {
-            "type": "string"
-          },
-          "href": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "title",
-          "text",
-          "action",
-          "href"
-        ]
-      },
-      "pf_services": {
-        "type": "object",
-        "properties": {
-          "on": {
-            "type": "boolean"
-          },
-          "hint": {
-            "type": "string"
-          },
-          "items": {
+          "learns": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "icon": {
-                  "type": "string"
-                },
-                "kind": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "terms": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "label": {
-                        "type": "string"
-                      },
-                      "value": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "label",
-                      "value"
-                    ]
-                  }
-                },
-                "link": {
-                  "type": "object",
-                  "properties": {
-                    "href": {
-                      "type": "string"
-                    },
-                    "label": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "href",
-                    "label"
-                  ]
-                },
-                "source": {
-                  "type": "string"
-                },
-                "id": {
-                  "type": "string"
-                },
-                "state": {
-                  "type": "string"
-                },
-                "status": {
-                  "type": "string"
-                },
-                "helps": {
-                  "type": "string"
-                },
-                "why": {
-                  "type": "string"
-                },
-                "without": {
-                  "type": "string"
-                },
-                "whyLabel": {
-                  "type": "string"
-                },
-                "actions": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "required": [
-                "icon",
-                "kind",
-                "name",
-                "description",
-                "terms",
-                "link",
-                "source",
-                "id",
-                "state",
-                "status",
-                "helps",
-                "why",
-                "without"
-              ]
+              "type": "string"
             }
-          }
-        },
-        "required": [
-          "on",
-          "hint",
-          "items"
-        ]
-      },
-      "pf_today": {
-        "type": "object",
-        "properties": {
-          "label": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "label"
-        ]
-      },
-      "pf_unbudgeted": {
-        "type": "object",
-        "properties": {
-          "total": {
-            "type": "number"
           },
-          "items": {
+          "doesNotLearn": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "icon": {
-                  "type": "string"
-                },
-                "lei": {
-                  "type": "number"
-                },
-                "note": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "name",
-                "icon",
-                "lei"
-              ]
-            }
-          }
-        },
-        "required": [
-          "total",
-          "items"
-        ]
-      },
-      "pf_week": {
-        "type": "object",
-        "properties": {
-          "spent": {
-            "type": "number"
-          },
-          "daysSoFar": {
-            "type": "number"
-          },
-          "guidePerDay": {
-            "type": "number"
-          },
-          "scaleMax": {
-            "type": "number"
-          },
-          "days": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "d": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "lei": {
-                  "type": "number"
-                },
-                "today": {
-                  "type": "boolean"
-                }
-              },
-              "required": [
-                "d",
-                "name"
-              ]
-            }
-          }
-        },
-        "required": [
-          "spent",
-          "daysSoFar",
-          "guidePerDay",
-          "scaleMax",
-          "days"
-        ]
-      },
-      "pf_pages": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "pf": {
-        "type": "object",
-        "properties": {
-          "analysis": {
-            "$ref": "#/components/schemas/pf_analysis"
-          },
-          "apps": {
-            "$ref": "#/components/schemas/pf_apps"
-          },
-          "calendar": {
-            "$ref": "#/components/schemas/pf_calendar"
-          },
-          "entry": {
-            "$ref": "#/components/schemas/pf_entry"
-          },
-          "findings": {
-            "$ref": "#/components/schemas/pf_findings"
-          },
-          "intro": {
-            "$ref": "#/components/schemas/pf_intro"
-          },
-          "products": {
-            "$ref": "#/components/schemas/pf_products"
-          },
-          "questions": {
-            "$ref": "#/components/schemas/pf_questions"
-          },
-          "statements": {
-            "$ref": "#/components/schemas/pf_statements"
-          },
-          "categories": {
-            "$ref": "#/components/schemas/pf_categories"
-          },
-          "categoryNotes": {
-            "$ref": "#/components/schemas/pf_categoryNotes"
-          },
-          "days": {
-            "$ref": "#/components/schemas/pf_days"
-          },
-          "filters": {
-            "$ref": "#/components/schemas/pf_filters"
-          },
-          "pickerCategories": {
-            "$ref": "#/components/schemas/pf_pickerCategories"
-          },
-          "review": {
-            "$ref": "#/components/schemas/pf_review"
-          },
-          "spending": {
-            "$ref": "#/components/schemas/pf_spending"
-          },
-          "tagSuggestions": {
-            "$ref": "#/components/schemas/pf_tagSuggestions"
-          },
-          "agenda": {
-            "$ref": "#/components/schemas/pf_agenda"
-          },
-          "allocation": {
-            "$ref": "#/components/schemas/pf_allocation"
-          },
-          "budgetGroups": {
-            "$ref": "#/components/schemas/pf_budgetGroups"
-          },
-          "budgets": {
-            "$ref": "#/components/schemas/pf_budgets"
-          },
-          "chat": {
-            "$ref": "#/components/schemas/pf_chat"
-          },
-          "client": {
-            "$ref": "#/components/schemas/pf_client"
-          },
-          "cycle": {
-            "$ref": "#/components/schemas/pf_cycle"
-          },
-          "goal": {
-            "$ref": "#/components/schemas/pf_goal"
-          },
-          "insight": {
-            "$ref": "#/components/schemas/pf_insight"
-          },
-          "lastMessage": {
-            "$ref": "#/components/schemas/pf_lastMessage"
-          },
-          "nextGoals": {
-            "$ref": "#/components/schemas/pf_nextGoals"
-          },
-          "pots": {
-            "$ref": "#/components/schemas/pf_pots"
-          },
-          "profile": {
-            "$ref": "#/components/schemas/pf_profile"
-          },
-          "question": {
-            "$ref": "#/components/schemas/pf_question"
-          },
-          "reserve": {
-            "$ref": "#/components/schemas/pf_reserve"
-          },
-          "services": {
-            "$ref": "#/components/schemas/pf_services"
-          },
-          "today": {
-            "$ref": "#/components/schemas/pf_today"
-          },
-          "unbudgeted": {
-            "$ref": "#/components/schemas/pf_unbudgeted"
-          },
-          "week": {
-            "$ref": "#/components/schemas/pf_week"
-          },
-          "pages": {
-            "$ref": "#/components/schemas/pf_pages"
-          }
-        },
-        "required": [
-          "analysis",
-          "apps",
-          "calendar",
-          "entry",
-          "findings",
-          "intro",
-          "products",
-          "questions",
-          "statements",
-          "categories",
-          "categoryNotes",
-          "days",
-          "filters",
-          "pickerCategories",
-          "review",
-          "spending",
-          "tagSuggestions",
-          "agenda",
-          "allocation",
-          "budgetGroups",
-          "budgets",
-          "chat",
-          "client",
-          "cycle",
-          "goal",
-          "insight",
-          "lastMessage",
-          "nextGoals",
-          "pots",
-          "profile",
-          "question",
-          "reserve",
-          "services",
-          "today",
-          "unbudgeted",
-          "week",
-          "pages"
-        ]
-      },
-      "student_agenda": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "day": {
-              "type": "string"
-            },
-            "month": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "note": {
               "type": "string"
             }
           },
-          "required": [
-            "day",
-            "month",
-            "title",
-            "note"
-          ]
-        }
-      },
-      "student_allocation": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "label": {
-              "type": "string"
-            },
-            "lei": {
-              "type": "number"
-            },
-            "tone": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "id",
-            "label",
-            "lei",
-            "tone"
-          ]
-        }
-      },
-      "student_analysis": {
-        "type": "object",
-        "properties": {
-          "title": {
+          "platform": {
             "type": "string"
           },
-          "lead": {
-            "type": "string"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "state": {
-                  "type": "string"
-                },
-                "note": {
-                  "type": "string"
-                },
-                "progress": {
-                  "type": "number"
-                }
-              },
-              "required": [
-                "label",
-                "state",
-                "note"
-              ]
-            }
-          },
-          "note": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "title",
-          "lead",
-          "items",
-          "note"
-        ]
-      },
-      "student_apps": {
-        "type": "object",
-        "properties": {
           "found": {
             "type": "string"
           },
@@ -6861,104 +6245,295 @@
                 "on"
               ]
             }
+          }
+        },
+        "required": [
+          "learns",
+          "doesNotLearn",
+          "platform",
+          "found",
+          "items"
+        ]
+      },
+      "pf_statements": {
+        "type": "object",
+        "properties": {
+          "lead": {
+            "type": "string"
           },
-          "learns": {
+          "account": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "iban": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "iban"
+            ]
+          },
+          "periods": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "months": {
+                  "type": "number"
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "months",
+                "label"
+              ]
+            }
+          },
+          "imported": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "meta": {
+                    "type": "string"
+                  },
+                  "at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "meta",
+                  "at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "attachHint": {
+            "type": "string"
+          },
+          "formats": {
+            "type": "string"
+          },
+          "files": {
+            "type": "array",
+            "items": {}
+          },
+          "howTo": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "doesNotLearn": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "platform": {
+          "privacy": {
             "type": "string"
           }
         },
         "required": [
-          "found",
-          "items",
-          "learns",
-          "doesNotLearn",
-          "platform"
+          "lead",
+          "account",
+          "periods",
+          "imported",
+          "attachHint",
+          "formats",
+          "files",
+          "howTo",
+          "privacy"
         ]
       },
-      "student_budgetGroups": {
+      "pf_analysis": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "lead": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "label",
+                "state",
+                "note"
+              ]
+            }
+          },
+          "at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "title",
+          "lead",
+          "items"
+        ]
+      },
+      "pf_findings": {
+        "type": "object",
+        "properties": {
+          "lead": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "src": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "src",
+                "text"
+              ]
+            }
+          },
+          "firstStep": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "icon": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "type": "string"
+                  },
+                  "href": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "icon",
+                  "title",
+                  "text",
+                  "action",
+                  "href"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "lead",
+          "items",
+          "firstStep"
+        ]
+      },
+      "pf_chat": {
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
-            "id": {
+            "type": {
               "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "position": {
+              "type": "number"
             },
             "title": {
               "type": "string"
             },
-            "src": {
+            "lines": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "done": {
               "type": "string"
             },
-            "note": {
+            "steps": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "after": {
               "type": "string"
-            }
-          },
-          "required": [
-            "id",
-            "title",
-            "note"
-          ]
-        }
-      },
-      "student_budgets": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
+            },
             "id": {
               "type": "string"
             },
-            "group": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "icon": {
-              "type": "string"
-            },
-            "kind": {
-              "type": "string"
-            },
-            "spent": {
-              "type": "number"
-            },
-            "note": {
-              "type": "string"
-            },
-            "limit": {
-              "type": "number"
-            },
-            "warn": {
-              "type": "boolean"
-            },
-            "onHome": {
-              "type": "boolean"
+            "actions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           "required": [
-            "id",
-            "group",
-            "name",
-            "icon",
-            "kind",
-            "spent",
-            "note"
+            "type"
           ]
         }
       },
-      "student_calendar": {
+      "pf_chatStatus": {
+        "type": "object",
+        "properties": {
+          "unread": {
+            "type": "number"
+          },
+          "coachReplies": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "unread",
+          "coachReplies"
+        ]
+      },
+      "pf_calendar": {
         "type": "object",
         "properties": {
           "options": {
@@ -7054,12 +6629,16 @@
                     },
                     "selected": {
                       "type": "string"
+                    },
+                    "selected_minor": {
+                      "type": "number"
                     }
                   },
                   "required": [
                     "label",
                     "options",
-                    "selected"
+                    "selected",
+                    "selected_minor"
                   ]
                 }
               },
@@ -7082,12 +6661,312 @@
           "gift"
         ]
       },
-      "student_categoryNotes": {
+      "pf_services": {
         "type": "object",
         "properties": {
-          "alimente": {
+          "hint": {
             "type": "string"
           },
+          "on": {
+            "type": "boolean"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "icon": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "terms": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "value"
+                    ]
+                  }
+                },
+                "link": {
+                  "type": "object",
+                  "properties": {
+                    "href": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "href",
+                    "label"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "helps": {
+                  "type": "string"
+                },
+                "why": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "without": {
+                  "type": "string"
+                },
+                "whyLabel": {
+                  "type": "string"
+                },
+                "actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "icon",
+                "kind",
+                "name",
+                "description",
+                "terms",
+                "link",
+                "source",
+                "id",
+                "state",
+                "status",
+                "helps",
+                "why",
+                "without"
+              ]
+            }
+          }
+        },
+        "required": [
+          "hint",
+          "on",
+          "items"
+        ]
+      },
+      "pf_questions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "selected": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "label"
+                ]
+              }
+            },
+            "fields": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "suffix": {
+                    "type": "string"
+                  },
+                  "numeric": {
+                    "type": "boolean"
+                  },
+                  "options": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "label",
+                  "value"
+                ]
+              }
+            },
+            "multiple": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "options"
+          ]
+        }
+      },
+      "pf_accessLog": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "who": {
+              "type": "string"
+            },
+            "what": {
+              "type": "string"
+            },
+            "when": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "who",
+            "what",
+            "when"
+          ]
+        }
+      },
+      "pf_intro": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "lead": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "string"
+          },
+          "does": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "title",
+          "lead",
+          "duration",
+          "does"
+        ]
+      },
+      "pf_pages": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "pf_pickerCategories": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "pf_tagSuggestions": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "pf_entry": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "badge": {
+            "type": "string"
+          },
+          "subtitle": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "badge",
+          "subtitle",
+          "text"
+        ]
+      },
+      "pf_products": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "icon": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "icon",
+            "name"
+          ]
+        }
+      },
+      "pf_categoryNotes": {
+        "type": "object",
+        "properties": {
           "cafenele": {
             "type": "string"
           },
@@ -7095,9 +6974,6 @@
             "type": "string"
           },
           "locuinta": {
-            "type": "string"
-          },
-          "transport": {
             "type": "string"
           },
           "abonamente": {
@@ -7111,47 +6987,187 @@
           }
         },
         "required": [
-          "alimente",
           "cafenele",
           "nesortat",
           "locuinta",
-          "transport",
           "abonamente",
           "economii",
           "venit"
         ]
       },
-      "student_chat": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "type": {
-              "type": "string"
-            },
-            "text": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "lines": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "done": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
-            }
+      "pf": {
+        "type": "object",
+        "properties": {
+          "today": {
+            "$ref": "#/components/schemas/pf_today"
           },
-          "required": [
-            "type"
-          ]
-        }
+          "client": {
+            "$ref": "#/components/schemas/pf_client"
+          },
+          "categories": {
+            "$ref": "#/components/schemas/pf_categories"
+          },
+          "cycle": {
+            "$ref": "#/components/schemas/pf_cycle"
+          },
+          "insight": {
+            "$ref": "#/components/schemas/pf_insight"
+          },
+          "budgets": {
+            "$ref": "#/components/schemas/pf_budgets"
+          },
+          "allocation": {
+            "$ref": "#/components/schemas/pf_allocation"
+          },
+          "budgetGroups": {
+            "$ref": "#/components/schemas/pf_budgetGroups"
+          },
+          "lastMessage": {
+            "$ref": "#/components/schemas/pf_lastMessage"
+          },
+          "week": {
+            "$ref": "#/components/schemas/pf_week"
+          },
+          "agenda": {
+            "$ref": "#/components/schemas/pf_agenda"
+          },
+          "unbudgeted": {
+            "$ref": "#/components/schemas/pf_unbudgeted"
+          },
+          "days": {
+            "$ref": "#/components/schemas/pf_days"
+          },
+          "spending": {
+            "$ref": "#/components/schemas/pf_spending"
+          },
+          "filters": {
+            "$ref": "#/components/schemas/pf_filters"
+          },
+          "review": {
+            "$ref": "#/components/schemas/pf_review"
+          },
+          "question": {
+            "$ref": "#/components/schemas/pf_question"
+          },
+          "goal": {
+            "$ref": "#/components/schemas/pf_goal"
+          },
+          "nextGoals": {
+            "$ref": "#/components/schemas/pf_nextGoals"
+          },
+          "pots": {
+            "$ref": "#/components/schemas/pf_pots"
+          },
+          "reserve": {
+            "$ref": "#/components/schemas/pf_reserve"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/pf_profile"
+          },
+          "apps": {
+            "$ref": "#/components/schemas/pf_apps"
+          },
+          "statements": {
+            "$ref": "#/components/schemas/pf_statements"
+          },
+          "analysis": {
+            "$ref": "#/components/schemas/pf_analysis"
+          },
+          "findings": {
+            "$ref": "#/components/schemas/pf_findings"
+          },
+          "chat": {
+            "$ref": "#/components/schemas/pf_chat"
+          },
+          "chatStatus": {
+            "$ref": "#/components/schemas/pf_chatStatus"
+          },
+          "calendar": {
+            "$ref": "#/components/schemas/pf_calendar"
+          },
+          "services": {
+            "$ref": "#/components/schemas/pf_services"
+          },
+          "questions": {
+            "$ref": "#/components/schemas/pf_questions"
+          },
+          "accessLog": {
+            "$ref": "#/components/schemas/pf_accessLog"
+          },
+          "intro": {
+            "$ref": "#/components/schemas/pf_intro"
+          },
+          "pages": {
+            "$ref": "#/components/schemas/pf_pages"
+          },
+          "pickerCategories": {
+            "$ref": "#/components/schemas/pf_pickerCategories"
+          },
+          "tagSuggestions": {
+            "$ref": "#/components/schemas/pf_tagSuggestions"
+          },
+          "entry": {
+            "$ref": "#/components/schemas/pf_entry"
+          },
+          "products": {
+            "$ref": "#/components/schemas/pf_products"
+          },
+          "categoryNotes": {
+            "$ref": "#/components/schemas/pf_categoryNotes"
+          }
+        },
+        "required": [
+          "today",
+          "client",
+          "categories",
+          "cycle",
+          "insight",
+          "budgets",
+          "allocation",
+          "budgetGroups",
+          "lastMessage",
+          "week",
+          "agenda",
+          "unbudgeted",
+          "days",
+          "spending",
+          "filters",
+          "review",
+          "question",
+          "goal",
+          "nextGoals",
+          "pots",
+          "reserve",
+          "profile",
+          "apps",
+          "statements",
+          "analysis",
+          "findings",
+          "chat",
+          "chatStatus",
+          "calendar",
+          "services",
+          "questions",
+          "accessLog",
+          "intro",
+          "pages",
+          "pickerCategories",
+          "tagSuggestions",
+          "entry",
+          "products",
+          "categoryNotes"
+        ]
+      },
+      "student_today": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label"
+        ]
       },
       "student_client": {
         "type": "object",
@@ -7192,14 +7208,11 @@
           "basis": {
             "type": "string"
           },
-          "pace": {
+          "totalNote": {
             "type": "string"
           },
           "total": {
             "type": "number"
-          },
-          "totalNote": {
-            "type": "string"
           },
           "spendable": {
             "type": "number"
@@ -7215,111 +7228,117 @@
           },
           "daysLeftLabel": {
             "type": "string"
+          },
+          "pace": {
+            "type": "string"
           }
         },
         "required": [
           "label",
           "endsOn",
           "basis",
-          "pace",
-          "total",
           "totalNote",
+          "total",
           "spendable",
           "spent",
           "left",
           "perDay",
-          "daysLeftLabel"
+          "daysLeftLabel",
+          "pace"
         ]
       },
-      "student_days": {
+      "student_insight": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "figure": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "figure",
+              "text"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "student_budgets": {
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
-            "label": {
+            "id": {
               "type": "string"
             },
-            "date": {
+            "group": {
               "type": "string"
             },
-            "total": {
+            "name": {
+              "type": "string"
+            },
+            "icon": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string"
+            },
+            "spent": {
               "type": "number"
             },
-            "items": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "merchant": {
-                    "type": "string"
-                  },
-                  "raw": {
-                    "type": "string"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "category": {
-                    "type": "string"
-                  },
-                  "lei": {
-                    "type": "number"
-                  },
-                  "renamed": {
-                    "type": "boolean"
-                  },
-                  "rule": {
-                    "type": "boolean"
-                  },
-                  "tags": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "status": {
-                    "type": "string"
-                  },
-                  "history": {
-                    "type": "string"
-                  },
-                  "id": {
-                    "type": "string"
-                  },
-                  "time": {
-                    "type": "string"
-                  },
-                  "note": {
-                    "type": "string"
-                  },
-                  "needsReview": {
-                    "type": "boolean"
-                  },
-                  "suggestion": {
-                    "type": "string"
-                  },
-                  "recurring": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "merchant",
-                  "raw",
-                  "name",
-                  "category",
-                  "lei",
-                  "status",
-                  "id",
-                  "time"
-                ]
-              }
+            "note": {
+              "type": "string"
+            },
+            "limit": {
+              "type": "number"
+            },
+            "warn": {
+              "type": "boolean"
+            },
+            "onHome": {
+              "type": "boolean"
             }
           },
           "required": [
+            "id",
+            "group",
+            "name",
+            "icon",
+            "kind",
+            "spent",
+            "note"
+          ]
+        }
+      },
+      "student_allocation": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "tone": {
+              "type": "string"
+            },
+            "lei": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "id",
             "label",
-            "date",
-            "total",
-            "items"
+            "tone",
+            "lei"
           ]
         }
       },
@@ -7387,11 +7406,318 @@
           "pending"
         ]
       },
+      "student_budgetGroups": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "src": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "note"
+          ]
+        }
+      },
+      "student_lastMessage": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "type": "string"
+          },
+          "meta": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "icon",
+          "meta",
+          "title",
+          "text"
+        ]
+      },
+      "student_week": {
+        "type": "object",
+        "properties": {
+          "spent": {
+            "type": "number"
+          },
+          "daysSoFar": {
+            "type": "number"
+          },
+          "guidePerDay": {
+            "type": "number"
+          },
+          "days": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "d": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "lei": {
+                  "type": "number"
+                },
+                "today": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "d",
+                "name"
+              ]
+            }
+          },
+          "scaleMax": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "spent",
+          "daysSoFar",
+          "guidePerDay",
+          "days",
+          "scaleMax"
+        ]
+      },
+      "student_agenda": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "day": {
+              "type": "string"
+            },
+            "month": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "day",
+            "month",
+            "title",
+            "note"
+          ]
+        }
+      },
+      "student_unbudgeted": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "lei": {
+                  "type": "number"
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "icon",
+                "lei"
+              ]
+            }
+          }
+        },
+        "required": [
+          "total",
+          "items"
+        ]
+      },
+      "student_days": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "date": {
+              "type": "string"
+            },
+            "total": {
+              "type": "number"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "time": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "raw": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "renamed": {
+                    "type": "boolean"
+                  },
+                  "rule": {
+                    "type": "boolean"
+                  },
+                  "history": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
+                  "merchant": {
+                    "type": "string"
+                  },
+                  "lei": {
+                    "type": "number"
+                  },
+                  "needsReview": {
+                    "type": "boolean"
+                  },
+                  "suggestion": {
+                    "type": "string"
+                  },
+                  "recurring": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "id",
+                  "time",
+                  "name",
+                  "raw",
+                  "status",
+                  "state",
+                  "category",
+                  "merchant",
+                  "lei"
+                ]
+              }
+            }
+          },
+          "required": [
+            "label",
+            "date",
+            "total",
+            "items"
+          ]
+        }
+      },
+      "student_spending": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "total": {
+            "type": "number"
+          },
+          "fixed": {
+            "type": "number"
+          },
+          "fixedNote": {
+            "type": "string"
+          },
+          "compare": {
+            "type": "string"
+          },
+          "parts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "lei": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "id",
+                "lei"
+              ]
+            }
+          }
+        },
+        "required": [
+          "period",
+          "title",
+          "total",
+          "fixed",
+          "fixedNote",
+          "parts"
+        ]
+      },
       "student_filters": {
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
+            "id": {
+              "type": "string"
+            },
             "label": {
               "type": "string"
             },
@@ -7400,72 +7726,73 @@
             }
           },
           "required": [
+            "id",
             "label"
           ]
         }
       },
-      "student_findings": {
+      "student_review": {
         "type": "object",
         "properties": {
-          "lead": {
+          "id": {
             "type": "string"
           },
-          "items": {
+          "title": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "text"
+        ]
+      },
+      "student_question": {
+        "type": "object",
+        "properties": {
+          "options": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "text": {
-                  "type": "string"
-                },
-                "src": {
-                  "type": "string"
-                },
-                "note": {
+                "id": {
                   "type": "string"
                 },
                 "label": {
                   "type": "string"
+                },
+                "category": {
+                  "type": "string"
                 }
               },
               "required": [
-                "text",
-                "src"
+                "id",
+                "label"
               ]
             }
           },
-          "firstStep": {
-            "type": "object",
-            "properties": {
-              "icon": {
-                "type": "string"
-              },
-              "title": {
-                "type": "string"
-              },
-              "text": {
-                "type": "string"
-              },
-              "action": {
-                "type": "string"
-              },
-              "href": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "icon",
-              "title",
-              "text",
-              "action",
-              "href"
-            ]
+          "txId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "merchant": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
           }
         },
         "required": [
-          "lead",
-          "items",
-          "firstStep"
+          "options",
+          "txId",
+          "amount",
+          "merchant",
+          "date"
         ]
       },
       "student_goal": {
@@ -7573,190 +7900,6 @@
           "suggestion"
         ]
       },
-      "student_ideas": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "lead": {
-            "type": "string"
-          },
-          "featured": {
-            "type": "object",
-            "properties": {
-              "icon": {
-                "type": "string"
-              },
-              "eyebrow": {
-                "type": "string"
-              },
-              "title": {
-                "type": "string"
-              },
-              "text": {
-                "type": "string"
-              },
-              "effects": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "why": {
-                "type": "string"
-              },
-              "actions": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            },
-            "required": [
-              "icon",
-              "eyebrow",
-              "title",
-              "text",
-              "effects",
-              "why",
-              "actions"
-            ]
-          },
-          "groups": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "type": "string"
-                },
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "icon": {
-                        "type": "string"
-                      },
-                      "title": {
-                        "type": "string"
-                      },
-                      "text": {
-                        "type": "string"
-                      },
-                      "status": {
-                        "type": "string"
-                      },
-                      "link": {
-                        "type": "object",
-                        "properties": {
-                          "href": {
-                            "type": "string"
-                          },
-                          "label": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "href",
-                          "label"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "icon",
-                      "title",
-                      "text"
-                    ]
-                  }
-                },
-                "note": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "title",
-                "items"
-              ]
-            }
-          },
-          "rules": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "title",
-          "lead",
-          "featured",
-          "groups",
-          "rules"
-        ]
-      },
-      "student_insight": {
-        "type": "object",
-        "properties": {
-          "figure": {
-            "type": "string"
-          },
-          "text": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "figure",
-          "text"
-        ]
-      },
-      "student_intro": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "lead": {
-            "type": "string"
-          },
-          "duration": {
-            "type": "string"
-          },
-          "does": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "title",
-          "lead",
-          "duration",
-          "does"
-        ]
-      },
-      "student_lastMessage": {
-        "type": "object",
-        "properties": {
-          "icon": {
-            "type": "string"
-          },
-          "meta": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "text": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "icon",
-          "meta",
-          "title",
-          "text"
-        ]
-      },
       "student_nextGoals": {
         "type": "array",
         "items": {
@@ -7795,19 +7938,40 @@
           ]
         }
       },
-      "student_pickerCategories": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
       "student_pots": {
         "type": "array",
         "items": {}
       },
+      "student_reserve": {
+        "type": "null"
+      },
       "student_profile": {
         "type": "object",
         "properties": {
+          "subscriptions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "lei": {
+                  "type": "number"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "lei"
+              ]
+            }
+          },
           "statements": {
             "type": "array",
             "items": {
@@ -7839,6 +8003,9 @@
             "items": {
               "type": "object",
               "properties": {
+                "id": {
+                  "type": "string"
+                },
                 "label": {
                   "type": "string"
                 },
@@ -7850,6 +8017,7 @@
                 }
               },
               "required": [
+                "id",
                 "label",
                 "value",
                 "src"
@@ -7861,6 +8029,9 @@
             "items": {
               "type": "object",
               "properties": {
+                "id": {
+                  "type": "string"
+                },
                 "label": {
                   "type": "string"
                 },
@@ -7872,10 +8043,39 @@
                 }
               },
               "required": [
+                "id",
                 "label",
                 "value",
                 "src"
               ]
+            }
+          },
+          "talk": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "label",
+                "value"
+              ]
+            }
+          },
+          "unknown": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           },
           "income": {
@@ -7920,48 +8120,6 @@
               ]
             }
           },
-          "subscriptions": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "lei": {
-                  "type": "number"
-                },
-                "note": {
-                  "type": "string"
-                },
-                "status": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "name",
-                "lei"
-              ]
-            }
-          },
-          "talk": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "label",
-                "value"
-              ]
-            }
-          },
           "permissions": {
             "type": "array",
             "items": {
@@ -7987,173 +8145,476 @@
                 "on"
               ]
             }
-          },
-          "unknown": {
+          }
+        },
+        "required": [
+          "subscriptions",
+          "statements",
+          "about",
+          "money",
+          "talk",
+          "unknown",
+          "income",
+          "spending",
+          "observed",
+          "permissions"
+        ]
+      },
+      "student_apps": {
+        "type": "object",
+        "properties": {
+          "learns": {
             "type": "array",
             "items": {
               "type": "string"
             }
+          },
+          "doesNotLearn": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "platform": {
+            "type": "string"
+          },
+          "found": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "lei": {
+                  "type": "number"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "on": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "lei",
+                "note",
+                "on"
+              ]
+            }
           }
         },
         "required": [
-          "statements",
-          "about",
-          "money",
-          "income",
-          "spending",
-          "observed",
-          "subscriptions",
-          "talk",
-          "permissions",
-          "unknown"
+          "learns",
+          "doesNotLearn",
+          "platform",
+          "found",
+          "items"
         ]
       },
-      "student_question": {
-        "anyOf": [
-          {
+      "student_statements": {
+        "type": "object",
+        "properties": {
+          "lead": {
+            "type": "string"
+          },
+          "account": {
             "type": "object",
             "properties": {
-              "amount": {
-                "type": "number"
-              },
-              "merchant": {
+              "name": {
                 "type": "string"
               },
-              "date": {
-                "type": "string"
-              },
-              "options": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "txId": {
+              "iban": {
                 "type": "string"
               }
             },
             "required": [
-              "amount",
-              "merchant",
-              "date",
-              "options",
-              "txId"
+              "name",
+              "iban"
             ]
           },
-          {
-            "type": "null"
+          "periods": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "months": {
+                  "type": "number"
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "months",
+                "label"
+              ]
+            }
+          },
+          "imported": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "meta": {
+                    "type": "string"
+                  },
+                  "at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "meta",
+                  "at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "attachHint": {
+            "type": "string"
+          },
+          "formats": {
+            "type": "string"
+          },
+          "files": {
+            "type": "array",
+            "items": {}
+          },
+          "howTo": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "privacy": {
+            "type": "string"
           }
+        },
+        "required": [
+          "lead",
+          "account",
+          "periods",
+          "imported",
+          "attachHint",
+          "formats",
+          "files",
+          "howTo",
+          "privacy"
         ]
       },
-      "student_questions": {
+      "student_analysis": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "lead": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "label",
+                "state",
+                "note"
+              ]
+            }
+          },
+          "at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "title",
+          "lead",
+          "items"
+        ]
+      },
+      "student_findings": {
+        "type": "object",
+        "properties": {
+          "lead": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "src": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "src",
+                "text"
+              ]
+            }
+          },
+          "firstStep": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "icon": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "type": "string"
+                  },
+                  "href": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "icon",
+                  "title",
+                  "text",
+                  "action",
+                  "href"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "lead",
+          "items",
+          "firstStep"
+        ]
+      },
+      "student_chat": {
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
-            "id": {
+            "type": {
               "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "position": {
+              "type": "number"
             },
             "title": {
               "type": "string"
             },
-            "hint": {
+            "lines": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "done": {
               "type": "string"
             },
-            "options": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "label": {
-                    "type": "string"
-                  },
-                  "selected": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "label"
-                ]
-              }
-            },
-            "fields": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "label": {
-                    "type": "string"
-                  },
-                  "value": {
-                    "type": "string"
-                  },
-                  "suffix": {
-                    "type": "string"
-                  },
-                  "numeric": {
-                    "type": "boolean"
-                  },
-                  "type": {
-                    "type": "string"
-                  },
-                  "options": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "required": [
-                  "label",
-                  "value"
-                ]
-              }
+            "id": {
+              "type": "string"
             }
           },
           "required": [
-            "id",
-            "title",
-            "options"
+            "type"
           ]
         }
       },
-      "student_reserve": {
-        "type": "null"
+      "student_chatStatus": {
+        "type": "object",
+        "properties": {
+          "unread": {
+            "type": "number"
+          },
+          "coachReplies": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "unread",
+          "coachReplies"
+        ]
       },
-      "student_review": {
-        "anyOf": [
-          {
+      "student_calendar": {
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "action": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "icon",
+                "title",
+                "note",
+                "action"
+              ]
+            }
+          },
+          "reads": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "doesNotRead": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "found": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "day": {
+                  "type": "string"
+                },
+                "month": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "day",
+                "month",
+                "title",
+                "note"
+              ]
+            }
+          },
+          "gift": {
             "type": "object",
             "properties": {
-              "id": {
+              "question": {
                 "type": "string"
               },
-              "title": {
-                "type": "string"
+              "groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "options": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "selected": {
+                      "type": "string"
+                    },
+                    "selected_minor": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "options",
+                    "selected",
+                    "selected_minor"
+                  ]
+                }
               },
-              "text": {
+              "result": {
                 "type": "string"
               }
             },
             "required": [
-              "id",
-              "title",
-              "text"
+              "question",
+              "groups",
+              "result"
             ]
-          },
-          {
-            "type": "null"
           }
+        },
+        "required": [
+          "options",
+          "reads",
+          "doesNotRead",
+          "found",
+          "gift"
         ]
       },
       "student_services": {
         "type": "object",
         "properties": {
-          "on": {
-            "type": "boolean"
-          },
           "hint": {
             "type": "string"
+          },
+          "on": {
+            "type": "boolean"
           },
           "items": {
             "type": "array",
@@ -8218,10 +8679,24 @@
                   "type": "string"
                 },
                 "helps": {
-                  "type": "string"
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 },
                 "why": {
-                  "type": "string"
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 },
                 "without": {
                   "type": "string"
@@ -8254,236 +8729,278 @@
           }
         },
         "required": [
-          "on",
           "hint",
+          "on",
           "items"
         ]
       },
-      "student_spending": {
+      "student_ideas": {
         "type": "object",
         "properties": {
-          "period": {
-            "type": "string"
-          },
           "title": {
             "type": "string"
           },
-          "total": {
-            "type": "number"
-          },
-          "fixed": {
-            "type": "number"
-          },
-          "fixedNote": {
-            "type": "string"
-          },
-          "compare": {
-            "type": "string"
-          },
-          "parts": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "lei": {
-                  "type": "number"
-                }
-              },
-              "required": [
-                "id",
-                "lei"
-              ]
-            }
-          }
-        },
-        "required": [
-          "period",
-          "title",
-          "total",
-          "fixed",
-          "fixedNote",
-          "compare",
-          "parts"
-        ]
-      },
-      "student_statements": {
-        "type": "object",
-        "properties": {
           "lead": {
             "type": "string"
           },
-          "account": {
+          "featured": {
             "type": "object",
             "properties": {
-              "name": {
+              "icon": {
                 "type": "string"
               },
-              "iban": {
+              "eyebrow": {
                 "type": "string"
-              }
-            },
-            "required": [
-              "name",
-              "iban"
-            ]
-          },
-          "periods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "imported": {
-            "type": "object",
-            "properties": {
+              },
               "title": {
                 "type": "string"
               },
-              "meta": {
+              "text": {
                 "type": "string"
+              },
+              "effects": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "why": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "actions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ]
+                }
               }
             },
             "required": [
+              "icon",
+              "eyebrow",
               "title",
-              "meta"
+              "text",
+              "effects",
+              "why",
+              "actions"
             ]
           },
-          "attachHint": {
-            "type": "string"
-          },
-          "formats": {
-            "type": "string"
-          },
-          "files": {
-            "type": "array",
-            "items": {}
-          },
-          "howTo": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "privacy": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "lead",
-          "account",
-          "periods",
-          "imported",
-          "attachHint",
-          "formats",
-          "files",
-          "howTo",
-          "privacy"
-        ]
-      },
-      "student_tagSuggestions": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "student_today": {
-        "type": "object",
-        "properties": {
-          "label": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "label"
-        ]
-      },
-      "student_unbudgeted": {
-        "type": "object",
-        "properties": {
-          "total": {
-            "type": "number"
-          },
-          "items": {
+          "groups": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "name": {
+                "title": {
                   "type": "string"
                 },
-                "icon": {
-                  "type": "string"
-                },
-                "lei": {
-                  "type": "number"
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "icon": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "link": {
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "href",
+                          "label"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "icon",
+                      "title",
+                      "text"
+                    ]
+                  }
                 },
                 "note": {
                   "type": "string"
                 }
               },
               "required": [
-                "name",
-                "icon",
-                "lei",
-                "note"
+                "title",
+                "items"
               ]
             }
+          },
+          "rules": {
+            "type": "string"
           }
         },
         "required": [
-          "total",
-          "items"
+          "title",
+          "lead",
+          "featured",
+          "groups",
+          "rules"
         ]
       },
-      "student_week": {
+      "student_questions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "selected": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "label"
+                ]
+              }
+            },
+            "fields": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "suffix": {
+                    "type": "string"
+                  },
+                  "numeric": {
+                    "type": "boolean"
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "options": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "label",
+                  "value"
+                ]
+              }
+            },
+            "multiple": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "options"
+          ]
+        }
+      },
+      "student_accessLog": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "who": {
+              "type": "string"
+            },
+            "what": {
+              "type": "string"
+            },
+            "when": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "who",
+            "what",
+            "when"
+          ]
+        }
+      },
+      "student_intro": {
         "type": "object",
         "properties": {
-          "spent": {
-            "type": "number"
+          "title": {
+            "type": "string"
           },
-          "daysSoFar": {
-            "type": "number"
+          "lead": {
+            "type": "string"
           },
-          "guidePerDay": {
-            "type": "number"
+          "duration": {
+            "type": "string"
           },
-          "scaleMax": {
-            "type": "number"
-          },
-          "days": {
+          "does": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "d": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "lei": {
-                  "type": "number"
-                },
-                "today": {
-                  "type": "boolean"
-                }
-              },
-              "required": [
-                "d",
-                "name"
-              ]
+              "type": "string"
             }
           }
         },
         "required": [
-          "spent",
-          "daysSoFar",
-          "guidePerDay",
-          "scaleMax",
-          "days"
+          "title",
+          "lead",
+          "duration",
+          "does"
         ]
       },
       "student_pages": {
@@ -8492,35 +9009,68 @@
           "type": "string"
         }
       },
+      "student_pickerCategories": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "student_tagSuggestions": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "student_entry": {
+        "type": "undefined"
+      },
+      "student_products": {
+        "type": "undefined"
+      },
+      "student_categoryNotes": {
+        "type": "object",
+        "properties": {
+          "alimente": {
+            "type": "string"
+          },
+          "cafenele": {
+            "type": "string"
+          },
+          "nesortat": {
+            "type": "string"
+          },
+          "locuinta": {
+            "type": "string"
+          },
+          "transport": {
+            "type": "string"
+          },
+          "abonamente": {
+            "type": "string"
+          },
+          "economii": {
+            "type": "string"
+          },
+          "venit": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "alimente",
+          "cafenele",
+          "nesortat",
+          "locuinta",
+          "transport",
+          "abonamente",
+          "economii",
+          "venit"
+        ]
+      },
       "student": {
         "type": "object",
         "properties": {
-          "agenda": {
-            "$ref": "#/components/schemas/student_agenda"
-          },
-          "allocation": {
-            "$ref": "#/components/schemas/student_allocation"
-          },
-          "analysis": {
-            "$ref": "#/components/schemas/student_analysis"
-          },
-          "apps": {
-            "$ref": "#/components/schemas/student_apps"
-          },
-          "budgetGroups": {
-            "$ref": "#/components/schemas/student_budgetGroups"
-          },
-          "budgets": {
-            "$ref": "#/components/schemas/student_budgets"
-          },
-          "calendar": {
-            "$ref": "#/components/schemas/student_calendar"
-          },
-          "categoryNotes": {
-            "$ref": "#/components/schemas/student_categoryNotes"
-          },
-          "chat": {
-            "$ref": "#/components/schemas/student_chat"
+          "today": {
+            "$ref": "#/components/schemas/student_today"
           },
           "client": {
             "$ref": "#/components/schemas/student_client"
@@ -8528,119 +9078,159 @@
           "cycle": {
             "$ref": "#/components/schemas/student_cycle"
           },
-          "days": {
-            "$ref": "#/components/schemas/student_days"
+          "insight": {
+            "$ref": "#/components/schemas/student_insight"
+          },
+          "budgets": {
+            "$ref": "#/components/schemas/student_budgets"
+          },
+          "allocation": {
+            "$ref": "#/components/schemas/student_allocation"
           },
           "essentials": {
             "$ref": "#/components/schemas/student_essentials"
           },
-          "filters": {
-            "$ref": "#/components/schemas/student_filters"
-          },
-          "findings": {
-            "$ref": "#/components/schemas/student_findings"
-          },
-          "goal": {
-            "$ref": "#/components/schemas/student_goal"
-          },
-          "ideas": {
-            "$ref": "#/components/schemas/student_ideas"
-          },
-          "insight": {
-            "$ref": "#/components/schemas/student_insight"
-          },
-          "intro": {
-            "$ref": "#/components/schemas/student_intro"
+          "budgetGroups": {
+            "$ref": "#/components/schemas/student_budgetGroups"
           },
           "lastMessage": {
             "$ref": "#/components/schemas/student_lastMessage"
           },
-          "nextGoals": {
-            "$ref": "#/components/schemas/student_nextGoals"
+          "week": {
+            "$ref": "#/components/schemas/student_week"
           },
-          "pickerCategories": {
-            "$ref": "#/components/schemas/student_pickerCategories"
-          },
-          "pots": {
-            "$ref": "#/components/schemas/student_pots"
-          },
-          "profile": {
-            "$ref": "#/components/schemas/student_profile"
-          },
-          "question": {
-            "$ref": "#/components/schemas/student_question"
-          },
-          "questions": {
-            "$ref": "#/components/schemas/student_questions"
-          },
-          "reserve": {
-            "$ref": "#/components/schemas/student_reserve"
-          },
-          "review": {
-            "$ref": "#/components/schemas/student_review"
-          },
-          "services": {
-            "$ref": "#/components/schemas/student_services"
-          },
-          "spending": {
-            "$ref": "#/components/schemas/student_spending"
-          },
-          "statements": {
-            "$ref": "#/components/schemas/student_statements"
-          },
-          "tagSuggestions": {
-            "$ref": "#/components/schemas/student_tagSuggestions"
-          },
-          "today": {
-            "$ref": "#/components/schemas/student_today"
+          "agenda": {
+            "$ref": "#/components/schemas/student_agenda"
           },
           "unbudgeted": {
             "$ref": "#/components/schemas/student_unbudgeted"
           },
-          "week": {
-            "$ref": "#/components/schemas/student_week"
+          "days": {
+            "$ref": "#/components/schemas/student_days"
+          },
+          "spending": {
+            "$ref": "#/components/schemas/student_spending"
+          },
+          "filters": {
+            "$ref": "#/components/schemas/student_filters"
+          },
+          "review": {
+            "$ref": "#/components/schemas/student_review"
+          },
+          "question": {
+            "$ref": "#/components/schemas/student_question"
+          },
+          "goal": {
+            "$ref": "#/components/schemas/student_goal"
+          },
+          "nextGoals": {
+            "$ref": "#/components/schemas/student_nextGoals"
+          },
+          "pots": {
+            "$ref": "#/components/schemas/student_pots"
+          },
+          "reserve": {
+            "$ref": "#/components/schemas/student_reserve"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/student_profile"
+          },
+          "apps": {
+            "$ref": "#/components/schemas/student_apps"
+          },
+          "statements": {
+            "$ref": "#/components/schemas/student_statements"
+          },
+          "analysis": {
+            "$ref": "#/components/schemas/student_analysis"
+          },
+          "findings": {
+            "$ref": "#/components/schemas/student_findings"
+          },
+          "chat": {
+            "$ref": "#/components/schemas/student_chat"
+          },
+          "chatStatus": {
+            "$ref": "#/components/schemas/student_chatStatus"
+          },
+          "calendar": {
+            "$ref": "#/components/schemas/student_calendar"
+          },
+          "services": {
+            "$ref": "#/components/schemas/student_services"
+          },
+          "ideas": {
+            "$ref": "#/components/schemas/student_ideas"
+          },
+          "questions": {
+            "$ref": "#/components/schemas/student_questions"
+          },
+          "accessLog": {
+            "$ref": "#/components/schemas/student_accessLog"
+          },
+          "intro": {
+            "$ref": "#/components/schemas/student_intro"
           },
           "pages": {
             "$ref": "#/components/schemas/student_pages"
+          },
+          "pickerCategories": {
+            "$ref": "#/components/schemas/student_pickerCategories"
+          },
+          "tagSuggestions": {
+            "$ref": "#/components/schemas/student_tagSuggestions"
+          },
+          "entry": {
+            "$ref": "#/components/schemas/student_entry"
+          },
+          "products": {
+            "$ref": "#/components/schemas/student_products"
+          },
+          "categoryNotes": {
+            "$ref": "#/components/schemas/student_categoryNotes"
           }
         },
         "required": [
-          "agenda",
-          "allocation",
-          "analysis",
-          "apps",
-          "budgetGroups",
-          "budgets",
-          "calendar",
-          "categoryNotes",
-          "chat",
+          "today",
           "client",
           "cycle",
-          "days",
-          "essentials",
-          "filters",
-          "findings",
-          "goal",
-          "ideas",
           "insight",
-          "intro",
+          "budgets",
+          "allocation",
+          "essentials",
+          "budgetGroups",
           "lastMessage",
-          "nextGoals",
-          "pickerCategories",
-          "pots",
-          "profile",
-          "question",
-          "questions",
-          "reserve",
-          "review",
-          "services",
-          "spending",
-          "statements",
-          "tagSuggestions",
-          "today",
-          "unbudgeted",
           "week",
-          "pages"
+          "agenda",
+          "unbudgeted",
+          "days",
+          "spending",
+          "filters",
+          "review",
+          "question",
+          "goal",
+          "nextGoals",
+          "pots",
+          "reserve",
+          "profile",
+          "apps",
+          "statements",
+          "analysis",
+          "findings",
+          "chat",
+          "chatStatus",
+          "calendar",
+          "services",
+          "ideas",
+          "questions",
+          "accessLog",
+          "intro",
+          "pages",
+          "pickerCategories",
+          "tagSuggestions",
+          "entry",
+          "products",
+          "categoryNotes"
         ]
       },
       "Error": {

@@ -2,16 +2,18 @@ import express from "express";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { insert, json, transaction, uid } from "./db.js";
+import { formatLei } from "./copy.js";
 import { demoToday } from "./dates.js";
 import { metrics } from "./metrics.js";
 import { ApiError, requireValue } from "./errors.js";
 import { accountFor, loadModel, present, screenData, SCREEN_FIELDS } from "./read-model.js";
 import { catalog, scenarios, seedPersona } from "./seed.js";
 import * as writes from "./write-model.js";
+import { nowAt } from "./write-model.js";
 
 export function createApp(
   pool,
-  { today = demoToday(), allowedOrigins = ["http://localhost:8081", "http://127.0.0.1:8081"] } = {},
+  { today = demoToday(), allowedOrigins = ["http://localhost:8081", "http://127.0.0.1:8081"], parser = {} } = {},
 ) {
   const app = express();
   app.disable("x-powered-by");
@@ -39,8 +41,19 @@ export function createApp(
   );
   api.get("/catalog", (_req, res) => res.json(catalog));
   api.get("/accounts", async (_req, res) => {
-    const { rows } = await pool.query("SELECT presentation FROM demo_accounts ORDER BY slug");
-    res.json({ login: catalog.login, accounts: rows.map((row) => json(row.presentation)) });
+    const { rows } = await pool.query("SELECT presentation,client,iban_masked FROM demo_accounts ORDER BY slug");
+    res.json({
+      login: catalog.login,
+      accounts: rows.map((row) => {
+        const client = json(row.client);
+        return {
+          ...json(row.presentation),
+          name: `${client.firstName} ${client.lastName}`,
+          initial: client.firstName[0],
+          detail: `Cont curent RON · ${row.iban_masked}`,
+        };
+      }),
+    });
   });
   api.use("/personas/:persona", (req, _res, next) => {
     if (!Object.hasOwn(scenarios, req.params.persona))
@@ -85,12 +98,12 @@ export function createApp(
       requireValue(
         typeof query === "string" &&
           query.length <= 160 &&
-          ["all", "expenses", "income", "uncategorized", "recurring"].includes(filter),
+          data.filters.some((item) => item.id === filter),
         "Filtre invalide.",
       );
       const match = (tx) =>
         (!query ||
-          `${tx.name} ${tx.merchant} ${tx.lei} ${(tx.tags ?? []).join(" ")}`
+          `${tx.name} ${tx.merchant} ${tx.lei} ${formatLei(Math.round(Math.abs(tx.lei) * 100))} ${(tx.tags ?? []).join(" ")}`
             .toLocaleLowerCase("ro")
             .includes(query.toLocaleLowerCase("ro"))) &&
         (filter === "all" ||
@@ -117,6 +130,7 @@ export function createApp(
     const result = await transaction(pool, async (db) => {
       db.dialect = pool.dialect;
       const model = await loadModel(db, req.params.persona, true);
+      model.today = today;
       const token = req.get("Idempotency-Key");
       requireValue(!token || /^[A-Za-z0-9_-]{1,100}$/.test(token), "Identificator de cerere invalid.");
       const hash = createHash("sha256")
@@ -140,6 +154,7 @@ export function createApp(
           persona_id: model.persona.id,
           decision_key: `request:${token}`,
           payload: JSON.stringify({ hash }),
+          created_at: nowAt(today),
         });
       await writes.bumpRevision(db, model);
       return present(await loadModel(db, req.params.persona), today);
@@ -204,7 +219,15 @@ export function createApp(
   );
   api.post(
     "/personas/:persona/chat/:index/decision",
-    mutate((db, m, r) => writes.proposalDecision(db, m, r.params.index, r.body, today)),
+    mutate((db, m, r) => writes.proposalDecision(db, m, r.params.index, r.body)),
+  );
+  api.post(
+    "/personas/:persona/chat/read",
+    mutate((db, m, r) => writes.markChatRead(db, m, r.body)),
+  );
+  api.post(
+    "/personas/:persona/analysis",
+    mutate((db, m, r) => writes.startAnalysis(db, m, r.body)),
   );
   api.post(
     "/personas/:persona/imports",
@@ -212,7 +235,7 @@ export function createApp(
   );
   api.post(
     "/personas/:persona/statements",
-    mutate((db, m, r) => writes.addDocument(db, m, r.body)),
+    mutate((db, m, r) => writes.addDocument(db, m, r.body, null, parser)),
   );
   api.delete("/personas/:persona/coach", async (req, res) => {
     await transaction(pool, async (db) => {
@@ -227,7 +250,8 @@ export function createApp(
       if (pool.dialect !== "sqlite")
         await db.query("SELECT id FROM demo_accounts WHERE id=$1 FOR UPDATE", [account.id]);
       const existing = await db.query("SELECT id FROM personas WHERE account_id=$1", [account.id]);
-      if (!existing.rowCount) await seedPersona(db, account, scenarios[req.params.persona]);
+      if (!existing.rowCount)
+        await seedPersona(db, account, scenarios[req.params.persona], { activate: false, createdAt: nowAt(today) });
       return present(await loadModel(db, req.params.persona), today);
     });
     res.json(data);

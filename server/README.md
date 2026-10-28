@@ -28,7 +28,7 @@ make node-seed       # idempotent; nu resetează modificările
 make node-openapi    # regenerează contractul, servit și de API
 ```
 
-`DEMO_TODAY=2026-11-12` este data implicită. Se poate suprascrie în `.env`, apoi
+`DEMO_TODAY=2026-11-12` este data implicită; scrierile primesc data demo și ora reală. Se poate suprascrie în `.env`, apoi
 recrea containerul `server`. Nu se folosește data mașinii pentru calcule.
 `make setup` generează parola PostgreSQL local, în `.env` ignorat de Git.
 
@@ -72,33 +72,36 @@ Inventarul pe ecrane și toate endpointurile sunt în
 [api/node-openapi.yaml](../api/node-openapi.yaml); JSON-ul este valid YAML 1.2.
 Testele verifică generarea și corespondența cu rutele implementate.
 
-`GET /personas/pf` și `/personas/student` păstrează exact obiectele inițiale ale
-frontend-ului. Datele per ecran sunt disponibile și separat. `GET /metrics`
-(sub persoană) furnizează progresul și procentele fără a modifica formele vechi.
-Sumele din DB și calcule sunt întregi în bani; câmpurile vechi `lei`, `spent`,
-`left` etc. sunt convertite în lei numai la serializare, pentru compatibilitate.
+Modelul de date este descris în [ADR 002](../docs/decisions/002-demo-fact-model.md).
+DB-ul păstrează fapte în bani întregi:
+- istoricul bancar și tranzacțiile curente;
+- importurile și extrasele, cu starea lor reală;
+- rulările analizei și insight-urile;
+- bugete, obiective, pușculițe și abonamente cu semnale de utilizare;
+- calendarul, memoria utilizatorului și mesajele cu dată.
 
-Tabelele păstrează tranzacții, obligații fixe, limite, solduri inițiale, abonamente,
-depuneri și proiecții, istoric pentru medii, profil/context, mesaje, răspunsuri,
-documente, preferințe și decizii. Totalurile, sumele rămase, contoarele,
-mediile, prognoza din idee și progresul se calculează la citire.
+Totalurile, notele cu cifre, agenda, constatările și progresul se calculează la
+citire. `GET /metrics` furnizează procentele. Câmpurile `lei`, `spent`, `left`
+etc. sunt convertite din bani numai la serializare.
 
-`seed/scenarios.json` conține faptele operaționale. `seed/catalog.json` conține
-textele și categoriile comune. Fixture-ul `tests/fixtures/frontend-baseline.json`
-este copia înghețată a interfeței inițiale și este folosit pentru compatibilitate,
-nu pentru răspunsurile API. `npm run seed:build` reconstruiește seed-ul din acest
-fixture numai când se schimbă intenționat scenariul, cu review al rezultatelor.
-Pentru o versiune nouă de seed trebuie planificată o migrare; seed-ul existent nu
-suprascrie tacit editările utilizatorilor la restart.
+`seed/scenarios.json` conține faptele și șabloanele de text (`{{cheie}}`), iar
+`seed/catalog.json` textele comune. Istoricul de 12 luni se generează determinist
+la seed, din tiparele din `ledger`. Fixture-ul `tests/fixtures/frontend-baseline.json`
+este prototipul inițial. Testele verifică faptul că faptele reproduc valorile
+scenariului. Seed-ul nu suprascrie tacit editările la restart.
+
+Extrasele CSV sunt citite de backend-ul Python (`PYTHON_API_URL`, implicit
+`http://api:8000` în Docker). Rulează o dată `make migrate` și `make demo-users`.
+Fără Python, fișierul este salvat și apare ca necitit, cu motivul.
 
 Scrierile sunt validate și izolate per persoană. Antetul `Idempotency-Key` previne
 dublarea la reîncercare, iar `If-Match` poate verifica revizia din
 `X-Data-Revision`. Nu se loghează descrieri de tranzacții sau conținutul mesajelor.
 
 Dezactivarea șterge datele coach-ului în cascadă și păstrează contul demo. Seed-ul
-nu le reintroduce la restart. Reactivarea explicită reîncarcă scenariul fictiv.
+nu le reintroduce la restart. Reactivarea pornește coach-ul fără import și fără
+analiză: fluxul Extrase → Analiză → Ce am găsit rulează pe date reale.
 
-Calendarul, urmărirea aplicațiilor, importurile și serviciile bancare sunt demo-uri
-persistate, fără OAuth sau operațiuni reale. Chat-ul salvează mesaje și aprobări;
-nu generează răspunsuri AI. Corecturile textuale ale profilului nu modifică
+Calendarul și urmărirea aplicațiilor sunt fapte demo persistate, fără OAuth sau
+Screen Time real. Chat-ul salvează mesaje și aprobări; nu generează răspunsuri AI. Corecturile textuale ale profilului nu modifică
 tranzacțiile bancare. Acest API nu are autentificare reală și este expus local.
