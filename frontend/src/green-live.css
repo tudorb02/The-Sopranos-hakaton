@@ -109,26 +109,6 @@
   margin-top: 0;
 }
 
-.parcel path {
-  fill: var(--sand);
-  stroke: var(--ink-3);
-  stroke-width: 1;
-}
-
-.parcel.is-selected path {
-  fill: var(--risk-fill, var(--yellow));
-  stroke: var(--ink);
-  stroke-width: 1.5;
-}
-
-.parcel.is-natura path {
-  stroke-dasharray: 4 3;
-}
-
-.parcel.is-click {
-  cursor: pointer;
-}
-
 .hero-big {
   font-size: var(--text-2xl);
   font-weight: 700;

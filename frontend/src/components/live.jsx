@@ -1,10 +1,12 @@
 // Pieces shared by the screens that talk to the backend: loading and error states, the footer actions of a step,
-// the SME / officer switch and the SVG charts (parcels and repayment calendar), all drawn without any tile or library.
+// the SME / officer switch, the parcel map (Leaflet on satellite tiles) and the repayment chart (SVG).
 
-import { useEffect, useState } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { projectParcels } from "../lib/geo.js";
+import { MAP_TILES, MARKER_MAX_ZOOM, PARCELS_ATTRIBUTION, ROMANIA_BOUNDS } from "../lib/geo.js";
 import { MONTHS_RO, periodMonth, RISK_RO } from "../lib/labels.js";
 import { currentRunId } from "../lib/session.js";
 import { Icon } from "./icons.jsx";
@@ -89,39 +91,127 @@ export function RoleSwitch({ role }) {
   );
 }
 
-const RISK_FILL = { LOW: "var(--sand)", MEDIUM: "var(--yellow-soft)", HIGH: "var(--yellow)" };
+const RISK_VAR = { LOW: "--sand", MEDIUM: "--yellow-soft", HIGH: "--yellow" };
 
-// The parcels of a farm (GeoJSON from GET /api/farms) as SVG. `selected` is a Set of parcel ids; `onToggle` makes the
-// polygons clickable. `risk` colours them by drought risk and draws a dashed outline for Natura 2000.
-export function GeoMap({ collection, selected, onToggle, risk = false, height = 190, caption }) {
-  const parcels = projectParcels(collection, 320, height);
-  const label = parcels
-    .map((p) => `${p.props.parcelId} ${p.props.crop}, ${p.props.areaHa} ha${selected?.has(p.id) ? ", selected" : ""}, drought risk ${RISK_RO[p.props.droughtRisk]}`)
+function cssColor(name, fallback) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+}
+
+// The parcels of a farm (GeoJSON from GET /api/farms) on a satellite map. `selected` is a Set of parcel ids; `onToggle`
+// makes the polygons clickable. `risk` fills them by drought risk; Natura 2000 parcels get a dashed outline.
+export function GeoMap({ collection, selected, onToggle, risk = false, height = 240, caption }) {
+  const box = useRef(null);
+  const view = useRef(null);
+  const props = useRef({});
+  props.current = { selected, onToggle, risk };
+
+  const style = (feature) => {
+    const { selected: chosen, risk: byRisk } = props.current;
+    const on = !chosen || chosen.has(feature.id);
+    const yellow = cssColor("--yellow", "#fee600");
+    return {
+      color: on ? yellow : "#ffffff",
+      weight: on ? 3 : 2,
+      opacity: 1,
+      dashArray: feature.properties.natura2000 ? "6 5" : null,
+      fillColor: byRisk ? cssColor(RISK_VAR[feature.properties.droughtRisk], yellow) : yellow,
+      fillOpacity: byRisk ? 0.55 : on ? 0.3 : 0.05,
+    };
+  };
+
+  // fitBounds on a hidden map picks a wrong zoom, so the fit waits until the map has a size
+  const fitWhenShown = (fit) => {
+    if (!view.current) return;
+    if (box.current?.clientHeight) fit();
+    else view.current.pending = fit;
+  };
+  const fitParcels = () =>
+    fitWhenShown(() => {
+      const { map, layer } = view.current;
+      if (layer?.getLayers().length) map.fitBounds(layer.getBounds(), { padding: [20, 20], maxZoom: 16 });
+    });
+  const fitRomania = () => fitWhenShown(() => view.current.map.fitBounds(ROMANIA_BOUNDS));
+
+  useEffect(() => {
+    // start over Romania, so the map has a view even while hidden; the parcels refit it right after
+    const map = L.map(box.current, { scrollWheelZoom: false, zoomSnap: 0.5 }).setView(L.latLngBounds(ROMANIA_BOUNDS).getCenter(), 6);
+    MAP_TILES.forEach((t) => L.tileLayer(t.url, { attribution: t.attribution, maxZoom: 19, maxNativeZoom: 18 }).addTo(map));
+    map.attributionControl.addAttribution(PARCELS_ATTRIBUTION);
+    // the page scrolls with the wheel until the map is clicked or focused
+    map.on("focus", () => map.scrollWheelZoom.enable());
+    map.on("blur", () => map.scrollWheelZoom.disable());
+    view.current = { map, layer: null, marker: null, pending: null };
+    // a map inside a folded panel has no size: redraw it, and do the pending fit, once it shows
+    const resize = new ResizeObserver(() => {
+      if (!box.current?.clientHeight || !view.current) return;
+      map.invalidateSize();
+      const fit = view.current.pending;
+      view.current.pending = null;
+      fit?.();
+    });
+    resize.observe(box.current);
+    return () => {
+      resize.disconnect();
+      map.remove();
+      view.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const current = view.current;
+    if (!current) return undefined;
+    const { map } = current;
+    const layer = L.geoJSON(collection, {
+      style,
+      onEachFeature: (feature, path) => {
+        const p = feature.properties;
+        path.bindTooltip(`${p.parcelId} · ${p.crop} · ${p.areaHa} ha`, { sticky: true, className: "map-tip" });
+        path.on("click", () => props.current.onToggle?.(feature.id));
+      },
+    }).addTo(map);
+    const marker = layer.getLayers().length
+      ? L.circleMarker(layer.getBounds().getCenter(), { radius: 8, weight: 3, color: "#ffffff", fillColor: cssColor("--yellow", "#fee600"), fillOpacity: 1 })
+      : null;
+    const showMarker = () => {
+      if (!marker) return;
+      if (map.getZoom() <= MARKER_MAX_ZOOM) marker.addTo(map);
+      else marker.remove();
+    };
+    map.on("zoomend", showMarker);
+    Object.assign(current, { layer, marker });
+    if (layer.getLayers().length) fitParcels();
+    else fitRomania();
+    showMarker();
+    return () => {
+      map.off("zoomend", showMarker);
+      layer.remove();
+      marker?.remove();
+    };
+  }, [collection]);
+
+  useEffect(() => {
+    view.current?.layer?.setStyle(style);
+  }, [selected, risk]);
+
+  const label = collection.features
+    .map((f) => {
+      const p = f.properties;
+      return `${p.parcelId} ${p.crop}, ${p.areaHa} ha${selected?.has(f.id) ? ", selected" : ""}, drought risk ${RISK_RO[p.droughtRisk]}`;
+    })
     .join("; ");
   return (
     <figure className="card parcel-map">
-      <svg viewBox={`0 0 320 ${height}`} role="img" aria-label={`Parcel map: ${label}.`}>
-        {parcels.map((p) => {
-          const on = !selected || selected.has(p.id);
-          const classes = ["parcel", on ? "is-selected" : "", p.props.natura2000 ? "is-natura" : "", onToggle ? "is-click" : ""].filter(Boolean).join(" ");
-          return (
-            <g
-              key={p.id}
-              className={classes}
-              onClick={onToggle ? () => onToggle(p.id) : undefined}
-              style={risk ? { "--risk-fill": RISK_FILL[p.props.droughtRisk] } : undefined}
-            >
-              <path d={p.path} />
-              <text x={p.center[0]} y={p.center[1]} textAnchor="middle">
-                {p.props.parcelId.split("_").slice(-1)[0]}
-              </text>
-              <text className="parcel-ha" x={p.center[0]} y={p.center[1] + 11} textAnchor="middle">
-                {p.props.areaHa} ha
-              </text>
-            </g>
-          );
-        })}
-      </svg>
+      <div className="map-frame">
+        <div ref={box} className={`map-box${onToggle ? " is-click" : ""}`} style={{ height }} role="region" aria-label={`Parcel map: ${label}.`} />
+        <div className="map-tools">
+          <button type="button" className="map-tool" onClick={fitParcels}>
+            My parcels
+          </button>
+          <button type="button" className="map-tool" onClick={fitRomania}>
+            Romania
+          </button>
+        </div>
+      </div>
       {caption ? <figcaption className="small muted">{caption}</figcaption> : null}
     </figure>
   );

@@ -1,32 +1,29 @@
-// GeoJSON parcels to SVG: a plain equirectangular projection fitted to the box, no tiles, so the map works offline.
+// The parcel map: Esri World Imagery satellite tiles with place names on top, no API key. VITE_MAP_TILES (a JSON array
+// of { url, attribution }) replaces them. Without internet the tiles fail and the parcels stay on the plain background
+// of the map, so the step still works offline (CLAUDE.md rule 3).
 
-function polygonsOf(geometry) {
-  return geometry.type === "Polygon" ? [geometry.coordinates] : geometry.coordinates;
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services";
+const DEFAULT_TILES = [
+  { url: `${ESRI}/World_Imagery/MapServer/tile/{z}/{y}/{x}`, attribution: "Imagery © Esri, Maxar, Earthstar Geographics and the GIS User Community" },
+  { url: `${ESRI}/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}`, attribution: "Places © Esri" },
+];
+
+function tilesFromEnv() {
+  const raw = typeof import.meta !== "undefined" ? import.meta.env?.VITE_MAP_TILES : undefined;
+  if (!raw) return null;
+  try {
+    const tiles = JSON.parse(raw);
+    return Array.isArray(tiles) && tiles.every((t) => typeof t.url === "string") ? tiles : null;
+  } catch {
+    return null;
+  }
 }
 
-export function projectParcels(collection, width = 320, height = 190, pad = 10) {
-  const points = collection.features.flatMap((f) => polygonsOf(f.geometry).flatMap((polygon) => polygon.flat()));
-  if (!points.length) return [];
-  const lons = points.map((p) => p[0]);
-  const lats = points.map((p) => p[1]);
-  const [minLon, maxLon, minLat, maxLat] = [Math.min(...lons), Math.max(...lons), Math.min(...lats), Math.max(...lats)];
-  // one degree of longitude is shorter than one of latitude, by cos(latitude)
-  const kx = Math.cos((((minLat + maxLat) / 2) * Math.PI) / 180);
-  const spanX = Math.max((maxLon - minLon) * kx, 1e-9);
-  const spanY = Math.max(maxLat - minLat, 1e-9);
-  const scale = Math.min((width - 2 * pad) / spanX, (height - 2 * pad) / spanY);
-  const offsetX = (width - spanX * scale) / 2;
-  const offsetY = (height - spanY * scale) / 2;
-  const project = ([lon, lat]) => [offsetX + (lon - minLon) * kx * scale, offsetY + (maxLat - lat) * scale];
-
-  return collection.features.map((feature) => {
-    const projected = polygonsOf(feature.geometry).map((polygon) => polygon.map((ring) => ring.map(project)));
-    const outer = projected.flatMap((polygon) => polygon[0]);
-    const cx = outer.reduce((sum, p) => sum + p[0], 0) / outer.length;
-    const cy = outer.reduce((sum, p) => sum + p[1], 0) / outer.length;
-    const path = projected
-      .map((polygon) => polygon.map((ring) => `M${ring.map((p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join("L")}Z`).join(""))
-      .join("");
-    return { id: feature.id, props: feature.properties, path, center: [cx, cy] };
-  });
-}
+export const MAP_TILES = tilesFromEnv() ?? DEFAULT_TILES;
+export const PARCELS_ATTRIBUTION = "Parcels © OpenStreetMap contributors (ODbL)";
+export const ROMANIA_BOUNDS = [
+  [43.6, 20.2],
+  [48.3, 29.8],
+];
+// At this zoom and below the polygons are a few pixels wide; a marker at the farm shows where it is in the country.
+export const MARKER_MAX_ZOOM = 11;

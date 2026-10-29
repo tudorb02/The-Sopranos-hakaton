@@ -72,8 +72,8 @@ export function CompanyPanel({ run }) {
             collection={parcels}
             selected={selected}
             risk
-            height={230}
-            caption="Selected parcels are yellow; dotted outline = Natura 2000 area. The map is drawn locally, without internet."
+            height={280}
+            caption="Yellow outline = selected parcel; fill = drought risk; dashed outline = Natura 2000 area. Without internet the parcels show on a plain background."
           />
           <table className="table table--tight">
             <thead>

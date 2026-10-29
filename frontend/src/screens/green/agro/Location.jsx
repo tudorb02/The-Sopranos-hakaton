@@ -1,4 +1,4 @@
-// Step 3: where. The parcels of the farm (APIA, GeoJSON) on an SVG map that works offline, with the risk flags.
+// Step 3: where. The parcels of the farm (APIA, GeoJSON) on a satellite map (the parcels still show offline), with the risk flags.
 
 import { Actions, ErrorCard, GeoMap, Loading, NextButton } from "../../../components/live.jsx";
 import { Group, NoteCard } from "../../../components/ui.jsx";
@@ -57,7 +57,7 @@ export function Location() {
             collection={farm.data.parcels}
             selected={selected}
             onToggle={toggle}
-            caption={`${selected.size} of ${features.length} parcels selected · the map also works offline`}
+            caption={`${selected.size} of ${features.length} parcels selected · tap a parcel on the map to add or remove it`}
           />
 
           <Group label="Your parcels">

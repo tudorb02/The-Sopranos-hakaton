@@ -1,0 +1,116 @@
+{
+  "license": "Parcel outlines © OpenStreetMap contributors, ODbL 1.0",
+  "generatedAt": "2026-10-29",
+  "farms": {
+    "38264019": [
+      {
+        "parcelId": "il_2001",
+        "osm": "https://www.openstreetmap.org/way/87568345",
+        "landuse": "farmland",
+        "osmAreaHa": 242.79,
+        "scaledToAreaHa": false
+      },
+      {
+        "parcelId": "il_2002",
+        "osm": "https://www.openstreetmap.org/way/87324205",
+        "landuse": "farmland",
+        "osmAreaHa": 177.64,
+        "scaledToAreaHa": false
+      },
+      {
+        "parcelId": "il_2003",
+        "osm": "https://www.openstreetmap.org/way/87569731",
+        "landuse": "farmland",
+        "osmAreaHa": 146.47,
+        "scaledToAreaHa": false
+      }
+    ],
+    "38751946": [
+      {
+        "parcelId": "ag_3001",
+        "osm": "https://www.openstreetmap.org/way/86750672",
+        "landuse": "orchard",
+        "osmAreaHa": 39.52,
+        "scaledToAreaHa": false
+      },
+      {
+        "parcelId": "ag_3002",
+        "osm": "https://www.openstreetmap.org/way/742872131",
+        "landuse": "farmyard",
+        "osmAreaHa": 5.85,
+        "scaledToAreaHa": true
+      }
+    ],
+    "41629307": [
+      {
+        "parcelId": "mu_3101",
+        "osm": "https://www.openstreetmap.org/way/87887914",
+        "landuse": "farmland",
+        "osmAreaHa": 58.08,
+        "scaledToAreaHa": false
+      },
+      {
+        "parcelId": "mu_3102",
+        "osm": "https://www.openstreetmap.org/way/87888182",
+        "landuse": "farmland",
+        "osmAreaHa": 38.49,
+        "scaledToAreaHa": false
+      },
+      {
+        "parcelId": "mu_3103",
+        "osm": "https://www.openstreetmap.org/way/87888277",
+        "landuse": "farmland",
+        "osmAreaHa": 29.23,
+        "scaledToAreaHa": false
+      }
+    ],
+    "41726035": [
+      {
+        "parcelId": "ph_0207_01",
+        "osm": "https://www.openstreetmap.org/way/648490212",
+        "landuse": "farmyard",
+        "osmAreaHa": 7.31,
+        "scaledToAreaHa": true
+      }
+    ],
+    "45871203": [
+      {
+        "parcelId": "ct_0412_01",
+        "osm": "https://www.openstreetmap.org/way/1043504752",
+        "landuse": "farmland",
+        "osmAreaHa": 13.66,
+        "scaledToAreaHa": false
+      },
+      {
+        "parcelId": "ct_0412_02",
+        "osm": "https://www.openstreetmap.org/way/87308165",
+        "landuse": "farmland",
+        "osmAreaHa": 11.63,
+        "scaledToAreaHa": false
+      },
+      {
+        "parcelId": "ct_0412_03",
+        "osm": "https://www.openstreetmap.org/way/1379941956",
+        "landuse": "farmland",
+        "osmAreaHa": 8.49,
+        "scaledToAreaHa": false
+      }
+    ],
+    "47209135": [
+      {
+        "parcelId": "bn_2002",
+        "osm": "https://www.openstreetmap.org/way/87519446",
+        "landuse": "farmland",
+        "osmAreaHa": 95.18,
+        "scaledToAreaHa": false
+      },
+      {
+        "parcelId": "bn_2001",
+        "osm": "https://www.openstreetmap.org/way/741933491",
+        "landuse": "farmyard",
+        "osmAreaHa": 2.44,
+        "scaledToAreaHa": false
+      }
+    ]
+  }
+}
