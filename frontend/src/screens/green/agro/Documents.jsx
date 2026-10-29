@@ -62,6 +62,8 @@ function DocRow({ doc, file, onPick, onRemove }) {
 
 export function Documents() {
   const flow = useFlow();
+  // only the demo dossier of the signed-in company: the demo never switches to another company
+  const ownDemo = DEMO_FARMS.find((f) => f.cui === flow.cui);
   const modules = useModules();
   const [, force] = useState(0);
   const [busy, setBusy] = useState(null);
@@ -147,17 +149,17 @@ export function Documents() {
       ) : null}
       <NoteCard icon="lock">The documents are encrypted, do not become public and are used only for this dossier. We read only the technical data from them.</NoteCard>
 
-      <Group label="Or start a demo dossier">
-        <p className="small muted">Its company and documents are fictional; you go straight to the offers.</p>
-        <div className="demo-buttons">
-          {DEMO_FARMS.map((farm) => (
-            <button key={farm.moduleId} type="button" className="btn btn--outline btn--small" disabled={busy !== null} onClick={() => demo(farm.moduleId)}>
+      {ownDemo ? (
+        <Group label="Or start a demo dossier">
+          <p className="small muted">The recorded demo documents of your company (fictional data); you go straight to the offers.</p>
+          <div className="demo-buttons">
+            <button type="button" className="btn btn--outline btn--small" disabled={busy !== null} onClick={() => demo(ownDemo.moduleId)}>
               <Icon name="upload" />
-              {busy === farm.moduleId ? "Starting…" : farm.name}
+              {busy === ownDemo.moduleId ? "Starting…" : ownDemo.name}
             </button>
-          ))}
-        </div>
-      </Group>
+          </div>
+        </Group>
+      ) : null}
 
       <Actions>
         <NextButton href="#/verde/agro/intrebari" disabled={!offer || !module}>

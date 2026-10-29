@@ -1,14 +1,13 @@
 // Small helpers shared by the steps of the SME flow.
 
 import { createDemoRun } from "../../../lib/api.js";
-import { DEMO_FARMS } from "../../../lib/labels.js";
-import { rememberRun, resetFlow } from "../../../lib/session.js";
+import { getFlow, rememberRun, resetFlow } from "../../../lib/session.js";
 
-// Starts a recorded demo dossier of a category and remembers it; resolves with the run id.
+// Starts the recorded demo dossier of a category and remembers it; resolves with the run id. The company stays the
+// signed-in one.
 export async function startDemo(moduleId) {
   const created = await createDemoRun(moduleId);
-  const farm = DEMO_FARMS.find((f) => f.moduleId === moduleId);
-  resetFlow({ moduleId, cui: farm?.cui ?? "", consents: { apia: true, openBanking: true } });
+  resetFlow({ moduleId, cui: getFlow().cui, consents: { apia: true, openBanking: true } });
   rememberRun(created.runId);
   return created.runId;
 }
