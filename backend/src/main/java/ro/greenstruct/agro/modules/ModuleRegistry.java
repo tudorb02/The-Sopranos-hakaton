@@ -48,7 +48,7 @@ public class ModuleRegistry {
     }
 
     public ModuleDefinition require(String moduleId) {
-        return find(moduleId).orElseThrow(() -> new IllegalArgumentException("Modul necunoscut: " + moduleId));
+        return find(moduleId).orElseThrow(() -> new IllegalArgumentException("Unknown module: " + moduleId));
     }
 
     public Optional<JsonNode> catalog(String moduleId) {

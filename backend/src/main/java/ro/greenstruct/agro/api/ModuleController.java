@@ -40,6 +40,6 @@ public class ModuleController {
     @GetMapping("/{moduleId}")
     public ModuleView get(@PathVariable String moduleId) {
         return modules.find(moduleId).map(ModuleView::of)
-                .orElseThrow(() -> new NotFoundException("Modulul " + moduleId + " nu există"));
+                .orElseThrow(() -> new NotFoundException("Module " + moduleId + " does not exist"));
     }
 }

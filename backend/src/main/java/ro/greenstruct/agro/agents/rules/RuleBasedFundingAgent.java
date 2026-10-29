@@ -95,21 +95,21 @@ public class RuleBasedFundingAgent implements RuleAgent {
         boolean recommendedPasses = workspaces.forRun(run.id()).configuration(recommendedId).passesThreshold();
         ModuleDefinition.Financing financing = module.financing();
 
-        flow.call("list_financing_lines", flow.input(), "Încarc liniile de finanțare ale modulului");
+        flow.call("list_financing_lines", flow.input(), "Loading the module's financing lines");
         ToolOutput programs = flow.call("check_program_eligibility", flow.input().put("configId", recommendedId),
-                "Verific eligibilitatea pe programele de finanțare");
+                "Checking eligibility for the financing programmes");
         Optional<JsonNode> grant = openGrant(programs.result());
 
         List<OptionPlan> plans = new ArrayList<>();
         plans.add(new OptionPlan("A", "CLASIC", "STANDARD", initialId, List.of(financing.standardLine()),
-                "Credit clasic"));
+                "Classic credit"));
         if (recommendedPasses) {
             plans.add(new OptionPlan("B", "VERDE", "GREEN_PACKAGE", recommendedId, List.of(financing.greenLine()),
-                    "Credit verde Raiffeisen"));
+                    "Raiffeisen green credit"));
             if (grant.isPresent() && financing.cofinancingLine() != null && financing.bridgeLine() != null) {
                 plans.add(new OptionPlan("C", "VERDE", "GREEN_PACKAGE_WITH_GRANT", recommendedId,
                         List.of(financing.cofinancingLine(), grant.get().path("programCode").asText(),
-                                financing.bridgeLine()), "Credit verde cu grant " + grant.get().path("programCode")
+                                financing.bridgeLine()), "Green credit with grant " + grant.get().path("programCode")
                         .asText().replace('_', '-')));
             }
         }
@@ -119,11 +119,11 @@ public class RuleBasedFundingAgent implements RuleAgent {
             ObjectNode node = optionsInput.addObject().put("optionId", plan.optionId()).put("configId", plan.configId());
             plan.products().forEach(node.putArray("products")::add);
         }
-        flow.call("build_funding_stack", stackInput, "Construiesc structura de finanțare pe variante");
+        flow.call("build_funding_stack", stackInput, "Building the funding structure for each option");
 
         flow.call("determine_green_tier", flow.input().put("requestedConfigId", initialId)
-                .put("financedConfigId", recommendedId), "Stabilesc nivelul verde");
-        flow.call("price_loan", flow.input(), "Calculez dobânda clasică și pe cea verde, pe componente");
+                .put("financedConfigId", recommendedId), "Setting the green tier");
+        flow.call("price_loan", flow.input(), "Pricing the classic and the green interest rate by component");
 
         Map<String, ObjectNode> schedules = new LinkedHashMap<>();
         for (OptionPlan plan : plans) {
@@ -134,27 +134,27 @@ public class RuleBasedFundingAgent implements RuleAgent {
         optionIds.forEach(both.putArray("optionIds")::add);
         // Without Open Banking consent there is no cashflow: both checks are skipped and the output says so
         // (README §5.3: missing data becomes a condition, never a rejection).
-        ToolOutput affordability = flow.tryCall("check_affordability", both, "Verific capacitatea de plată");
+        ToolOutput affordability = flow.tryCall("check_affordability", both, "Checking affordability");
         boolean cashflowKnown = affordability.ok();
         if (cashflowKnown) {
             ObjectNode dscrInput = flow.input();
             optionIds.forEach(dscrInput.putArray("optionIds")::add);
-            flow.tryCall("compute_dscr", dscrInput, "Calculez DSCR-ul");
+            flow.tryCall("compute_dscr", dscrInput, "Calculating DSCR");
         } else {
-            flow.thought("Fără consimțământ Open Banking nu pot verifica ratele față de cashflow; trec peste verificare "
-                    + "și o las ca și condiție înainte de semnare.");
+            flow.thought("Without Open Banking consent I cannot check the instalments against cash flow; I am skipping the check "
+                    + "and leaving it as a condition before signing.");
         }
         boolean organic = "organic".equals(module.calculator()) && tools.find("compute_liquidity_gap").isPresent();
         if (organic) {
             ObjectNode gap = flow.input();
             optionIds.forEach(gap.putArray("optionIds")::add);
-            flow.tryCall("compute_liquidity_gap", gap, "Calculez golul de lichiditate din anii de conversie");
+            flow.tryCall("compute_liquidity_gap", gap, "Calculating the liquidity gap in the conversion years");
         }
         boolean green = optionIds.contains("B");
         if (green) {
             ObjectNode compare = flow.input();
             compare.putArray("optionIds").add("A").add("B");
-            flow.call("compare_scenarios", compare, "Compar creditul clasic cu cel verde");
+            flow.call("compare_scenarios", compare, "Comparing the classic credit with the green credit");
         }
 
         ObjectNode output = assemble(flow, module, plans, schedules, cashflowKnown ? affordability.result() : null,
@@ -168,13 +168,13 @@ public class RuleBasedFundingAgent implements RuleAgent {
         boolean hasMonths = run.request().questionnaire().path("cashin_months").isArray()
                 && !run.request().questionnaire().path("cashin_months").isEmpty();
         if (!"A".equals(plan.optionId()) && hasMonths) {
-            ToolOutput out = flow.tryCall("build_scenario", seasonal, "Rate după încasări, varianta " + plan.optionId());
+            ToolOutput out = flow.tryCall("build_scenario", seasonal, "Instalments matched to cash-in, option " + plan.optionId());
             if (out.ok()) {
                 return seasonal;
             }
         }
         ObjectNode equal = flow.input().put("optionId", plan.optionId()).put("scheduleType", "EQUAL_MONTHLY");
-        flow.call("build_scenario", equal, "Rate lunare egale, varianta " + plan.optionId());
+        flow.call("build_scenario", equal, "Equal monthly instalments, option " + plan.optionId());
         return equal;
     }
 
@@ -264,9 +264,9 @@ public class RuleBasedFundingAgent implements RuleAgent {
             flow.run().request().questionnaire().path("cashin_months").forEach(m -> months.add(m.asText()));
         }
         loan.put("status", "AVAILABLE");
-        loan.put("noteRo", classic ? "Rate lunare egale, cu ipotecă acolo unde linia o cere"
-                : seasonal ? "Rate după calendarul încasărilor, cu grație până la prima încasare"
-                : "Rate lunare egale");
+        loan.put("noteRo", classic ? "Equal monthly instalments, with a mortgage where the line requires one"
+                : seasonal ? "Instalments follow the cash-in calendar, with a grace period until the first cash-in"
+                : "Equal monthly instalments");
 
         if (facts.guaranteeEur().signum() > 0 && facts.guaranteeId() != null) {
             ObjectNode guarantee = stack.addObject();
@@ -278,7 +278,7 @@ public class RuleBasedFundingAgent implements RuleAgent {
                     .ifPresent(id -> guarantee.put("coverageCalcId", id));
             guarantee.put("guaranteesItemId", loanItem);
             guarantee.put("status", "AVAILABLE");
-            guarantee.put("noteRo", "Garanție europeană în locul ipotecii");
+            guarantee.put("noteRo", "European guarantee instead of a mortgage");
         }
         if (facts.grantEur().signum() > 0) {
             ObjectNode grantItem = stack.addObject();
@@ -288,7 +288,7 @@ public class RuleBasedFundingAgent implements RuleAgent {
             grantItem.put("programCode", facts.grantProgram());
             grantItem.put("amountCalcId", flow.id(p + "grant.amount"));
             grantItem.put("status", "OPEN_CALL");
-            grantItem.put("noteRo", "Grant nerambursabil, în sesiunea deschisă");
+            grantItem.put("noteRo", "Non-repayable grant, in the open session");
         }
         if (facts.bridgeLoanEur().signum() > 0) {
             ObjectNode bridge = stack.addObject();
@@ -297,7 +297,7 @@ public class RuleBasedFundingAgent implements RuleAgent {
             bridge.put("productId", facts.bridgeLineId());
             bridge.put("amountCalcId", flow.id(p + "bridge.amount"));
             bridge.put("status", "AVAILABLE");
-            bridge.put("noteRo", "Credit-punte până la încasarea grantului");
+            bridge.put("noteRo", "Bridge loan until the grant is paid out");
         }
         node.put("headlineInstallmentCalcId", flow.id(p + "installment"));
         ArrayNode collateral = node.putArray("collateral");
@@ -324,10 +324,10 @@ public class RuleBasedFundingAgent implements RuleAgent {
         }
         afford.put("limitCalcId", flow.id("line.affordability_limit"));
         afford.put("noteRo", !cashflowKnown
-                ? "Fără consimțământ Open Banking nu am putut verifica ratele față de cashflow; se verifică la bancă înainte de semnare"
-                : "FAIL".equals(affordabilityVerdict) ? "Ratele depășesc limita din cashflow"
-                : "PASS_WITH_WARNING".equals(affordabilityVerdict) ? "Ratele depășesc cashflow-ul în unele luni"
-                : "Ratele încap în cashflow-ul net");
+                ? "Without Open Banking consent we could not check the instalments against cash flow; the bank checks this before signing"
+                : "FAIL".equals(affordabilityVerdict) ? "The instalments exceed the cash-flow limit"
+                : "PASS_WITH_WARNING".equals(affordabilityVerdict) ? "The instalments exceed cash flow in some months"
+                : "The instalments fit within net cash flow");
         if (cashflowKnown) {
             afford.put("dscrCalcId", flow.id(p + "dscr"));
             flow.idIfPresent(p + "debt_service_year").ifPresent(id -> afford.put("debtServiceCalcId", id));
@@ -399,8 +399,8 @@ public class RuleBasedFundingAgent implements RuleAgent {
             row.put("checkedAt", properties.today().toString());
             row.put("sourceUrl", "https://www.eif.org");
             row.putArray("criteria");
-            row.put("noteRo", "Modulul " + module.nameRo() + " nu folosește programe UE de grant sau garanție; "
-                    + "finanțarea este creditul verde Raiffeisen.");
+            row.put("noteRo", "The " + module.nameRo() + " module uses no EU grant or guarantee programmes; "
+                    + "the financing is the Raiffeisen green credit.");
             return checks;
         }
         String today = properties.today().toString();
@@ -430,7 +430,7 @@ public class RuleBasedFundingAgent implements RuleAgent {
             List<String> notes = new ArrayList<>();
             program.path("reasonsRo").forEach(n -> notes.add(n.asText()));
             program.path("conditionsRo").forEach(n -> notes.add(n.asText()));
-            row.put("noteRo", cut(notes.isEmpty() ? "Criteriile programului sunt îndeplinite" : String.join("; ", notes), 400));
+            row.put("noteRo", cut(notes.isEmpty() ? "The programme criteria are met" : String.join("; ", notes), 400));
         }
         return checks;
     }
@@ -443,8 +443,8 @@ public class RuleBasedFundingAgent implements RuleAgent {
             String code = grant.get().path("programCode").asText();
             node.put("status", "GRANT_IN_STACK");
             node.put("programCode", code);
-            node.put("messageRo", "Grantul " + code.replace('_', '-') + " este în sesiune deschisă și ferma este eligibilă; "
-                    + "îl includem în varianta cu grant, cu credit-punte până la încasare.");
+            node.put("messageRo", "The " + code.replace('_', '-') + " grant has an open session and the farm is eligible; "
+                    + "we include it in the grant option, with a bridge loan until it is paid out.");
             return node;
         }
         boolean anyGrantClosed = false;
@@ -454,8 +454,8 @@ public class RuleBasedFundingAgent implements RuleAgent {
             }
         }
         node.put("status", anyGrantClosed ? "NO_OPEN_SESSION" : "NOT_ELIGIBLE");
-        node.put("messageRo", anyGrantClosed ? "Nu există o sesiune deschisă pentru un grant potrivit; reverificăm la următoarea sesiune."
-                : "Ferma sau investiția nu îndeplinesc condițiile granturilor verificate.");
+        node.put("messageRo", anyGrantClosed ? "There is no open session for a suitable grant; we will check again at the next session."
+                : "The farm or the investment does not meet the conditions of the grants checked.");
         return node;
     }
 
@@ -495,18 +495,18 @@ public class RuleBasedFundingAgent implements RuleAgent {
 
     private String farmerExplanation(ToolFlow flow, boolean green, boolean netPositive, boolean organic) {
         if (!green) {
-            return "Investiția cerută nu atinge pragul verde, așa că vă propunem creditul clasic. Puteți relua analiza cu o investiție mai eficientă.";
+            return "The investment you asked for does not reach the green threshold, so we propose the classic credit. You can run the analysis again with a more efficient investment.";
         }
         String gain = flow.calc("compare.net_advantage").map(Calc::display).orElse("");
         String base = netPositive
-                ? "Câștigi " + gain + " alegând creditul verde, față de cel clasic, pe toată durata creditului."
-                : "Creditul verde nu iese mai avantajos decât cel clasic pe durata analizată.";
+                ? "You gain " + gain + " by choosing the green credit instead of the classic one, over the whole life of the credit."
+                : "The green credit does not come out cheaper than the classic one over the period analysed.";
         String dscr = flow.calc("option_b.dscr").map(Calc::display).orElse(null);
         String limit = flow.calc("line.affordability_limit").map(Calc::display).orElse(null);
         String warning = flow.calc("option_b.affordability_ratio").filter(r -> limit != null && dscr != null
                 && flow.calc("line.affordability_limit").map(l -> r.value().compareTo(l.value()) > 0).orElse(false))
-                .map(r -> " Ratele din primul an sunt " + r.display() + " din cashflow-ul net, peste limita de " + limit
-                        + "; economiile le acoperă (DSCR " + dscr + "), dar banca va analiza capacitatea de plată.")
+                .map(r -> " In the first year the instalments take " + r.display() + " of your net cash flow, above the limit of " + limit
+                        + "; the savings cover them (DSCR " + dscr + "), but the bank will assess affordability.")
                 .orElse("");
         return (organic ? base + " " + liquidityGap(flow) : base) + warning;
     }
@@ -519,16 +519,16 @@ public class RuleBasedFundingAgent implements RuleAgent {
             return "";
         }
         boolean covered = gap.get().value().compareTo(coverage.get().value()) <= 0;
-        StringBuilder text = new StringBuilder("Golul de lichiditate din primul an de conversie, cu ratele creditului, este ")
-                .append(gap.get().display()).append(", față de o prefinanțare APIA de ")
-                .append(coverage.get().display()).append(covered ? ": e acoperit." : ": nu e acoperit complet.");
+        StringBuilder text = new StringBuilder("The liquidity gap in the first conversion year, including the credit instalments, is ")
+                .append(gap.get().display()).append(", against an APIA pre-financing of ")
+                .append(coverage.get().display()).append(covered ? ": it is covered." : ": it is not fully covered.");
         for (int year = 2; year <= 5; year++) {
             Optional<Calc> next = flow.calc("option_b.gap.y" + year);
             Optional<Calc> cover = flow.calc("option_b.gap.coverage_y" + year);
             if (next.isPresent() && cover.isPresent() && next.get().value().compareTo(cover.get().value()) > 0) {
-                text.append(" În anul ").append(year).append(" de conversie golul (").append(next.get().display())
-                        .append(") depășește prefinanțarea (").append(cover.get().display())
-                        .append("): discutăm un ajutor de trezorerie (F5).");
+                text.append(" In conversion year ").append(year).append(" the gap (").append(next.get().display())
+                        .append(") exceeds the pre-financing (").append(cover.get().display())
+                        .append("): we will discuss treasury support (F5).");
             }
         }
         return text.toString();
@@ -537,24 +537,24 @@ public class RuleBasedFundingAgent implements RuleAgent {
     private String officerNotes(ToolFlow flow, boolean green, boolean organic, boolean cashflowKnown) {
         StringBuilder notes = new StringBuilder();
         if (!green) {
-            notes.append("Fără credit verde: configurația nu trece pragul. Parametrii dobânzii sunt demo.");
+            notes.append("No green credit: the configuration does not pass the threshold. The pricing parameters are demo values.");
         } else {
             String classic = flow.calc("pricing.classic.rate").map(Calc::display).orElse("?");
             String verde = flow.calc("pricing.green.rate").map(Calc::display).orElse("?");
-            notes.append("Dobânda clasică ").append(classic).append(", dobânda verde ").append(verde)
-                    .append(". Parametrii dobânzii (PD, LGD, ponderi de risc, cost de finanțare, subvenție) sunt demo, "
-                            + "de confirmat cu Raiffeisen.");
+            notes.append("Classic rate ").append(classic).append(", green rate ").append(verde)
+                    .append(". The pricing parameters (PD, LGD, risk weights, funding cost, subsidy) are demo values, "
+                            + "to be confirmed with Raiffeisen.");
         }
         if (organic) {
             notes.append(' ').append(liquidityGap(flow));
         }
         if (!cashflowKnown) {
-            notes.append(" Fără consimțământ Open Banking: capacitatea de plată și DSCR nu au fost calculate; "
-                    + "se cer extrasele de cont înainte de semnare.");
+            notes.append(" No Open Banking consent: affordability and DSCR were not calculated; "
+                    + "bank statements are requested before signing.");
         }
         List<String> missing = flow.run().missingDocuments();
         if (!missing.isEmpty()) {
-            notes.append(" Documente lipsă, cerute ca și condiții înainte de tragere: ").append(String.join(", ", missing))
+            notes.append(" Missing documents, required as conditions precedent to drawdown: ").append(String.join(", ", missing))
                     .append('.');
         }
         return notes.toString();

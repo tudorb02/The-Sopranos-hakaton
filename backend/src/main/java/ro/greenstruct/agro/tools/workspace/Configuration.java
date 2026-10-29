@@ -24,7 +24,7 @@ public record Configuration(
     public BigDecimal metric(String name) {
         BigDecimal value = metrics.get(name);
         if (value == null) {
-            throw new IllegalStateException("Configurația " + configId + " nu are metrica " + name);
+            throw new IllegalStateException("Configuration " + configId + " has no metric " + name);
         }
         return value;
     }

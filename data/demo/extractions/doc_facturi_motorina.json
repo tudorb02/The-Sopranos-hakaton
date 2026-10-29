@@ -44,6 +44,6 @@
   "lineItems": [],
   "missingFields": [],
   "warnings": [
-    "Cele 12 facturi lunare (5.200 + 3.100 + 900 + 600 + 1.200 + 5.800 + 6.400 + 3.500 + 2.600 + 7.900 + 4.700 + 4.900 l) nu au total: litrii sunt însumați din ele, la 1,25 EUR/l fără TVA."
+    "The 12 monthly invoices (5,200 + 3,100 + 900 + 600 + 1,200 + 5,800 + 6,400 + 3,500 + 2,600 + 7,900 + 4,700 + 4,900 l) show no total: the litres are summed from them, at 1.25 EUR/l excl. VAT."
   ]
 }

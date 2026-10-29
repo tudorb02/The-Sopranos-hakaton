@@ -39,8 +39,8 @@ public record FinancingOption(
     public BigDecimal total(String name) {
         BigDecimal value = totals.get(name);
         if (value == null) {
-            throw new IllegalArgumentException("Opțiunea " + optionId + " nu are încă scenariul calculat; "
-                    + "apelează build_scenario");
+            throw new IllegalArgumentException("Option " + optionId + " has no computed scenario yet; "
+                    + "call build_scenario");
         }
         return value;
     }

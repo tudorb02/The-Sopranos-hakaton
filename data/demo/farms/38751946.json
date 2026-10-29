@@ -5,7 +5,7 @@
     "name": "Livezile Argeș Demo SRL",
     "legalForm": "SRL",
     "caen": "0124",
-    "caenLabelRo": "Cultivarea fructelor semințoase și sâmburoase",
+    "caenLabelRo": "Growing of pome and stone fruits",
     "county": "Argeș",
     "locality": "Livezi Demo",
     "registeredAt": "2012-09-03",
@@ -28,7 +28,7 @@
     "crops": [
       {
         "year": 2026,
-        "crop": "meri",
+        "crop": "apple trees",
         "ha": 35,
         "yieldTPerHa": 22
       }
@@ -73,7 +73,7 @@
           "parcelId": "ag_3001",
           "blockId": "BF-3001",
           "areaHa": 35,
-          "crop": "meri",
+          "crop": "apple trees",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "MEDIUM",
@@ -116,7 +116,7 @@
           "parcelId": "ag_3002",
           "blockId": "BF-3001",
           "areaHa": 0.8,
-          "crop": "incintă depozit",
+          "crop": "storage site",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "MEDIUM",

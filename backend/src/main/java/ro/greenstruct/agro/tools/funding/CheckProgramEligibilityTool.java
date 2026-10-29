@@ -70,12 +70,12 @@ public class CheckProgramEligibilityTool implements ToolHandler {
         ArrayNode programs = result.putArray("programs");
         for (String code : codes) {
             JsonNode program = FinancingConfig.program(context, code)
-                    .orElseThrow(() -> new IllegalArgumentException("Programul " + code + " nu e în config"));
+                    .orElseThrow(() -> new IllegalArgumentException("Programme " + code + " is not in config"));
             ObjectNode check = evaluate(context, program, cfg);
             context.workspace().putProgramCheck(code, check);
             programs.add(check);
         }
-        return context.ok(result, "Am verificat " + codes.size() + " programe de finanțare");
+        return context.ok(result, "Checked " + codes.size() + " funding programmes");
     }
 
     private ObjectNode evaluate(ToolContext context, JsonNode program, Configuration cfg) {
@@ -86,55 +86,55 @@ public class CheckProgramEligibilityTool implements ToolHandler {
         List<String> conditions = new ArrayList<>();
 
         if (rules.has("legalForms") && !contains(rules.path("legalForms"), company.legalForm())) {
-            reasons.add("Forma juridică " + company.legalForm() + " nu e eligibilă");
+            reasons.add("Legal form " + company.legalForm() + " is not eligible");
         }
         if (company.manager() == null) {
             // Companies looked up live at ANAF: the manager's data is at ONRC, which has no public API.
             if (rules.has("maxManagerAge") || rules.has("maxYearsSinceInstallation")) {
-                conditions.add("Vârsta administratorului și data instalării trebuie confirmate din extrasul ONRC");
+                conditions.add("Manager age and installation date must be confirmed from the ONRC extract");
             }
         } else if (rules.has("maxManagerAge") && company.manager().age() > rules.path("maxManagerAge").asInt()) {
-            reasons.add("Administratorul are " + company.manager().age() + " de ani (maximum "
+            reasons.add("The manager is " + company.manager().age() + " years old (maximum "
                     + rules.path("maxManagerAge").asInt() + ")");
         }
         if (rules.has("maxYearsSinceInstallation") && company.manager() != null
                 && company.manager().installedAt() != null) {
             int years = Period.between(company.manager().installedAt(), context.today()).getYears();
             if (years >= rules.path("maxYearsSinceInstallation").asInt()) {
-                reasons.add("Instalat de " + years + " ani (maximum " + rules.path("maxYearsSinceInstallation").asInt() + ")");
+                reasons.add("Installed " + years + " years ago (maximum " + rules.path("maxYearsSinceInstallation").asInt() + ")");
             }
         }
         BigDecimal so = context.farm().farm().standardOutputEur();
         if (rules.has("minStandardOutputEur") && so.compareTo(rules.path("minStandardOutputEur").decimalValue()) < 0) {
-            reasons.add("Dimensiunea economică (SO) e sub minimul programului");
+            reasons.add("Economic size (SO) is below the programme minimum");
         }
         if (rules.has("maxStandardOutputEur") && so.compareTo(rules.path("maxStandardOutputEur").decimalValue()) > 0) {
-            reasons.add("Dimensiunea economică (SO) depășește maximul programului");
+            reasons.add("Economic size (SO) exceeds the programme maximum");
         }
         if (rules.has("caenAnyOf") && !contains(rules.path("caenAnyOf"), company.caen())) {
-            reasons.add("Codul CAEN " + company.caen() + " nu e acoperit de program");
+            reasons.add("CAEN code " + company.caen() + " is not covered by the programme");
         }
         if (rules.has("requiresComponentAnyOf") && cfg != null && cfg.components().stream()
                 .noneMatch(c -> contains(rules.path("requiresComponentAnyOf"), c.category()))) {
-            reasons.add("Configurația nu conține componentele finanțate de program");
+            reasons.add("The configuration has none of the components the programme finances");
         }
         if (rules.path("requiresGreenConfig").asBoolean(false) && cfg != null && !cfg.passesThreshold()) {
-            reasons.add("Configurația nu trece pragul verde");
+            reasons.add("The configuration does not pass the green threshold");
         }
         if (rules.path("newEquipmentOnly").asBoolean(false)) {
             if (cfg == null) {
-                conditions.add("Programul finanțează doar utilaje noi");
+                conditions.add("The programme finances new machinery only");
             } else {
                 List<String> used = cfg.components().stream().filter(EquipmentAge::isUsed)
                         .map(c -> c.nameRo()).toList();
                 if (!used.isEmpty()) {
-                    reasons.add("Programul finanțează doar utilaje noi; second-hand: " + String.join(", ", used));
+                    reasons.add("The programme finances new machinery only; second-hand: " + String.join(", ", used));
                 }
             }
         }
         if (rules.path("requiresWaterMeter").asBoolean(false) && (cfg == null || cfg.components().stream()
                 .noneMatch(c -> "WATER_METER".equals(c.category())))) {
-            conditions.add("Contor de apă inclus în investiție");
+            conditions.add("Water meter included in the investment");
         }
 
         ObjectNode check = context.newResult();
@@ -150,15 +150,15 @@ public class CheckProgramEligibilityTool implements ToolHandler {
             BigDecimal intensity = intensity(context, program.path("intensity"),
                     company.manager() == null ? null : company.manager().age());
             String key = code.toLowerCase();
-            context.calc(key + ".intensity", "Intensitatea grantului " + code, intensity, Unit.PCT)
+            context.calc(key + ".intensity", "Grant intensity " + code, intensity, Unit.PCT)
                     .source(program.path("sourceRo").asText()).add();
-            context.calc(key + ".cap", "Plafonul grantului " + code, program.path("capEur").decimalValue(), Unit.EUR)
+            context.calc(key + ".cap", "Grant cap " + code, program.path("capEur").decimalValue(), Unit.EUR)
                     .source(program.path("sourceRo").asText()).add();
             check.put("intensityPct", intensity);
             check.put("capEur", program.path("capEur").decimalValue());
             check.put("monthsUntilPaid", program.path("monthsUntilPaid").asInt(12));
             precisionPoints(context, program, cfg).ifPresent(points -> {
-                context.calc(key + ".precision_points", "Puncte pentru agricultură de precizie", points, Unit.POINTS)
+                context.calc(key + ".precision_points", "Points for precision farming", points, Unit.POINTS)
                         .add();
                 check.put("precisionBonus", points.signum() > 0);
             });

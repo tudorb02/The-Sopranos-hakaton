@@ -45,7 +45,7 @@
     {
       "lineId": "ln_1",
       "category": "DIGESTER",
-      "descriptionRo": "Digestor anaerob din beton, cu agitatoare",
+      "descriptionRo": "Concrete anaerobic digester with agitators",
       "fields": [
         {
           "key": "QUANTITY",
@@ -66,7 +66,7 @@
     {
       "lineId": "ln_2",
       "category": "COGENERATION",
-      "descriptionRo": "Unitate de cogenerare 30 kWe / 45 kWt",
+      "descriptionRo": "Cogeneration unit 30 kWe / 45 kWth",
       "fields": [
         {
           "key": "QUANTITY",
@@ -94,7 +94,7 @@
     {
       "lineId": "ln_3",
       "category": "INSTALLATION_WORKS",
-      "descriptionRo": "Pompe, conducte, automatizare, racordare",
+      "descriptionRo": "Pumps, piping, automation, grid connection",
       "fields": [
         {
           "key": "QUANTITY",

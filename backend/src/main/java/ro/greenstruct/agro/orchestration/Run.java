@@ -54,7 +54,7 @@ public record Run(
 
     public Run withStatus(RunStatus next) {
         if (!status.canMoveTo(next)) {
-            throw new IllegalStateException("Dosarul nu poate trece din " + status + " în " + next);
+            throw new IllegalStateException("The dossier cannot move from " + status + " to " + next);
         }
         return new Run(id, next, createdAt, Instant.now(), request, missingDocuments, farmProfile, agentOutputs, steps,
                 submission, officerActions, pendingDocuments, error, monitoring);
@@ -94,7 +94,7 @@ public record Run(
                 steps, submission, actions, pending, error, monitoring);
     }
 
-    /** Result of "Simulează 12 luni" (MonitoringResult in contracts/openapi.yaml). */
+    /** Result of "Simulate 12 months" (MonitoringResult in contracts/openapi.yaml). */
     public Run withMonitoring(JsonNode result) {
         return new Run(id, status, createdAt, Instant.now(), request, missingDocuments, farmProfile, agentOutputs, steps,
                 submission, officerActions, pendingDocuments, error, result);

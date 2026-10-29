@@ -257,7 +257,7 @@ class OrganicToolChainTest {
                         .put("configId", "cfg_initial")
                         .set("products", mapper.createArrayNode().add("rbro.agri.credit_bio")))));
         assertThat(stack.ok()).isFalse();
-        assertThat(stack.messageRo()).contains("trece pragul");
+        assertThat(stack.messageRo()).contains("passes the threshold");
     }
 
     @Test

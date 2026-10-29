@@ -75,7 +75,7 @@ final class ToolFlow {
 
     String id(String key) {
         return calc(key).map(Calc::calcId).orElseThrow(() -> new AgentFailureException("AGENT_MISSING_CALC",
-                "Lipsește cifra " + key, false, null));
+                "Missing figure " + key, false, null));
     }
 
     Optional<String> idIfPresent(String key) {

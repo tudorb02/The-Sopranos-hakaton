@@ -27,7 +27,7 @@ import ro.greenstruct.agro.tools.Unit;
 @Component
 public class PriceLoanTool implements ToolHandler {
 
-    private static final String SOURCE = "config/pricing.json, config/funds.json (parametri demo până răspund mentorii)";
+    private static final String SOURCE = "config/pricing.json, config/funds.json (demo parameters until the mentors reply)";
 
     @Override
     public String name() {
@@ -61,57 +61,57 @@ public class PriceLoanTool implements ToolHandler {
             // Tier CLASIC: no green loan, only the classic rate by component.
             RateBreakdown classic = LoanPricingCalculator.classic(parameters);
             context.workspace().putPricing("CLASIC", classic);
-            Calc index = context.calc("pricing.index", "Indicele EURIBOR 3M", parameters.indexPct(), Unit.PCT)
+            Calc index = context.calc("pricing.index", "EURIBOR 3M index", parameters.indexPct(), Unit.PCT)
                     .source(context.reference().pricing().path("index").path("sourceRo").asText(null)).add();
             emit(context, "classic", classic, index);
             ObjectNode none = context.newResult();
             none.put("tier", tier.tier().name());
             none.put("parametersDemo", true);
-            return context.ok(none, "Dobânda clasică, pe componente; nu există credit verde");
+            return context.ok(none, "Classic interest rate by component; no green loan");
         }
         LoanPricing pricing = LoanPricingCalculator.price(parameters, PricingSupport.green(context, tier.tier()));
         context.workspace().putPricing("CLASIC", pricing.classic());
         context.workspace().putPricing("VERDE", pricing.green());
 
-        Calc index = context.calc("pricing.index", "Indicele EURIBOR 3M", parameters.indexPct(), Unit.PCT)
+        Calc index = context.calc("pricing.index", "EURIBOR 3M index", parameters.indexPct(), Unit.PCT)
                 .source(context.reference().pricing().path("index").path("sourceRo").asText(null)).add();
         emit(context, "classic", pricing.classic(), index);
         emit(context, "green", pricing.green(), index);
-        diff(context, "funding_cost", "Cost de finanțare", pricing.fundingCostDifferencePp());
-        diff(context, "risk_cost", "Cost de risc", pricing.riskCostDifferencePp());
-        diff(context, "capital_cost", "Cost de capital", pricing.capitalCostDifferencePp());
-        diff(context, "operational_cost", "Cost operațional", pricing.operationalCostDifferencePp());
-        diff(context, "program_subsidy", "Subvenție sau comision redus pe program", pricing.programSubsidyDifferencePp());
-        diff(context, "tier_adjustment", "Ajustarea nivelului verde", pricing.tierAdjustmentDifferencePp());
-        context.calc("pricing.diff.total", "Dobânda verde față de cea clasică", pricing.rateDifferencePp(), Unit.PP)
-                .formula("dobândă verde − dobândă clasică = suma diferențelor pe componente").source(SOURCE).add();
+        diff(context, "funding_cost", "Funding cost", pricing.fundingCostDifferencePp());
+        diff(context, "risk_cost", "Risk cost", pricing.riskCostDifferencePp());
+        diff(context, "capital_cost", "Cost of capital", pricing.capitalCostDifferencePp());
+        diff(context, "operational_cost", "Operational cost", pricing.operationalCostDifferencePp());
+        diff(context, "program_subsidy", "Programme subsidy or reduced fee", pricing.programSubsidyDifferencePp());
+        diff(context, "tier_adjustment", "Green tier adjustment", pricing.tierAdjustmentDifferencePp());
+        context.calc("pricing.diff.total", "Green vs classic interest rate", pricing.rateDifferencePp(), Unit.PP)
+                .formula("green rate − classic rate = sum of the component differences").source(SOURCE).add();
 
         ObjectNode result = context.newResult();
         result.put("tier", tier.tier().name());
         result.put("parametersDemo", true);
-        return context.ok(result, "Dobânda clasică și cea verde, pe componente");
+        return context.ok(result, "Classic and green interest rate by component");
     }
 
     private static void emit(ToolContext context, String variant, RateBreakdown rate, Calc index) {
         String p = "pricing." + variant + ".";
-        String label = "classic".equals(variant) ? "clasic" : "verde";
-        component(context, p + "funding_cost", "Cost de finanțare (" + label + ")", rate.fundingCostPct(),
-                "cost de finanțare al băncii");
-        component(context, p + "risk_cost", "Cost de risc (" + label + ")", rate.riskCostPct(), "PD × LGD × (1 − g)");
-        component(context, p + "capital_cost", "Cost de capital (" + label + ")", rate.capitalCostPct(),
-                "RW efectiv × rata de capital × costul capitalului");
-        component(context, p + "operational_cost", "Cost operațional (" + label + ")", rate.operationalCostPct(),
-                "analiza și administrarea dosarului");
-        component(context, p + "target_profit", "Profit țintă (" + label + ")", rate.targetProfitPct(), "profit țintă");
+        String label = "classic".equals(variant) ? "classic" : "green";
+        component(context, p + "funding_cost", "Funding cost (" + label + ")", rate.fundingCostPct(),
+                "bank's funding cost");
+        component(context, p + "risk_cost", "Risk cost (" + label + ")", rate.riskCostPct(), "PD × LGD × (1 − g)");
+        component(context, p + "capital_cost", "Cost of capital (" + label + ")", rate.capitalCostPct(),
+                "effective RW × capital ratio × cost of capital");
+        component(context, p + "operational_cost", "Operational cost (" + label + ")", rate.operationalCostPct(),
+                "dossier analysis and administration");
+        component(context, p + "target_profit", "Target profit (" + label + ")", rate.targetProfitPct(), "target profit");
         if ("green".equals(variant)) {
-            component(context, p + "program_subsidy", "Subvenție sau comision redus pe program",
-                    rate.programSubsidyPct(), "ajustare de program");
-            component(context, p + "tier_adjustment", "Ajustarea nivelului verde", rate.tierAdjustmentPct(),
-                    "ajustare pe nivel verde");
+            component(context, p + "program_subsidy", "Programme subsidy or reduced fee",
+                    rate.programSubsidyPct(), "programme adjustment");
+            component(context, p + "tier_adjustment", "Green tier adjustment", rate.tierAdjustmentPct(),
+                    "green tier adjustment");
         }
-        Calc margin = context.calc(p + "margin", "Marja (" + label + ")", rate.marginPct(), Unit.PCT)
-                .formula("suma componentelor de mai sus").source(SOURCE).add();
-        context.calc(p + "rate", "Dobânda " + label, rate.ratePct(), Unit.PCT).formula("indice + marjă")
+        Calc margin = context.calc(p + "margin", "Margin (" + label + ")", rate.marginPct(), Unit.PCT)
+                .formula("sum of the components above").source(SOURCE).add();
+        context.calc(p + "rate", "Interest rate (" + label + ")", rate.ratePct(), Unit.PCT).formula("index + margin")
                 .dependsOn(index, margin).source(SOURCE).add();
     }
 
@@ -120,7 +120,7 @@ public class PriceLoanTool implements ToolHandler {
     }
 
     private static void diff(ToolContext context, String component, String label, BigDecimal valuePp) {
-        context.calc("pricing.diff." + component, label + ": verde − clasic", valuePp, Unit.PP)
-                .formula("componenta verde − componenta clasică").source(SOURCE).add();
+        context.calc("pricing.diff." + component, label + ": green − classic", valuePp, Unit.PP)
+                .formula("green component − classic component").source(SOURCE).add();
     }
 }

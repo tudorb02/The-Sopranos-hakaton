@@ -5,7 +5,7 @@
     "name": "Ferma de Lapte Valea Demo SRL",
     "legalForm": "SRL",
     "caen": "0141",
-    "caenLabelRo": "Creșterea bovinelor de lapte",
+    "caenLabelRo": "Raising of dairy cattle",
     "county": "Bistrița-Năsăud",
     "locality": "Valea Demo",
     "registeredAt": "2016-05-10",
@@ -28,7 +28,7 @@
     "crops": [
       {
         "year": 2026,
-        "crop": "pajiște / furaje",
+        "crop": "grassland / fodder",
         "ha": 85,
         "yieldTPerHa": 6
       }
@@ -78,7 +78,7 @@
           "parcelId": "bn_2001",
           "blockId": "BF-2001",
           "areaHa": 2.5,
-          "crop": "incintă fermă (grajduri, platformă gunoi)",
+          "crop": "farmyard (barns, manure platform)",
           "natura2000": false,
           "nitrateVulnerable": true,
           "droughtRisk": "LOW",
@@ -121,7 +121,7 @@
           "parcelId": "bn_2002",
           "blockId": "BF-2001",
           "areaHa": 85,
-          "crop": "pajiște / furaje",
+          "crop": "grassland / fodder",
           "natura2000": false,
           "nitrateVulnerable": true,
           "droughtRisk": "LOW",

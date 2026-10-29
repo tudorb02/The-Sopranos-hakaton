@@ -59,15 +59,15 @@ public class CompareScenariosTool implements ToolHandler {
     public ToolOutput execute(JsonNode input, ToolContext context) {
         List<String> ids = Params.textList(input, "optionIds");
         if (ids.size() != 2) {
-            throw new IllegalArgumentException("optionIds trebuie să aibă exact două opțiuni: [bază, propusă]");
+            throw new IllegalArgumentException("optionIds must have exactly two options: [baseline, proposed]");
         }
         FinancingOption a = context.workspace().option(ids.get(0));
         FinancingOption b = context.workspace().option(ids.get(1));
         ScenarioComparison comparison = ScenarioComparison.of(cost(a), cost(b));
 
-        context.calc("compare.net_advantage", "Avantaj net " + b.optionId() + " față de " + a.optionId(),
+        context.calc("compare.net_advantage", "Net advantage of " + b.optionId() + " over " + a.optionId(),
                 comparison.netAdvantageEur(), Unit.EUR)
-                .formula("cost net " + a.optionId() + " − cost net " + b.optionId()).add();
+                .formula("net cost " + a.optionId() + " − net cost " + b.optionId()).add();
         driver(context, "grant", b.total("grant").subtract(a.total("grant")));
         driver(context, "investment", a.total("capex").subtract(b.total("capex")));
         driver(context, "interest", a.total("interest").subtract(b.total("interest")));
@@ -78,14 +78,14 @@ public class CompareScenariosTool implements ToolHandler {
         BigDecimal extraMonthlySavings = b.total("savings_year").subtract(a.total("savings_year")).divide(TWELVE, MC);
         if (extraCapex.signum() > 0) {
             FinancialMath.paybackMonths(extraCapex, extraMonthlySavings).ifPresent(months ->
-                    context.calc("compare.upgrade_payback", "Recuperarea investiției suplimentare din economii", months,
-                            Unit.MONTHS).formula("cost suplimentar / economie lunară suplimentară (fără grant)").add());
+                    context.calc("compare.upgrade_payback", "Payback of the extra investment from savings", months,
+                            Unit.MONTHS).formula("extra cost / extra monthly saving (excluding grant)").add());
         }
 
         ObjectNode result = context.newResult();
         result.put("better", comparison.proposedIsBetter() ? b.optionId() : a.optionId());
-        return context.ok(result, "Opțiunea " + (comparison.proposedIsBetter() ? b.optionId() : a.optionId())
-                + " costă mai puțin pe orizontul analizat");
+        return context.ok(result, "Option " + (comparison.proposedIsBetter() ? b.optionId() : a.optionId())
+                + " costs less over the analysed horizon");
     }
 
     private static ScenarioCost cost(FinancingOption option) {
@@ -95,7 +95,7 @@ public class CompareScenariosTool implements ToolHandler {
 
     private static void driver(ToolContext context, String name, BigDecimal value) {
         if (value.signum() != 0) {
-            context.calc("compare.driver." + name, "Contribuția la avantaj: " + name, value, Unit.EUR).add();
+            context.calc("compare.driver." + name, "Contribution to the advantage: " + name, value, Unit.EUR).add();
         }
     }
 }

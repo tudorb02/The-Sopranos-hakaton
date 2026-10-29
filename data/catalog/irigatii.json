@@ -1,17 +1,17 @@
 {
   "module": "irigatii",
-  "note": "Prețuri pentru 40 ha, de verificat în Baza de prețuri de referință AFIR. role: INDICATOR schimbă economia de apă, COMPLIANCE e cerut de DNSH/AFIR, ENERGY schimbă doar energia.",
+  "note": "Prices for 40 ha, to be checked against the AFIR reference price database. role: INDICATOR changes the water saving, COMPLIANCE is required by DNSH/AFIR, ENERGY changes only the energy.",
   "items": [
     {
       "catalogId": "irg.drip.surface_veg",
       "category": "IRRIGATION_DRIP",
-      "nameRo": "Irigare prin picurare la suprafață pentru legume (cu conducte și montaj)",
+      "nameRo": "Surface drip irrigation for vegetables (with pipes and installation)",
       "role": "INDICATOR",
       "costEur": 68000,
       "effect": {
         "efficiencyPct": 90
       },
-      "sourceRo": "Eficiență η = 0,90 (README §6); 1.700 EUR/ha × 40 ha, estimare echipă (lista de upgrade-uri a Product)",
+      "sourceRo": "Efficiency η = 0.90 (README §6); 1,700 EUR/ha × 40 ha, team estimate (Product's upgrade list)",
       "replacesCategories": [
         "IRRIGATION_SPRINKLER",
         "PIPES",
@@ -21,13 +21,13 @@
     {
       "catalogId": "irg.sensors.soil_moisture",
       "category": "SOIL_MOISTURE_SENSORS",
-      "nameRo": "Senzori de umiditate în sol + programare automată",
+      "nameRo": "Soil moisture sensors + automatic scheduling",
       "role": "INDICATOR",
       "costEur": 6500,
       "effect": {
         "demandReductionPct": 10
       },
-      "sourceRo": "s = 10% (README §6); preț estimat de echipă. Programarea automată pe senzori se montează pe picurare (README §12: picurare + senzori)",
+      "sourceRo": "s = 10% (README §6); price estimated by the team. Sensor-based automatic scheduling is fitted on drip (README §12: drip + sensors)",
       "requiresCategories": [
         "IRRIGATION_DRIP"
       ]
@@ -35,22 +35,22 @@
     {
       "catalogId": "irg.meter.electromagnetic",
       "category": "WATER_METER",
-      "nameRo": "Contor electromagnetic pentru apă",
+      "nameRo": "Electromagnetic water meter",
       "role": "COMPLIANCE",
       "costEur": 1200,
       "effect": {},
-      "sourceRo": "Contorizarea e obligatorie (art. 74 Reg. UE 2021/2115, ghid DR-12/DR-26)"
+      "sourceRo": "Metering is mandatory (Art. 74 Reg. (EU) 2021/2115, guide DR-12/DR-26)"
     },
     {
       "catalogId": "irg.pump.solar_25kwp",
       "category": "SOLAR_PUMP",
-      "nameRo": "Pompă solară 25 kWp",
+      "nameRo": "Solar pump 25 kWp",
       "role": "ENERGY",
       "costEur": 26500,
       "effect": {
         "pvKwp": 25
       },
-      "sourceRo": "Estimare echipă (~1.060 EUR/kWp cu pompă), de validat",
+      "sourceRo": "Team estimate (~1,060 EUR/kWp with pump), to be validated",
       "replacesCategories": [
         "PUMP"
       ]

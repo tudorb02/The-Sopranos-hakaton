@@ -52,7 +52,7 @@
     {
       "lineId": "ln_1",
       "category": "TRACTOR",
-      "descriptionRo": "Tractor 300 CP, transmisie CVT, Stage V, nou",
+      "descriptionRo": "Tractor 300 HP, CVT transmission, Stage V, new",
       "fields": [
         {
           "key": "QUANTITY",
@@ -101,6 +101,6 @@
   ],
   "missingFields": [],
   "warnings": [
-    "Oferta nu include pilot automat GPS; e menționat ca opțional."
+    "The offer does not include GPS autosteer; it is listed as optional."
   ]
 }

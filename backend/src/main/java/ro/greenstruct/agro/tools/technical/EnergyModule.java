@@ -49,7 +49,7 @@ public class EnergyModule implements ModuleCalculator {
     @Override
     public ToolOutput baseline(JsonNode input, ToolContext context) {
         DocumentFacts invoices = context.workspace().documentOfType("ENERGY_INVOICES").orElseThrow(() ->
-                new IllegalArgumentException("Extrage întâi facturile de energie pe 12 luni (ENERGY_INVOICES)"));
+                new IllegalArgumentException("Extract the 12-month energy invoices (ENERGY_INVOICES) first"));
         List<String> warnings = new ArrayList<>();
 
         Map<Integer, BigDecimal> byMonth = new TreeMap<>();
@@ -61,8 +61,8 @@ public class EnergyModule implements ModuleCalculator {
             }
             int month = InvoiceMonths.parse(line.texts().get("PERIOD_FROM"))
                     .or(() -> InvoiceMonths.parse(line.texts().get("PERIOD_TO")))
-                    .orElseThrow(() -> new IllegalArgumentException("Factura " + line.lineId()
-                            + " nu are perioada de facturare (PERIOD_FROM)"));
+                    .orElseThrow(() -> new IllegalArgumentException("Invoice " + line.lineId()
+                            + " has no billing period (PERIOD_FROM)"));
             byMonth.merge(month, kwh, BigDecimal::add);
             lineCost = lineCost.add(line.numbers().getOrDefault("ENERGY_COST", BigDecimal.ZERO));
         }
@@ -70,15 +70,15 @@ public class EnergyModule implements ModuleCalculator {
         List<BigDecimal> months;
         if (byMonth.isEmpty()) {
             invoicedKwh = invoices.number("ENERGY_KWH").orElseThrow(() ->
-                    new IllegalArgumentException("Facturile nu conțin consumul în kWh"));
+                    new IllegalArgumentException("The invoices do not show the consumption in kWh"));
             BigDecimal monthly = invoicedKwh.divide(BigDecimal.valueOf(12), MC);
             months = java.util.Collections.nCopies(12, monthly);
-            warnings.add("Facturile nu au defalcare lunară: consumul e împărțit egal pe 12 luni");
+            warnings.add("The invoices have no monthly breakdown: consumption is split evenly over 12 months");
         } else {
             invoicedKwh = byMonth.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
             months = EnergyCalculator.completeMonths(byMonth);
             if (byMonth.size() < 12) {
-                warnings.add("Facturile acoperă " + byMonth.size() + " luni; lunile lipsă iau media lunilor cunoscute");
+                warnings.add("The invoices cover " + byMonth.size() + " months; missing months take the average of the known months");
             }
         }
         BigDecimal annual = months.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -87,31 +87,31 @@ public class EnergyModule implements ModuleCalculator {
         boolean paidPrice = cost.signum() > 0 && invoicedKwh.signum() > 0;
         BigDecimal price = paidPrice ? cost.divide(invoicedKwh, MC) : RuleValues.price(context, "electricityEurPerKwh");
         if (!paidPrice) {
-            warnings.add("Facturile nu arată costul: folosim prețul energiei din configurație");
+            warnings.add("The invoices do not show the cost: we use the energy price from the configuration");
         }
 
         JsonNode dayAnswer = context.questionnaire().path("daytime_share_pct");
         BigDecimal daytime = dayAnswer.isNumber() ? dayAnswer.decimalValue() : context.param("daytimeShareDefaultPct");
         if (!dayAnswer.isNumber()) {
-            warnings.add("Nu știm ce parte din consum e ziua: presupunem " + daytime.toPlainString() + "%");
+            warnings.add("We do not know what share of consumption is during the day: we assume " + daytime.toPlainString() + "%");
         }
         JsonNode dieselAnswer = context.questionnaire().path("diesel_pump_litres_year");
         BigDecimal dieselLitres = dieselAnswer.isNumber() ? dieselAnswer.decimalValue() : BigDecimal.ZERO;
 
         BigDecimal co2 = ImpactCalculator.co2Tonnes(annual, RuleValues.factor(context, "gridKgCo2PerKwh"));
-        Calc consumption = context.calc("baseline.consumption", "Consum de energie electrică azi", annual,
-                Unit.KWH_PER_YEAR).formula(byMonth.isEmpty() ? "total facturat" : "suma facturilor lunare").add();
-        Calc priceCalc = context.calc("baseline.price", "Prețul plătit pentru energie", price, Unit.EUR_PER_KWH)
-                .formula(paidPrice ? "cost facturat fără TVA / kWh facturați" : "preț din configurație")
-                .source(paidPrice ? "Facturi de energie" : RuleValues.priceSource(context, "electricityEurPerKwh")).add();
-        context.calc("baseline.cost", "Costul energiei electrice azi", annual.multiply(price, MC), Unit.EUR_PER_YEAR)
-                .formula("kWh × preț plătit").dependsOn(consumption, priceCalc).add();
-        context.calc("baseline.daytime_share", "Ponderea consumului de zi", daytime, Unit.PCT)
-                .source(dayAnswer.isNumber() ? "Chestionar" : context.paramSource("daytimeShareDefaultPct")).add();
-        context.calc("baseline.co2", "CO₂ din energia electrică azi", co2, Unit.T_CO2_PER_YEAR)
-                .formula("kWh × factor rețea").dependsOn(consumption).add();
-        context.calc("baseline.diesel", "Motorină consumată de pompa actuală", dieselLitres, Unit.L_PER_YEAR)
-                .source("Chestionar").add();
+        Calc consumption = context.calc("baseline.consumption", "Electricity consumption today", annual,
+                Unit.KWH_PER_YEAR).formula(byMonth.isEmpty() ? "total invoiced" : "sum of the monthly invoices").add();
+        Calc priceCalc = context.calc("baseline.price", "Price paid for energy", price, Unit.EUR_PER_KWH)
+                .formula(paidPrice ? "invoiced cost excl. VAT / kWh invoiced" : "price from configuration")
+                .source(paidPrice ? "Energy invoices" : RuleValues.priceSource(context, "electricityEurPerKwh")).add();
+        context.calc("baseline.cost", "Electricity cost today", annual.multiply(price, MC), Unit.EUR_PER_YEAR)
+                .formula("kWh × price paid").dependsOn(consumption, priceCalc).add();
+        context.calc("baseline.daytime_share", "Daytime share of consumption", daytime, Unit.PCT)
+                .source(dayAnswer.isNumber() ? "Questionnaire" : context.paramSource("daytimeShareDefaultPct")).add();
+        context.calc("baseline.co2", "CO₂ from electricity today", co2, Unit.T_CO2_PER_YEAR)
+                .formula("kWh × grid factor").dependsOn(consumption).add();
+        context.calc("baseline.diesel", "Diesel used by the current pump", dieselLitres, Unit.L_PER_YEAR)
+                .source("Questionnaire").add();
 
         Map<String, BigDecimal> baseline = new HashMap<>();
         baseline.put("consumption_kwh", annual);
@@ -130,7 +130,7 @@ public class EnergyModule implements ModuleCalculator {
         if (!warnings.isEmpty()) {
             result.set("warnings", context.mapper().valueToTree(warnings));
         }
-        return context.ok(result, "Situația actuală: " + consumption.display() + " de energie electrică");
+        return context.ok(result, "Current situation: " + consumption.display() + " of electricity");
     }
 
     @Override
@@ -140,7 +140,7 @@ public class EnergyModule implements ModuleCalculator {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         boolean solarPump = components.stream().anyMatch(c -> SOLAR_PUMP.equals(c.category()));
         if (kwp.signum() == 0 && !solarPump) {
-            throw new IllegalArgumentException("Configurația nu are o instalație fotovoltaică cu puterea în kWp");
+            throw new IllegalArgumentException("The configuration has no photovoltaic installation with its power in kWp");
         }
 
         PvBalance balance = EnergyCalculator.balance(kwp, context.param("pvYieldKwhPerKwp"), monthlyShares(context),
@@ -191,33 +191,33 @@ public class EnergyModule implements ModuleCalculator {
     public List<Calc> emit(ToolContext context, Configuration cfg) {
         String p = cfg.configId() + ".";
         List<Calc> calcs = new ArrayList<>();
-        calcs.add(context.calc(p + "pv_kwp", "Puterea instalației", cfg.metric("pv_kwp"), Unit.KWP).add());
-        calcs.add(context.calc(p + "production", "Producția anuală", cfg.metric("production_kwh"),
-                Unit.KWH_PER_YEAR).formula("kWp × producția specifică").add());
-        calcs.add(context.calc(p + "self_consumed", "Energie consumată direct la fermă", cfg.metric("self_consumed_kwh"),
-                Unit.KWH_PER_YEAR).formula("Σ lună min(producție lunară, consum lunar × pondere de zi)").add());
-        calcs.add(context.calc(p + "exported", "Energie vândută în rețea", cfg.metric("exported_kwh"),
-                Unit.KWH_PER_YEAR).formula("producție − energie consumată direct").add());
-        calcs.add(context.calc(p + "export_share", "Ponderea vândută în rețea", cfg.metric("export_share_pct"),
-                Unit.PCT).formula("energie vândută / producție")
+        calcs.add(context.calc(p + "pv_kwp", "Installed power", cfg.metric("pv_kwp"), Unit.KWP).add());
+        calcs.add(context.calc(p + "production", "Annual production", cfg.metric("production_kwh"),
+                Unit.KWH_PER_YEAR).formula("kWp × specific yield").add());
+        calcs.add(context.calc(p + "self_consumed", "Energy used directly on the farm", cfg.metric("self_consumed_kwh"),
+                Unit.KWH_PER_YEAR).formula("Σ month min(monthly production, monthly consumption × daytime share)").add());
+        calcs.add(context.calc(p + "exported", "Energy sold to the grid", cfg.metric("exported_kwh"),
+                Unit.KWH_PER_YEAR).formula("production − energy used directly").add());
+        calcs.add(context.calc(p + "export_share", "Share sold to the grid", cfg.metric("export_share_pct"),
+                Unit.PCT).formula("energy sold / production")
                 .source(context.paramSource("maxExportSharePct")).add());
-        calcs.add(context.calc(p + "coverage", "Gradul de acoperire a consumului", cfg.metric("coverage_pct"),
-                Unit.PCT).formula("energie consumată direct / consum anual").add());
-        calcs.add(context.calc(p + "roof_area", "Suprafața necesară", cfg.metric("roof_area_m2"), Unit.M2)
-                .formula("kWp × m² pe kWp").source(context.paramSource("areaM2PerKwp")).add());
-        calcs.add(context.calc(p + "savings", "Economie din energie pe an", cfg.metric("savings_electricity_eur"),
-                Unit.EUR_PER_YEAR).formula("consumat direct × preț cumpărare + vândut × preț vânzare").add());
-        calcs.add(context.calc(p + "diesel_saved", "Motorină evitată de pompa solară", cfg.metric("diesel_saved_l"),
-                Unit.L_PER_YEAR).formula("litri consumați azi de pompa pe motorină").add());
+        calcs.add(context.calc(p + "coverage", "Consumption coverage", cfg.metric("coverage_pct"),
+                Unit.PCT).formula("energy used directly / annual consumption").add());
+        calcs.add(context.calc(p + "roof_area", "Area needed", cfg.metric("roof_area_m2"), Unit.M2)
+                .formula("kWp × m² per kWp").source(context.paramSource("areaM2PerKwp")).add());
+        calcs.add(context.calc(p + "savings", "Energy saving per year", cfg.metric("savings_electricity_eur"),
+                Unit.EUR_PER_YEAR).formula("used directly × buy price + sold × sell price").add());
+        calcs.add(context.calc(p + "diesel_saved", "Diesel avoided by the solar pump", cfg.metric("diesel_saved_l"),
+                Unit.L_PER_YEAR).formula("litres used today by the diesel pump").add());
         if (cfg.metricOrZero("savings_diesel_eur").signum() > 0) {
-            calcs.add(context.calc(p + "diesel_saving", "Economie din motorină pe an", cfg.metric("savings_diesel_eur"),
-                    Unit.EUR_PER_YEAR).formula("litri evitați × preț net motorină").add());
+            calcs.add(context.calc(p + "diesel_saving", "Diesel saving per year", cfg.metric("savings_diesel_eur"),
+                    Unit.EUR_PER_YEAR).formula("litres avoided × net diesel price").add());
         }
         if (cfg.metrics().containsKey("payback_years")) {
-            calcs.add(context.calc(p + "payback", "Recuperarea investiției", cfg.metric("payback_years"), Unit.YEARS)
-                    .formula("cost total / economie anuală").add());
-            calcs.add(context.calc(p + "payback_months", "Recuperarea investiției (luni)", cfg.metric("payback_months"),
-                    Unit.MONTHS).formula("cost total / economie anuală × 12").add());
+            calcs.add(context.calc(p + "payback", "Payback", cfg.metric("payback_years"), Unit.YEARS)
+                    .formula("total cost / annual saving").add());
+            calcs.add(context.calc(p + "payback_months", "Payback (months)", cfg.metric("payback_months"),
+                    Unit.MONTHS).formula("total cost / annual saving × 12").add());
         }
         return calcs;
     }
@@ -240,23 +240,23 @@ public class EnergyModule implements ModuleCalculator {
 
     @Override
     public void describeRules(ToolContext context) {
-        context.calc("rules.sizing.max_export", "Cel mult din producție vândut în rețea",
+        context.calc("rules.sizing.max_export", "Maximum share of production sold to the grid",
                 context.param("maxExportSharePct"), Unit.PCT).source(context.paramSource("maxExportSharePct")).add();
-        context.calc("rules.pv_yield", "Producția specifică a panourilor", context.param("pvYieldKwhPerKwp"),
+        context.calc("rules.pv_yield", "Specific yield of the panels", context.param("pvYieldKwhPerKwp"),
                 Unit.KWH_PER_KWP).source(context.paramSource("pvYieldKwhPerKwp")).add();
-        context.calc("rules.daytime_default", "Ponderea consumului de zi (implicită)",
+        context.calc("rules.daytime_default", "Daytime share of consumption (default)",
                 context.param("daytimeShareDefaultPct"), Unit.PCT).source(context.paramSource("daytimeShareDefaultPct")).add();
-        context.calc("rules.price.sell", "Prețul de vânzare a surplusului", context.param("sellPriceEurPerKwh"),
+        context.calc("rules.price.sell", "Sell price of the surplus", context.param("sellPriceEurPerKwh"),
                 Unit.EUR_PER_KWH).source(context.paramSource("sellPriceEurPerKwh")).add();
-        context.calc("rules.price.electricity", "Prețul energiei electrice (fără facturi)",
+        context.calc("rules.price.electricity", "Electricity price (without invoices)",
                 RuleValues.price(context, "electricityEurPerKwh"), Unit.EUR_PER_KWH)
                 .source(RuleValues.priceSource(context, "electricityEurPerKwh")).add();
-        context.calc("rules.price.diesel_net", "Costul net al motorinei", RuleValues.dieselNetEurPerLitre(context),
-                Unit.EUR_PER_L).formula("(preț la pompă / (1 + TVA) − acciză rambursată) / curs EUR")
+        context.calc("rules.price.diesel_net", "Net diesel cost", RuleValues.dieselNetEurPerLitre(context),
+                Unit.EUR_PER_L).formula("(pump price / (1 + VAT) − refunded excise) / EUR rate")
                 .source(RuleValues.priceSource(context, "dieselExciseRefundLeiPerLitre")).add();
-        context.calc("rules.factor.grid", "Factor de emisie al rețelei", RuleValues.factor(context, "gridKgCo2PerKwh"),
+        context.calc("rules.factor.grid", "Grid emission factor", RuleValues.factor(context, "gridKgCo2PerKwh"),
                 Unit.KG_CO2_PER_KWH).source(RuleValues.factorSource(context, "gridKgCo2PerKwh")).add();
-        context.calc("rules.factor.diesel", "Factor de emisie motorină", RuleValues.factor(context, "dieselKgCo2PerLitre"),
+        context.calc("rules.factor.diesel", "Diesel emission factor", RuleValues.factor(context, "dieselKgCo2PerLitre"),
                 Unit.KG_CO2_PER_L).source(RuleValues.factorSource(context, "dieselKgCo2PerLitre")).add();
     }
 
@@ -275,10 +275,10 @@ public class EnergyModule implements ModuleCalculator {
 
     @Override
     public void horizonImpact(ToolContext context, Configuration cfg, BigDecimal years) {
-        context.calc("impact.renewable_horizon", "Energie regenerabilă produsă pe orizont",
+        context.calc("impact.renewable_horizon", "Renewable energy produced over the horizon",
                 cfg.metric("production_kwh").multiply(years, MC), Unit.KWH).add();
         if (cfg.metricOrZero("diesel_saved_l").signum() > 0) {
-            context.calc("impact.diesel_horizon", "Motorină evitată pe orizont",
+            context.calc("impact.diesel_horizon", "Diesel avoided over the horizon",
                     cfg.metric("diesel_saved_l").multiply(years, MC), Unit.L).add();
         }
     }

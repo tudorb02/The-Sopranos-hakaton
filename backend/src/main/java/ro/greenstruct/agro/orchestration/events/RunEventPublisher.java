@@ -42,7 +42,7 @@ public class RunEventPublisher {
         if (!dataSources.isEmpty()) {
             data.set("dataSources", mapper.valueToTree(dataSources));
         }
-        return publish(runId, EventType.STATE_TRANSITION, null, reasonRo != null ? reasonRo : "Dosarul trece în " + to, data);
+        return publish(runId, EventType.STATE_TRANSITION, null, reasonRo != null ? reasonRo : "The dossier moves to " + to, data);
     }
 
     public RunEvent agentStarted(String runId, AgentSlot agent, String modelId, String mode, int attempt) {
@@ -51,7 +51,7 @@ public class RunEventPublisher {
         data.put("modelId", modelId);
         data.put("mode", mode);
         data.put("attempt", attempt);
-        return publish(runId, EventType.AGENT_STARTED, agent, agent.label() + " a pornit", data);
+        return publish(runId, EventType.AGENT_STARTED, agent, agent.label() + " started", data);
     }
 
     public RunEvent thought(String runId, AgentSlot agent, String text, int iteration) {
@@ -91,7 +91,7 @@ public class RunEventPublisher {
         data.put("iterations", iterations);
         data.put("durationMs", durationMs);
         data.set("output", output);
-        return publish(runId, EventType.AGENT_COMPLETED, agent, agent.label() + " a terminat", data);
+        return publish(runId, EventType.AGENT_COMPLETED, agent, agent.label() + " finished", data);
     }
 
     public RunEvent degraded(String runId, AgentSlot agent, String level, String reason, int attempt, String detailRo) {
@@ -103,7 +103,7 @@ public class RunEventPublisher {
             data.put("detailRo", truncate(detailRo));
         }
         return publish(runId, EventType.AGENT_DEGRADED, agent,
-                detailRo != null ? detailRo : agent.label() + " folosește rezerva (" + level + ")", data);
+                detailRo != null ? detailRo : agent.label() + " is using the fallback (" + level + ")", data);
     }
 
     public RunEvent runCompleted(String runId, long durationMs, String decision, String recommendedOptionId,
@@ -116,7 +116,7 @@ public class RunEventPublisher {
         data.put("netAdvantageCalcId", netAdvantageCalcId);
         ObjectNode sourceNode = data.putObject("sources");
         sources.forEach((agent, source) -> sourceNode.put(agent.name(), source));
-        return publish(runId, EventType.RUN_COMPLETED, null, "Dosarul este gata pentru ofițerul de credit", data);
+        return publish(runId, EventType.RUN_COMPLETED, null, "The dossier is ready for the credit officer", data);
     }
 
     public RunEvent runFailed(String runId, RunStatus failedStep, String errorCode, String messageRo, boolean retryable) {

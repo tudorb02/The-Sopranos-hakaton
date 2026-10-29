@@ -129,7 +129,7 @@ class AnafCompanyRegistryTest {
         assertThat(company.totalAssetsEur()).isNull();
         assertThat(company.smeStatus()).isEqualTo(SmeStatus.UNKNOWN);
         assertThat(company.caen()).isEqualTo("0111");
-        assertThat(company.caenLabelRo()).isEqualTo("Cod CAEN 0111");
+        assertThat(company.caenLabelRo()).isEqualTo("CAEN code 0111");
     }
 
     @Test
@@ -161,7 +161,7 @@ class AnafCompanyRegistryTest {
 
         assertThatThrownBy(() -> registry.company(CUI))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("inactivă fiscal de ANAF din 2026-02-01");
+                .hasMessageContaining("tax-inactive by ANAF since 2026-02-01");
     }
 
     @Test
@@ -176,7 +176,7 @@ class AnafCompanyRegistryTest {
 
         assertThatThrownBy(() -> registry.company(CUI))
                 .isInstanceOf(UpstreamUnavailableException.class)
-                .hasMessageContaining("ANAF nu răspunde");
+                .hasMessageContaining("ANAF is not responding");
     }
 
     @Test

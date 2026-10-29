@@ -275,7 +275,7 @@ class MachineryToolChainTest {
 
         JsonNode secondHand = chain.call(run, "check_program_eligibility", "{\"configId\": \"cfg_initial\"}");
         assertThat(ChainSupport.programs(secondHand)).containsEntry("DR_12", "NOT_ELIGIBLE/OPEN");
-        assertThat(secondHand.path("programs").get(0).path("reasonsRo").toString()).contains("doar utilaje noi");
+        assertThat(secondHand.path("programs").get(0).path("reasonsRo").toString()).contains("new machinery only");
 
         JsonNode usedLabels = chain.call(run, "get_labeling_rules", "{\"configId\": \"cfg_initial\"}");
         assertThat(usedLabels.path("rules").get(0).path("label").asText()).isEqualTo("NONE");
@@ -310,7 +310,7 @@ class MachineryToolChainTest {
                 + " \"configId\": \"cfg_x\", \"add\": [\"utl.tractor.new_stage_v\"]}");
 
         assertThat(output.ok()).isFalse();
-        assertThat(output.messageRo()).contains("doar utilaje second-hand");
+        assertThat(output.messageRo()).contains("only replaces second-hand machinery");
     }
 
     @Test
@@ -350,7 +350,7 @@ class MachineryToolChainTest {
 
         // built in 2018: 8 years old today, 15 at the last installment of a 7-year loan (limit 12)
         assertThat(output.ok()).isFalse();
-        assertThat(output.messageRo()).contains("second-hand").contains("cel mult 4 ani");
+        assertThat(output.messageRo()).contains("second-hand").contains("at most 4 years");
     }
 
     @Test

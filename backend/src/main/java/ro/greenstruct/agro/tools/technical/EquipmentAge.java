@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import ro.greenstruct.agro.tools.ToolContext;
 import ro.greenstruct.agro.tools.workspace.DocumentFacts;
@@ -18,6 +19,10 @@ public final class EquipmentAge {
     public static final String USED = "used";
     public static final String MANUFACTURE_YEAR = "manufactureYear";
 
+    /** English condition words, as whole words so "unused" or "renewed" do not count. */
+    private static final Pattern USED_EN = Pattern.compile("\\bused\\b|\\bpre-?owned\\b");
+    private static final Pattern NEW_EN = Pattern.compile("\\bnew\\b");
+
     private EquipmentAge() {
     }
 
@@ -30,8 +35,8 @@ public final class EquipmentAge {
         }
         String condition = line.texts().getOrDefault("CONDITION", "").toLowerCase(Locale.ROOT);
         boolean used = condition.contains("second") || condition.contains("folosit") || condition.contains("utilizat")
-                || condition.contains("rulat");
-        boolean declaredNew = condition.contains("nou");
+                || condition.contains("rulat") || USED_EN.matcher(condition).find();
+        boolean declaredNew = condition.contains("nou") || NEW_EN.matcher(condition).find();
         if (!used && !declaredNew && year != null) {
             used = currentYear - year.intValue() >= 2;
         }

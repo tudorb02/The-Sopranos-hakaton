@@ -5,9 +5,9 @@ package ro.greenstruct.agro.orchestration;
  * dossier is in its status and must finish by calling its submit tool.
  */
 public enum AgentSlot {
-    TECHNICAL_AUDITOR("Auditor tehnic", RunStatus.AGENT_1, "submit_technical_assessment"),
-    FUNDING_OPTIMIZER("Optimizator de finanțare", RunStatus.AGENT_2, "submit_funding_recommendation"),
-    GREEN_UNDERWRITER("Underwriter verde", RunStatus.AGENT_3, "submit_underwriting_report");
+    TECHNICAL_AUDITOR("Technical auditor", RunStatus.AGENT_1, "submit_technical_assessment"),
+    FUNDING_OPTIMIZER("Funding optimiser", RunStatus.AGENT_2, "submit_funding_recommendation"),
+    GREEN_UNDERWRITER("Green underwriter", RunStatus.AGENT_3, "submit_underwriting_report");
 
     private final String label;
     private final RunStatus status;

@@ -73,19 +73,19 @@ public final class ConfigurationMetrics {
     public static List<Calc> emit(ToolContext context, Configuration cfg, Configuration root) {
         String p = cfg.configId() + ".";
         List<Calc> calcs = new ArrayList<>();
-        calcs.add(context.calc(p + "total_cost", "Cost total " + cfg.configId(), cfg.totalCost(), Unit.EUR).add());
+        calcs.add(context.calc(p + "total_cost", "Total cost " + cfg.configId(), cfg.totalCost(), Unit.EUR).add());
         if (root != null && !root.configId().equals(cfg.configId())) {
-            calcs.add(context.calc(p + "upgrade_cost", "Cost suplimentar față de oferta inițială",
+            calcs.add(context.calc(p + "upgrade_cost", "Extra cost over the initial offer",
                     cfg.totalCost().subtract(root.totalCost()), Unit.EUR).add());
         }
-        calcs.add(context.calc(p + "indicator", "Indicatorul verde al configurației", cfg.metric("indicator_pct"), Unit.PCT)
-                .formula("indicatorul modulului față de situația actuală").add());
+        calcs.add(context.calc(p + "indicator", "Green indicator of the configuration", cfg.metric("indicator_pct"), Unit.PCT)
+                .formula("module indicator against the current situation").add());
         for (var component : cfg.components()) {
             calcs.add(context.calc(p + "cmp." + component.componentId() + ".cost", "Cost: " + component.nameRo(),
                     component.costEur(), Unit.EUR).add());
         }
         calcs.addAll(context.calculator().emit(context, cfg));
-        calcs.add(context.calc(p + "co2_avoided", "CO₂ evitat pe an", cfg.metric("co2_avoided_t"),
+        calcs.add(context.calc(p + "co2_avoided", "CO₂ avoided per year", cfg.metric("co2_avoided_t"),
                 Unit.T_CO2_PER_YEAR).add());
         return calcs;
     }

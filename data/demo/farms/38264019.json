@@ -5,7 +5,7 @@
     "name": "Cereale Câmpia Demo SRL",
     "legalForm": "SRL",
     "caen": "0111",
-    "caenLabelRo": "Cultivarea cerealelor (exclusiv orez), plantelor leguminoase și a plantelor producătoare de semințe oleaginoase",
+    "caenLabelRo": "Growing of cereals (except rice), leguminous crops and oil seeds",
     "county": "Ialomița",
     "locality": "Com. Demo",
     "registeredAt": "2023-02-20",
@@ -28,19 +28,19 @@
     "crops": [
       {
         "year": 2026,
-        "crop": "grâu",
+        "crop": "wheat",
         "ha": 250,
         "yieldTPerHa": 5.8
       },
       {
         "year": 2026,
-        "crop": "porumb",
+        "crop": "maize",
         "ha": 200,
         "yieldTPerHa": 7.2
       },
       {
         "year": 2026,
-        "crop": "floarea-soarelui",
+        "crop": "sunflower",
         "ha": 150,
         "yieldTPerHa": 2.9
       }
@@ -85,7 +85,7 @@
           "parcelId": "il_2001",
           "blockId": "BF-2001",
           "areaHa": 250,
-          "crop": "grâu",
+          "crop": "wheat",
           "natura2000": false,
           "nitrateVulnerable": true,
           "droughtRisk": "HIGH",
@@ -128,7 +128,7 @@
           "parcelId": "il_2002",
           "blockId": "BF-2002",
           "areaHa": 200,
-          "crop": "porumb",
+          "crop": "maize",
           "natura2000": false,
           "nitrateVulnerable": true,
           "droughtRisk": "HIGH",
@@ -171,7 +171,7 @@
           "parcelId": "il_2003",
           "blockId": "BF-2003",
           "areaHa": 150,
-          "crop": "floarea-soarelui",
+          "crop": "sunflower",
           "natura2000": false,
           "nitrateVulnerable": true,
           "droughtRisk": "HIGH",

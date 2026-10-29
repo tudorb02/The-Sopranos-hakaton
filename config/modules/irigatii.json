@@ -1,54 +1,54 @@
 {
   "moduleId": "irigatii",
-  "nameRo": "Irigații",
+  "nameRo": "Irrigation",
   "icon": "💧",
   "status": "DEMO_READY",
-  "descriptionRo": "Picurare, aspersie cu senzori, pompe solare.",
+  "descriptionRo": "Drip, sprinkler with sensors, solar pumps.",
   "examplesRo": [
-    "picurare",
-    "aspersie cu senzori"
+    "drip",
+    "sprinkler with sensors"
   ],
   "indicator": "WATER_SAVING_PCT",
   "threshold": {
     "kind": "MIN_PCT",
     "value": 25,
     "unit": "PCT",
-    "sourceRo": "README §6, categoria 1: economie de apă ≥ 25% față de sistemul actual (propunere, de confirmat cu Raiffeisen)",
+    "sourceRo": "README §6, category 1: water saving ≥ 25% versus the current system (proposal, to be confirmed with Raiffeisen)",
     "demo": true
   },
   "requiredDocs": [
     {
       "docType": "OFFER",
-      "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+      "labelRo": "Offer / pro forma and technical data sheet of the new investment",
       "required": true
     },
     {
       "docType": "CURRENT_EQUIPMENT",
-      "labelRo": "Ce se înlocuiește: fișă tehnică, poză cu eticheta sau descriere",
+      "labelRo": "What is being replaced: technical data sheet, photo of the label or a description",
       "required": false
     },
     {
       "docType": "WATER_PERMIT_ANAR",
-      "labelRo": "Autorizația de gospodărire a apelor (ANAR)",
+      "labelRo": "Water management permit (ANAR)",
       "required": true
     },
     {
       "docType": "ENERGY_INVOICES",
-      "labelRo": "Consumul actual de apă sau energia de pompare (12 luni)",
+      "labelRo": "Current water use or pumping energy (12 months)",
       "required": true
     }
   ],
   "questionnaire": [
     {
       "questionId": "crops_main",
-      "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
+      "labelRo": "Main crops and average yield (t/ha) over the last 3 years",
       "type": "TEXT",
       "prefillFrom": "APIA",
       "required": true
     },
     {
       "questionId": "nitrogen_kg_ha",
-      "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)?",
+      "labelRo": "How much nitrogen fertiliser do you use (kg N/ha)?",
       "type": "NUMBER",
       "unit": "KG_N_PER_HA",
       "prefillFrom": "NONE",
@@ -56,16 +56,16 @@
     },
     {
       "questionId": "tillage",
-      "labelRo": "Cum lucrați solul?",
+      "labelRo": "How do you till the soil?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "ARATURA",
-          "labelRo": "arătură"
+          "labelRo": "ploughing"
         },
         {
           "value": "MINIMA",
-          "labelRo": "lucrare minimă"
+          "labelRo": "minimum tillage"
         },
         {
           "value": "NO_TILL",
@@ -77,20 +77,20 @@
     },
     {
       "questionId": "cover_crops",
-      "labelRo": "Folosiți culturi de acoperire sau rotație?",
+      "labelRo": "Do you use cover crops or crop rotation?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "DA",
-          "labelRo": "da"
+          "labelRo": "yes"
         },
         {
           "value": "ROTATIE",
-          "labelRo": "doar rotație"
+          "labelRo": "rotation only"
         },
         {
           "value": "NU",
-          "labelRo": "nu"
+          "labelRo": "no"
         }
       ],
       "prefillFrom": "APIA",
@@ -98,28 +98,28 @@
     },
     {
       "questionId": "irrigation_current",
-      "labelRo": "Irigați acum? Cu ce sistem?",
+      "labelRo": "Do you irrigate now? With which system?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "NU",
-          "labelRo": "nu irig"
+          "labelRo": "I don't irrigate"
         },
         {
           "value": "ASPERSIE_VECHE",
-          "labelRo": "aspersie veche"
+          "labelRo": "old sprinkler"
         },
         {
           "value": "ASPERSIE",
-          "labelRo": "aspersie"
+          "labelRo": "sprinkler"
         },
         {
           "value": "PICURARE",
-          "labelRo": "picurare"
+          "labelRo": "drip"
         },
         {
           "value": "BRAZDE",
-          "labelRo": "pe brazde"
+          "labelRo": "furrow"
         }
       ],
       "prefillFrom": "APIA",
@@ -127,19 +127,19 @@
     },
     {
       "questionId": "crop_insurance",
-      "labelRo": "Aveți asigurare pentru culturi?",
+      "labelRo": "Do you have crop insurance?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": true
     },
     {
       "questionId": "certifications",
-      "labelRo": "Aveți certificări?",
+      "labelRo": "Do you have certifications?",
       "type": "MULTI_CHOICE",
       "options": [
         {
           "value": "ECOLOGIC",
-          "labelRo": "ecologic"
+          "labelRo": "organic"
         },
         {
           "value": "GLOBALGAP",
@@ -147,7 +147,7 @@
         },
         {
           "value": "NICIUNA",
-          "labelRo": "niciuna"
+          "labelRo": "none"
         }
       ],
       "prefillFrom": "NONE",
@@ -155,38 +155,38 @@
     },
     {
       "questionId": "offtake_contracts",
-      "labelRo": "Aveți contracte de vânzare cu procesatori sau retaileri?",
+      "labelRo": "Do you have sales contracts with processors or retailers?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": false
     },
     {
       "questionId": "cashin_months",
-      "labelRo": "În ce luni încasați cel mai mult?",
+      "labelRo": "In which months do you receive the most income?",
       "type": "MONTHS",
       "prefillFrom": "OPEN_BANKING",
       "required": true
     },
     {
       "questionId": "old_equipment_fate",
-      "labelRo": "Ce faceți cu utilajul vechi și cu deșeurile (ambalaje, folie)?",
+      "labelRo": "What do you do with the old equipment and the waste (packaging, plastic film)?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "CASARE",
-          "labelRo": "casare"
+          "labelRo": "scrapping"
         },
         {
           "value": "VANZARE",
-          "labelRo": "vânzare"
+          "labelRo": "sale"
         },
         {
           "value": "REZERVA",
-          "labelRo": "îl păstrez ca rezervă"
+          "labelRo": "I keep it as a spare"
         },
         {
           "value": "NU_E_CAZUL",
-          "labelRo": "nu e cazul"
+          "labelRo": "not applicable"
         }
       ],
       "prefillFrom": "NONE",
@@ -194,24 +194,24 @@
     },
     {
       "questionId": "water_source",
-      "labelRo": "De unde luați apa?",
+      "labelRo": "Where do you get your water from?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "ANIF",
-          "labelRo": "rețeaua ANIF"
+          "labelRo": "ANIF network"
         },
         {
           "value": "PUT",
-          "labelRo": "puț propriu"
+          "labelRo": "own well"
         },
         {
           "value": "RAU_LAC",
-          "labelRo": "râu sau lac"
+          "labelRo": "river or lake"
         },
         {
           "value": "BAZIN",
-          "labelRo": "bazin de acumulare"
+          "labelRo": "storage reservoir"
         }
       ],
       "prefillFrom": "NONE",
@@ -219,7 +219,7 @@
     },
     {
       "questionId": "pump_lift_m",
-      "labelRo": "De la ce adâncime sau înălțime pompați apa (metri)?",
+      "labelRo": "From what depth or height do you pump the water (metres)?",
       "type": "NUMBER",
       "unit": "M",
       "prefillFrom": "NONE",
@@ -231,27 +231,27 @@
   "dnsh": [
     {
       "objective": "CLIMATE_MITIGATION",
-      "checkRo": "Pompa solară și economia de apă reduc energia de pompare.",
+      "checkRo": "The solar pump and the water saving reduce pumping energy.",
       "evidence": "PUMPING_ENERGY"
     },
     {
       "objective": "CLIMATE_ADAPTATION",
-      "checkRo": "Parcelele cu risc de secetă sunt irigate mai eficient.",
+      "checkRo": "Parcels at risk of drought are irrigated more efficiently.",
       "evidence": "PARCEL_RISK"
     },
     {
       "objective": "CIRCULAR_ECONOMY",
-      "checkRo": "Echipamentul vechi e vândut sau predat unui colector autorizat.",
+      "checkRo": "The old equipment is sold or handed over to an authorised collector.",
       "evidence": "OLD_EQUIPMENT_FATE"
     },
     {
       "objective": "POLLUTION_PREVENTION",
-      "checkRo": "Fertirigarea respectă planul de fertilizare în zonele vulnerabile la nitrați.",
+      "checkRo": "Fertigation follows the fertilisation plan in nitrate vulnerable zones.",
       "evidence": "NITRATE_PARCELS"
     },
     {
       "objective": "BIODIVERSITY",
-      "checkRo": "Parcelele nu sunt în arii Natura 2000 sau există aviz de mediu.",
+      "checkRo": "The parcels are not in Natura 2000 areas, or there is an environmental approval.",
       "evidence": "NATURA_2000_PARCELS"
     }
   ],
@@ -297,33 +297,33 @@
         "PICURARE": 90,
         "BRAZDE": 60
       },
-      "sourceRo": "README §6, categoria 1: brazde η = 0,60 · aspersie η = 0,75 · picurare η = 0,90 (valori de pornire, de confirmat)"
+      "sourceRo": "README §6, category 1: furrow η = 0.60 · sprinkler η = 0.75 · drip η = 0.90 (starting values, to be confirmed)"
     },
     "waterPriceEurPerM3": {
       "value": 0.12,
-      "sourceRo": "Tarif apă ANIF + transport; Estimare echipă, de validat cu mentorii"
+      "sourceRo": "ANIF water tariff + conveyance; team estimate, to be validated with the mentors"
     },
     "pvYieldKwhPerKwp": {
       "value": 1280,
-      "sourceRo": "PVGIS 5.3, sud-est, valoare conservatoare"
+      "sourceRo": "PVGIS 5.3, south-east, conservative value"
     },
     "safetyMarginPct": {
       "value": 2,
-      "sourceRo": "Marja peste prag cerută de echipă"
+      "sourceRo": "Margin above the threshold required by the team"
     },
     "kcByCrop": {
       "value": {
-        "tomate": 0.85,
-        "ardei": 0.8,
-        "varză": 0.75,
-        "castraveți": 0.9,
-        "ceapă": 0.7
+        "tomatoes": 0.85,
+        "peppers": 0.8,
+        "cabbage": 0.75,
+        "cucumbers": 0.9,
+        "onions": 0.7
       },
-      "sourceRo": "FAO-56, coeficienți de cultură pentru mijlocul sezonului, rotunjiți; de validat cu mentorii"
+      "sourceRo": "FAO-56, mid-season crop coefficients, rounded; to be validated with the mentors"
     },
     "pumpEfficiencyPct": {
       "value": 65,
-      "sourceRo": "Randament tipic al unei electropompe de suprafață; ilustrativ, de validat cu mentorii",
+      "sourceRo": "Typical efficiency of a surface electric pump; illustrative, to be validated with the mentors",
       "demo": true
     },
     "pressureHeadM": {
@@ -333,15 +333,15 @@
         "ASPERSIE": 35,
         "PICURARE": 15
       },
-      "sourceRo": "README §6, categoria 1: H_presiune depinde de sistem (brazde 0 m, aspersie ≈ 35 m = 3,5 bar, picurare ≈ 15 m); ilustrativ"
+      "sourceRo": "README §6, category 1: H_pressure depends on the system (furrow 0 m, sprinkler ≈ 35 m = 3.5 bar, drip ≈ 15 m); illustrative"
     },
     "sensorDemandReductionPct": {
       "value": 10,
-      "sourceRo": "README §6, categoria 1: senzori de umiditate, s = 10%"
+      "sourceRo": "README §6, category 1: soil moisture sensors, s = 10%"
     },
     "newIrrigationMinEfficiencyPct": {
       "value": 85,
-      "sourceRo": "README §6, categoria 1: ferme care încep să irige, η ≥ 0,85, autorizație ANAR și fără stres hidric sever"
+      "sourceRo": "README §6, category 1: farms starting to irrigate, η ≥ 0.85, ANAR permit and no severe water stress"
     }
   },
   "substantialContribution": "WATER_MARINE_RESOURCES",
@@ -360,6 +360,16 @@
     "umiditate",
     "debit apa",
     "pompare",
-    "gospodarire"
+    "gospodarire",
+    "irrigation",
+    "drip",
+    "sprinkler",
+    "hydrant",
+    "soil moisture",
+    "water flow",
+    "pumping",
+    "pump",
+    "fertigation",
+    "water management"
   ]
 }

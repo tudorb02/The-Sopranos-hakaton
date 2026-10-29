@@ -81,17 +81,17 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
         boolean hasGreenOption = tier.isGreen() && workspaces.forRun(run.id()).hasOption("B");
 
         ToolOutput labels = flow.call("get_labeling_rules", flow.input().put("configId", configId),
-                "Etichetez componentele configurației");
-        flow.call("get_dnsh_criteria", flow.input(), "Încarc criteriile DNSH");
+                "Labelling the configuration's components");
+        flow.call("get_dnsh_criteria", flow.input(), "Loading the DNSH criteria");
         String optionId = hasGreenOption ? "B" : funding.path("recommendedOptionId").asText("A");
         ToolOutput fund = flow.call("select_fund", flow.input().put("optionId", optionId),
-                "Aleg fondul care finanțează creditul");
+                "Selecting the fund that finances the credit");
         String fundCode = fund.result().path("fundId").asText();
         ToolOutput requirements = flow.call("check_fund_requirements",
-                flow.input().put("fundId", fundCode).put("optionId", optionId), "Bifez cerințele fondului " + fundCode);
-        flow.call("calculate_impact", flow.input().put("configId", configId), "Calculez impactul de mediu");
+                flow.input().put("fundId", fundCode).put("optionId", optionId), "Checking the requirements of fund " + fundCode);
+        flow.call("calculate_impact", flow.input().put("configId", configId), "Calculating the environmental impact");
         ToolOutput bond = hasGreenOption
-                ? flow.call("get_bond_category", flow.input(), "Aleg categoria din obligațiunile verzi")
+                ? flow.call("get_bond_category", flow.input(), "Selecting the green bond category")
                 : null;
 
         Configuration cfg = workspaces.forRun(run.id()).configuration(configId);
@@ -127,7 +127,7 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
                     .put("conditionId", condition.path("conditionId").asText());
         }
         if (steps.isEmpty()) {
-            steps.addObject().put("stepRo", "Așteaptă decizia băncii; nu mai avem nevoie de documente suplimentare.");
+            steps.addObject().put("stepRo", "Wait for the bank's decision; we do not need any more documents.");
         }
         return new AgentResult(reorder(out), "LIVE", flow.iterations());
     }
@@ -160,10 +160,10 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
             flow.idIfPresent(configId + ".cmp." + rule.path("componentId").asText() + ".cost")
                     .ifPresent(id -> node.put("amountCalcId", id));
             node.put("rationaleRo", switch (label) {
-                case "TAXONOMY_ALIGNED" -> "Activitate aliniată la Taxonomia UE";
-                case "MARKET_GREEN" -> "Verde conform principiilor pieței (LMA), prin economia măsurabilă";
-                case "TRANSITION" -> "Componentă de tranziție";
-                default -> "Componentă fără etichetă verde; finanțată fără beneficiu verde";
+                case "TAXONOMY_ALIGNED" -> "Activity aligned with the EU Taxonomy";
+                case "MARKET_GREEN" -> "Green under market principles (LMA), through measurable savings";
+                case "TRANSITION" -> "Transition component";
+                default -> "Component without a green label; financed without a green benefit";
             });
         }
         return labels;
@@ -174,13 +174,13 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
         if (bond == null) {
             node.put("category", "NONE");
             node.put("status", "NOT_ELIGIBLE");
-            node.put("noteRo", "Fără credit verde, nu există alocare în obligațiunile verzi");
+            node.put("noteRo", "No green credit, so no allocation to green bonds");
             return node;
         }
         node.put("category", bond.result().path("proposed").asText("NONE"));
         node.put("status", "TO_CONFIRM");
-        node.put("noteRo", "Încadrare propusă de aplicație după denumirile din cadrul public al băncii; "
-                + "încadrarea finală o face banca.");
+        node.put("noteRo", "Classification proposed by the application from the names in the bank's public framework; "
+                + "the bank makes the final classification.");
         return node;
     }
 
@@ -199,7 +199,7 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
             if ("TO_CONFIRM".equals(status)) {
                 String conditionId = "cp_" + id.toLowerCase();
                 row.put("conditionId", conditionId);
-                conditions.add(condition(conditionId, "OTHER", "OTHER", "Cerință a fondului de confirmat cu banca ("
+                conditions.add(condition(conditionId, "OTHER", "OTHER", "Fund requirement to be confirmed with the bank ("
                         + id + "): " + requirement.path("reasonRo").asText(), "BEFORE_SIGNING", false));
             }
             row.put("noteRo", cut(requirement.path("reasonRo").asText(), 300));
@@ -226,7 +226,7 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
             row.put("objective", objective);
             String status = check == null ? "MISSING_DATA" : check.path("status").asText();
             row.put("status", status);
-            row.put("justificationRo", cut(check == null ? "Obiectivul nu a fost verificat; se cere dovada înainte de tragere"
+            row.put("justificationRo", cut(check == null ? "The objective was not checked; evidence is required before drawdown"
                     : check.path("noteRo").asText(), 500));
             ArrayNode evidence = row.putArray("evidence");
             if (check != null) {
@@ -265,8 +265,8 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
             return;
         }
         if (!"KEEP_INITIAL".equals(technical.path("recommendationType").asText())) {
-            conditions.add(condition("cp_updated_offer", "DOCUMENT", "OFFER", "Oferta actualizată de la furnizor pentru "
-                    + "investiția cu upgrade; suma creditului se ajustează după ea", "BEFORE_SIGNING", true));
+            conditions.add(condition("cp_updated_offer", "DOCUMENT", "OFFER", "Updated supplier offer for the "
+                    + "investment with upgrade; the credit amount is adjusted to it", "BEFORE_SIGNING", true));
         }
         for (JsonNode missing : technical.path("missingFields")) {
             conditions.add(condition("cp_missing_" + missing.path("fieldKey").asText().toLowerCase().replaceAll("[^a-z0-9_]", "_"),
@@ -274,9 +274,9 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
                     "BEFORE_FIRST_DISBURSEMENT", missing.path("blocking").asBoolean()));
         }
         conditions.add(condition("cp_final_invoice", "INVOICE_MATCH", "FINAL_INVOICE",
-                "Factura finală, conformă cu investiția aprobată (inclusiv upgrade-ul)", "BEFORE_FINAL_DISBURSEMENT", true));
+                "Final invoice, matching the approved investment (including the upgrade)", "BEFORE_FINAL_DISBURSEMENT", true));
         conditions.add(condition("cp_commissioning", "DOCUMENT", "COMMISSIONING_REPORT",
-                "Procesul-verbal de punere în funcțiune și poze geolocalizate", "AFTER_INSTALLATION", false));
+                "Commissioning report and geotagged photos", "AFTER_INSTALLATION", false));
     }
 
     private ObjectNode condition(String id, String type, String docType, String description, String timing, boolean blocking) {
@@ -304,7 +304,7 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
             kpi.put("frequency", "ANNUAL");
             kpi.put("firstDue", "MONTH_12");
             kpi.put("dataSource", KPI_SOURCE.getOrDefault(metric, "INVOICES"));
-            kpi.put("descriptionRo", "Impact real la 12 luni față de estimarea din dosar");
+            kpi.put("descriptionRo", "Actual impact at 12 months against the dossier estimate");
         }
         if (kpis.isEmpty() && !impact.isEmpty()) {
             JsonNode first = impact.get(0);
@@ -315,7 +315,7 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
             kpi.put("frequency", "ANNUAL");
             kpi.put("firstDue", "MONTH_12");
             kpi.put("dataSource", "INVOICES");
-            kpi.put("descriptionRo", "Impact real la 12 luni față de estimarea din dosar");
+            kpi.put("descriptionRo", "Actual impact at 12 months against the dossier estimate");
         }
         return kpis;
     }
@@ -333,24 +333,24 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
         }
         if (rank(drought) >= 2) {
             risks.addObject().put("category", "CLIMATE_DROUGHT").put("severity", rank(drought) >= 3 ? "HIGH" : "MEDIUM")
-                    .put("descriptionRo", "Parcelele au risc " + (rank(drought) >= 3 ? "ridicat" : "mediu") + " de secetă")
-                    .put("mitigationRo", "Investiția reduce dependența de apă; se recomandă și asigurarea culturilor");
+                    .put("descriptionRo", "The parcels have a " + (rank(drought) >= 3 ? "high" : "medium") + " drought risk")
+                    .put("mitigationRo", "The investment reduces water dependence; crop insurance is also recommended");
         }
         for (JsonNode row : dnsh) {
             if ("BIODIVERSITY".equals(row.path("objective").asText()) && !"PASS".equals(row.path("status").asText())) {
                 risks.addObject().put("category", "NATURA_2000").put("severity", "MEDIUM")
                         .put("descriptionRo", cut(row.path("justificationRo").asText(), 300))
-                        .put("mitigationRo", "Aviz de mediu înainte de tragere");
+                        .put("mitigationRo", "Environmental approval before drawdown");
             }
             if ("POLLUTION_PREVENTION".equals(row.path("objective").asText()) && !"PASS".equals(row.path("status").asText())) {
                 risks.addObject().put("category", "NITRATE_ZONE").put("severity", "MEDIUM")
                         .put("descriptionRo", cut(row.path("justificationRo").asText(), 300))
-                        .put("mitigationRo", "Plan de fertilizare conform codului bunelor practici");
+                        .put("mitigationRo", "Fertilisation plan in line with the code of good agricultural practice");
             }
         }
         risks.addObject().put("category", "PRICE").put("severity", "LOW")
-                .put("descriptionRo", "Prețul upgrade-ului este estimat din catalog")
-                .put("mitigationRo", "Oferta actualizată de la furnizor, înainte de semnare");
+                .put("descriptionRo", "The upgrade price is estimated from the catalogue")
+                .put("mitigationRo", "Updated supplier offer, before signing");
         return risks;
     }
 
@@ -364,9 +364,9 @@ public class RuleBasedUnderwriterAgent implements RuleAgent {
 
     private String summary(ToolFlow flow, GreenTier tier, String fundCode, JsonNode fund, String decision, int conditions) {
         Calc rate = flow.calc("pricing.green.rate").orElse(null);
-        return "Decizie: " + decision + ". Nivel verde: " + tier + ". Fond propus: " + fundCode + " ("
+        return "Decision: " + decision + ". Green tier: " + tier + ". Proposed fund: " + fundCode + " ("
                 + fund.path("nameRo").asText() + "). "
-                + (rate == null ? "" : "Dobânda verde: " + rate.display() + " (parametri demo). ")
-                + conditions + " condiții înainte de tragere.";
+                + (rate == null ? "" : "Green rate: " + rate.display() + " (demo parameters). ")
+                + conditions + " conditions precedent to drawdown.";
     }
 }

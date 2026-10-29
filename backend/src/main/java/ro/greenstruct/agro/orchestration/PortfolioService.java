@@ -19,7 +19,7 @@ import ro.greenstruct.agro.tools.CalcStore;
 
 /**
  * The bank's green portfolio (README §8 panel 7): the approved dossiers whose farmer chose the green loan. Figures are
- * the calcs of each dossier, added up by the engine; after "Simulează 12 luni" the measured impact replaces the estimate.
+ * the calcs of each dossier, added up by the engine; after "Simulate 12 months" the measured impact replaces the estimate.
  */
 @Service
 public class PortfolioService {

@@ -78,11 +78,11 @@ public class AnafClient {
         try {
             JsonNode body = request.get();
             if (body == null) {
-                throw new UpstreamUnavailableException("ANAF a răspuns fără date. Reîncearcă în câteva secunde.", null);
+                throw new UpstreamUnavailableException("ANAF answered without data. Try again in a few seconds.", null);
             }
             return body;
         } catch (RestClientException e) {
-            throw new UpstreamUnavailableException("ANAF nu răspunde momentan. Reîncearcă în câteva secunde.", e);
+            throw new UpstreamUnavailableException("ANAF is not responding right now. Try again in a few seconds.", e);
         }
     }
 
@@ -97,7 +97,7 @@ public class AnafClient {
             lastCall = Instant.now();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new UpstreamUnavailableException("Cererea către ANAF a fost întreruptă", e);
+            throw new UpstreamUnavailableException("The request to ANAF was interrupted", e);
         } finally {
             throttle.unlock();
         }

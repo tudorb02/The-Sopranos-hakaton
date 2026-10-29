@@ -56,7 +56,7 @@ public class IrrigationModule implements ModuleCalculator {
         String system = input.path("currentSystem").asText(context.questionnaire().path("irrigation_current").asText(""));
         JsonNode efficiencies = context.module().parameters().path("currentEfficiencyPct").path("value");
         if (!efficiencies.has(system)) {
-            throw new IllegalArgumentException("Sistem actual necunoscut „" + system + "”; valori: " + efficiencies.fieldNames());
+            throw new IllegalArgumentException("Unknown current system '" + system + "'; values: " + efficiencies.fieldNames());
         }
         BigDecimal efficiency = efficiencies.path(system).decimalValue();
         BigDecimal area = FarmFacts.selectedAreaHa(context);
@@ -69,21 +69,21 @@ public class IrrigationModule implements ModuleCalculator {
                 .flatMap(doc -> doc.number("ENERGY_KWH"));
         BigDecimal energy = invoiced.orElse(estimated);
 
-        Calc areaCalc = context.calc("baseline.area", "Suprafața parcelelor alese", area, Unit.HA).source("APIA").add();
-        Calc needCalc = context.calc("baseline.net_need", "Necesarul net de apă al culturilor", netNeed, Unit.M3_PER_YEAR)
-                .formula("Σ max(0, Kc × ET₀ − ploaie efectivă) × 10 × ha")
-                .source("Kc din config; ET₀ și ploaia efectivă din datele climatice ale parcelelor").dependsOn(areaCalc).add();
-        Calc effCalc = context.calc("baseline.efficiency", "Eficiența sistemului actual", efficiency, Unit.PCT)
+        Calc areaCalc = context.calc("baseline.area", "Area of the selected parcels", area, Unit.HA).source("APIA").add();
+        Calc needCalc = context.calc("baseline.net_need", "Net water need of the crops", netNeed, Unit.M3_PER_YEAR)
+                .formula("Σ max(0, Kc × ET₀ − effective rain) × 10 × ha")
+                .source("Kc from config; ET₀ and effective rain from the parcels' climate data").dependsOn(areaCalc).add();
+        Calc effCalc = context.calc("baseline.efficiency", "Efficiency of the current system", efficiency, Unit.PCT)
                 .source(context.paramSource("currentEfficiencyPct")).add();
-        Calc waterCalc = context.calc("baseline.water", "Apă pompată azi", water, Unit.M3_PER_YEAR)
-                .formula("necesar net / eficiență actuală").dependsOn(needCalc, effCalc).add();
-        context.calc("baseline.lift", "Înălțimea de pompare", lift, Unit.COUNT).formula("din chestionar (metri)").add();
-        Calc energyCalc = context.calc("baseline.energy", "Energie de pompare azi", energy, Unit.KWH_PER_YEAR)
-                .formula(invoiced.isPresent() ? "din facturile de energie pentru pompare"
-                        : "m³ × (înălțime de ridicare + înălțime de presiune) × 0,002725 / randamentul pompei")
+        Calc waterCalc = context.calc("baseline.water", "Water pumped today", water, Unit.M3_PER_YEAR)
+                .formula("net need / current efficiency").dependsOn(needCalc, effCalc).add();
+        context.calc("baseline.lift", "Pumping lift", lift, Unit.COUNT).formula("from the questionnaire (metres)").add();
+        Calc energyCalc = context.calc("baseline.energy", "Pumping energy today", energy, Unit.KWH_PER_YEAR)
+                .formula(invoiced.isPresent() ? "from the energy invoices for pumping"
+                        : "m³ × (lift height + pressure head) × 0.002725 / pump efficiency")
                 .dependsOn(waterCalc).add();
         BigDecimal co2 = ImpactCalculator.co2Tonnes(energy, RuleValues.factor(context, "gridKgCo2PerKwh"));
-        context.calc("baseline.co2", "CO₂ din pompare azi", co2, Unit.T_CO2_PER_YEAR).formula("kWh × factor rețea")
+        context.calc("baseline.co2", "CO₂ from pumping today", co2, Unit.T_CO2_PER_YEAR).formula("kWh × grid factor")
                 .dependsOn(energyCalc).add();
 
         Map<String, BigDecimal> baseline = new HashMap<>();
@@ -99,9 +99,9 @@ public class IrrigationModule implements ModuleCalculator {
         result.put("dataSource", invoiced.isPresent() ? "MIXED" : "NORMS");
         result.put("currentSystem", system);
         if (invoiced.isEmpty()) {
-            result.putArray("warnings").add("Fără facturi de energie: consumul e estimat din înălțimea de pompare");
+            result.putArray("warnings").add("No energy invoices: consumption is estimated from the pumping lift");
         }
-        return context.ok(result, "Situația actuală: sistem " + system + ", " + waterCalc.display());
+        return context.ok(result, "Current situation: system " + system + ", " + waterCalc.display());
     }
 
     /** Kc per crop from config; ET0 and effective rain per parcel from the climate data of the farm profile. */
@@ -111,12 +111,12 @@ public class IrrigationModule implements ModuleCalculator {
         for (JsonNode parcel : FarmFacts.selectedParcels(context)) {
             String crop = parcel.path("crop").asText();
             if (!kcByCrop.has(crop)) {
-                throw new IllegalArgumentException("Cultura „" + crop + "” nu are coeficient Kc în config; culturi: "
+                throw new IllegalArgumentException("Crop '" + crop + "' has no Kc coefficient in config; crops: "
                         + kcByCrop.fieldNames());
             }
             if (!parcel.has("et0SeasonMm") || !parcel.has("effectiveRainSeasonMm")) {
-                throw new IllegalArgumentException("Parcela " + parcel.path("parcelId").asText()
-                        + " nu are date climatice (ET₀, ploaie efectivă)");
+                throw new IllegalArgumentException("Parcel " + parcel.path("parcelId").asText()
+                        + " has no climate data (ET₀, effective rain)");
             }
             needs.add(new CropNeed(crop, parcel.path("areaHa").decimalValue(), kcByCrop.path(crop).decimalValue(),
                     parcel.path("et0SeasonMm").decimalValue(), parcel.path("effectiveRainSeasonMm").decimalValue()));
@@ -127,7 +127,7 @@ public class IrrigationModule implements ModuleCalculator {
     private static BigDecimal liftM(ToolContext context) {
         JsonNode answer = context.questionnaire().path("pump_lift_m");
         if (!answer.isNumber()) {
-            throw new IllegalArgumentException("Lipsește înălțimea de pompare (pump_lift_m) din chestionar");
+            throw new IllegalArgumentException("The pumping lift (pump_lift_m) is missing from the questionnaire");
         }
         return answer.decimalValue();
     }
@@ -136,7 +136,7 @@ public class IrrigationModule implements ModuleCalculator {
     private static BigDecimal pressureHeadM(ToolContext context, String system) {
         JsonNode heads = context.module().parameters().path("pressureHeadM").path("value");
         if (!heads.has(system)) {
-            throw new IllegalArgumentException("Sistemul „" + system + "” nu are înălțime de presiune în config");
+            throw new IllegalArgumentException("System '" + system + "' has no pressure head in config");
         }
         return heads.path(system).decimalValue();
     }
@@ -151,7 +151,7 @@ public class IrrigationModule implements ModuleCalculator {
         return components.stream().filter(c -> c.category().startsWith("IRRIGATION_") && c.attribute("efficiencyPct") != null)
                 .max((a, b) -> a.attribute("efficiencyPct").compareTo(b.attribute("efficiencyPct")))
                 .map(c -> "IRRIGATION_DRIP".equals(c.category()) ? "PICURARE" : "ASPERSIE")
-                .orElseThrow(() -> new IllegalArgumentException("Configurația nu are un sistem de irigații cu eficiență"));
+                .orElseThrow(() -> new IllegalArgumentException("The configuration has no irrigation system with an efficiency"));
     }
 
     @Override
@@ -161,7 +161,7 @@ public class IrrigationModule implements ModuleCalculator {
                 .filter(c -> c.category().startsWith("IRRIGATION_") && c.attribute("efficiencyPct") != null)
                 .map(c -> c.attribute("efficiencyPct"))
                 .reduce(BigDecimal::max)
-                .orElseThrow(() -> new IllegalArgumentException("Configurația nu are un sistem de irigații cu eficiență"));
+                .orElseThrow(() -> new IllegalArgumentException("The configuration has no irrigation system with an efficiency"));
         BigDecimal demandReduction = sumAttribute(components, "demandReductionPct");
 
         BigDecimal water = IrrigationCalculator.grossWaterM3(baseline.get("net_need_m3"),
@@ -194,22 +194,22 @@ public class IrrigationModule implements ModuleCalculator {
     public List<Calc> emit(ToolContext context, Configuration cfg) {
         String p = cfg.configId() + ".";
         List<Calc> calcs = new ArrayList<>();
-            calcs.add(context.calc(p + "water", "Apă pompată pe an", cfg.metric("water_m3"), Unit.M3_PER_YEAR)
-                    .formula("necesar net × (1 − reducere senzori) / eficiență").add());
-            calcs.add(context.calc(p + "water_saving_pct", "Economie de apă", cfg.metric("indicator_pct"), Unit.PCT)
-                    .formula("1 − apă nouă / apă actuală").add());
-            calcs.add(context.calc(p + "water_saved", "Apă economisită pe an", cfg.metric("water_saved_m3"),
+            calcs.add(context.calc(p + "water", "Water pumped per year", cfg.metric("water_m3"), Unit.M3_PER_YEAR)
+                    .formula("net need × (1 − sensor reduction) / efficiency").add());
+            calcs.add(context.calc(p + "water_saving_pct", "Water saving", cfg.metric("indicator_pct"), Unit.PCT)
+                    .formula("1 − new water / current water").add());
+            calcs.add(context.calc(p + "water_saved", "Water saved per year", cfg.metric("water_saved_m3"),
                     Unit.M3_PER_YEAR).add());
-            calcs.add(context.calc(p + "pumping_energy", "Energie de pompare", cfg.metric("pumping_kwh"),
-                    Unit.KWH_PER_YEAR).formula("m³ × (înălțime de ridicare + presiune) × 0,002725 / randamentul pompei").add());
+            calcs.add(context.calc(p + "pumping_energy", "Pumping energy", cfg.metric("pumping_kwh"),
+                    Unit.KWH_PER_YEAR).formula("m³ × (lift height + pressure) × 0.002725 / pump efficiency").add());
             if (cfg.metricOrZero("pv_kwh").signum() > 0) {
-                calcs.add(context.calc(p + "pv_kwh", "Energie produsă de pompa solară", cfg.metric("pv_kwh"),
-                        Unit.KWH_PER_YEAR).formula("min(kWp × kWh/kWp, consum de pompare)").add());
-                calcs.add(context.calc(p + "grid_kwh", "Energie rămasă din rețea", cfg.metric("grid_kwh"),
+                calcs.add(context.calc(p + "pv_kwh", "Energy produced by the solar pump", cfg.metric("pv_kwh"),
+                        Unit.KWH_PER_YEAR).formula("min(kWp × kWh/kWp, pumping consumption)").add());
+                calcs.add(context.calc(p + "grid_kwh", "Energy still drawn from the grid", cfg.metric("grid_kwh"),
                         Unit.KWH_PER_YEAR).add());
             }
-            calcs.add(context.calc(p + "energy_saved", "Energie economisită pe an", cfg.metric("energy_saved_kwh"),
-                    Unit.KWH_PER_YEAR).formula("kWh azi − kWh din rețea după investiție").add());
+            calcs.add(context.calc(p + "energy_saved", "Energy saved per year", cfg.metric("energy_saved_kwh"),
+                    Unit.KWH_PER_YEAR).formula("kWh today − grid kWh after the investment").add());
         return calcs;
     }
 
@@ -233,22 +233,22 @@ public class IrrigationModule implements ModuleCalculator {
     @Override
     public void describeRules(ToolContext context) {
         var module = context.module();
-            context.calc("rules.threshold.water_saving", "Pragul verde: economie de apă",
+            context.calc("rules.threshold.water_saving", "Green threshold: water saving",
                     RuleValues.thresholdPct(context), Unit.PCT).source(module.threshold().sourceRo()).add();
-            context.calc("rules.pump_efficiency", "Randamentul pompei", context.param("pumpEfficiencyPct"), Unit.PCT)
+            context.calc("rules.pump_efficiency", "Pump efficiency", context.param("pumpEfficiencyPct"), Unit.PCT)
                     .source(context.paramSource("pumpEfficiencyPct")).add();
-            context.calc("rules.factor.pumping", "Energia de pompare pe m³ și metru",
+            context.calc("rules.factor.pumping", "Pumping energy per m³ and metre",
                     RuleValues.factor(context, "pumpingKwhPerM3PerM"), Unit.KWH_PER_M3)
-                    .formula("ρ × g / 3.600.000").source(RuleValues.factorSource(context, "pumpingKwhPerM3PerM")).add();
-            context.calc("rules.price.water", "Prețul apei", context.param("waterPriceEurPerM3"), Unit.EUR_PER_M3)
+                    .formula("ρ × g / 3,600,000").source(RuleValues.factorSource(context, "pumpingKwhPerM3PerM")).add();
+            context.calc("rules.price.water", "Water price", context.param("waterPriceEurPerM3"), Unit.EUR_PER_M3)
                     .source(context.paramSource("waterPriceEurPerM3")).add();
-            context.calc("rules.price.electricity", "Prețul energiei electrice",
+            context.calc("rules.price.electricity", "Electricity price",
                     RuleValues.price(context, "electricityEurPerKwh"), Unit.EUR_PER_KWH)
                     .source(RuleValues.priceSource(context, "electricityEurPerKwh")).add();
-            context.calc("rules.factor.grid", "Factor de emisie al rețelei",
+            context.calc("rules.factor.grid", "Grid emission factor",
                     RuleValues.factor(context, "gridKgCo2PerKwh"), Unit.KG_CO2_PER_KWH)
                     .source(RuleValues.factorSource(context, "gridKgCo2PerKwh")).add();
-            context.calc("rules.pv_yield", "Producția specifică a panourilor", context.param("pvYieldKwhPerKwp"),
+            context.calc("rules.pv_yield", "Specific yield of the panels", context.param("pvYieldKwhPerKwp"),
                     Unit.KWH_PER_KWP).source(context.paramSource("pvYieldKwhPerKwp")).add();
     }
 
@@ -265,9 +265,9 @@ public class IrrigationModule implements ModuleCalculator {
 
     @Override
     public void horizonImpact(ToolContext context, Configuration cfg, BigDecimal years) {
-            context.calc("impact.water_horizon", "Apă economisită pe orizont",
+            context.calc("impact.water_horizon", "Water saved over the horizon",
                     cfg.metric("water_saved_m3").multiply(years, MC), Unit.M3).add();
-            context.calc("impact.energy_horizon", "Energie economisită pe orizont",
+            context.calc("impact.energy_horizon", "Energy saved over the horizon",
                     cfg.metric("energy_saved_kwh").multiply(years, MC), Unit.KWH).add();
     }
 
@@ -301,7 +301,7 @@ public class IrrigationModule implements ModuleCalculator {
         try {
             return LocalDate.parse(raw.trim(), RO_DATE);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Data „" + raw + "” din aviz nu are formatul zz.ll.aaaa");
+            throw new IllegalArgumentException("Date '" + raw + "' in the permit is not in dd.mm.yyyy format");
         }
     }
 }

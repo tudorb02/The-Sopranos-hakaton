@@ -58,8 +58,8 @@ public class MachineryModule implements ModuleCalculator {
         Optional<BigDecimal> invoicedFuel = context.workspace().documentOfType("FUEL_INVOICES")
                 .flatMap(doc -> doc.number("FUEL_LITRES"));
         BigDecimal fuel = invoicedFuel.orElseGet(() -> {
-            warnings.add("Lipsesc facturile de motorină: folosim norma de " + context.param("baselineLitresPerHa")
-                    .toPlainString() + " l/ha, de confirmat înainte de tragere");
+            warnings.add("Diesel invoices missing: using the norm of " + context.param("baselineLitresPerHa")
+                    .toPlainString() + " l/ha, to be confirmed before drawdown");
             return area.multiply(context.param("baselineLitresPerHa"), MC);
         });
         BigDecimal litresPerHa = MachineryCalculator.litresPerHa(fuel, area);
@@ -70,27 +70,27 @@ public class MachineryModule implements ModuleCalculator {
         BigDecimal nitrogen = invoicedNitrogen.orElseGet(() -> {
             BigDecimal perHa = nitrogenAnswer.isNumber() ? nitrogenAnswer.decimalValue()
                     : context.param("nitrogenKgPerHaDefault");
-            warnings.add("Lipsesc facturile de îngrășăminte: azotul vine din " + (nitrogenAnswer.isNumber()
-                    ? "chestionar" : "norma implicită") + " (" + perHa.toPlainString() + " kg N/ha)");
+            warnings.add("Fertiliser invoices missing: nitrogen comes from the " + (nitrogenAnswer.isNumber()
+                    ? "questionnaire" : "default norm") + " (" + perHa.toPlainString() + " kg N/ha)");
             return area.multiply(perHa, MC);
         });
         BigDecimal nitrogenPerHa = nitrogen.divide(area, MC);
         BigDecimal co2 = MachineryCalculator.co2eTonnes(fuel, RuleValues.factor(context, "dieselKgCo2PerLitre"),
                 nitrogen, RuleValues.factor(context, "nitrogenKgCo2ePerKgN"));
 
-        Calc areaCalc = context.calc("baseline.area", "Suprafața lucrată pe an", area, Unit.HA).source("APIA").add();
-        Calc fuelCalc = context.calc("baseline.fuel", "Motorină consumată pe an", fuel, Unit.L_PER_YEAR)
-                .formula(invoicedFuel.isPresent() ? "din facturile de motorină pe 12 luni" : "ha × l/ha (normă, fără facturi)")
+        Calc areaCalc = context.calc("baseline.area", "Area worked per year", area, Unit.HA).source("APIA").add();
+        Calc fuelCalc = context.calc("baseline.fuel", "Diesel used per year", fuel, Unit.L_PER_YEAR)
+                .formula(invoicedFuel.isPresent() ? "from the 12-month diesel invoices" : "ha × l/ha (norm, no invoices)")
                 .dependsOn(areaCalc).add();
-        Calc perHaCalc = context.calc("baseline.fuel_per_ha", "Motorină pe hectar acum", litresPerHa, Unit.L_PER_HA)
-                .formula("l_ha_vechi = litri pe an / hectare lucrate").dependsOn(fuelCalc, areaCalc).add();
-        Calc nitrogenCalc = context.calc("baseline.nitrogen", "Azot aplicat pe an", nitrogen, Unit.KG_N_PER_YEAR)
-                .formula(invoicedNitrogen.isPresent() ? "din facturile de îngrășăminte pe 12 luni"
-                        : "ha × kg N/ha (chestionar sau normă)").dependsOn(areaCalc).add();
-        context.calc("baseline.nitrogen_per_ha", "Azot pe hectar acum", nitrogenPerHa, Unit.KG_N_PER_HA)
-                .formula("kg N pe an / hectare lucrate").dependsOn(nitrogenCalc, areaCalc).add();
-        context.calc("baseline.co2", "CO₂e emis acum (motorină și azot)", co2, Unit.T_CO2_PER_YEAR)
-                .formula("(l × factor motorină + kg N × factor azot) / 1000").dependsOn(fuelCalc, nitrogenCalc).add();
+        Calc perHaCalc = context.calc("baseline.fuel_per_ha", "Diesel per hectare today", litresPerHa, Unit.L_PER_HA)
+                .formula("l_ha_old = litres per year / hectares worked").dependsOn(fuelCalc, areaCalc).add();
+        Calc nitrogenCalc = context.calc("baseline.nitrogen", "Nitrogen applied per year", nitrogen, Unit.KG_N_PER_YEAR)
+                .formula(invoicedNitrogen.isPresent() ? "from the 12-month fertiliser invoices"
+                        : "ha × kg N/ha (questionnaire or norm)").dependsOn(areaCalc).add();
+        context.calc("baseline.nitrogen_per_ha", "Nitrogen per hectare today", nitrogenPerHa, Unit.KG_N_PER_HA)
+                .formula("kg N per year / hectares worked").dependsOn(nitrogenCalc, areaCalc).add();
+        context.calc("baseline.co2", "CO₂e emitted today (diesel and nitrogen)", co2, Unit.T_CO2_PER_YEAR)
+                .formula("(l × diesel factor + kg N × nitrogen factor) / 1000").dependsOn(fuelCalc, nitrogenCalc).add();
 
         Map<String, BigDecimal> baseline = new HashMap<>();
         baseline.put("area_ha", area);
@@ -110,7 +110,7 @@ public class MachineryModule implements ModuleCalculator {
         if (!warnings.isEmpty()) {
             result.set("warnings", context.mapper().valueToTree(warnings));
         }
-        return context.ok(result, "Situația actuală: " + perHaCalc.display() + " de motorină");
+        return context.ok(result, "Current situation: " + perHaCalc.display() + " of diesel");
     }
 
     /** The machine that leaves the farm: year and power from the questionnaire, else from its data sheet. */
@@ -127,14 +127,14 @@ public class MachineryModule implements ModuleCalculator {
             int age = Math.max(0, context.today().getYear() - value.intValue());
             baseline.put("replaced_age_years", BigDecimal.valueOf(age));
             out.put("manufactureYear", value.intValue());
-            context.calc("baseline.replaced_age", "Vechimea utilajului înlocuit", BigDecimal.valueOf(age), Unit.YEARS)
-                    .formula("anul analizei − anul de fabricație").add();
-        }, () -> warnings.add("Nu știm anul de fabricație al utilajului înlocuit; de completat înainte de tragere"));
+            context.calc("baseline.replaced_age", "Age of the replaced machine", BigDecimal.valueOf(age), Unit.YEARS)
+                    .formula("analysis year − year of manufacture").add();
+        }, () -> warnings.add("Year of manufacture of the replaced machine unknown; to be provided before drawdown"));
         hp.ifPresent(value -> {
             baseline.put("replaced_hp", value);
             out.put("powerHp", value);
-            context.calc("baseline.replaced_power", "Puterea utilajului înlocuit", value, Unit.HP)
-                    .source(year.isNumber() || power.isNumber() ? "chestionar" : "fișa utilajului vechi").add();
+            context.calc("baseline.replaced_power", "Power of the replaced machine", value, Unit.HP)
+                    .source(year.isNumber() || power.isNumber() ? "questionnaire" : "old machine data sheet").add();
         });
     }
 
@@ -238,28 +238,28 @@ public class MachineryModule implements ModuleCalculator {
     public List<Calc> emit(ToolContext context, Configuration cfg) {
         String p = cfg.configId() + ".";
         List<Calc> calcs = new ArrayList<>();
-        calcs.add(context.calc(p + "tractor_per_ha", "Consumul tractorului ofertat", cfg.metric("tractor_l_per_ha"),
-                Unit.L_PER_HA).formula("din fișa tehnică a ofertei sau din catalog").add());
-        calcs.add(context.calc(p + "fuel_per_ha", "Motorină pe hectar după investiție", cfg.metric("fuel_l_per_ha"),
-                Unit.L_PER_HA).formula("l_ha_tractor × Π(1 − reducerea fiecărui upgrade de precizie)").add());
-        calcs.add(context.calc(p + "fuel_saving_pct", "Reducerea de motorină pe hectar",
-                cfg.metric("fuel_saving_pct"), Unit.PCT).formula("1 − l_ha_nou / l_ha_vechi").add());
-        calcs.add(context.calc(p + "nitrogen_saving_pct", "Reducerea de azot pe hectar",
-                cfg.metric("nitrogen_saving_pct"), Unit.PCT).formula("Σ reducerile de dozare din catalog").add());
-        calcs.add(context.calc(p + "fuel_saved", "Motorină economisită pe an", cfg.metric("fuel_saved_l"),
-                Unit.L_PER_YEAR).formula("(l_ha_vechi − l_ha_nou) × ha").add());
-        calcs.add(context.calc(p + "fuel_use", "Consum de motorină după investiție", cfg.metric("fuel_l"),
+        calcs.add(context.calc(p + "tractor_per_ha", "Consumption of the offered tractor", cfg.metric("tractor_l_per_ha"),
+                Unit.L_PER_HA).formula("from the offer's technical data sheet or the catalog").add());
+        calcs.add(context.calc(p + "fuel_per_ha", "Diesel per hectare after the investment", cfg.metric("fuel_l_per_ha"),
+                Unit.L_PER_HA).formula("l_ha_tractor × Π(1 − reduction of each precision upgrade)").add());
+        calcs.add(context.calc(p + "fuel_saving_pct", "Diesel reduction per hectare",
+                cfg.metric("fuel_saving_pct"), Unit.PCT).formula("1 − l_ha_new / l_ha_old").add());
+        calcs.add(context.calc(p + "nitrogen_saving_pct", "Nitrogen reduction per hectare",
+                cfg.metric("nitrogen_saving_pct"), Unit.PCT).formula("Σ catalog dosing reductions").add());
+        calcs.add(context.calc(p + "fuel_saved", "Diesel saved per year", cfg.metric("fuel_saved_l"),
+                Unit.L_PER_YEAR).formula("(l_ha_old − l_ha_new) × ha").add());
+        calcs.add(context.calc(p + "fuel_use", "Diesel use after the investment", cfg.metric("fuel_l"),
                 Unit.L_PER_YEAR).add());
-        calcs.add(context.calc(p + "nitrogen_saved", "Azot economisit pe an", cfg.metric("nitrogen_saved_kg"),
-                Unit.KG_N_PER_YEAR).formula("kg N pe an × reducerea de azot").add());
-        calcs.add(context.calc(p + "savings", "Economie pe an (motorină și azot)",
+        calcs.add(context.calc(p + "nitrogen_saved", "Nitrogen saved per year", cfg.metric("nitrogen_saved_kg"),
+                Unit.KG_N_PER_YEAR).formula("kg N per year × nitrogen reduction").add());
+        calcs.add(context.calc(p + "savings", "Saving per year (diesel and nitrogen)",
                 cfg.metric("savings_fuel_eur").add(cfg.metric("savings_inputs_eur")), Unit.EUR_PER_YEAR)
-                .formula("Δl × preț motorină + ΔkgN × preț azot").add());
-        calcs.add(context.calc(p + "hp_per_ha", "Putere pe hectar", cfg.metric("hp_per_ha"), Unit.HP_PER_HA)
-                .formula("CP total ofertat / ha").add());
+                .formula("Δl × diesel price + ΔkgN × nitrogen price").add());
+        calcs.add(context.calc(p + "hp_per_ha", "Power per hectare", cfg.metric("hp_per_ha"), Unit.HP_PER_HA)
+                .formula("total HP offered / ha").add());
         if (cfg.metricOrZero("precision_cost").signum() > 0) {
-            calcs.add(context.calc(p + "precision_share", "Ponderea agriculturii de precizie",
-                    cfg.metric("precision_share_pct"), Unit.PCT).formula("cost precizie / cost total").add());
+            calcs.add(context.calc(p + "precision_share", "Share of precision farming",
+                    cfg.metric("precision_share_pct"), Unit.PCT).formula("precision cost / total cost").add());
         }
         return calcs;
     }
@@ -286,22 +286,22 @@ public class MachineryModule implements ModuleCalculator {
     @Override
     public void describeRules(ToolContext context) {
         var module = context.module();
-        context.calc("rules.threshold.reduction", "Pragul verde: reducere de motorină sau de azot pe hectar",
+        context.calc("rules.threshold.reduction", "Green threshold: diesel or nitrogen reduction per hectare",
                 RuleValues.thresholdPct(context), Unit.PCT).source(module.threshold().sourceRo()).add();
-        context.calc("rules.norm.l_per_ha", "Norma de motorină (doar fără facturi)",
+        context.calc("rules.norm.l_per_ha", "Diesel norm (only without invoices)",
                 context.param("baselineLitresPerHa"), Unit.L_PER_HA).source(context.paramSource("baselineLitresPerHa")).add();
-        context.calc("rules.price.fuel_net", "Costul net al motorinei", RuleValues.dieselNetEurPerLitre(context),
-                Unit.EUR_PER_L).formula("(preț la pompă / (1 + TVA) − acciză rambursată) / curs EUR")
+        context.calc("rules.price.fuel_net", "Net cost of diesel", RuleValues.dieselNetEurPerLitre(context),
+                Unit.EUR_PER_L).formula("(pump price / (1 + VAT) − excise refunded) / EUR rate")
                 .source(RuleValues.priceSource(context, "dieselExciseRefundLeiPerLitre")).add();
-        context.calc("rules.price.nitrogen", "Prețul azotului", context.param("nitrogenEurPerKg"), Unit.EUR_PER_KG_N)
+        context.calc("rules.price.nitrogen", "Nitrogen price", context.param("nitrogenEurPerKg"), Unit.EUR_PER_KG_N)
                 .source(context.paramSource("nitrogenEurPerKg")).add();
-        context.calc("rules.factor.diesel", "Factor de emisie motorină",
+        context.calc("rules.factor.diesel", "Diesel emission factor",
                 RuleValues.factor(context, "dieselKgCo2PerLitre"), Unit.KG_CO2_PER_L)
                 .source(RuleValues.factorSource(context, "dieselKgCo2PerLitre")).add();
-        context.calc("rules.factor.nitrogen", "Factor de emisie azot",
+        context.calc("rules.factor.nitrogen", "Nitrogen emission factor",
                 RuleValues.factor(context, "nitrogenKgCo2ePerKgN"), Unit.COUNT)
                 .source(RuleValues.factorSource(context, "nitrogenKgCo2ePerKgN")).add();
-        context.calc("rules.sizing.max_hp_ha", "Putere maximă pe hectar", context.param("maxHpPerHa"),
+        context.calc("rules.sizing.max_hp_ha", "Maximum power per hectare", context.param("maxHpPerHa"),
                 Unit.HP_PER_HA).source(context.paramSource("maxHpPerHa")).add();
     }
 
@@ -334,9 +334,9 @@ public class MachineryModule implements ModuleCalculator {
 
     @Override
     public void horizonImpact(ToolContext context, Configuration cfg, BigDecimal years) {
-        context.calc("impact.fuel_horizon", "Motorină economisită pe orizont",
+        context.calc("impact.fuel_horizon", "Diesel saved over the horizon",
                 cfg.metric("fuel_saved_l").multiply(years, MC), Unit.L).add();
-        context.calc("impact.nitrogen_horizon", "Azot economisit pe orizont",
+        context.calc("impact.nitrogen_horizon", "Nitrogen saved over the horizon",
                 cfg.metric("nitrogen_saved_kg").multiply(years, MC), Unit.KG_N_PER_YEAR).add();
     }
 

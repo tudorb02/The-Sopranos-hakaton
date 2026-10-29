@@ -37,7 +37,7 @@ final class ToolEvents {
         try {
             output = executor.execute(tool, input);
         } catch (RuntimeException e) {
-            String message = e.getMessage() == null ? "Unealta a eșuat." : e.getMessage();
+            String message = e.getMessage() == null ? "The tool failed." : e.getMessage();
             output = new ToolOutput(false, List.of(), mapper.createObjectNode().put("error", message), message);
         }
         long millis = (System.nanoTime() - started) / 1_000_000;
@@ -51,10 +51,10 @@ final class ToolEvents {
             return (output.ok() ? "🔧 " : "⚠️ ") + output.messageRo();
         }
         if (output.calcs().isEmpty()) {
-            return output.ok() ? "🔧 Gata" : "⚠️ Unealta a întors o eroare";
+            return output.ok() ? "🔧 Done" : "⚠️ The tool returned an error";
         }
         Calc first = output.calcs().getFirst();
-        String more = output.calcs().size() > 1 ? " (+" + (output.calcs().size() - 1) + " cifre)" : "";
+        String more = output.calcs().size() > 1 ? " (+" + (output.calcs().size() - 1) + " figures)" : "";
         return "🔧 " + first.labelRo() + ": " + first.display() + more;
     }
 

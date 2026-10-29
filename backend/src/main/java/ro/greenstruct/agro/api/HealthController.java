@@ -54,9 +54,9 @@ public class HealthController {
     private List<Model> notConfigured() {
         var bedrock = properties.bedrock();
         return List.of(
-                new Model("AGENT", orUnset(bedrock.agentModelId()), "DOWN", null, "Bedrock nu este configurat: agenții rulează pe reguli, offline"),
+                new Model("AGENT", orUnset(bedrock.agentModelId()), "DOWN", null, "Bedrock is not configured: the agents run on rules, offline"),
                 new Model("EXTRACTION", orUnset(bedrock.extractionModelId()), "DOWN", null,
-                        "Bedrock nu este configurat: documentele demo se citesc din citirile înregistrate"));
+                        "Bedrock is not configured: demo documents are read from the recorded readings"));
     }
 
     private List<String> goldenRuns() {
@@ -67,6 +67,6 @@ public class HealthController {
     }
 
     private static String orUnset(String modelId) {
-        return modelId == null || modelId.isBlank() ? "neconfigurat" : modelId;
+        return modelId == null || modelId.isBlank() ? "not configured" : modelId;
     }
 }

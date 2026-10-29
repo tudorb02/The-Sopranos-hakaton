@@ -8,7 +8,7 @@
     "mu_3103"
   ],
   "questionnaire": {
-    "crops_main": "grâu 6 t/ha; porumb 8 t/ha; soia 3 t/ha",
+    "crops_main": "wheat 6 t/ha; maize 8 t/ha; soybeans 3 t/ha",
     "conversion_ha": 120,
     "conversion_start_year": 2027,
     "nitrogen_kg_ha": 130,

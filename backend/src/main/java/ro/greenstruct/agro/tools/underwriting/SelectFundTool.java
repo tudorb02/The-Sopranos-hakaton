@@ -51,7 +51,7 @@ public class SelectFundTool implements ToolHandler {
     public ToolOutput execute(JsonNode input, ToolContext context) {
         FinancingOption option = context.workspace().option(Params.requiredText(input, "optionId"));
         JsonNode fund = FundsConfig.backing(context, option).orElseThrow(() -> new IllegalArgumentException(
-                "Opțiunea " + option.optionId() + " nu folosește o garanție sau un grant din config/funds.json"));
+                "Option " + option.optionId() + " uses no guarantee or grant from config/funds.json"));
         String fundId = fund.path("fundId").asText();
         JsonNode module = FundsConfig.module(context);
         String role;
@@ -60,11 +60,11 @@ public class SelectFundTool implements ToolHandler {
         } else if (FundsConfig.moduleFundIds(context).contains(fundId)) {
             role = "ALTERNATIVE";
         } else {
-            throw new IllegalArgumentException("Fondul " + fundId + " nu e prevăzut pentru modulul "
+            throw new IllegalArgumentException("Fund " + fundId + " is not provided for module "
                     + context.module().moduleId());
         }
         if (fund.has("coveragePct")) {
-            context.calc("fund.coverage", "Acoperirea garanției " + fundId,
+            context.calc("fund.coverage", "Guarantee coverage " + fundId,
                     Params.value(fund.path("coveragePct"), "funds." + fundId + ".coveragePct"), Unit.PCT)
                     .source(fund.path("coveragePct").path("sourceRo").asText(null)).add();
         }
@@ -82,6 +82,6 @@ public class SelectFundTool implements ToolHandler {
                         .put("status", FundsConfig.availability(context, other));
             }
         }
-        return context.ok(result, "Fondul propus: " + fundId + " (" + fund.path("nameRo").asText() + ")");
+        return context.ok(result, "Proposed fund: " + fundId + " (" + fund.path("nameRo").asText() + ")");
     }
 }

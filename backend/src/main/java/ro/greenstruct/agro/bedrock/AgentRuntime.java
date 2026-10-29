@@ -51,7 +51,7 @@ public class AgentRuntime {
 
     /** First model id (for the agent.started event); "replay" when no model will be called. */
     public String modelId() {
-        return mode() == AgentModes.Mode.REPLAY ? "replay (rulare înregistrată)" : setup.models().getFirst();
+        return mode() == AgentModes.Mode.REPLAY ? "replay (recorded run)" : setup.models().getFirst();
     }
 
     public AgentResult execute(Run run, AgentContext context, AgentSlot slot) throws Exception {
@@ -98,7 +98,7 @@ public class AgentRuntime {
 
         Optional<Recording> cached = setup.cache().find(RunCache.key(slot, run));
         if (cached.isPresent()) {
-            context.degraded("CACHE", reason, 1, "Folosesc rezultatul salvat de la o rulare anterioară cu aceleași documente.");
+            context.degraded("CACHE", reason, 1, "Using the saved result of an earlier run with the same documents.");
             try {
                 return play(cached.get(), "CACHE", run, context, slot);
             } catch (AgentFailureException e) {
@@ -107,19 +107,19 @@ public class AgentRuntime {
         }
         Optional<Recording> golden = goldenFor(run, slot);
         if (golden.isPresent()) {
-            context.degraded("GOLDEN", reason, 1, "Redau rularea înregistrată pentru acest scenariu.");
+            context.degraded("GOLDEN", reason, 1, "Replaying the recorded run for this scenario.");
             return play(golden.get(), "GOLDEN", run, context, slot);
         }
         if (ruleFallback != null) {
-            context.degraded("GOLDEN", reason, 1, "Nu există o rulare salvată; aplic regulile fixe, cu cifrele recalculate.");
+            context.degraded("GOLDEN", reason, 1, "No saved run exists; applying the fixed rules, with the figures recalculated.");
             return ruleFallback.run(run, context, slot);
         }
         if (failure instanceof AgentFailureException agentFailure && notes.isEmpty()) {
             throw agentFailure;
         }
         throw new AgentFailureException("BEDROCK_UNAVAILABLE",
-                "Bedrock nu răspunde și nu există o rulare salvată pentru aceste documente. Reîncearcă sau pornește "
-                        + "dosarul demo.", true, failure);
+                "Bedrock is not responding and there is no saved run for these documents. Try again or start "
+                        + "the demo dossier.", true, failure);
     }
 
     // ---- REPLAY
@@ -129,8 +129,8 @@ public class AgentRuntime {
             return ruleFallback.run(run, context, slot);
         }
         Recording recording = goldenFor(run, slot).orElseThrow(() -> new AgentFailureException("BEDROCK_UNAVAILABLE",
-                "Nu există o rulare înregistrată pentru scenariul " + scenarioOf(run) + " (" + slot.label()
-                        + ") și Bedrock nu e configurat.", false, null));
+                "There is no recorded run for scenario " + scenarioOf(run) + " (" + slot.label()
+                        + ") and Bedrock is not configured.", false, null));
         return play(recording, "GOLDEN", run, context, slot);
     }
 

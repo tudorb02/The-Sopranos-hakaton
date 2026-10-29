@@ -70,7 +70,7 @@ public class BuildFundingStackTool implements ToolHandler {
             context.workspace().putOption(option);
             summary.add(describe(context, option));
         }
-        return context.ok(result, "Am construit structura de finanțare pentru " + summary.size() + " opțiuni");
+        return context.ok(result, "Built the funding structure for " + summary.size() + " options");
     }
 
     private FinancingOption build(ToolContext context, JsonNode spec) {
@@ -90,22 +90,22 @@ public class BuildFundingStackTool implements ToolHandler {
                 } else if (mainLine == null) {
                     mainLine = line.get();
                 } else {
-                    throw new IllegalArgumentException("Opțiunea " + optionId + " are două credite principale");
+                    throw new IllegalArgumentException("Option " + optionId + " has two main loans");
                 }
             } else if (FinancingConfig.guarantee(context, product).isPresent()) {
                 guaranteeId = product;
             } else if (FinancingConfig.program(context, product).isPresent()) {
                 grantProgram = product;
             } else {
-                throw new IllegalArgumentException("Produs necunoscut: " + product);
+                throw new IllegalArgumentException("Unknown product: " + product);
             }
         }
         if (mainLine == null) {
-            throw new IllegalArgumentException("Opțiunea " + optionId + " nu are un credit principal");
+            throw new IllegalArgumentException("Option " + optionId + " has no main loan");
         }
         if (mainLine.path("green").asBoolean(false) && !cfg.passesThreshold()) {
-            throw new IllegalArgumentException("Creditul verde cere o configurație care trece pragul; "
-                    + cfg.configId() + " nu trece");
+            throw new IllegalArgumentException("The green loan needs a configuration that passes the threshold; "
+                    + cfg.configId() + " does not");
         }
         if (guaranteeId == null && mainLine.has("guaranteeId")) {
             guaranteeId = mainLine.path("guaranteeId").asText();
@@ -116,10 +116,10 @@ public class BuildFundingStackTool implements ToolHandler {
         if (grantProgram != null) {
             String programCode = grantProgram;
             JsonNode check = context.workspace().programCheck(programCode).orElseThrow(() ->
-                    new IllegalArgumentException("Rulează întâi check_program_eligibility pentru " + programCode));
+                    new IllegalArgumentException("Run check_program_eligibility first for " + programCode));
             if (!"ELIGIBLE".equals(check.path("result").asText()) || !"OPEN".equals(check.path("session").asText())) {
-                throw new IllegalArgumentException("Grantul " + programCode + " nu se poate folosi: "
-                        + check.path("result").asText() + ", sesiune " + check.path("session").asText());
+                throw new IllegalArgumentException("Grant " + programCode + " cannot be used: "
+                        + check.path("result").asText() + ", session " + check.path("session").asText());
             }
             grant = Optional.of(new GrantTerms(grantProgram, check.path("intensityPct").decimalValue(),
                     check.path("capEur").decimalValue()));
@@ -147,16 +147,16 @@ public class BuildFundingStackTool implements ToolHandler {
         if (option.grantEur().signum() > 0) {
             parts.add("GRANT");
             context.calc(p + "grant.amount", "Grant " + option.grantProgram(), option.grantEur(), Unit.EUR)
-                    .formula("min(intensitate × valoare eligibilă, plafon)").add();
+                    .formula("min(intensity × eligible value, cap)").add();
         }
         if (option.guaranteeEur().signum() > 0) {
             parts.add("GUARANTEE");
-            context.calc(p + "guarantee.amount", "Valoare garantată", option.guaranteeEur(), Unit.EUR)
-                    .formula("credit × acoperire garanție").add();
+            context.calc(p + "guarantee.amount", "Guaranteed amount", option.guaranteeEur(), Unit.EUR)
+                    .formula("loan × guarantee coverage").add();
         }
         if (option.bridgeLoanEur().signum() > 0) {
             parts.add("BRIDGE_LOAN");
-            context.calc(p + "bridge.amount", "Credit-punte până la grant", option.bridgeLoanEur(), Unit.EUR).add();
+            context.calc(p + "bridge.amount", "Bridge loan until the grant", option.bridgeLoanEur(), Unit.EUR).add();
         }
         ObjectNode node = context.newResult();
         node.put("optionId", option.optionId());

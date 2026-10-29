@@ -1,14 +1,14 @@
 {
   "version": "2026-10-28",
-  "noteRo": "„Simulează 12 luni” (README §13): în demo, impactul real se simulează dintr-o abatere față de estimare. Cu date reale, abaterea vine din contoare, facturi și procesul-verbal de punere în funcțiune (README §5.3).",
+  "noteRo": "“Simulate 12 months” (README §13): in the demo, the actual impact is simulated from a deviation from the estimate. With real data, the deviation comes from meters, invoices and the commissioning report (README §5.3).",
   "simulatedDeviationPct": {
     "value": -4,
-    "sourceRo": "Ilustrativ: impactul real iese cu 4% sub estimare, în toleranță, ca bonusul de impact să se poată arăta în demo",
+    "sourceRo": "Illustrative: the actual impact comes out 4% below the estimate, within tolerance, so that the impact bonus can be shown in the demo",
     "demo": true
   },
   "tolerancePct": {
     "value": 10,
-    "sourceRo": "Propunere echipă: impactul real confirmă estimarea dacă abaterea în minus e de cel mult 10%; de confirmat cu Raiffeisen",
+    "sourceRo": "Team proposal: the actual impact confirms the estimate if the shortfall is at most 10%; to be confirmed with Raiffeisen",
     "demo": true,
     "proposal": true
   }

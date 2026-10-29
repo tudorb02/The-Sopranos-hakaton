@@ -116,9 +116,9 @@ public class SchemaSupport {
         String path = error.getInstanceLocation().toString();
         String keyword = error.getKeyword() == null ? "" : error.getKeyword();
         String message = switch (keyword) {
-            case "required" -> "Câmp obligatoriu lipsă: " + error.getProperty() + ".";
-            case "additionalProperties" -> "Câmp nepermis: " + error.getProperty() + ".";
-            case "enum" -> "Valoare în afara listei permise (" + error.getMessage() + ").";
+            case "required" -> "Missing required field: " + error.getProperty() + ".";
+            case "additionalProperties" -> "Field not allowed: " + error.getProperty() + ".";
+            case "enum" -> "Value outside the allowed list (" + error.getMessage() + ").";
             default -> error.getMessage();
         };
         return new Issue(path.isEmpty() ? "/" : path, message);

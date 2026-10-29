@@ -33,7 +33,7 @@ final class PricingSupport {
     /** Margin adjustment of a tier; VERDE_PLUS has the full reduction, CLASIC has no green loan at all. */
     static BigDecimal tierAdjustmentPp(ToolContext context, GreenTier tier) {
         if (tier == GreenTier.CLASIC) {
-            throw new IllegalArgumentException("Nivelul CLASIC nu are credit verde de calculat");
+            throw new IllegalArgumentException("Tier CLASIC has no green loan to price");
         }
         return value(context.reference().pricing().path("greenTiers").path("marginAdjustmentPp"), tier.name());
     }

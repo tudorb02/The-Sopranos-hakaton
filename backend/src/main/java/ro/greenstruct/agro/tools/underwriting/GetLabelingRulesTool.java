@@ -56,6 +56,6 @@ public class GetLabelingRulesTool implements ToolHandler {
                 node.put("taxonomyActivity", rule.taxonomyActivity());
             }
         });
-        return context.ok(result, "Am etichetat componentele configurației " + cfg.configId());
+        return context.ok(result, "Labelled the components of configuration " + cfg.configId());
     }
 }

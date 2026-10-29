@@ -55,12 +55,12 @@ public class ReplayEngine {
         List<SchemaSupport.Issue> issues = new ArrayList<>(schemas.validate(submitTool, submit));
         for (String calcId : CalcPlaceholders.calcIds(submit)) {
             if (!calcs.exists(calcId)) {
-                issues.add(new SchemaSupport.Issue("/", "calcId necunoscut: " + calcId));
+                issues.add(new SchemaSupport.Issue("/", "unknown calcId: " + calcId));
             }
         }
         if (!issues.isEmpty()) {
             throw new AgentFailureException("AGENT_INVALID_OUTPUT",
-                    "Rularea înregistrată nu mai respectă schema: " + issues.getFirst().messageRo(), false, null);
+                    "The recorded run no longer matches the schema: " + issues.getFirst().messageRo(), false, null);
         }
         return submit;
     }
@@ -88,8 +88,8 @@ public class ReplayEngine {
         try {
             return CalcPlaceholders.substitute(node, calcs);
         } catch (CalcPlaceholders.UnresolvedCalcException e) {
-            throw new AgentFailureException("UNKNOWN_CALC_ID", "Rularea înregistrată referă un calcul care nu mai "
-                    + "există (" + e.name() + ", la " + where + "); înregistrează din nou rularea.", false, e);
+            throw new AgentFailureException("UNKNOWN_CALC_ID", "The recorded run refers to a calculation that no longer "
+                    + "exists (" + e.name() + ", at " + where + "); record the run again.", false, e);
         }
     }
 

@@ -35,19 +35,19 @@ import ro.greenstruct.agro.tools.CalcStore;
 public class ReportService {
 
     private static final Color GREEN = new Color(0x1B, 0x6B, 0x3A);
-    private static final Map<String, String> TIERS = Map.of("VERDE_PLUS", "Verde Plus", "VERDE", "Verde",
-            "VERDE_CU_UPGRADE", "Verde cu upgrade", "CLASIC", "Clasic");
-    private static final Map<String, String> DECISIONS = Map.of("ELIGIBLE_GREEN", "Eligibil verde",
-            "ELIGIBLE_WITH_CONDITIONS", "Eligibil verde, cu condiții înainte de tragere", "NOT_ELIGIBLE", "Neeligibil");
-    private static final Map<String, String> DNSH_STATUS = Map.of("PASS", "Trecut", "PASS_WITH_CONDITIONS",
-            "Trecut cu condiții", "FAIL", "Nu trece", "MISSING_DATA", "Date lipsă");
-    private static final Map<String, String> OBJECTIVES = Map.of("CLIMATE_MITIGATION", "Atenuarea schimbărilor climatice",
-            "CLIMATE_ADAPTATION", "Adaptarea la schimbările climatice", "WATER_MARINE_RESOURCES", "Apa și resursele marine",
-            "CIRCULAR_ECONOMY", "Economia circulară", "POLLUTION_PREVENTION", "Prevenirea poluării", "BIODIVERSITY",
-            "Biodiversitatea");
-    private static final Map<String, String> RATE_COMPONENTS = Map.of("FUNDING_COST", "Cost de finanțare", "RISK_COST",
-            "Cost de risc", "CAPITAL_COST", "Cost de capital", "OPERATIONAL_COST", "Cost operațional", "TARGET_PROFIT",
-            "Profit țintă", "PROGRAM_SUBSIDY", "Subvenție de program", "TIER_ADJUSTMENT", "Ajustarea nivelului verde");
+    private static final Map<String, String> TIERS = Map.of("VERDE_PLUS", "Green Plus", "VERDE", "Green",
+            "VERDE_CU_UPGRADE", "Green with upgrade", "CLASIC", "Classic");
+    private static final Map<String, String> DECISIONS = Map.of("ELIGIBLE_GREEN", "Green eligible",
+            "ELIGIBLE_WITH_CONDITIONS", "Green eligible, with conditions precedent to drawdown", "NOT_ELIGIBLE", "Not eligible");
+    private static final Map<String, String> DNSH_STATUS = Map.of("PASS", "Passes", "PASS_WITH_CONDITIONS",
+            "Passes with conditions", "FAIL", "Fails", "MISSING_DATA", "Missing data");
+    private static final Map<String, String> OBJECTIVES = Map.of("CLIMATE_MITIGATION", "Climate change mitigation",
+            "CLIMATE_ADAPTATION", "Climate change adaptation", "WATER_MARINE_RESOURCES", "Water and marine resources",
+            "CIRCULAR_ECONOMY", "Circular economy", "POLLUTION_PREVENTION", "Pollution prevention", "BIODIVERSITY",
+            "Biodiversity");
+    private static final Map<String, String> RATE_COMPONENTS = Map.of("FUNDING_COST", "Funding cost", "RISK_COST",
+            "Risk cost", "CAPITAL_COST", "Cost of capital", "OPERATIONAL_COST", "Operational cost", "TARGET_PROFIT",
+            "Target profit", "PROGRAM_SUBSIDY", "Programme subsidy", "TIER_ADJUSTMENT", "Green tier adjustment");
 
     private final CalcStore calcs;
     private final byte[] regular;
@@ -70,13 +70,13 @@ public class ReportService {
     /** The report of an approved dossier. */
     public byte[] build(Run run) {
         if (run.status() != RunStatus.APROBAT && run.status() != RunStatus.MONITORIZARE) {
-            throw new IllegalStateException("Raportul PDF se generează după aprobare; dosarul e în starea " + run.status());
+            throw new IllegalStateException("The PDF report is generated after approval; the dossier is in status " + run.status());
         }
         JsonNode report = run.agentOutputs().get(AgentSlot.GREEN_UNDERWRITER);
         JsonNode funding = run.agentOutputs().get(AgentSlot.FUNDING_OPTIMIZER);
         JsonNode technical = run.agentOutputs().get(AgentSlot.TECHNICAL_AUDITOR);
         if (report == null || funding == null || technical == null) {
-            throw new IllegalStateException("Dosarul nu are raport verde");
+            throw new IllegalStateException("The dossier has no green report");
         }
         try {
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -93,12 +93,12 @@ public class ReportService {
             impact(document, fonts, run, report);
             conditions(document, fonts, report);
             risks(document, fonts, report);
-            document.add(new Paragraph("Parametrii dobânzii și pragurile sunt valori demo, de confirmat cu Raiffeisen. "
-                    + "Toate cifrele provin din motorul de calcul.", fonts.small));
+            document.add(new Paragraph("Interest rate parameters and thresholds are demo values, to be confirmed with Raiffeisen. "
+                    + "All figures come from the calculation engine.", fonts.small));
             document.close();
             return bytes.toByteArray();
         } catch (DocumentException e) {
-            throw new IllegalStateException("Nu am putut genera raportul PDF", e);
+            throw new IllegalStateException("Could not generate the PDF report", e);
         }
     }
 
@@ -121,68 +121,68 @@ public class ReportService {
     }
 
     private void title(Document d, Fonts f, Run run) throws DocumentException {
-        d.add(new Paragraph("Raport verde · GreenStruct Agro", f.h1));
-        d.add(new Paragraph("Dosar " + run.id() + " · " + run.farmProfile().company().name() + " (CUI "
-                + run.farmProfile().company().cui() + ") · modul " + run.request().moduleId(), f.body));
+        d.add(new Paragraph("Green report · GreenStruct Agro", f.h1));
+        d.add(new Paragraph("Dossier " + run.id() + " · " + run.farmProfile().company().name() + " (CUI "
+                + run.farmProfile().company().cui() + ") · module " + run.request().moduleId(), f.body));
         d.add(new Paragraph(" ", f.body));
     }
 
     private void summary(Document d, Fonts f, Run run, JsonNode report, JsonNode funding, JsonNode technical)
             throws DocumentException {
         PdfPTable t = table(2, 30, 70);
-        row(t, f, "Decizie", DECISIONS.getOrDefault(report.path("decision").asText(), report.path("decision").asText()));
-        row(t, f, "Nivel verde", TIERS.getOrDefault(funding.path("greenTier").path("tier").asText(), "—"));
-        row(t, f, "Varianta aleasă de IMM", run.submission() == null ? "—" : run.submission().variant().labelRo());
-        row(t, f, "Statut IMM", String.valueOf(run.farmProfile().company().smeStatus()));
-        row(t, f, "Concluzie tehnică", technical.path("summaryRo").asText());
-        row(t, f, "Rezumat pentru comitet", report.path("committeeSummaryRo").asText());
+        row(t, f, "Decision", DECISIONS.getOrDefault(report.path("decision").asText(), report.path("decision").asText()));
+        row(t, f, "Green tier", TIERS.getOrDefault(funding.path("greenTier").path("tier").asText(), "—"));
+        row(t, f, "Option chosen by the SME", run.submission() == null ? "—" : run.submission().variant().labelRo());
+        row(t, f, "SME status", String.valueOf(run.farmProfile().company().smeStatus()));
+        row(t, f, "Technical conclusion", technical.path("summaryRo").asText());
+        row(t, f, "Committee summary", report.path("committeeSummaryRo").asText());
         d.add(t);
     }
 
     private void criterion(Document d, Fonts f, Run run, JsonNode report, JsonNode technical) throws DocumentException {
-        section(d, f, "Criteriul verde și pragul");
+        section(d, f, "Green criterion and threshold");
         JsonNode c = report.path("criterion");
         PdfPTable t = table(2, 30, 70);
         row(t, f, "Indicator", c.path("indicator").asText());
-        row(t, f, "Valoare atinsă", display(run, c.path("valueCalcId").asText()));
-        row(t, f, "Prag", display(run, c.path("thresholdCalcId").asText()));
-        row(t, f, "Rezultat", "PASS".equals(c.path("result").asText()) ? "Pragul e atins" : "Pragul nu e atins");
-        row(t, f, "Sursa pragului", c.path("sourceRo").asText());
+        row(t, f, "Value achieved", display(run, c.path("valueCalcId").asText()));
+        row(t, f, "Threshold", display(run, c.path("thresholdCalcId").asText()));
+        row(t, f, "Result", "PASS".equals(c.path("result").asText()) ? "Threshold met" : "Threshold not met");
+        row(t, f, "Threshold source", c.path("sourceRo").asText());
         d.add(t);
     }
 
     private void fund(Document d, Fonts f, JsonNode report) throws DocumentException {
-        section(d, f, "Fond propus și cerințe");
+        section(d, f, "Proposed fund and requirements");
         JsonNode fund = report.path("fund");
         PdfPTable t = table(2, 30, 70);
-        row(t, f, "Fond", fund.path("fundId").asText() + " (" + fund.path("role").asText() + ")");
-        row(t, f, "Categoria obligațiunilor verzi", report.path("greenBond").path("category").asText() + " — "
+        row(t, f, "Fund", fund.path("fundId").asText() + " (" + fund.path("role").asText() + ")");
+        row(t, f, "Green bond category", report.path("greenBond").path("category").asText() + " — "
                 + report.path("greenBond").path("noteRo").asText());
         for (JsonNode requirement : fund.path("requirements")) {
             row(t, f, requirement.path("requirementId").asText(), requirement.path("status").asText() + " — "
                     + requirement.path("noteRo").asText());
         }
         for (JsonNode alternative : fund.path("alternatives")) {
-            row(t, f, "Alternativă " + alternative.path("fundId").asText(), alternative.path("status").asText());
+            row(t, f, "Alternative " + alternative.path("fundId").asText(), alternative.path("status").asText());
         }
         d.add(t);
     }
 
     private void rate(Document d, Fonts f, Run run, JsonNode funding) throws DocumentException {
-        section(d, f, "Dobânda pe componente: clasic față de verde");
+        section(d, f, "Interest rate by component: classic vs green");
         JsonNode comparison = funding.path("comparison");
         PdfPTable t = table(2, 60, 40);
         for (JsonNode diff : comparison.path("rateDifference")) {
             row(t, f, RATE_COMPONENTS.getOrDefault(diff.path("component").asText(), diff.path("component").asText())
-                    + " (verde − clasic)", display(run, diff.path("deltaCalcId").asText()));
+                    + " (green − classic)", display(run, diff.path("deltaCalcId").asText()));
         }
-        row(t, f, "Total (verde − clasic)", display(run, comparison.path("rateDifferenceCalcId").asText()));
-        row(t, f, "Avantajul net al creditului verde", display(run, comparison.path("netAdvantageCalcId").asText()));
+        row(t, f, "Total (green − classic)", display(run, comparison.path("rateDifferenceCalcId").asText()));
+        row(t, f, "Net advantage of the green credit", display(run, comparison.path("netAdvantageCalcId").asText()));
         d.add(t);
     }
 
     private void dnsh(Document d, Fonts f, JsonNode report) throws DocumentException {
-        section(d, f, "DNSH: nu face rău semnificativ");
+        section(d, f, "DNSH: do no significant harm");
         PdfPTable t = table(3, 30, 20, 50);
         for (JsonNode row : report.path("dnsh")) {
             cell(t, f.body, OBJECTIVES.getOrDefault(row.path("objective").asText(), row.path("objective").asText()));
@@ -193,23 +193,23 @@ public class ReportService {
     }
 
     private void impact(Document d, Fonts f, Run run, JsonNode report) throws DocumentException {
-        section(d, f, "Impact estimat");
+        section(d, f, "Estimated impact");
         PdfPTable t = table(2, 60, 40);
         for (JsonNode i : report.path("impact")) {
-            row(t, f, i.path("metric").asText() + (("HORIZON".equals(i.path("period").asText())) ? " (pe orizont)" : " (pe an)"),
+            row(t, f, i.path("metric").asText() + (("HORIZON".equals(i.path("period").asText())) ? " (over horizon)" : " (per year)"),
                     display(run, i.path("calcId").asText()));
         }
         d.add(t);
     }
 
     private void conditions(Document d, Fonts f, JsonNode report) throws DocumentException {
-        section(d, f, "Condiții înainte de tragere");
+        section(d, f, "Conditions precedent to drawdown");
         List<String> lines = new ArrayList<>();
         for (JsonNode c : report.path("conditionsPrecedent")) {
-            lines.add((c.path("blocking").asBoolean() ? "[blocantă] " : "") + c.path("descriptionRo").asText());
+            lines.add((c.path("blocking").asBoolean() ? "[blocking] " : "") + c.path("descriptionRo").asText());
         }
         if (lines.isEmpty()) {
-            lines.add("Nu există condiții.");
+            lines.add("No conditions.");
         }
         for (String line : lines) {
             d.add(new Paragraph("• " + line, f.body));
@@ -217,10 +217,10 @@ public class ReportService {
     }
 
     private void risks(Document d, Fonts f, JsonNode report) throws DocumentException {
-        section(d, f, "Riscuri");
+        section(d, f, "Risks");
         for (JsonNode r : report.path("risks")) {
             d.add(new Paragraph("• [" + r.path("severity").asText() + "] " + r.path("descriptionRo").asText()
-                    + " Măsură: " + r.path("mitigationRo").asText(), f.body));
+                    + " Mitigation: " + r.path("mitigationRo").asText(), f.body));
         }
     }
 

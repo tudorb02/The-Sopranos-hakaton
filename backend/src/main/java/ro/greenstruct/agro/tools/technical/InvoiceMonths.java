@@ -18,6 +18,8 @@ final class InvoiceMonths {
     private static final Pattern MONTH_YEAR = Pattern.compile("(\\d{1,2})[./](\\d{4})");
     private static final List<String> NAMES = List.of("ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
             "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie");
+    private static final List<String> NAMES_EN = List.of("january", "february", "march", "april", "may", "june",
+            "july", "august", "september", "october", "november", "december");
 
     private InvoiceMonths() {
     }
@@ -41,6 +43,11 @@ final class InvoiceMonths {
         String plain = Normalizer.normalize(raw, Normalizer.Form.NFD).replaceAll("\\p{M}", "").toLowerCase(Locale.ROOT);
         for (int i = 0; i < NAMES.size(); i++) {
             if (plain.contains(NAMES.get(i))) {
+                return Optional.of(i + 1);
+            }
+        }
+        for (int i = 0; i < NAMES_EN.size(); i++) {
+            if (plain.contains(NAMES_EN.get(i))) {
                 return Optional.of(i + 1);
             }
         }

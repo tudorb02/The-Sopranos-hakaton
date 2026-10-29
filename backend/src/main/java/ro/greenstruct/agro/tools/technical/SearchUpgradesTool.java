@@ -104,9 +104,9 @@ public class SearchUpgradesTool implements ToolHandler {
         ArrayNode list = result.putArray("candidates");
         for (Candidate candidate : candidates) {
             String key = "cand." + candidate.packageId().substring("pkg_".length());
-            context.calc(key + ".pct", "Indicator cu pachetul " + candidate.packageId(),
+            context.calc(key + ".pct", "Indicator with package " + candidate.packageId(),
                     candidate.configuration().metric("indicator_pct"), Unit.PCT).add();
-            context.calc(key + ".cost", "Cost total cu pachetul " + candidate.packageId(),
+            context.calc(key + ".cost", "Total cost with package " + candidate.packageId(),
                     candidate.configuration().totalCost(), Unit.EUR).add();
             ObjectNode node = list.addObject();
             node.put("packageId", candidate.packageId());
@@ -115,6 +115,6 @@ public class SearchUpgradesTool implements ToolHandler {
             node.put("meetsSafetyMargin", ConfigurationMetrics.meetsSafetyMargin(context, candidate.configuration()));
         }
         long passing = candidates.stream().filter(c -> c.configuration().passesThreshold()).count();
-        return context.ok(result, "Am găsit " + candidates.size() + " pachete de upgrade, " + passing + " trec pragul");
+        return context.ok(result, "Found " + candidates.size() + " upgrade packages, " + passing + " pass the threshold");
     }
 }

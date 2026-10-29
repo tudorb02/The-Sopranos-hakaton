@@ -49,7 +49,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler({IllegalArgumentException.class, MissingServletRequestParameterException.class,
             HttpMessageNotReadableException.class})
     public ResponseEntity<ApiError> badRequest(Exception e) {
-        String message = e instanceof HttpMessageNotReadableException ? "Corpul cererii nu e JSON valid" : e.getMessage();
+        String message = e instanceof HttpMessageNotReadableException ? "The request body is not valid JSON" : e.getMessage();
         return error(HttpStatus.BAD_REQUEST, "VALIDATION_ERROR", message);
     }
 
@@ -65,18 +65,18 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ApiError> tooLarge(MaxUploadSizeExceededException e) {
-        return error(HttpStatus.PAYLOAD_TOO_LARGE, "FILE_TOO_LARGE", "Documentele depășesc dimensiunea maximă permisă");
+        return error(HttpStatus.PAYLOAD_TOO_LARGE, "FILE_TOO_LARGE", "The documents exceed the maximum allowed size");
     }
 
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<ApiError> notMultipart(MultipartException e) {
-        return error(HttpStatus.BAD_REQUEST, "VALIDATION_ERROR", "Cererea trebuie trimisă ca multipart/form-data");
+        return error(HttpStatus.BAD_REQUEST, "VALIDATION_ERROR", "The request must be sent as multipart/form-data");
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> internal(Exception e) {
         log.error("Unhandled API error", e);
-        return error(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL", "A apărut o eroare. Reîncearcă.");
+        return error(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL", "An error occurred. Try again.");
     }
 
     private static ResponseEntity<ApiError> error(HttpStatus status, String code, String message) {

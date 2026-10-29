@@ -1,18 +1,18 @@
 {
   "module": "ecologic",
-  "note": "Îndrumarea pentru Ecologic nu adaugă echipamente, ci schimbă calendarul conversiei (README §13): role ALTERNATIVE = varianta etapizată a planului, parcelă cu parcelă. Are cost 0 și nu schimbă investiția finanțată; schimbă marja pe ani și golul de lichiditate din primul an. phasedFirstTranchePct = cât din hectare intră în conversie în primul an (50 = 60 + 60 ha la o fermă de 120 ha); phasedDelayYears = cu câți ani mai târziu intră restul.",
+  "note": "Guidance for Organic adds no equipment; it changes the conversion schedule (README §13): role ALTERNATIVE = the phased version of the plan, parcel by parcel. It costs 0 and does not change the financed investment; it changes the margin by year and the first-year liquidity gap. phasedFirstTranchePct = share of hectares entering conversion in the first year (50 = 60 + 60 ha on a 120 ha farm); phasedDelayYears = how many years later the rest enters.",
   "items": [
     {
       "catalogId": "eco.plan.phased_60_60",
       "category": "OTHER",
-      "nameRo": "Conversie etapizată: jumătate din hectare în primul an, restul în anul următor",
+      "nameRo": "Phased conversion: half of the hectares in the first year, the rest the following year",
       "role": "ALTERNATIVE",
       "costEur": 0,
       "effect": {
         "phasedFirstTranchePct": 50,
         "phasedDelayYears": 1
       },
-      "sourceRo": "README §6, categoria 6, D: etapizarea micșorează golul din primul an, dar amână câștigul; 50/50 e varianta 60 + 60 ha din fermă demo DEMO-0006"
+      "sourceRo": "README §6, category 6, D: phasing shrinks the first-year gap but delays the gain; 50/50 is the 60 + 60 ha option for demo farm DEMO-0006"
     }
   ]
 }

@@ -73,7 +73,7 @@
     {
       "lineId": "ln_1",
       "category": "IRRIGATION_SPRINKLER",
-      "descriptionRo": "Mașină de irigat cu tambur, furtun 110 mm x 400 m",
+      "descriptionRo": "Hose-reel irrigation machine, 110 mm x 400 m hose",
       "fields": [
         {
           "key": "QUANTITY",
@@ -94,7 +94,7 @@
     {
       "lineId": "ln_2",
       "category": "PUMP",
-      "descriptionRo": "Electropompă 55 kW, cu tablou de comandă",
+      "descriptionRo": "Electric pump 55 kW, with control panel",
       "fields": [
         {
           "key": "PUMP_POWER_KW",
@@ -115,7 +115,7 @@
     {
       "lineId": "ln_3",
       "category": "PIPES",
-      "descriptionRo": "Conductă de aducțiune PEHD 160 mm și hidranți",
+      "descriptionRo": "HDPE supply pipe 160 mm and hydrants",
       "fields": [
         {
           "key": "LINE_PRICE_NET",
@@ -130,10 +130,10 @@
   "missingFields": [
     {
       "key": "WATER_METER_INCLUDED",
-      "reasonRo": "Oferta nu menționează contor de apă. Contorizarea e obligatorie pentru creditul verde."
+      "reasonRo": "The offer does not mention a water meter. Metering is mandatory for the green loan."
     }
   ],
   "warnings": [
-    "Valabilitatea ofertei: 60 de zile de la 12.10.2026."
+    "Offer valid for 60 days from 12 Oct 2026."
   ]
 }

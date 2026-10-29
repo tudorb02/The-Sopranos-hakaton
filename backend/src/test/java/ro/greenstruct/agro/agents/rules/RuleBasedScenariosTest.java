@@ -207,15 +207,15 @@ class RuleBasedScenariosTest {
         assertValue(run, "plan.phased.margin_total", "61830");
         assertValue(run, "plan.full.gap_y1", "36020.07");
         assertValue(run, "plan.full.coverage", "40320");
-        assertThat(technical(run).path("summaryRo").asText()).contains("conversia integrală").contains("etapizată")
+        assertThat(technical(run).path("summaryRo").asText()).contains("full conversion").contains("phased conversion")
                 .contains(display(run, "plan.full.margin_total")).contains(display(run, "plan.phased.margin_total"))
                 .contains(display(run, "plan.full.gap_y1"));
-        assertThat(technical(run).path("farmerMessageRo").asText()).contains("integrală");
+        assertThat(technical(run).path("farmerMessageRo").asText()).contains("full conversion");
         // Agent 2: the liquidity gap with the instalments of the green credit, against the APIA pre-financing
         assertValue(run, "option_b.gap.y1", "36020.07");
-        assertThat(funding(run).path("officerNotesRo").asText()).contains("Golul de lichiditate")
+        assertThat(funding(run).path("officerNotesRo").asText()).contains("liquidity gap")
                 .contains(display(run, "option_b.gap.y1"));
-        assertThat(funding(run).path("farmerExplanationRo").asText()).contains("Golul de lichiditate");
+        assertThat(funding(run).path("farmerExplanationRo").asText()).contains("liquidity gap");
         // CERTIFICATION threshold: eligible through the conversion contract, Credit BIO (F3) with F5 as an addition
         assertThat(tier(run)).isEqualTo("VERDE");
         JsonNode fund = report(run).path("fund");

@@ -21,7 +21,7 @@ import ro.greenstruct.agro.tools.workspace.WorkspaceStore;
 
 /**
  * Entry point for the agents' tool calls: finds the tool, builds its context from the dossier and runs it.
- * Input mistakes come back as ok=false with a Romanian message so the model can correct itself.
+ * Input mistakes come back as ok=false with a plain-language message so the model can correct itself.
  */
 @Component
 public class ToolRegistry {
@@ -64,7 +64,7 @@ public class ToolRegistry {
 
     public ToolOutput execute(String runId, String toolName, JsonNode input) {
         ToolHandler handler = find(toolName)
-                .orElseThrow(() -> new IllegalArgumentException("Unealtă necunoscută: " + toolName));
+                .orElseThrow(() -> new IllegalArgumentException("Unknown tool: " + toolName));
         Run run = runs.find(runId).orElseThrow(() -> new RunNotFoundException(runId));
         String moduleId = run.request().moduleId();
         ToolContext context = new ToolContext(toolName, run, modules.require(moduleId),

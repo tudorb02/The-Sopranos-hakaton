@@ -59,14 +59,14 @@ public class ComputeLiquidityGapTool implements ToolHandler {
     @Override
     public ToolOutput execute(JsonNode input, ToolContext context) {
         if (!"organic".equals(context.module().calculator())) {
-            throw new IllegalArgumentException("Unealta se aplică doar modulului Ecologic");
+            throw new IllegalArgumentException("This tool applies only to the Organic module");
         }
         OrganicPlans.Setup setup = OrganicPlans.setup(context);
         ObjectNode result = context.newResult();
         for (String optionId : Params.textList(input, "optionIds")) {
             FinancingOption option = context.workspace().option(optionId);
             if (option.schedule() == null) {
-                throw new IllegalArgumentException("Apelează întâi build_scenario pentru opțiunea " + optionId);
+                throw new IllegalArgumentException("Call build_scenario first for option " + optionId);
             }
             Configuration cfg = context.workspace().configuration(option.configId());
             List<Tranche> tranches = OrganicPlans.tranches(setup, OrganicPlans.phasing(cfg.components()));
@@ -88,20 +88,20 @@ public class ComputeLiquidityGapTool implements ToolHandler {
                     firstCovered = covered;
                 }
                 peak = peak.max(OrganicCalculator.peak(gap));
-                context.calc(p + "y" + (n + 1), "Golul de lichiditate în " + year + " (cu ratele creditului)", total,
-                        Unit.EUR).formula("Σ lunar max(0, cheltuieli + rate − venituri − subvenții), față de convențional")
+                context.calc(p + "y" + (n + 1), "Liquidity gap in " + year + " (with loan instalments)", total,
+                        Unit.EUR).formula("Σ monthly max(0, expenses + instalments − revenue − subsidies), vs conventional")
                         .add();
-                context.calc(p + "coverage_y" + (n + 1), "Capacitatea de prefinanțare APIA în " + year, coverage, Unit.EUR)
-                        .formula("procent de avans × (subvenții APIA azi + plăți bio din an)")
+                context.calc(p + "coverage_y" + (n + 1), "APIA pre-financing capacity in " + year, coverage, Unit.EUR)
+                        .formula("advance share × (current APIA subsidies + organic payments of the year)")
                         .source(context.paramSource("apiaPrefinancingAdvancePct")).add();
                 years.addObject().put("year", year).put("covered", covered);
             }
-            context.calc(p + "peak", "Cel mai mare gol lunar din anii de conversie", peak, Unit.EUR_PER_MONTH).add();
+            context.calc(p + "peak", "Largest monthly gap in the conversion years", peak, Unit.EUR_PER_MONTH).add();
             ObjectNode node = (ObjectNode) result.path(optionId);
             node.put("firstYearCovered", firstCovered);
             node.put("allYearsCovered", allCovered);
         }
-        return context.ok(result, "Am calculat golul de lichiditate lunar al anilor de conversie");
+        return context.ok(result, "Computed the monthly liquidity gap of the conversion years");
     }
 
     /** The option's installments in one calendar year, January first. */

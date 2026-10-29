@@ -8,7 +8,7 @@ import ro.greenstruct.agro.storage.StoredDocument;
 
 /**
  * What the farmer submitted in the wizard: questionnaire answers are keyed by the module's questionId.
- * demoScenario is set when the run comes from "Încarcă dosarul demo".
+ * demoScenario is set when the run comes from "Load the demo dossier".
  */
 public record RunRequest(
         String cui,

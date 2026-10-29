@@ -7,7 +7,7 @@ public record Submission(Variant variant, String optionId, Instant submittedAt) 
 
     /** The two cards of README §7; each maps to the kind of an option in submit_funding_recommendation. */
     public enum Variant {
-        CLASIC("Credit clasic"), VERDE("Credit verde");
+        CLASIC("Classic credit"), VERDE("Green credit");
 
         private final String labelRo;
 

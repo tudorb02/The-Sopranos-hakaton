@@ -35,7 +35,7 @@ public final class CatalogItems {
                 return item;
             }
         }
-        throw new IllegalArgumentException("Articolul " + catalogId + " nu există în catalogul modulului "
+        throw new IllegalArgumentException("Item " + catalogId + " does not exist in the catalog of module "
                 + context.module().moduleId());
     }
 
@@ -43,7 +43,7 @@ public final class CatalogItems {
     public static InvestmentComponent newEquivalent(JsonNode item, InvestmentComponent offered, int currentYear) {
         BigDecimal hp = offered.attribute("hp");
         if (hp == null) {
-            throw new IllegalArgumentException("Componenta " + offered.componentId() + " nu are puterea în CP");
+            throw new IllegalArgumentException("Component " + offered.componentId() + " has no power in HP");
         }
         Map<String, BigDecimal> attributes = new HashMap<>();
         attributes.put("hp", hp);
@@ -53,7 +53,7 @@ public final class CatalogItems {
         item.path("effect").fields().forEachRemaining(e -> attributes.put(e.getKey(), e.getValue().decimalValue()));
         BigDecimal cost = item.path("costEurPerHp").decimalValue().multiply(hp, MC).multiply(offered.quantity(), MC);
         return new InvestmentComponent(offered.componentId().replace("cmp_offer_", "cmp_new_"), offered.category(),
-                item.path("nameRo").asText() + " (" + hp.toPlainString() + " CP)", "CATALOG",
+                item.path("nameRo").asText() + " (" + hp.toPlainString() + " HP)", "CATALOG",
                 item.path("catalogId").asText(), offered.quantity(), cost, attributes);
     }
 

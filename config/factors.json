@@ -1,11 +1,11 @@
 {
   "version": "2026-10-28",
-  "dieselKgCo2PerLitre": { "value": 2.68, "sourceRo": "README §6, constante comune: 2,68 kg CO₂/l la ardere (IPCC 2006: 74.100 kg CO₂/TJ × 43,0 TJ/Gg × 0,84 kg/l)" },
-  "gridKgCo2PerKwh": { "value": 0.26, "sourceRo": "README §6, constante comune: rețeaua electrică RO, 0,26 t CO₂/MWh (= kg/kWh); de înlocuit cu valoarea folosită de bancă" },
-  "gasKgCo2PerKwh": { "value": 0.2, "sourceRo": "README §6, constante comune: gaz natural, 0,20 t CO₂/MWh (= kg/kWh) la ardere (IPCC 2006: 56.100 kg CO₂/TJ)" },
-  "nitrogenKgCo2ePerKgN": { "value": 4.29, "sourceRo": "README §6, constante comune: emisii directe de N₂O, 1% din N aplicat (IPCC) × 44/28 × 273 (GWP N₂O, IPCC AR6) = 4,29 kg CO₂e/kg N" },
-  "methaneGwp": { "value": 27, "sourceRo": "README §6, constante comune: GWP pe 100 de ani al metanului, IPCC AR6" },
-  "pumpingKwhPerM3PerM": { "value": 0.002725, "sourceRo": "README §6, constante comune: ρ × g / 3.600.000 = 1.000 × 9,81 / 3.600.000 kWh pentru 1 m³ ridicat 1 m" },
-  "ronPerEur": { "value": 4.97, "sourceRo": "Curs de demo; de înlocuit cu cursul BNR din ziua analizei", "demo": true },
-  "vatPct": { "value": 21, "sourceRo": "Cod fiscal, cota standard TVA" }
+  "dieselKgCo2PerLitre": { "value": 2.68, "sourceRo": "README §6, common constants: 2.68 kg CO₂/l on combustion (IPCC 2006: 74,100 kg CO₂/TJ × 43.0 TJ/Gg × 0.84 kg/l)" },
+  "gridKgCo2PerKwh": { "value": 0.26, "sourceRo": "README §6, common constants: Romanian power grid, 0.26 t CO₂/MWh (= kg/kWh); to be replaced with the value used by the bank" },
+  "gasKgCo2PerKwh": { "value": 0.2, "sourceRo": "README §6, common constants: natural gas, 0.20 t CO₂/MWh (= kg/kWh) on combustion (IPCC 2006: 56,100 kg CO₂/TJ)" },
+  "nitrogenKgCo2ePerKgN": { "value": 4.29, "sourceRo": "README §6, common constants: direct N₂O emissions, 1% of applied N (IPCC) × 44/28 × 273 (N₂O GWP, IPCC AR6) = 4.29 kg CO₂e/kg N" },
+  "methaneGwp": { "value": 27, "sourceRo": "README §6, common constants: 100-year GWP of methane, IPCC AR6" },
+  "pumpingKwhPerM3PerM": { "value": 0.002725, "sourceRo": "README §6, common constants: ρ × g / 3,600,000 = 1,000 × 9.81 / 3,600,000 kWh to lift 1 m³ by 1 m" },
+  "ronPerEur": { "value": 4.97, "sourceRo": "Demo exchange rate; to be replaced with the BNR rate on the day of the analysis", "demo": true },
+  "vatPct": { "value": 21, "sourceRo": "Fiscal Code, standard VAT rate" }
 }

@@ -58,7 +58,7 @@ public class AnafCompanyRegistry implements CompanyRegistryPort {
             return demo.company(cui);
         }
         if (!cui.matches("[0-9]{2,10}")) {
-            throw new IllegalArgumentException("CUI-ul „" + rawCui + "” nu este valid: are între 2 și 10 cifre");
+            throw new IllegalArgumentException("The CUI '" + rawCui + "' is not valid: it must have 2 to 10 digits");
         }
         Cached cached = cache.get(cui);
         if (cached != null && cached.fetchedAt().plus(properties.anaf().cacheTtl()).isAfter(Instant.now())) {

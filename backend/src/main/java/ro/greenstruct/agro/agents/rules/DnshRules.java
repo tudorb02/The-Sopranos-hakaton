@@ -25,8 +25,8 @@ final class DnshRules {
     static Outcome evaluate(ModuleDefinition.DnshCheck check, JsonNode facts) {
         return switch (check.evidence()) {
             case "OLD_EQUIPMENT_FATE" -> equipmentFate(check, facts.path("oldEquipmentFate").asText("NECUNOSCUT"));
-            case "NATURA_2000_PARCELS" -> parcels(check, facts.path("natura2000Parcels"), "arii Natura 2000",
-                    "Aviz de mediu pentru parcelele din arii Natura 2000");
+            case "NATURA_2000_PARCELS" -> parcels(check, facts.path("natura2000Parcels"), "Natura 2000 areas",
+                    "Environmental approval for the parcels in Natura 2000 areas");
             case "NITRATE_PARCELS" -> nitrate(check, facts);
             case "DIGESTATE_USE" -> digestate(check, facts);
             case "ENVIRONMENTAL_PERMIT" -> permit(check, facts);
@@ -37,7 +37,7 @@ final class DnshRules {
             case "NITROGEN_AVOIDED" -> facts.path("conversionPlanPresent").asBoolean()
                     ? new Outcome(DnshStatus.PASS, List.of("BUSINESS_PLAN"), check.checkRo())
                     : new Outcome(DnshStatus.MISSING_DATA, List.of("BUSINESS_PLAN"),
-                            "Planul de conversie nu e încărcat; se cere înainte de tragere.");
+                            "The conversion plan has not been uploaded; it is required before drawdown.");
             case "EMISSION_STAGE" -> emissionStage(check, facts);
             case "PUMPING_ENERGY", "PARCEL_RISK", "TILLAGE" -> new Outcome(DnshStatus.PASS,
                     List.of("OFFER"), check.checkRo());
@@ -49,11 +49,11 @@ final class DnshRules {
     private static Outcome emissionStage(ModuleDefinition.DnshCheck check, JsonNode facts) {
         if (facts.has("stageV") && !facts.path("stageV").asBoolean()) {
             return new Outcome(DnshStatus.FAIL, List.of("OFFER"),
-                    "Motorul tractorului ofertat nu respectă norma Stage V: " + facts.path("emissionStages"));
+                    "The engine of the offered tractor does not meet Stage V: " + facts.path("emissionStages"));
         }
         if (facts.path("tractorsWithoutStage").size() > 0) {
             return new Outcome(DnshStatus.PASS_WITH_CONDITIONS, List.of("OFFER"),
-                    "Oferta nu indică norma de emisii a tractorului; fișa tehnică Stage V se cere înainte de tragere.");
+                    "The offer does not state the tractor's emission stage; the Stage V technical data sheet is required before drawdown.");
         }
         return new Outcome(DnshStatus.PASS, List.of("OFFER"), check.checkRo());
     }
@@ -61,17 +61,17 @@ final class DnshRules {
     /** A key the rules cannot check from the facts: a condition before drawdown, not a pass. */
     private static Outcome conditional(ModuleDefinition.DnshCheck check, String evidence) {
         return new Outcome(DnshStatus.PASS_WITH_CONDITIONS, List.of(evidence),
-                check.checkRo() + " De confirmat înainte de tragere.");
+                check.checkRo() + " To be confirmed before drawdown.");
     }
 
     private static Outcome nitrate(ModuleDefinition.DnshCheck check, JsonNode facts) {
         JsonNode parcels = facts.path("nitrateVulnerableParcels");
         if (!parcels.isEmpty() && facts.path("fertilisationPlan").asBoolean(false)) {
             return new Outcome(DnshStatus.PASS, List.of("OFFER"), parcels.size()
-                    + " parcele sunt în zone vulnerabile la nitrați; fermierul declară un plan de fertilizare.");
+                    + " parcels are in nitrate vulnerable zones; the farmer declares a fertilisation plan.");
         }
-        return parcels(check, parcels, "zone vulnerabile la nitrați",
-                "Plan de fertilizare pentru parcelele din zone vulnerabile la nitrați");
+        return parcels(check, parcels, "nitrate vulnerable zones",
+                "Fertilisation plan for the parcels in nitrate vulnerable zones");
     }
 
     private static Outcome digestate(ModuleDefinition.DnshCheck check, JsonNode facts) {
@@ -83,24 +83,24 @@ final class DnshRules {
         return valorised
                 ? conditional(check, "OFFER")
                 : new Outcome(DnshStatus.MISSING_DATA, List.of("OFFER"),
-                        "Nu știm cum se valorifică gunoiul de grajd; dovada se cere înainte de tragere.");
+                        "We do not know how the manure is used; evidence is required before drawdown.");
     }
 
     private static Outcome permit(ModuleDefinition.DnshCheck check, JsonNode facts) {
         if (!facts.path("permitPresent").asBoolean(false)) {
             return new Outcome(DnshStatus.MISSING_DATA, List.of("ENVIRONMENTAL_PERMIT"),
-                    "Autorizația de mediu lipsește; se cere înainte de tragere.");
+                    "The environmental permit is missing; it is required before drawdown.");
         }
         if (!facts.path("permitValid").asBoolean(true)) {
             return new Outcome(DnshStatus.PASS_WITH_CONDITIONS, List.of("ENVIRONMENTAL_PERMIT"),
-                    "Autorizația de mediu a expirat; reînnoirea se cere înainte de tragere.");
+                    "The environmental permit has expired; renewal is required before drawdown.");
         }
         boolean covered = facts.path("digestateCoverInConfig").asBoolean(false)
                 || facts.path("manureStorage").asText("").startsWith("ACOPERIT");
         return covered
                 ? new Outcome(DnshStatus.PASS, List.of("ENVIRONMENTAL_PERMIT"), check.checkRo())
                 : new Outcome(DnshStatus.PASS_WITH_CONDITIONS, List.of("ENVIRONMENTAL_PERMIT"),
-                        "Autorizația există, dar digestatul se stochează descoperit; acoperirea bazinului se cere înainte de tragere.");
+                        "The permit exists, but the digestate is stored uncovered; covering the tank is required before drawdown.");
     }
 
     private static Outcome refrigerant(ModuleDefinition.DnshCheck check, JsonNode facts) {
@@ -108,10 +108,10 @@ final class DnshRules {
             return new Outcome(DnshStatus.PASS, List.of("OFFER"), check.checkRo());
         }
         return facts.has("refrigerantGwp")
-                ? new Outcome(DnshStatus.FAIL, List.of("OFFER"), "Agentul frigorific depășește GWP-ul maxim ("
+                ? new Outcome(DnshStatus.FAIL, List.of("OFFER"), "The refrigerant exceeds the maximum GWP ("
                         + facts.path("maxRefrigerantGwp").asText("?") + ").")
                 : new Outcome(DnshStatus.MISSING_DATA, List.of("OFFER"),
-                        "Oferta nu precizează agentul frigorific; fișa tehnică se cere înainte de tragere.");
+                        "The offer does not state the refrigerant; the technical data sheet is required before drawdown.");
     }
 
     private static Outcome equipmentFate(ModuleDefinition.DnshCheck check, String fate) {
@@ -119,9 +119,9 @@ final class DnshRules {
             case "CASARE", "VANZARE", "NU_E_CAZUL", "RECICLARE" -> new Outcome(DnshStatus.PASS,
                     List.of("CURRENT_EQUIPMENT"), check.checkRo());
             case "NECUNOSCUT" -> new Outcome(DnshStatus.MISSING_DATA, List.of("CURRENT_EQUIPMENT"),
-                    "Nu știm ce se întâmplă cu echipamentul vechi; dovada se cere înainte de tragere.");
+                    "We do not know what happens to the old equipment; evidence is required before drawdown.");
             default -> new Outcome(DnshStatus.PASS_WITH_CONDITIONS, List.of("CURRENT_EQUIPMENT"),
-                    "Echipamentul vechi rămâne în fermă ca rezervă; dovada folosirii se cere înainte de tragere.");
+                    "The old equipment stays on the farm as a backup; evidence of its use is required before drawdown.");
         };
     }
 
@@ -129,6 +129,6 @@ final class DnshRules {
         return parcels.isEmpty()
                 ? new Outcome(DnshStatus.PASS, List.of("OFFER"), check.checkRo())
                 : new Outcome(DnshStatus.PASS_WITH_CONDITIONS, List.of("OFFER"),
-                        parcels.size() + " parcele sunt în " + what + ". " + condition + ".");
+                        parcels.size() + " parcels are in " + what + ". " + condition + ".");
     }
 }

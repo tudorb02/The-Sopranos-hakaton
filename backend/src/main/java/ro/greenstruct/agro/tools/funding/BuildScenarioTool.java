@@ -99,65 +99,65 @@ public class BuildScenarioTool implements ToolHandler {
         // Module-specific grace (organic: sized by the liquidity gap of the conversion years); 0 for the other modules.
         int grace = line.path("green").asBoolean(false) ? context.calculator().graceMonths(context, cfg) : 0;
         if (grace > 0) {
-            context.calc(p + "grace_months", "Perioadă de grație (fără rate)", BigDecimal.valueOf(grace), Unit.MONTHS)
-                    .formula("până la ultima lună cu gol de lichiditate, maximum din config").add();
+            context.calc(p + "grace_months", "Grace period (no instalments)", BigDecimal.valueOf(grace), Unit.MONTHS)
+                    .formula("up to the last month with a liquidity gap, maximum from config").add();
         }
         LoanSchedule schedule;
         Calc installment;
         if (!seasonal && grace > 0) {
             schedule = LoanCalculator.seasonal(option.mainLoanEur(), rate, termMonths, firstMonth,
                     EnumSet.allOf(Month.class), grace);
-            installment = context.calc(p + "installment", "Rata lunară după grație", schedule.installmentEur(),
-                    Unit.EUR_PER_MONTH).formula("rate egale după perioada de grație; VA la dobânda creditului = principalul")
+            installment = context.calc(p + "installment", "Monthly instalment after grace", schedule.installmentEur(),
+                    Unit.EUR_PER_MONTH).formula("equal instalments after the grace period; PV at the loan rate = principal")
                     .add();
         } else if (seasonal) {
             if (!contains(line.path("repayment"), "SEASONAL")) {
-                throw new IllegalArgumentException("Linia " + option.mainLineId() + " nu permite rate sezoniere");
+                throw new IllegalArgumentException("Line " + option.mainLineId() + " does not allow seasonal instalments");
             }
             Set<Month> months = paymentMonths(input, context);
             schedule = LoanCalculator.seasonal(option.mainLoanEur(), rate, termMonths, firstMonth, months, grace);
-            installment = context.calc(p + "installment", "Rata sezonieră", schedule.installmentEur(), Unit.EUR)
-                    .formula("rate egale doar în lunile cu încasări; VA la dobânda creditului = principalul").add();
-            context.calc(p + "grace", "Luni fără rată până la prima încasare",
+            installment = context.calc(p + "installment", "Seasonal instalment", schedule.installmentEur(), Unit.EUR)
+                    .formula("equal instalments only in cash-in months; PV at the loan rate = principal").add();
+            context.calc(p + "grace", "Months without instalment until the first cash-in",
                     BigDecimal.valueOf(monthsBeforeFirstPayment(schedule)), Unit.MONTHS).add();
         } else {
             schedule = LoanCalculator.monthly(option.mainLoanEur(), rate, termMonths, firstMonth);
-            installment = context.calc(p + "installment", "Rata lunară", schedule.installmentEur(), Unit.EUR_PER_MONTH)
+            installment = context.calc(p + "installment", "Monthly instalment", schedule.installmentEur(), Unit.EUR_PER_MONTH)
                     .formula("PMT = P · r / (1 − (1 + r)^−n)").add();
         }
-        context.calc(p + "schedule", "Total plătit pe credit", schedule.totalPaidEur(), Unit.EUR)
+        context.calc(p + "schedule", "Total paid on the loan", schedule.totalPaidEur(), Unit.EUR)
                 .series(series(schedule)).dependsOn(installment).add();
 
         BigDecimal interest = schedule.totalInterestEur().add(option.bridgeInterestEur());
         if (option.bridgeLoanEur().signum() > 0) {
-            context.calc(p + "bridge.interest", "Dobânda creditului-punte", option.bridgeInterestEur(), Unit.EUR)
-                    .formula("punte × dobândă × luni / 12").add();
+            context.calc(p + "bridge.interest", "Bridge loan interest", option.bridgeInterestEur(), Unit.EUR)
+                    .formula("bridge × rate × months / 12").add();
         }
         BigDecimal totalPayments = schedule.totalPaidEur().add(option.bridgeLoanEur()).add(option.bridgeInterestEur());
-        context.calc(p + "total_payments", "Total plăți (credit + punte)", totalPayments, Unit.EUR).add();
-        context.calc(p + "total_interest", "Total dobânzi", interest, Unit.EUR).add();
+        context.calc(p + "total_payments", "Total payments (loan + bridge)", totalPayments, Unit.EUR).add();
+        context.calc(p + "total_interest", "Total interest", interest, Unit.EUR).add();
 
         BigDecimal collateral = FinancialMath.recurringCost(line.path("collateralUpfrontEur").decimalValue(),
                 line.path("collateralAnnualEur").decimalValue(), horizonYears);
         if (collateral.signum() > 0) {
-            context.calc(p + "collateral_costs", "Costuri cu ipoteca", collateral, Unit.EUR)
-                    .formula("cost inițial + cost anual × ani").add();
+            context.calc(p + "collateral_costs", "Mortgage costs", collateral, Unit.EUR)
+                    .formula("upfront cost + annual cost × years").add();
         }
 
         BigDecimal yearlySavings = BigDecimal.ZERO;
         for (Map.Entry<String, String> saving : savingsMetrics(context).entrySet()) {
             BigDecimal value = cfg.metricOrZero(saving.getKey());
             yearlySavings = yearlySavings.add(value);
-            context.calc(p + "savings." + saving.getValue(), "Economie anuală (" + saving.getValue() + ")", value,
+            context.calc(p + "savings." + saving.getValue(), "Annual saving (" + saving.getValue() + ")", value,
                     Unit.EUR_PER_YEAR).add();
         }
         BigDecimal horizonSavings = yearlySavings.multiply(BigDecimal.valueOf(horizonYears), MC);
-        context.calc(p + "savings_horizon", "Economii pe " + horizonYears + " ani", horizonSavings, Unit.EUR).add();
+        context.calc(p + "savings_horizon", "Savings over " + horizonYears + " years", horizonSavings, Unit.EUR).add();
 
         ScenarioCost cost = new ScenarioCost(option.optionId(), cfg.totalCost(), option.grantEur(), interest, collateral,
                 horizonSavings);
-        context.calc(p + "net_cost", "Cost net pe " + horizonYears + " ani", cost.netCostEur(), Unit.EUR)
-                .formula("investiție − grant + dobânzi + costuri garanții − economii").add();
+        context.calc(p + "net_cost", "Net cost over " + horizonYears + " years", cost.netCostEur(), Unit.EUR)
+                .formula("investment − grant + interest + collateral costs − savings").add();
 
         Map<String, BigDecimal> totals = new HashMap<>();
         totals.put("capex", cfg.totalCost());
@@ -174,7 +174,7 @@ public class BuildScenarioTool implements ToolHandler {
         result.put("scheduleType", seasonal ? "SEASONAL" : "EQUAL_MONTHLY");
         result.put("firstInstallmentMonth", schedule.installments().stream()
                 .filter(i -> i.paymentEur().signum() > 0).findFirst().map(i -> i.month().toString()).orElse(null));
-        return context.ok(result, "Scenariul " + option.optionId() + ": rată " + installment.display());
+        return context.ok(result, "Scenario " + option.optionId() + ": instalment " + installment.display());
     }
 
     /**
@@ -184,8 +184,8 @@ public class BuildScenarioTool implements ToolHandler {
     private static void checkTerm(ToolContext context, JsonNode line, Configuration cfg, int termMonths) {
         int maxTerm = line.path("maxTermMonths").asInt(Integer.MAX_VALUE);
         if (termMonths > maxTerm) {
-            throw new IllegalArgumentException("Linia " + line.path("lineId").asText() + " permite cel mult "
-                    + maxTerm + " luni");
+            throw new IllegalArgumentException("Line " + line.path("lineId").asText() + " allows at most "
+                    + maxTerm + " months");
         }
         int maxAge = RuleValues.financingDefault(context, "maxEquipmentAgeAtMaturityYears").intValue();
         for (var component : cfg.components()) {
@@ -195,9 +195,9 @@ public class BuildScenarioTool implements ToolHandler {
             int ageAtMaturity = EquipmentAge.ageYears(context, component) + (termMonths + 11) / 12;
             if (ageAtMaturity > maxAge) {
                 int maxYears = maxAge - EquipmentAge.ageYears(context, component);
-                throw new IllegalArgumentException("Utilajul second-hand " + component.nameRo() + " ar avea "
-                        + ageAtMaturity + " ani la ultima rată (maximum " + maxAge + "); creditul poate fi de cel mult "
-                        + Math.max(0, maxYears) + " ani");
+                throw new IllegalArgumentException("Second-hand machine " + component.nameRo() + " would be "
+                        + ageAtMaturity + " years old at the last instalment (maximum " + maxAge + "); the loan can be at most "
+                        + Math.max(0, maxYears) + " years");
             }
         }
     }
@@ -213,13 +213,13 @@ public class BuildScenarioTool implements ToolHandler {
             context.questionnaire().path("cashin_months").forEach(m -> names.add(m.asText()));
         }
         if (names.isEmpty()) {
-            throw new IllegalArgumentException("Lipsesc lunile de încasare pentru ratele sezoniere");
+            throw new IllegalArgumentException("Cash-in months are missing for the seasonal instalments");
         }
         Set<Month> months = EnumSet.noneOf(Month.class);
         for (String name : names) {
             Month month = MONTHS.get(name);
             if (month == null) {
-                throw new IllegalArgumentException("Lună necunoscută: " + name);
+                throw new IllegalArgumentException("Unknown month: " + name);
             }
             months.add(month);
         }

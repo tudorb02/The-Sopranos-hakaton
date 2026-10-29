@@ -53,13 +53,13 @@ public class BedrockDocumentExtractor implements DocumentExtractor {
 
     @Override
     public JsonNode extract(StoredDocument document, byte[] content, ModuleDefinition module) throws Exception {
-        ToolSpec tool = new ToolSpec(TOOL, "Trimite ce ai citit din document, exact cum apare scris.",
+        ToolSpec tool = new ToolSpec(TOOL, "Submits what you read in the document, exactly as written.",
                 schemas.forBedrock(TOOL));
         List<Message> messages = new ArrayList<>();
         messages.add(Message.user(
                 new Text("documentId: " + document.documentId() + "\ndocumentType: " + document.docType()
-                        + "\nmoduleId: " + module.moduleId() + "\nfișier: " + document.fileName()
-                        + "\nCitește documentul atașat și răspunde doar cu " + TOOL + "."),
+                        + "\nmoduleId: " + module.moduleId() + "\nfile: " + document.fileName()
+                        + "\nRead the attached document and answer only with " + TOOL + "."),
                 new BedrockGateway.Attachment(documentName(document.fileName()), format(document.fileName()), content)));
 
         BedrockCallException lastCall = null;
@@ -80,7 +80,7 @@ public class BedrockDocumentExtractor implements DocumentExtractor {
             ToolUse use = response.blocks().stream().filter(ToolUse.class::isInstance).map(ToolUse.class::cast)
                     .filter(u -> u.name().equals(TOOL)).findFirst().orElse(null);
             if (use == null) {
-                throw new IllegalStateException("Modelul de extracție nu a apelat " + TOOL);
+                throw new IllegalStateException("The extraction model did not call " + TOOL);
             }
             lastIssues = schemas.validate(TOOL, use.input());
             if (lastIssues.isEmpty()) {
@@ -91,14 +91,14 @@ public class BedrockDocumentExtractor implements DocumentExtractor {
             var errors = mapper.createArrayNode();
             lastIssues.stream().limit(15).forEach(i -> errors.addObject().put("path", i.path()).put("messageRo", i.messageRo()));
             Block reply = new ToolResult(use.id(), mapper.createObjectNode().put("ok", false)
-                    .put("message", "Rezultatul nu respectă schema; corectează și trimite din nou.")
+                    .put("message", "The result does not match the schema; correct it and submit again.")
                     .set("errors", errors), true);
             messages.add(Message.user(reply));
         }
         if (lastCall != null && lastIssues.isEmpty()) {
             throw lastCall;
         }
-        throw new IllegalStateException("Extracția din " + document.fileName() + " nu respectă schema: "
+        throw new IllegalStateException("The extraction from " + document.fileName() + " does not match the schema: "
                 + (lastIssues.isEmpty() ? "?" : lastIssues.getFirst().messageRo()));
     }
 

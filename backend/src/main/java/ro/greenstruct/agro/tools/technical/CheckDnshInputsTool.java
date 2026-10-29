@@ -57,6 +57,6 @@ public class CheckDnshInputsTool implements ToolHandler {
         result.put("oldEquipmentFate", context.questionnaire().path("old_equipment_fate").asText("NECUNOSCUT"));
 
         context.calculator().dnshInputs(context, cfg, result);
-        return context.ok(result, "Am verificat datele pentru DNSH");
+        return context.ok(result, "DNSH input data checked");
     }
 }

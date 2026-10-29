@@ -1,59 +1,59 @@
 {
   "version": "2026-10-28",
-  "noteRo": "Dobânda pe componente (README §4, pasul 6): dobânda = indice + marjă; marja = cost de finanțare + PD × LGD × (1 − g) + RW_efectiv × rata de capital × costul capitalului + cost operațional + profit țintă. Valorile sunt cele ilustrative din README, alese ca un credit clasic de 8,90% să devină un credit verde de ~6,3%. Banca își pune aici parametrii reali. Ajustările verzi se adună la marjă (negativ = dobândă mai mică). Procentul garanției FEI (g) vine din funds.json (F1). Costurile ipotecii (evaluare, notar, înscriere, asigurare) rămân la liniile de finanțare din financing-lines.json: collateralUpfrontEur și collateralAnnualEur.",
+  "noteRo": "Interest rate by components (README §4, step 6): rate = index + margin; margin = funding cost + PD × LGD × (1 − g) + RW_effective × capital ratio × cost of capital + operating cost + target profit. The values are the illustrative ones from the README, chosen so that a classic credit at 8.90% becomes a green credit at ~6.3%. The bank puts its real parameters here. Green adjustments are added to the margin (negative = lower interest rate). The EIF guarantee percentage (g) comes from funds.json (F1). Mortgage costs (valuation, notary, registration, insurance) stay with the financing lines in financing-lines.json: collateralUpfrontEur and collateralAnnualEur.",
   "currency": "EUR",
   "index": {
     "name": "EURIBOR_3M",
     "value": 2,
-    "sourceRo": "EURIBOR 3M (EMMI), valoare ilustrativă rotunjită, în jurul nivelului din 2025–2026; se înlocuiește cu fixingul din ziua analizei (README §13: moneda EUR, indice EURIBOR 3M)",
+    "sourceRo": "EURIBOR 3M (EMMI), illustrative rounded value, around the 2025–2026 level; replaced with the fixing on the day of the analysis (README §13: currency EUR, index EURIBOR 3M)",
     "demo": true
   },
   "classic": {
     "fundingCostPct": {
       "value": 1.2,
-      "sourceRo": "Ilustrativ: costul de finanțare al băncii peste indice, ales împreună cu costul operațional și profitul ca dobânda clasică să fie 8,90% (README §4, pasul 6)",
+      "sourceRo": "Illustrative: the bank's funding cost above the index, chosen together with the operating cost and the profit so that the classic rate is 8.90% (README §4, step 6)",
       "demo": true
     },
     "pdPct": {
       "value": 3,
-      "sourceRo": "README §4, pasul 6: PD 3% la creditul clasic (ilustrativ)",
+      "sourceRo": "README §4, step 6: PD 3% on the classic credit (illustrative)",
       "demo": true
     },
     "operationalCostPct": {
       "value": 1.5,
-      "sourceRo": "Ilustrativ: analiza tehnică și administrarea manuală a dosarului; aleasă ca dobânda clasică să fie 8,90%",
+      "sourceRo": "Illustrative: technical analysis and manual handling of the dossier; chosen so that the classic rate is 8.90%",
       "demo": true
     },
     "targetProfitPct": {
       "value": 1.77,
-      "sourceRo": "Ilustrativ: profitul țintă care închide dobânda clasică la 8,90% (2,00 + 1,20 + 1,35 + 1,08 + 1,50 + 1,77)",
+      "sourceRo": "Illustrative: the target profit that brings the classic rate to 8.90% (2.00 + 1.20 + 1.35 + 1.08 + 1.50 + 1.77)",
       "demo": true
     }
   },
   "green": {
     "pdPct": {
       "value": 2.5,
-      "sourceRo": "README §4, pasul 6: PD 3% → 2,5%, pentru că economiile cresc banii disponibili pentru rată (DSCR mai bun)",
+      "sourceRo": "README §4, step 6: PD 3% → 2.5%, because the savings increase the money available for the instalment (better DSCR)",
       "demo": true
     },
     "fundingCostAdjustmentPp": {
       "value": -0.3,
-      "sourceRo": "README §4, pasul 6: finanțare verde dedicată din obligațiunile verzi cumpărate și de BERD și IFC (F2), −0,30 pp",
+      "sourceRo": "README §4, step 6: dedicated green funding from the green bonds also bought by the EBRD and IFC (F2), −0.30 pp",
       "demo": true
     },
     "operationalCostAdjustmentPp": {
       "value": -0.15,
-      "sourceRo": "README §4, pasul 6: analiza tehnică e automată, −0,15 pp",
+      "sourceRo": "README §4, step 6: the technical analysis is automated, −0.15 pp",
       "demo": true
     },
     "programSubsidyAdjustmentPp": {
       "value": -0.4,
-      "sourceRo": "README §4, pasul 6: subvenție sau comision redus pe program (dacă există), −0,40 pp",
+      "sourceRo": "README §4, step 6: programme subsidy or reduced fee (if any), −0.40 pp",
       "demo": true
     },
     "impactBonusAdjustmentPp": {
       "value": -0.25,
-      "sourceRo": "README §4, pasul 6: bonus de impact, dacă impactul real la 12 luni confirmă estimarea; propunere de produs, nu e un produs Raiffeisen existent",
+      "sourceRo": "README §4, step 6: impact bonus, if the actual impact at 12 months confirms the estimate; a product proposal, not an existing Raiffeisen product",
       "demo": true,
       "proposal": true
     }
@@ -61,59 +61,59 @@
   "risk": {
     "lgdPct": {
       "value": 45,
-      "sourceRo": "README §4, pasul 6: LGD 45% (ilustrativ), aceeași la ambele credite",
+      "sourceRo": "README §4, step 6: LGD 45% (illustrative), the same for both credits",
       "demo": true
     },
     "riskWeightClientPct": {
       "value": 75,
-      "sourceRo": "README §4, pasul 6: RW 75% pentru expunerea pe client (ponderea standard pentru expuneri de tip retail, CRR art. 123)",
+      "sourceRo": "README §4, step 6: RW 75% for the client exposure (standard weight for retail exposures, CRR Art. 123)",
       "demo": true
     },
     "riskWeightGuarantorPct": {
       "value": 0,
-      "sourceRo": "README §4, pasul 6: FEI e bancă multilaterală de dezvoltare cu pondere de risc 0% (CRR art. 117 alin. (2))",
+      "sourceRo": "README §4, step 6: the EIF is a multilateral development bank with a 0% risk weight (CRR Art. 117(2))",
       "demo": true
     },
     "capitalRatioPct": {
       "value": 12,
-      "sourceRo": "README §4, pasul 6: rata de capital 12% (ilustrativ)",
+      "sourceRo": "README §4, step 6: capital ratio 12% (illustrative)",
       "demo": true
     },
     "costOfCapitalPct": {
       "value": 12,
-      "sourceRo": "README §4, pasul 6: costul capitalului 12% (ilustrativ)",
+      "sourceRo": "README §4, step 6: cost of capital 12% (illustrative)",
       "demo": true
     }
   },
   "greenTiers": {
-    "noteRo": "README §4, pasul 8. Verde Plus primește reducerea maximă (toate componentele verzi); Verde și Verde cu upgrade primesc reducerea standard; Clasic primește dobânda clasică, fără componentele verzi.",
+    "noteRo": "README §4, step 8. Green Plus gets the maximum reduction (all green components); Green and Green with upgrade get the standard reduction; Classic gets the classic rate, without the green components.",
     "verdePlusThresholdMultiplier": {
       "value": 1.5,
-      "sourceRo": "README §4, pasul 8: Verde Plus când indicatorul depășește pragul cu ≥ 50% din prag (ex. ≥ 37,5% la pragul de 25%) și DNSH e complet",
+      "sourceRo": "README §4, step 8: Green Plus when the indicator exceeds the threshold by ≥ 50% of the threshold (e.g. ≥ 37.5% for a 25% threshold) and DNSH is complete",
       "demo": true
     },
     "marginAdjustmentPp": {
       "VERDE_PLUS": {
         "value": 0,
-        "sourceRo": "README §4, pasul 8: reducerea maximă de dobândă, adică toate componentele verzi",
+        "sourceRo": "README §4, step 8: the maximum interest rate reduction, i.e. all green components",
         "demo": true
       },
       "VERDE": {
         "value": 0.2,
-        "sourceRo": "Propunere echipă: reducerea standard e cu 0,20 pp mai mică decât la Verde Plus; de confirmat cu Raiffeisen",
+        "sourceRo": "Team proposal: the standard reduction is 0.20 pp smaller than for Green Plus; to be confirmed with Raiffeisen",
         "demo": true,
         "proposal": true
       },
       "VERDE_CU_UPGRADE": {
         "value": 0.2,
-        "sourceRo": "Propunere echipă: reducerea standard, pe investiția cu upgrade (README §4, pasul 8); de confirmat cu Raiffeisen",
+        "sourceRo": "Team proposal: the standard reduction, on the upgraded investment (README §4, step 8); to be confirmed with Raiffeisen",
         "demo": true,
         "proposal": true
       }
     },
     "verdePlusMaxExtraCostPct": {
       "value": 15,
-      "sourceRo": "Propunere echipă: dacă un pachet care atinge Verde Plus costă cel mult 15% peste cel mai ieftin pachet care trece pragul, îl propunem pe el (README §12: picurare + senzori, 40%, în loc de picurare, 33%); de confirmat cu Raiffeisen",
+      "sourceRo": "Team proposal: if a package that reaches Green Plus costs at most 15% more than the cheapest package that passes the threshold, we propose it (README §12: drip + sensors, 40%, instead of drip, 33%); to be confirmed with Raiffeisen",
       "demo": true,
       "proposal": true
     }

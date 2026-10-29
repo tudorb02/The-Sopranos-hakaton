@@ -81,8 +81,8 @@ public class CheckFundRequirementsTool implements ToolHandler {
         }
         result.put("allMet", met == requirements.size());
         return context.ok(result, requirements.isEmpty()
-                ? "Fondul " + fundId + " nu are cerințe verzi proprii în config/funds.json"
-                : "Fondul " + fundId + ": " + met + " din " + requirements.size() + " cerințe îndeplinite");
+                ? "Fund " + fundId + " has no green requirements of its own in config/funds.json"
+                : "Fund " + fundId + ": " + met + " of " + requirements.size() + " requirements met");
     }
 
     private static Check check(String requirementId, String fundId, FinancingOption option, Configuration cfg,
@@ -90,40 +90,40 @@ public class CheckFundRequirementsTool implements ToolHandler {
         return switch (requirementId) {
             case "SME_STATUS" -> sme(context.farm().company().smeStatus());
             case "ELIGIBLE_CATEGORY" -> FundsConfig.moduleFundIds(context).contains(fundId)
-                    ? new Check("MET", "Categoria " + context.module().nameRo() + " e legată de fond (README §3.3).")
-                    : new Check("NOT_MET", "Categoria " + context.module().nameRo() + " nu e legată de fond.");
+                    ? new Check("MET", "Category " + context.module().nameRo() + " is linked to the fund (README §3.3).")
+                    : new Check("NOT_MET", "Category " + context.module().nameRo() + " is not linked to the fund.");
             case "TECHNICAL_THRESHOLD" -> cfg.passesThreshold()
-                    ? new Check("MET", "Configurația finanțată trece pragul verde, calculat de motor din documente.")
-                    : new Check("NOT_MET", "Configurația finanțată nu trece pragul verde.");
+                    ? new Check("MET", "The financed configuration passes the green threshold, computed by the engine from the documents.")
+                    : new Check("NOT_MET", "The financed configuration does not pass the green threshold.");
             case "DNSH" -> dnsh(AssessedDnsh.overall(context, input));
             case "IMPACT_QUANTIFIED" -> cfg.metricOrZero("indicator_pct").signum() > 0
                     || cfg.metricOrZero("co2_avoided_t").signum() > 0
-                    ? new Check("MET", "Impactul e calculat de motor pe acest credit.")
-                    : new Check("TO_CONFIRM", "Motorul nu a găsit un impact măsurabil pentru configurația finanțată.");
+                    ? new Check("MET", "The impact is computed by the engine for this loan.")
+                    : new Check("TO_CONFIRM", "The engine found no measurable impact for the financed configuration.");
             case "CLIENT_BENEFIT" -> benefit(option, context);
             case "PERIODIC_REPORTING" -> new Check("MET",
-                    "Dosarul are indicatori de monitorizare la 12 luni, din contoare și facturi.");
+                    "The dossier has 12-month monitoring indicators, from meters and invoices.");
             default -> throw new IllegalStateException("Unknown fund requirement " + requirementId);
         };
     }
 
     private static Check sme(SmeStatus status) {
         if (status == SmeStatus.SME) {
-            return new Check("MET", "Firma e IMM după bilanțul de la ANAF (angajați, cifră de afaceri, active).");
+            return new Check("MET", "The company is an SME per its ANAF balance sheet (employees, turnover, assets).");
         }
         if (status == SmeStatus.NOT_SME) {
-            return new Check("NOT_MET", "Firma depășește pragurile de IMM după bilanțul de la ANAF.");
+            return new Check("NOT_MET", "The company exceeds the SME thresholds per its ANAF balance sheet.");
         }
-        return new Check("TO_CONFIRM", "Bilanțul de la ANAF nu dă toate cifrele: statutul de IMM se confirmă cu "
-                + "declarația de IMM.");
+        return new Check("TO_CONFIRM", "The ANAF balance sheet lacks some figures: SME status is confirmed with "
+                + "the SME declaration.");
     }
 
     private static Check dnsh(DnshStatus status) {
         return switch (status) {
-            case PASS -> new Check("MET", "DNSH trecut pe toate obiectivele.");
-            case PASS_WITH_CONDITIONS -> new Check("TO_CONFIRM", "DNSH trecut cu condiții înainte de tragere.");
-            case MISSING_DATA -> new Check("TO_CONFIRM", "Lipsesc date pentru DNSH; devin condiții înainte de tragere.");
-            case FAIL -> new Check("NOT_MET", "Investiția nu trece DNSH.");
+            case PASS -> new Check("MET", "DNSH passed on all objectives.");
+            case PASS_WITH_CONDITIONS -> new Check("TO_CONFIRM", "DNSH passed with conditions precedent to drawdown.");
+            case MISSING_DATA -> new Check("TO_CONFIRM", "DNSH data missing; it becomes conditions precedent to drawdown.");
+            case FAIL -> new Check("NOT_MET", "The investment fails DNSH.");
         };
     }
 
@@ -134,13 +134,13 @@ public class CheckFundRequirementsTool implements ToolHandler {
         boolean lowerRate = FinancingConfig.rate(line).compareTo(FinancingConfig.rate(standard)) < 0;
         boolean noMortgage = collateral(line).signum() == 0 && collateral(standard).signum() > 0;
         if (lowerRate && noMortgage) {
-            return new Check("MET", "Dobândă mai mică decât la creditul clasic și fără ipotecă.");
+            return new Check("MET", "Lower interest rate than the classic credit and no mortgage.");
         }
         if (lowerRate || noMortgage) {
-            return new Check("MET", lowerRate ? "Dobândă mai mică decât la creditul clasic."
-                    : "Fără ipotecă, spre deosebire de creditul clasic.");
+            return new Check("MET", lowerRate ? "Lower interest rate than the classic credit."
+                    : "No mortgage, unlike the classic credit.");
         }
-        return new Check("TO_CONFIRM", "Beneficiul pentru client nu reiese din dobândă sau din garanții.");
+        return new Check("TO_CONFIRM", "The client benefit does not follow from the interest rate or the collateral.");
     }
 
     private static BigDecimal collateral(JsonNode line) {

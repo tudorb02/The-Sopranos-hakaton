@@ -20,7 +20,7 @@ import ro.greenstruct.agro.storage.DocumentStore;
 import ro.greenstruct.agro.storage.StoredDocument;
 
 /**
- * "Încarcă dosarul demo": turns data/demo/scenarios/&lt;id&gt;.json into the same RunRequest the wizard would
+ * "Load the demo dossier": turns data/demo/scenarios/&lt;id&gt;.json into the same RunRequest the wizard would
  * submit, keeping the documentIds from the contract fixtures. PDFs not yet in data/demo/docs are skipped
  * and show up as missing documents.
  */
@@ -55,11 +55,11 @@ public class DemoScenarioService {
 
     public RunRequest load(String scenarioId) {
         if (!scenarioId.matches("[a-z0-9_-]+")) {
-            throw new IllegalArgumentException("Scenariu demo invalid: " + scenarioId);
+            throw new IllegalArgumentException("Invalid demo scenario: " + scenarioId);
         }
         Path file = demoDir.resolve("scenarios").resolve(scenarioId + ".json");
         if (!Files.isRegularFile(file)) {
-            throw new IllegalArgumentException("Scenariul demo " + scenarioId + " nu există");
+            throw new IllegalArgumentException("Demo scenario " + scenarioId + " does not exist");
         }
         JsonNode scenario = JsonFiles.read(mapper, file);
 

@@ -52,7 +52,7 @@
     {
       "lineId": "ln_1",
       "category": "REFRIGERATION_UNIT",
-      "descriptionRo": "Agregat frigorific cu compresoare semiermetice, agent R404A",
+      "descriptionRo": "Refrigeration unit with semi-hermetic compressors, R404A refrigerant",
       "fields": [
         {
           "key": "QUANTITY",
@@ -73,7 +73,7 @@
     {
       "lineId": "ln_2",
       "category": "REFRIGERATION_UNIT",
-      "descriptionRo": "Vaporizatoare pentru celule",
+      "descriptionRo": "Evaporators for the cold rooms",
       "fields": [
         {
           "key": "QUANTITY",
@@ -94,7 +94,7 @@
     {
       "lineId": "ln_3",
       "category": "INSTALLATION_WORKS",
-      "descriptionRo": "Automatizare, montaj, punere în funcțiune",
+      "descriptionRo": "Automation, installation, commissioning",
       "fields": [
         {
           "key": "QUANTITY",

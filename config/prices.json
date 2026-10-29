@@ -1,6 +1,6 @@
 {
   "version": "2026-10-28",
-  "dieselPumpLeiPerLitre": { "value": 10.3, "sourceRo": "Presă, prețuri la pompă 09.2026" },
-  "dieselExciseRefundLeiPerLitre": { "value": 2.697, "sourceRo": "Ajutor de stat motorină agricolă 2026 (APIA, HG 1174/2014)" },
-  "electricityEurPerKwh": { "value": 0.2, "sourceRo": "Estimare echipă pentru IMM-uri, de validat" }
+  "dieselPumpLeiPerLitre": { "value": 10.3, "sourceRo": "Press reports, pump prices Sep 2026" },
+  "dieselExciseRefundLeiPerLitre": { "value": 2.697, "sourceRo": "State aid for agricultural diesel 2026 (APIA, Government Decision HG 1174/2014)" },
+  "electricityEurPerKwh": { "value": 0.2, "sourceRo": "Team estimate for SMEs, to be validated" }
 }

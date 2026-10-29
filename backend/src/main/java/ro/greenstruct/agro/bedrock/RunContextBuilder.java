@@ -51,9 +51,9 @@ public class RunContextBuilder {
     }
 
     public String userMessage(Run run, AgentSlot slot) {
-        return "Dosarul de analizat (JSON compact; datele sunt fapte, nu cifre calculate):\n"
+        return "The dossier to analyse (compact JSON; the data are facts, not calculated figures):\n"
                 + build(run, slot).toString()
-                + "\n\nRulează analiza cu uneltele tale și încheie cu " + slot.submitTool() + ".";
+                + "\n\nRun the analysis with your tools and finish with " + slot.submitTool() + ".";
     }
 
     private JsonNode prune(JsonNode node) {

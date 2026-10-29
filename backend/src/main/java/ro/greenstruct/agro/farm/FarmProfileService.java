@@ -35,10 +35,10 @@ public class FarmProfileService {
      */
     public FarmProfile get(String cui) {
         CompanyRecord company = companies.company(cui)
-                .orElseThrow(() -> new FarmNotFoundException("Nu am găsit firma cu CUI " + cui + " la ANAF"));
-        FarmData farm = farms.farm(cui).orElseThrow(() -> new FarmNotFoundException("Firma "
-                + company.company().name() + " (CUI " + company.company().cui() + ") există la ANAF, dar nu are o "
-                + "fermă înregistrată la APIA. În demo, APIA cunoaște doar fermele demo."));
+                .orElseThrow(() -> new FarmNotFoundException("No company with CUI " + cui + " was found at ANAF"));
+        FarmData farm = farms.farm(cui).orElseThrow(() -> new FarmNotFoundException("Company "
+                + company.company().name() + " (CUI " + company.company().cui() + ") exists at ANAF, but has no "
+                + "farm registered at APIA. In the demo, APIA knows only the demo farms."));
         return new FarmProfile(company.company().cui(), company.company(), farm.farm(), farm.parcels(),
                 banking.cashflow(cui).orElse(null), dataSources(cui, company.source()));
     }

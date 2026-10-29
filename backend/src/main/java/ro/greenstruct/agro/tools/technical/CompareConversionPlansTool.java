@@ -50,7 +50,7 @@ public class CompareConversionPlansTool implements ToolHandler {
     @Override
     public ToolOutput execute(JsonNode input, ToolContext context) {
         if (!"organic".equals(context.module().calculator())) {
-            throw new IllegalArgumentException("Unealta se aplică doar modulului Ecologic");
+            throw new IllegalArgumentException("This tool applies only to the Organic module");
         }
         OrganicPlans.Setup setup = OrganicPlans.setup(context);
         OrganicPlans.Phasing phased = phasedVariant(context);
@@ -66,13 +66,13 @@ public class CompareConversionPlansTool implements ToolHandler {
         PhasingAdvice advice = OrganicCalculator.advisePhasing(OrganicCalculator.total(fullGap), fullCoverage,
                 OrganicCalculator.total(phasedGap), phasedCoverage);
 
-        emitPlan(context, "plan.full", "conversie integrală", full, fullGap, fullCoverage);
-        emitPlan(context, "plan.phased", "conversie etapizată", staged, phasedGap, phasedCoverage);
-        context.calc("plan.benefit_delayed", "Câștig amânat prin etapizare (marja cumulată integral − etapizat)",
+        emitPlan(context, "plan.full", "full conversion", full, fullGap, fullCoverage);
+        emitPlan(context, "plan.phased", "phased conversion", staged, phasedGap, phasedCoverage);
+        context.calc("plan.benefit_delayed", "Gain deferred by phasing (cumulative margin full − phased)",
                 full.marginTotalEur().subtract(staged.marginTotalEur()), Unit.EUR)
-                .formula("marja cumulată pe orizont, conversia integrală minus cea etapizată").add();
-        context.calc("plan.shortfall", "Cât din golul din primul an rămâne neacoperit de prefinanțarea APIA",
-                advice.shortfallEur(), Unit.EUR).formula("max(0, gol − capacitate de prefinanțare), planul recomandat").add();
+                .formula("cumulative margin over the horizon, full conversion minus phased").add();
+        context.calc("plan.shortfall", "Part of the first-year gap not covered by APIA pre-financing",
+                advice.shortfallEur(), Unit.EUR).formula("max(0, gap − pre-financing capacity), recommended plan").add();
 
         ObjectNode result = context.newResult();
         result.put("recommendedPlan", advice.choice().name());
@@ -81,27 +81,27 @@ public class CompareConversionPlansTool implements ToolHandler {
         result.put("phasedCatalogId", phasedCatalogId(context));
         String message = advice.choice() == PhasingAdvice.Choice.FULL
                 ? (advice.fullCovered()
-                ? "Conversia integrală: golul din primul an e acoperit de grație și prefinanțarea APIA; câștigă mai mult"
-                : "Conversia integrală, dar golul din primul an nu e acoperit complet; etapizarea nu l-ar micșora")
-                : "Conversia etapizată: golul din primul an al celei integrale nu poate fi acoperit de grație și "
-                + "prefinanțarea APIA";
+                ? "Full conversion: the first-year gap is covered by the grace period and APIA pre-financing; it earns more"
+                : "Full conversion, but the first-year gap is not fully covered; phasing would not reduce it")
+                : "Phased conversion: the full conversion's first-year gap cannot be covered by the grace period and "
+                + "APIA pre-financing";
         return context.ok(result, message);
     }
 
     private static void emitPlan(ToolContext context, String p, String label, OrganicPlans.PlanFigures figures,
                                  List<BigDecimal> gap, BigDecimal coverage) {
         for (int i = 0; i < figures.years().size(); i++) {
-            context.calc(p + ".margin_y" + (i + 1), "Marja față de convențional, anul " + figures.years().get(i).year()
+            context.calc(p + ".margin_y" + (i + 1), "Margin vs conventional, year " + figures.years().get(i).year()
                     + " (" + label + ")", figures.marginVsConventional(i), Unit.EUR_PER_YEAR).add();
         }
-        context.calc(p + ".margin_total", "Marja cumulată față de convențional (" + label + ")", figures.marginTotalEur(),
+        context.calc(p + ".margin_total", "Cumulative margin vs conventional (" + label + ")", figures.marginTotalEur(),
                 Unit.EUR).add();
-        context.calc(p + ".gap_y1", "Golul de lichiditate din primul an (" + label + ")", OrganicCalculator.total(gap),
-                Unit.EUR).formula("Σ lunar max(0, cheltuieli + rate − venituri − subvenții); fără rate în grație").add();
-        context.calc(p + ".gap_peak", "Cel mai mare gol lunar din primul an (" + label + ")", OrganicCalculator.peak(gap),
+        context.calc(p + ".gap_y1", "First-year liquidity gap (" + label + ")", OrganicCalculator.total(gap),
+                Unit.EUR).formula("Σ monthly max(0, expenses + instalments − revenue − subsidies); no instalments in grace").add();
+        context.calc(p + ".gap_peak", "Largest monthly gap in the first year (" + label + ")", OrganicCalculator.peak(gap),
                 Unit.EUR_PER_MONTH).add();
-        context.calc(p + ".coverage", "Capacitatea de prefinanțare APIA în primul an (" + label + ")", coverage, Unit.EUR)
-                .formula("procent de avans × (subvenții APIA azi + plăți bio din primul an)")
+        context.calc(p + ".coverage", "APIA pre-financing capacity in the first year (" + label + ")", coverage, Unit.EUR)
+                .formula("advance percentage × (APIA subsidies today + first-year organic payments)")
                 .source(context.paramSource("apiaPrefinancingAdvancePct")).add();
     }
 
@@ -123,6 +123,6 @@ public class CompareConversionPlansTool implements ToolHandler {
                 return item;
             }
         }
-        throw new IllegalStateException("Catalogul modulului nu are alternativa etapizată");
+        throw new IllegalStateException("The module catalog has no phased alternative");
     }
 }

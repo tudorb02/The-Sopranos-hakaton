@@ -55,29 +55,29 @@ public class ComputeDscrTool implements ToolHandler {
     public ToolOutput execute(JsonNode input, ToolContext context) {
         CashflowInfo cashflow = context.farm().cashflow();
         if (cashflow == null) {
-            throw new IllegalArgumentException("Fără acord Open Banking nu putem calcula DSCR-ul");
+            throw new IllegalArgumentException("Without Open Banking consent we cannot compute the DSCR");
         }
         ObjectNode result = context.newResult();
         ArrayNode computed = result.putArray("optionIds");
         for (String optionId : Params.textList(input, "optionIds")) {
             FinancingOption option = context.workspace().option(optionId);
             if (option.schedule() == null) {
-                throw new IllegalArgumentException("Apelează întâi build_scenario pentru opțiunea " + optionId);
+                throw new IllegalArgumentException("Call build_scenario first for option " + optionId);
             }
             DebtServiceCoverage.Result coverage = DebtServiceCoverage.compute(cashflow.annualNetEur(),
                     option.total("savings_year"), option.schedule());
             if (coverage.dscr() == null) {
-                throw new IllegalArgumentException("Opțiunea " + optionId + " nu are rate de plătit");
+                throw new IllegalArgumentException("Option " + optionId + " has no instalments to pay");
             }
             String p = "option_" + optionId.toLowerCase() + ".";
             BigDecimal heaviestYear = coverage.debtServiceByYearEur().stream().max(BigDecimal::compareTo).orElseThrow();
-            Calc debtService = context.calc(p + "debt_service_year", "Rate și dobânzi în cel mai greu an de credit",
+            Calc debtService = context.calc(p + "debt_service_year", "Principal and interest in the heaviest loan year",
                     heaviestYear, Unit.EUR_PER_YEAR).add();
-            context.calc(p + "dscr", "DSCR: acoperirea ratelor din cashflow și economii", coverage.dscr(), Unit.RATIO)
-                    .formula("(cashflow net anual + economii anuale) / rate și dobânzi pe an, minimul pe anii creditului")
-                    .source("Open Banking (cashflow pe 12 luni)").dependsOn(debtService).add();
+            context.calc(p + "dscr", "DSCR: instalment coverage from cash flow and savings", coverage.dscr(), Unit.RATIO)
+                    .formula("(annual net cash flow + annual savings) / yearly principal and interest, minimum over the loan years")
+                    .source("Open Banking (12-month cash flow)").dependsOn(debtService).add();
             computed.add(optionId);
         }
-        return context.ok(result, "Am calculat DSCR-ul pentru " + computed.size() + " opțiuni");
+        return context.ok(result, "Computed the DSCR for " + computed.size() + " options");
     }
 }

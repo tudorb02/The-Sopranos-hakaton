@@ -7,7 +7,7 @@ import static ro.greenstruct.agro.engine.Decimals.HUNDRED;
 import static ro.greenstruct.agro.engine.Decimals.MC;
 
 /**
- * Compares the impact measured after 12 months with the estimate made at approval (README §13, "Simulează 12 luni").
+ * Compares the impact measured after 12 months with the estimate made at approval (README §13, "Simulate 12 months").
  * The measured value is the estimate moved by a deviation in percent; the estimate is confirmed when the measured
  * value is not more than the tolerance below it. A result above the estimate always confirms it.
  */

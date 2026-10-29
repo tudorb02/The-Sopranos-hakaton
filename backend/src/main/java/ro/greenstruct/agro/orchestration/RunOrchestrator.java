@@ -73,13 +73,13 @@ public class RunOrchestrator {
     /** Validates the request, fetches the farm (so a wrong CUI fails fast) and starts the pipeline. */
     public StartedRun start(RunRequest request) {
         if (request.cui() == null || request.cui().isBlank()) {
-            throw new IllegalArgumentException("CUI-ul este obligatoriu");
+            throw new IllegalArgumentException("The CUI is required");
         }
         ModuleDefinition module = modules.find(request.moduleId())
-                .orElseThrow(() -> new IllegalArgumentException("Modul necunoscut: " + request.moduleId()));
+                .orElseThrow(() -> new IllegalArgumentException("Unknown module: " + request.moduleId()));
         if (!module.demoReady()) {
             throw new RunRejectedException(RunRejectedException.Reason.MODULE_NOT_READY,
-                    "Modulul " + module.nameRo() + " nu este încă disponibil pentru analiză completă");
+                    "Module " + module.nameRo() + " is not yet available for full analysis");
         }
         FarmProfile profile;
         try {
@@ -89,8 +89,8 @@ public class RunOrchestrator {
         }
 
         Run run = store.save(Run.create(request, missingRequiredDocuments(module, request), profile));
-        events.transition(run.id(), null, RunStatus.CREAT, Actor.FARMER, "Dosar creat: " + module.nameRo() + ", "
-                + request.documents().size() + " documente încărcate", List.of());
+        events.transition(run.id(), null, RunStatus.CREAT, Actor.FARMER, "Dossier created: " + module.nameRo() + ", "
+                + request.documents().size() + " documents uploaded", List.of());
         CompletableFuture<Run> completion = CompletableFuture.supplyAsync(() -> execute(run.id()), executor);
         return new StartedRun(run, completion);
     }
@@ -104,17 +104,17 @@ public class RunOrchestrator {
      * option the funding agent recommends (or its only green option) and exists only if it is green-eligible.
      */
     public Run submit(String runId, Submission.Variant variant) {
-        requireStatus(runId, RunStatus.GATA, "trimis");
+        requireStatus(runId, RunStatus.GATA, "submitted");
         JsonNode funding = store.find(runId).orElseThrow(() -> new RunNotFoundException(runId)).agentOutputs()
                 .getOrDefault(AgentSlot.FUNDING_OPTIMIZER, MissingNode.getInstance());
         String optionId = optionFor(funding, variant).orElseThrow(() -> new IllegalStateException(
                 variant == Submission.Variant.VERDE
-                        ? "Dosarul nu are o ofertă de credit verde: investiția nu atinge pragul verde"
-                        : "Dosarul nu are o ofertă de credit clasic"));
+                        ? "The dossier has no green credit offer: the investment does not reach the green threshold"
+                        : "The dossier has no classic credit offer"));
         Run submitted = store.update(runId, run -> run.withStatus(RunStatus.TRIMIS)
                 .withSubmission(new Submission(variant, optionId, Instant.now())));
         events.transition(runId, RunStatus.GATA, RunStatus.TRIMIS, Actor.FARMER,
-                "Cererea a fost trimisă la bancă: " + variant.labelRo(), List.of());
+                "The application was sent to the bank: " + variant.labelRo(), List.of());
         return submitted;
     }
 
@@ -134,23 +134,23 @@ public class RunOrchestrator {
 
     /** TRIMIS → APROBAT by the bank; in the demo the drawdown is simulated at once, so → MONITORIZARE. */
     public Run approve(String runId, String officerId, String commentRo) {
-        requireStatus(runId, RunStatus.TRIMIS, "aprobat");
+        requireStatus(runId, RunStatus.TRIMIS, "approved");
         store.update(runId, run -> run.withStatus(RunStatus.APROBAT).withOfficerAction(
                 new OfficerAction(OfficerAction.Action.APPROVE, Instant.now(), officerId, commentRo), List.of()));
-        events.transition(runId, RunStatus.TRIMIS, RunStatus.APROBAT, Actor.OFFICER, "Banca a aprobat dosarul",
+        events.transition(runId, RunStatus.TRIMIS, RunStatus.APROBAT, Actor.OFFICER, "The bank approved the dossier",
                 List.of());
         Run monitored = store.update(runId, run -> run.withStatus(RunStatus.MONITORIZARE));
         events.transition(runId, RunStatus.APROBAT, RunStatus.MONITORIZARE, Actor.SYSTEM,
-                "Creditul a fost tras; începe monitorizarea economiilor", List.of());
+                "The credit was drawn down; savings monitoring begins", List.of());
         return monitored;
     }
 
     /** Only on a dossier sent to the bank, which stays TRIMIS; the requested documents show up for the farmer. */
     public Run requestDocuments(String runId, String officerId, String messageRo, List<PendingDocument> documents) {
         if (documents.isEmpty()) {
-            throw new IllegalArgumentException("Lista de documente cerute este goală");
+            throw new IllegalArgumentException("The list of requested documents is empty");
         }
-        requireStatus(runId, RunStatus.TRIMIS, "completat cu documente");
+        requireStatus(runId, RunStatus.TRIMIS, "supplemented with documents");
         return store.update(runId, run -> run.withOfficerAction(
                 new OfficerAction(OfficerAction.Action.REQUEST_DOCUMENTS, Instant.now(), officerId, messageRo),
                 documents));
@@ -171,7 +171,7 @@ public class RunOrchestrator {
                 }
             }
             current = RunStatus.GATA;
-            Run done = move(runId, RunStatus.GATA, "Ofertele sunt gata; fermierul alege varianta și trimite cererea",
+            Run done = move(runId, RunStatus.GATA, "The offers are ready; the farmer chooses an option and sends the application",
                     List.of());
             JsonNode funding = done.agentOutputs().getOrDefault(AgentSlot.FUNDING_OPTIMIZER, MissingNode.getInstance());
             JsonNode report = done.agentOutputs().getOrDefault(AgentSlot.GREEN_UNDERWRITER, MissingNode.getInstance());
@@ -183,7 +183,7 @@ public class RunOrchestrator {
             return fail(runId, current, failure.errorCode, failure.getMessage(), failure.retryable);
         } catch (RuntimeException e) {
             log.error("Run {} failed at {}", runId, current, e);
-            return fail(runId, current, "INTERNAL", "Eroare internă la pasul " + current, true);
+            return fail(runId, current, "INTERNAL", "Internal error at step " + current, true);
         }
     }
 
@@ -192,8 +192,8 @@ public class RunOrchestrator {
         Run run = store.find(runId).orElseThrow(() -> new RunNotFoundException(runId));
         List<String> problems = conformity.problems(run);
         if (!problems.isEmpty()) {
-            throw new StepFailure("DOCUMENTS_NONCONFORMING", "Documente neconforme: " + String.join("; ", problems)
-                    + ". Încarcă documentele corecte și reia cererea.", false);
+            throw new StepFailure("DOCUMENTS_NONCONFORMING", "Nonconforming documents: " + String.join("; ", problems)
+                    + ". Upload the correct documents and restart the application.", false);
         }
     }
 
@@ -203,7 +203,7 @@ public class RunOrchestrator {
         FarmProfile profile = store.find(runId).map(Run::farmProfile).orElseThrow(() -> new RunNotFoundException(runId));
         List<DataSource> sources = profile.dataSources().stream()
                 .map(source -> new DataSource(source.source(), source.mode())).toList();
-        move(runId, RunStatus.DATE_FIRMA, "Am preluat datele firmei: ANAF, APIA, Open Banking, risc climatic", sources);
+        move(runId, RunStatus.DATE_FIRMA, "Company data retrieved: ANAF, APIA, Open Banking, climate risk", sources);
         String sourceMode = sources.stream().map(DataSource::mode).distinct().count() == 1 && !sources.isEmpty()
                 ? sources.getFirst().mode() : "MIXED";
         store.update(runId, r -> r.withStep(new StepRecord(RunStatus.DATE_FIRMA, sourceMode, started,
@@ -215,7 +215,7 @@ public class RunOrchestrator {
         Run run = move(runId, slot.status(), null, List.of());
         Agent agent = agents.get(slot);
         if (agent == null) {
-            throw new StepFailure("BEDROCK_UNAVAILABLE", slot.label() + " nu este încă disponibil", false);
+            throw new StepFailure("BEDROCK_UNAVAILABLE", slot.label() + " is not available yet", false);
         }
         events.agentStarted(runId, slot, agent.modelId(), mode, 1);
 
@@ -236,24 +236,24 @@ public class RunOrchestrator {
         } catch (TimeoutException e) {
             call.cancel(true);
             throw new StepFailure("BEDROCK_UNAVAILABLE",
-                    slot.label() + " nu a răspuns în " + agentTimeout.toSeconds() + " secunde", true);
+                    slot.label() + " did not respond within " + agentTimeout.toSeconds() + " seconds", true);
         } catch (ExecutionException e) {
             if (e.getCause() instanceof AgentFailureException failure) {
                 throw new StepFailure(failure.errorCode(), failure.getMessage(), failure.retryable());
             }
             log.error("{} failed", slot, e.getCause());
-            throw new StepFailure("INTERNAL", slot.label() + " a întâmpinat o eroare internă", true);
+            throw new StepFailure("INTERNAL", slot.label() + " hit an internal error", true);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new StepFailure("INTERNAL", slot.label() + " a fost întrerupt", true);
+            throw new StepFailure("INTERNAL", slot.label() + " was interrupted", true);
         }
     }
 
     private void requireStatus(String runId, RunStatus expected, String what) {
         RunStatus actual = store.find(runId).map(Run::status).orElseThrow(() -> new RunNotFoundException(runId));
         if (actual != expected) {
-            throw new IllegalStateException("Dosarul poate fi " + what + " doar din starea " + expected
-                    + "; acum e în " + actual);
+            throw new IllegalStateException("The dossier can only be " + what + " from status " + expected
+                    + "; it is now " + actual);
         }
     }
 

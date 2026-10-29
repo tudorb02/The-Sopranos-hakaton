@@ -8,7 +8,7 @@
     "ct_0412_03"
   ],
   "questionnaire": {
-    "crops_main": "tomate, ardei, varză",
+    "crops_main": "tomatoes, peppers, cabbage",
     "nitrogen_kg_ha": 180,
     "tillage": "MINIMA",
     "cover_crops": "ROTATIE",

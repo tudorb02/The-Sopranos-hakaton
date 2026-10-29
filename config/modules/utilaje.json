@@ -1,73 +1,73 @@
 {
   "moduleId": "utilaje",
-  "nameRo": "Utilaje & precizie",
+  "nameRo": "Machinery & precision",
   "icon": "🚜",
   "status": "DEMO_READY",
-  "descriptionRo": "Tractor eficient, pilot automat GPS, dozare variabilă.",
+  "descriptionRo": "Efficient tractor, GPS autosteer, variable-rate application.",
   "examplesRo": [
-    "tractor eficient Stage V",
-    "pilot automat GPS",
-    "dozare variabilă"
+    "efficient Stage V tractor",
+    "GPS autosteer",
+    "variable-rate application"
   ],
   "indicator": "FUEL_SAVING_PCT",
   "threshold": {
     "kind": "MIN_PCT",
     "value": 20,
     "unit": "PCT",
-    "sourceRo": "README §6, categoria 3: reducere ≥ 20% a motorinei pe hectar SAU a azotului pe hectar (propunere, de validat cu mentorii)",
+    "sourceRo": "README §6, category 3: ≥ 20% reduction in diesel per hectare OR in nitrogen per hectare (proposal, to be validated with the mentors)",
     "demo": true
   },
   "requiredDocs": [
     {
       "docType": "OFFER",
-      "labelRo": "Oferta / proforma și fișa tehnică a tractorului (cu consumul în l/ha)",
+      "labelRo": "Offer / pro forma and technical data sheet of the tractor (with consumption in l/ha)",
       "required": true
     },
     {
       "docType": "CURRENT_EQUIPMENT",
-      "labelRo": "Fișa utilajului înlocuit (an de fabricație, putere) sau talonul",
+      "labelRo": "Data sheet of the replaced machine (year of manufacture, power) or its registration certificate",
       "required": false
     },
     {
       "docType": "FERTILIZER_INVOICES",
-      "labelRo": "Facturile de îngrășăminte cu azot pe 12 luni (obligatorii pentru precizie)",
+      "labelRo": "Nitrogen fertiliser invoices for 12 months (mandatory for precision farming)",
       "required": false
     }
   ],
   "questionnaire": [
     {
       "questionId": "crops_main",
-      "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
+      "labelRo": "Main crops and average yield (t/ha) over the last 3 years",
       "type": "TEXT",
       "prefillFrom": "APIA",
       "required": true
     },
     {
       "questionId": "replaced_machine_year",
-      "labelRo": "Anul de fabricație al utilajului înlocuit",
+      "labelRo": "Year of manufacture of the replaced machine",
       "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": true
     },
     {
       "questionId": "replaced_machine_hp",
-      "labelRo": "Puterea utilajului înlocuit (CP)",
+      "labelRo": "Power of the replaced machine (HP)",
       "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": true
     },
     {
       "questionId": "tillage",
-      "labelRo": "Cum lucrați solul? (arătură, lucrare minimă sau no-till)",
+      "labelRo": "How do you till the soil? (ploughing, minimum tillage or no-till)",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "ARATURA",
-          "labelRo": "arătură"
+          "labelRo": "ploughing"
         },
         {
           "value": "MINIMA",
-          "labelRo": "lucrare minimă"
+          "labelRo": "minimum tillage"
         },
         {
           "value": "NO_TILL",
@@ -79,7 +79,7 @@
     },
     {
       "questionId": "nitrogen_kg_ha",
-      "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)? Se folosește doar dacă lipsesc facturile",
+      "labelRo": "How much nitrogen fertiliser do you use (kg N/ha)? Used only if the invoices are missing",
       "type": "NUMBER",
       "unit": "KG_N_PER_HA",
       "prefillFrom": "NONE",
@@ -87,20 +87,20 @@
     },
     {
       "questionId": "cover_crops",
-      "labelRo": "Folosiți culturi de acoperire sau rotație?",
+      "labelRo": "Do you use cover crops or crop rotation?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "DA",
-          "labelRo": "da"
+          "labelRo": "yes"
         },
         {
           "value": "ROTATIE",
-          "labelRo": "doar rotație"
+          "labelRo": "rotation only"
         },
         {
           "value": "NU",
-          "labelRo": "nu"
+          "labelRo": "no"
         }
       ],
       "prefillFrom": "APIA",
@@ -108,19 +108,19 @@
     },
     {
       "questionId": "crop_insurance",
-      "labelRo": "Aveți asigurare pentru culturi?",
+      "labelRo": "Do you have crop insurance?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": true
     },
     {
       "questionId": "certifications",
-      "labelRo": "Aveți certificări?",
+      "labelRo": "Do you have certifications?",
       "type": "MULTI_CHOICE",
       "options": [
         {
           "value": "ECOLOGIC",
-          "labelRo": "ecologic"
+          "labelRo": "organic"
         },
         {
           "value": "GLOBALGAP",
@@ -128,7 +128,7 @@
         },
         {
           "value": "NICIUNA",
-          "labelRo": "niciuna"
+          "labelRo": "none"
         }
       ],
       "prefillFrom": "NONE",
@@ -136,31 +136,31 @@
     },
     {
       "questionId": "cashin_months",
-      "labelRo": "În ce luni încasați cel mai mult?",
+      "labelRo": "In which months do you receive the most income?",
       "type": "MONTHS",
       "prefillFrom": "OPEN_BANKING",
       "required": true
     },
     {
       "questionId": "old_equipment_fate",
-      "labelRo": "Ce faceți cu utilajul înlocuit (casare, vânzare, rezervă)?",
+      "labelRo": "What do you do with the replaced machine (scrapping, sale, spare)?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "CASARE",
-          "labelRo": "casare"
+          "labelRo": "scrapping"
         },
         {
           "value": "VANZARE",
-          "labelRo": "vânzare"
+          "labelRo": "sale"
         },
         {
           "value": "REZERVA",
-          "labelRo": "îl păstrez ca rezervă"
+          "labelRo": "I keep it as a spare"
         },
         {
           "value": "NU_E_CAZUL",
-          "labelRo": "nu e cazul"
+          "labelRo": "not applicable"
         }
       ],
       "prefillFrom": "NONE",
@@ -168,27 +168,27 @@
     },
     {
       "questionId": "manager_competences",
-      "labelRo": "Administratorul are studii sau un curs de calificare în agricultură?",
+      "labelRo": "Does the manager have an agricultural degree or a vocational course in agriculture?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": false
     },
     {
       "questionId": "loan_term",
-      "labelRo": "Pe câți ani vreți creditul?",
+      "labelRo": "Over how many years do you want the loan?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "ANI_3",
-          "labelRo": "3 ani"
+          "labelRo": "3 years"
         },
         {
           "value": "ANI_5",
-          "labelRo": "5 ani"
+          "labelRo": "5 years"
         },
         {
           "value": "ANI_7",
-          "labelRo": "7 ani"
+          "labelRo": "7 years"
         }
       ],
       "prefillFrom": "NONE",
@@ -200,27 +200,27 @@
   "dnsh": [
     {
       "objective": "CLIMATE_ADAPTATION",
-      "checkRo": "Utilajele permit lucrări de conservare a solului.",
+      "checkRo": "The machinery allows conservation tillage.",
       "evidence": "TILLAGE"
     },
     {
       "objective": "WATER_MARINE_RESOURCES",
-      "checkRo": "Doza variabilă de azot reduce scurgerea de nutrienți.",
+      "checkRo": "Variable-rate nitrogen reduces nutrient run-off.",
       "evidence": "NITRATE_PARCELS"
     },
     {
       "objective": "CIRCULAR_ECONOMY",
-      "checkRo": "Tractoarele vechi sunt casate la un colector autorizat sau vândute.",
+      "checkRo": "Old tractors are scrapped at an authorised collector or sold.",
       "evidence": "OLD_EQUIPMENT_FATE"
     },
     {
       "objective": "POLLUTION_PREVENTION",
-      "checkRo": "Motorul tractorului nou respectă norma Stage V (minimum legal).",
+      "checkRo": "The new tractor's engine meets the Stage V standard (legal minimum).",
       "evidence": "EMISSION_STAGE"
     },
     {
       "objective": "BIODIVERSITY",
-      "checkRo": "Parcelele nu sunt în arii Natura 2000; pilotul automat reduce suprapunerile și pesticidele la margini.",
+      "checkRo": "The parcels are not in Natura 2000 areas; autosteer reduces overlaps and pesticides at field edges.",
       "evidence": "NATURA_2000_PARCELS"
     }
   ],
@@ -261,23 +261,23 @@
   "parameters": {
     "baselineLitresPerHa": {
       "value": 90,
-      "sourceRo": "Folosit doar când lipsesc facturile de motorină: toate lucrările la cereale; INRAE ~125 l/ha la o fermă europeană medie; estimare echipă, de validat cu mentorii"
+      "sourceRo": "Used only when diesel invoices are missing: all field operations for cereals; INRAE ~125 l/ha on an average European farm; team estimate, to be validated with the mentors"
     },
     "maxHpPerHa": {
       "value": 2.5,
-      "sourceRo": "Placeholder pentru Anexa 6 a ghidului DR-12"
+      "sourceRo": "Placeholder for Annex 6 of the DR-12 guide"
     },
     "nitrogenKgPerHaDefault": {
       "value": 150,
-      "sourceRo": "Folosit doar când lipsesc facturile de îngrășăminte și răspunsul din chestionar; estimare echipă, de validat cu mentorii"
+      "sourceRo": "Used only when the fertiliser invoices and the questionnaire answer are missing; team estimate, to be validated with the mentors"
     },
     "nitrogenEurPerKg": {
       "value": 1,
-      "sourceRo": "Preț al azotului pur (EUR/kg N): azotat de amoniu 34% la 0,36 EUR/kg = 1,06; uree 46% la 0,46 EUR/kg = 1,00 (facturile demo DEMO-0003); valoare de demo, de validat"
+      "sourceRo": "Price of pure nitrogen (EUR/kg N): ammonium nitrate 34% at 0.36 EUR/kg = 1.06; urea 46% at 0.46 EUR/kg = 1.00 (demo invoices DEMO-0003); demo value, to be validated"
     },
     "usedAgeYearsDefault": {
       "value": 5,
-      "sourceRo": "Vârsta presupusă a unui utilaj second-hand fără an de fabricație în ofertă"
+      "sourceRo": "Assumed age of a second-hand machine with no year of manufacture in the offer"
     }
   },
   "substantialContribution": "CLIMATE_MITIGATION",
@@ -297,6 +297,15 @@
     "stage v",
     "semanatoare",
     "cai putere",
-    "dozare variabila"
+    "dozare variabila",
+    "combine",
+    "autosteer",
+    "auto-steer",
+    "seeder",
+    "sprayer",
+    "horsepower",
+    "variable rate",
+    "variable-rate",
+    "precision"
   ]
 }

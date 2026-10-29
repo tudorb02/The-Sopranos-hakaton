@@ -13,7 +13,7 @@ final class Funds {
     static JsonNode moduleEntry(ToolContext context) {
         JsonNode entry = context.reference().funds().path("modules").path(context.module().moduleId());
         if (entry.isMissingNode()) {
-            throw new IllegalArgumentException("Modulul " + context.module().moduleId() + " nu are fond în config/funds.json");
+            throw new IllegalArgumentException("Module " + context.module().moduleId() + " has no fund in config/funds.json");
         }
         return entry;
     }
@@ -24,6 +24,6 @@ final class Funds {
                 return fund;
             }
         }
-        throw new IllegalArgumentException("Fond necunoscut: " + fundId);
+        throw new IllegalArgumentException("Unknown fund: " + fundId);
     }
 }

@@ -25,7 +25,7 @@ public final class FarmFacts {
             }
         }
         if (parcels.isEmpty()) {
-            throw new IllegalArgumentException("Niciuna dintre parcelele alese nu există la APIA: " + selected);
+            throw new IllegalArgumentException("None of the selected parcels exists at APIA: " + selected);
         }
         return parcels;
     }

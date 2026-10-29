@@ -19,7 +19,7 @@ import ro.greenstruct.agro.tools.Params;
 import ro.greenstruct.agro.tools.Unit;
 
 /**
- * "Simulează 12 luni" (README §13): after drawdown, simulated monitoring data gives the real impact; it is compared
+ * "Simulate 12 months" (README §13): after drawdown, simulated monitoring data gives the real impact; it is compared
  * with the estimate of the approved dossier and, when it confirms it, the green rate gets the impact bonus
  * (config/pricing.json, a product proposal). Figures come from the engine and the config; the deviation is simulated.
  */
@@ -27,7 +27,7 @@ import ro.greenstruct.agro.tools.Unit;
 public class MonitoringService {
 
     private static final String TOOL = "simulate_monitoring";
-    private static final String SOURCE = "config/monitoring.json, config/pricing.json (parametri demo)";
+    private static final String SOURCE = "config/monitoring.json, config/pricing.json (demo parameters)";
 
     /**
      * Impact metrics where a higher measured value confirms the estimate. Consumption metrics (water used, pumping
@@ -54,25 +54,25 @@ public class MonitoringService {
     public Run simulate(String runId) {
         Run run = store.find(runId).orElseThrow(() -> new RunNotFoundException(runId));
         if (run.status() != RunStatus.MONITORIZARE) {
-            throw new IllegalStateException("Monitorizarea se simulează doar din starea MONITORIZARE; acum e în "
+            throw new IllegalStateException("Monitoring can only be simulated from status MONITORIZARE; it is now "
                     + run.status());
         }
         if (run.monitoring() != null) {
-            throw new IllegalStateException("Monitorizarea a fost deja simulată pentru acest dosar");
+            throw new IllegalStateException("Monitoring has already been simulated for this dossier");
         }
         if (run.submission() == null || run.submission().variant() != Submission.Variant.VERDE) {
-            throw new IllegalStateException("Dosarul are credit clasic: nu are impact verde de monitorizat");
+            throw new IllegalStateException("The dossier has a classic credit: there is no green impact to monitor");
         }
         JsonNode report = run.agentOutputs().get(AgentSlot.GREEN_UNDERWRITER);
         JsonNode funding = run.agentOutputs().get(AgentSlot.FUNDING_OPTIMIZER);
         if (report == null || funding == null) {
-            throw new IllegalStateException("Dosarul nu are raport verde de monitorizat");
+            throw new IllegalStateException("The dossier has no green report to monitor");
         }
 
         BigDecimal deviation = Params.value(reference.monitoring().path("simulatedDeviationPct"), "simulatedDeviationPct");
         BigDecimal tolerance = Params.value(reference.monitoring().path("tolerancePct"), "tolerancePct");
-        Calc deviationCalc = calcs.create(runId, TOOL, "monitoring.deviation", "Abaterea simulată a impactului real",
-                deviation, Unit.PCT, "valoare simulată în demo", SOURCE, List.of(), null);
+        Calc deviationCalc = calcs.create(runId, TOOL, "monitoring.deviation", "Simulated deviation of the actual impact",
+                deviation, Unit.PCT, "simulated value in the demo", SOURCE, List.of(), null);
 
         ArrayNode metrics = mapper.createArrayNode();
         boolean confirmed = true;
@@ -81,7 +81,7 @@ public class MonitoringService {
                 continue;
             }
             Calc estimated = calcs.find(runId, impact.path("calcId").asText()).orElseThrow(() ->
-                    new IllegalStateException("Cifra " + impact.path("calcId").asText() + " lipsește"));
+                    new IllegalStateException("Figure " + impact.path("calcId").asText() + " is missing"));
             String metric = impact.path("metric").asText();
             // a negative or zero "saving" is a cost increase or no effect: there is no benefit to confirm
             if (!BENEFIT_METRICS.contains(metric) || estimated.value().signum() <= 0) {
@@ -89,8 +89,8 @@ public class MonitoringService {
             }
             ImpactMonitoring.Comparison comparison = ImpactMonitoring.compare(estimated.value(), deviation, tolerance);
             Calc actual = calcs.create(runId, TOOL, "monitoring." + metric + ".actual",
-                    "Impact real la 12 luni: " + estimated.labelRo(), comparison.actual(), estimated.unit(),
-                    "estimare × (1 + abatere)", SOURCE, List.of(estimated.calcId(), deviationCalc.calcId()), null);
+                    "Actual impact at 12 months: " + estimated.labelRo(), comparison.actual(), estimated.unit(),
+                    "estimate × (1 + deviation)", SOURCE, List.of(estimated.calcId(), deviationCalc.calcId()), null);
             ObjectNode row = metrics.addObject();
             row.put("metric", metric);
             row.put("estimatedCalcId", estimated.calcId());
@@ -100,18 +100,18 @@ public class MonitoringService {
             confirmed &= comparison.withinTolerance();
         }
         if (metrics.isEmpty()) {
-            throw new IllegalStateException("Raportul nu are impact anual de monitorizat");
+            throw new IllegalStateException("The report has no annual impact to monitor");
         }
 
         Calc rateBefore = greenRate(runId, run, funding);
         BigDecimal bonus = Params.value(reference.pricing().path("green").path("impactBonusAdjustmentPp"),
                 "impactBonusAdjustmentPp");
-        Calc bonusCalc = calcs.create(runId, TOOL, "monitoring.bonus", "Bonusul de impact", confirmed ? bonus
-                : BigDecimal.ZERO, Unit.PP, "bonus aplicat doar dacă impactul real confirmă estimarea", SOURCE,
+        Calc bonusCalc = calcs.create(runId, TOOL, "monitoring.bonus", "Impact bonus", confirmed ? bonus
+                : BigDecimal.ZERO, Unit.PP, "bonus applied only if the actual impact confirms the estimate", SOURCE,
                 List.of(), null);
-        Calc rateAfter = calcs.create(runId, TOOL, "monitoring.rate_after", "Dobânda verde după bonusul de impact",
+        Calc rateAfter = calcs.create(runId, TOOL, "monitoring.rate_after", "Green interest rate after the impact bonus",
                 ImpactMonitoring.rateAfterBonus(rateBefore.value(), bonus, confirmed), Unit.PCT,
-                "dobânda verde + bonus", SOURCE, List.of(rateBefore.calcId(), bonusCalc.calcId()), null);
+                "green interest rate + bonus", SOURCE, List.of(rateBefore.calcId(), bonusCalc.calcId()), null);
 
         ObjectNode result = mapper.createObjectNode();
         result.put("months", 12);
@@ -131,9 +131,9 @@ public class MonitoringService {
             if (option.path("optionId").asText().equals(run.submission().optionId())) {
                 String calcId = option.path("rateBreakdown").path("rateCalcId").asText();
                 return calcs.find(runId, calcId).orElseThrow(() ->
-                        new IllegalStateException("Dobânda verde " + calcId + " lipsește"));
+                        new IllegalStateException("Green interest rate " + calcId + " is missing"));
             }
         }
-        throw new IllegalStateException("Dosarul nu are opțiunea aleasă de IMM");
+        throw new IllegalStateException("The dossier does not have the option chosen by the SME");
     }
 }

@@ -133,7 +133,7 @@ final class TestKit {
             return (tool, input) -> {
                 executed.add(runId + ":" + tool + ":" + input);
                 if (!tool.equals("compute")) {
-                    throw new IllegalArgumentException("Unealtă necunoscută: " + tool);
+                    throw new IllegalArgumentException("Unknown tool: " + tool);
                 }
                 String key = input.path("key").asText();
                 Calc calc = calc(runId, "compute", key);

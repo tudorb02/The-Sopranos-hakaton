@@ -2,12 +2,12 @@
   "version": "2026-10-28",
   "deMinimisAgriCeilingEur": {
     "value": 50000,
-    "sourceRo": "Reg. UE 2024/3118, 3 ani glisant"
+    "sourceRo": "Reg. (EU) 2024/3118, rolling 3 years"
   },
   "programs": [
     {
       "programCode": "DR_12",
-      "nameRo": "DR-12: consolidarea exploatațiilor tinerilor fermieri și a fermierilor de max. 45 de ani",
+      "nameRo": "DR-12: consolidating the farms of young farmers and of farmers aged up to 45",
       "type": "GRANT",
       "session": {
         "status": "OPEN",
@@ -47,16 +47,16 @@
         "thresholdAfter": 45
       },
       "monthsUntilPaid": 12,
-      "sourceRo": "Ghidul solicitantului DR-12, versiunea 18.09.2026, afir.ro",
+      "sourceRo": "DR-12 applicant's guide, version of 18 Sep 2026, afir.ro",
       "sourceUrl": "https://www.afir.ro"
     },
     {
       "programCode": "DR_26",
-      "nameRo": "DR-26: înființarea sistemelor de irigații",
+      "nameRo": "DR-26: setting up irrigation systems",
       "type": "GRANT",
       "session": {
         "status": "NOT_OPEN",
-        "noteRo": "Ghid publicat (14.12.2023), nicio sesiune anunțată în 2026"
+        "noteRo": "Guide published (14 Dec 2023), no session announced in 2026"
       },
       "capEur": 500000,
       "intensity": [
@@ -73,16 +73,16 @@
         ],
         "requiresWaterMeter": true
       },
-      "sourceRo": "afir.ro, fișa DR-26",
+      "sourceRo": "afir.ro, DR-26 measure sheet",
       "sourceUrl": "https://www.afir.ro"
     },
     {
       "programCode": "DR_16",
-      "nameRo": "DR-16: investiții în exploatații de legume și/sau cartofi",
+      "nameRo": "DR-16: investments in vegetable and/or potato farms",
       "type": "GRANT",
       "session": {
         "status": "NOT_OPEN",
-        "noteRo": "Ghid din 23.12.2025; sesiune neconfirmată"
+        "noteRo": "Guide of 23 Dec 2025; session not confirmed"
       },
       "capEur": 2000000,
       "intensity": [
@@ -101,17 +101,17 @@
           "0113"
         ]
       },
-      "sourceRo": "afir.ro, fișa DR-16",
+      "sourceRo": "afir.ro, DR-16 measure sheet",
       "sourceUrl": "https://www.afir.ro"
     },
     {
       "programCode": "FM_PV",
-      "nameRo": "Fondul pentru Modernizare: fotovoltaice pentru fermieri",
+      "nameRo": "Modernisation Fund: photovoltaics for farmers",
       "type": "GRANT",
       "session": {
         "status": "CLOSED",
         "closed": "2026-08-14",
-        "noteRo": "O sesiune nouă nu a fost anunțată"
+        "noteRo": "No new session has been announced"
       },
       "intensity": [
         {
@@ -124,12 +124,12 @@
           "PV_SYSTEM"
         ]
       },
-      "sourceRo": "Economedia, 09.06.2026",
+      "sourceRo": "Economedia, 9 Jun 2026",
       "sourceUrl": "https://www.afm.ro"
     },
     {
       "programCode": "INVESTEU_FEI",
-      "nameRo": "Garanție FEI – InvestEU prin Raiffeisen",
+      "nameRo": "EIF guarantee – InvestEU through Raiffeisen",
       "type": "GUARANTEE",
       "session": {
         "status": "PERMANENT"
@@ -137,12 +137,12 @@
       "eligibility": {
         "requiresGreenConfig": true
       },
-      "sourceRo": "Acord FEI cu Raiffeisen, 25.10.2023",
+      "sourceRo": "EIF agreement with Raiffeisen, 25 Oct 2023",
       "sourceUrl": "https://www.eif.org"
     },
     {
       "programCode": "FGCR",
-      "nameRo": "Garanție FGCR pentru credite de investiții și cofinanțare",
+      "nameRo": "FGCR guarantee for investment and co-financing loans",
       "type": "GUARANTEE",
       "session": {
         "status": "PERMANENT"
@@ -160,14 +160,14 @@
     },
     {
       "programCode": "RABLA_AGRI",
-      "nameRo": "Rabla pentru tractoare (AFM)",
+      "nameRo": "Rabla scrappage scheme for tractors (AFM)",
       "type": "GRANT",
       "session": {
         "status": "NO_BUDGET",
-        "noteRo": "Proiectul de buget AFM pentru 2026 nu prevede bani pentru program"
+        "noteRo": "The AFM draft budget for 2026 allocates no money to the programme"
       },
       "eligibility": {},
-      "sourceRo": "agrointel.ro, 21.05.2026",
+      "sourceRo": "agrointel.ro, 21 May 2026",
       "sourceUrl": "https://www.afm.ro"
     }
   ]

@@ -1,54 +1,54 @@
 {
   "moduleId": "ecologic",
-  "nameRo": "Ecologic & regenerativ",
+  "nameRo": "Organic & regenerative",
   "icon": "🌱",
   "status": "DEMO_READY",
-  "descriptionRo": "Conversie bio: conversia integrală sau etapizată, golul de lichiditate din anii de conversie.",
+  "descriptionRo": "Organic conversion: full or phased conversion, the liquidity gap in the conversion years.",
   "examplesRo": [
-    "conversie bio",
-    "utilaje pentru combaterea mecanică a buruienilor"
+    "organic conversion",
+    "machinery for mechanical weed control"
   ],
   "indicator": "CERTIFIED_AREA_HA",
   "threshold": {
     "kind": "CERTIFICATION",
     "value": null,
     "unit": "HA",
-    "sourceRo": "Certificare ecologică UE sau contract de conversie cu un organism de certificare (README §6, categoria 6)",
+    "sourceRo": "EU organic certification or a conversion contract with a certification body (README §6, category 6)",
     "demo": true
   },
   "requiredDocs": [
     {
       "docType": "OFFER",
-      "labelRo": "Oferta / proforma și fișa tehnică a investiției (utilaje pentru agricultura ecologică)",
+      "labelRo": "Offer / pro forma and technical data sheet of the investment (machinery for organic farming)",
       "required": true
     },
     {
       "docType": "CERTIFICATION_CONTRACT",
-      "labelRo": "Contractul cu organismul de certificare sau certificatul ecologic",
+      "labelRo": "Contract with the certification body or the organic certificate",
       "required": true
     },
     {
       "docType": "BUSINESS_PLAN",
-      "labelRo": "Planul de conversie (calendarul pe culturi)",
+      "labelRo": "Conversion plan (timeline by crop)",
       "required": false
     },
     {
       "docType": "FERTILIZER_INVOICES",
-      "labelRo": "Facturile de îngrășăminte cu azot pe ultimele 12 luni",
+      "labelRo": "Nitrogen fertiliser invoices for the last 12 months",
       "required": false
     }
   ],
   "questionnaire": [
     {
       "questionId": "crops_main",
-      "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
+      "labelRo": "Main crops and average yield (t/ha) over the last 3 years",
       "type": "TEXT",
       "prefillFrom": "APIA",
       "required": true
     },
     {
       "questionId": "conversion_ha",
-      "labelRo": "Câte hectare treceți la agricultura ecologică?",
+      "labelRo": "How many hectares are you converting to organic farming?",
       "type": "NUMBER",
       "unit": "HA",
       "prefillFrom": "NONE",
@@ -56,14 +56,14 @@
     },
     {
       "questionId": "conversion_start_year",
-      "labelRo": "Din ce an începe conversia?",
+      "labelRo": "In which year does the conversion start?",
       "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": true
     },
     {
       "questionId": "nitrogen_kg_ha",
-      "labelRo": "Câte îngrășăminte cu azot folosiți acum (kg N/ha)?",
+      "labelRo": "How much nitrogen fertiliser do you use now (kg N/ha)?",
       "type": "NUMBER",
       "unit": "KG_N_PER_HA",
       "prefillFrom": "NONE",
@@ -71,16 +71,16 @@
     },
     {
       "questionId": "tillage",
-      "labelRo": "Cum lucrați solul?",
+      "labelRo": "How do you till the soil?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "ARATURA",
-          "labelRo": "arătură"
+          "labelRo": "ploughing"
         },
         {
           "value": "MINIMA",
-          "labelRo": "lucrare minimă"
+          "labelRo": "minimum tillage"
         },
         {
           "value": "NO_TILL",
@@ -92,20 +92,20 @@
     },
     {
       "questionId": "cover_crops",
-      "labelRo": "Folosiți culturi de acoperire sau rotație?",
+      "labelRo": "Do you use cover crops or crop rotation?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "DA",
-          "labelRo": "da"
+          "labelRo": "yes"
         },
         {
           "value": "ROTATIE",
-          "labelRo": "doar rotație"
+          "labelRo": "rotation only"
         },
         {
           "value": "NU",
-          "labelRo": "nu"
+          "labelRo": "no"
         }
       ],
       "prefillFrom": "APIA",
@@ -113,19 +113,19 @@
     },
     {
       "questionId": "crop_insurance",
-      "labelRo": "Aveți asigurare pentru culturi?",
+      "labelRo": "Do you have crop insurance?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": false
     },
     {
       "questionId": "certifications",
-      "labelRo": "Aveți certificări?",
+      "labelRo": "Do you have certifications?",
       "type": "MULTI_CHOICE",
       "options": [
         {
           "value": "ECOLOGIC",
-          "labelRo": "ecologic"
+          "labelRo": "organic"
         },
         {
           "value": "GLOBALGAP",
@@ -133,7 +133,7 @@
         },
         {
           "value": "NICIUNA",
-          "labelRo": "niciuna"
+          "labelRo": "none"
         }
       ],
       "prefillFrom": "NONE",
@@ -141,38 +141,38 @@
     },
     {
       "questionId": "offtake_contracts",
-      "labelRo": "Aveți contracte de vânzare cu procesatori bio sau retaileri?",
+      "labelRo": "Do you have sales contracts with organic processors or retailers?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": false
     },
     {
       "questionId": "cashin_months",
-      "labelRo": "În ce luni încasați cel mai mult?",
+      "labelRo": "In which months do you receive the most income?",
       "type": "MONTHS",
       "prefillFrom": "OPEN_BANKING",
       "required": true
     },
     {
       "questionId": "old_equipment_fate",
-      "labelRo": "Ce faceți cu echipamentul vechi și cu deșeurile (ambalaje, folie)?",
+      "labelRo": "What do you do with the old equipment and the waste (packaging, plastic film)?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "CASARE",
-          "labelRo": "casare"
+          "labelRo": "scrapping"
         },
         {
           "value": "VANZARE",
-          "labelRo": "vânzare"
+          "labelRo": "sale"
         },
         {
           "value": "REZERVA",
-          "labelRo": "îl păstrez ca rezervă"
+          "labelRo": "I keep it as a spare"
         },
         {
           "value": "NU_E_CAZUL",
-          "labelRo": "nu e cazul"
+          "labelRo": "not applicable"
         }
       ],
       "prefillFrom": "NONE",
@@ -185,27 +185,27 @@
   "dnsh": [
     {
       "objective": "CLIMATE_MITIGATION",
-      "checkRo": "Fără azot mineral de sinteză: emisiile de N₂O evitate sunt cuantificate (kg N și t CO₂e).",
+      "checkRo": "No synthetic mineral nitrogen: the avoided N₂O emissions are quantified (kg N and t CO₂e).",
       "evidence": "NITROGEN_AVOIDED"
     },
     {
       "objective": "CLIMATE_ADAPTATION",
-      "checkRo": "Rotația și culturile de acoperire cresc rezistența la secetă; riscul climatic al parcelelor e cunoscut.",
+      "checkRo": "Rotation and cover crops increase drought resilience; the climate risk of the parcels is known.",
       "evidence": "PARCEL_RISK"
     },
     {
       "objective": "WATER_MARINE_RESOURCES",
-      "checkRo": "Fertilizarea organică respectă limitele din zonele vulnerabile la nitrați.",
+      "checkRo": "Organic fertilisation respects the limits in nitrate vulnerable zones.",
       "evidence": "NITRATE_PARCELS"
     },
     {
       "objective": "CIRCULAR_ECONOMY",
-      "checkRo": "Echipamentul vechi și deșeurile (ambalaje, folie) sunt predate unui colector autorizat sau valorificate.",
+      "checkRo": "The old equipment and the waste (packaging, plastic film) are handed over to an authorised collector or recovered.",
       "evidence": "OLD_EQUIPMENT_FATE"
     },
     {
       "objective": "BIODIVERSITY",
-      "checkRo": "Parcelele nu sunt în arii Natura 2000 sau există aviz de mediu; conversia reduce pesticidele.",
+      "checkRo": "The parcels are not in Natura 2000 areas, or there is an environmental approval; the conversion reduces pesticides.",
       "evidence": "NATURA_2000_PARCELS"
     }
   ],
@@ -223,62 +223,62 @@
   "parameters": {
     "yieldPctConversionYear1": {
       "value": 70,
-      "sourceRo": "Producția în primul an de conversie, % din cea convențională. Valoare de demo din data/demo/test-documents/reference/constants.json (Product); de confirmat cu regulile PNS/APIA curente"
+      "sourceRo": "Yield in the first conversion year, % of the conventional yield. Demo value from data/demo/test-documents/reference/constants.json (Product); to be confirmed against the current PNS/APIA rules"
     },
     "yieldPctConversionYear2": {
       "value": 75,
-      "sourceRo": "Producția în al doilea an de conversie, % din cea convențională. Valoare de demo din data/demo/test-documents/reference/constants.json (Product); de confirmat cu regulile PNS/APIA curente"
+      "sourceRo": "Yield in the second conversion year, % of the conventional yield. Demo value from data/demo/test-documents/reference/constants.json (Product); to be confirmed against the current PNS/APIA rules"
     },
     "yieldPctCertified": {
       "value": 80,
-      "sourceRo": "Producția bio după certificare, % din cea convențională. Valoare de demo din data/demo/test-documents/reference/constants.json (Product); de confirmat cu regulile PNS/APIA curente"
+      "sourceRo": "Organic yield after certification, % of the conventional yield. Demo value from data/demo/test-documents/reference/constants.json (Product); to be confirmed against the current PNS/APIA rules"
     },
     "organicPricePremiumPct": {
       "value": 45,
-      "sourceRo": "Prima de preț bio peste prețul convențional, după certificare. Valoare de demo din data/demo/test-documents/reference/constants.json (Product); de confirmat cu regulile PNS/APIA curente"
+      "sourceRo": "Organic price premium over the conventional price, after certification. Demo value from data/demo/test-documents/reference/constants.json (Product); to be confirmed against the current PNS/APIA rules"
     },
     "costEurPerHaConventional": {
       "value": 950,
-      "sourceRo": "Cheltuieli de producție pe hectar, agricultura convențională. Valoare de demo din data/demo/test-documents/reference/constants.json (Product); de confirmat cu regulile PNS/APIA curente"
+      "sourceRo": "Production costs per hectare, conventional farming. Demo value from data/demo/test-documents/reference/constants.json (Product); to be confirmed against the current PNS/APIA rules"
     },
     "costEurPerHaOrganic": {
       "value": 1000,
-      "sourceRo": "Cheltuieli de producție pe hectar, agricultura ecologică (include fertilizarea organică și certificarea). Valoare de demo din data/demo/test-documents/reference/constants.json (Product); de confirmat cu regulile PNS/APIA curente"
+      "sourceRo": "Production costs per hectare, organic farming (includes organic fertilisation and certification). Demo value from data/demo/test-documents/reference/constants.json (Product); to be confirmed against the current PNS/APIA rules"
     },
     "conversionPaymentEurPerHa": {
       "value": 220,
-      "sourceRo": "Plata pentru conversie la agricultura ecologică, EUR/ha/an în anii de conversie. Valoare de demo din data/demo/test-documents/reference/constants.json (Product); de confirmat cu regulile PNS/APIA curente"
+      "sourceRo": "Payment for conversion to organic farming, EUR/ha/yr in the conversion years. Demo value from data/demo/test-documents/reference/constants.json (Product); to be confirmed against the current PNS/APIA rules"
     },
     "maintenancePaymentEurPerHa": {
       "value": 200,
-      "sourceRo": "Plata pentru menținerea agriculturii ecologice, EUR/ha/an după certificare. Valoare de demo din data/demo/test-documents/reference/constants.json (Product); de confirmat cu regulile PNS/APIA curente"
+      "sourceRo": "Payment for maintaining organic farming, EUR/ha/yr after certification. Demo value from data/demo/test-documents/reference/constants.json (Product); to be confirmed against the current PNS/APIA rules"
     },
     "cropPriceEurPerT": {
       "value": {
-        "grâu": 210,
-        "porumb": 190,
-        "soia": 400
+        "wheat": 210,
+        "maize": 190,
+        "soybeans": 400
       },
-      "sourceRo": "Prețuri convenționale de referință pe cultură, EUR/t. Valori de demo din data/demo/test-documents/farms/DEMO-0006.json; de înlocuit cu prețurile pieței din ziua analizei"
+      "sourceRo": "Conventional reference prices by crop, EUR/t. Demo values from data/demo/test-documents/farms/DEMO-0006.json; to be replaced with market prices on the day of the analysis"
     },
     "fertilizerNContentPct": {
       "value": 34,
-      "sourceRo": "Conținutul de azot al azotatului de amoniu (34% N), din denumirea produsului de pe factură"
+      "sourceRo": "Nitrogen content of ammonium nitrate (34% N), from the product name on the invoice"
     },
     "subsidyPaymentSharePct": {
       "value": {
         "OCT": 70,
         "DEC": 30
       },
-      "sourceRo": "Lunile în care APIA plătește plățile bio, % din plata anuală. Simplificare de demo: avans de până la 70% din 16 octombrie și soldul până la sfârșitul anului; de confirmat cu calendarul APIA"
+      "sourceRo": "Months in which APIA pays the organic payments, % of the annual payment. Demo simplification: an advance of up to 70% from 16 October and the balance by the end of the year; to be confirmed against the APIA calendar"
     },
     "apiaPrefinancingAdvancePct": {
       "value": 80,
-      "sourceRo": "Cât din subvenția anuală (cea de azi și plățile bio) avansează prefinanțarea APIA (F5), %. Valoare de demo, de confirmat cu Raiffeisen (README §3, F5)"
+      "sourceRo": "Share of the annual subsidy (the current one plus the organic payments) advanced by the APIA pre-financing (F5), %. Demo value, to be confirmed with Raiffeisen (README §3, F5)"
     },
     "maxGraceMonths": {
       "value": 12,
-      "sourceRo": "README §13: perioadă de grație de maximum 12 luni, până la prima recoltă după investiție"
+      "sourceRo": "README §13: grace period of up to 12 months, until the first harvest after the investment"
     }
   },
   "financing": {
@@ -297,6 +297,15 @@
     "prasitoare",
     "grapa",
     "buruien",
-    "utilaje-bio"
+    "utilaje-bio",
+    "organic",
+    "conversion",
+    "organic certification",
+    "organic farming",
+    "mechanical weeding",
+    "weed",
+    "hoe",
+    "harrow",
+    "inter-row"
   ]
 }

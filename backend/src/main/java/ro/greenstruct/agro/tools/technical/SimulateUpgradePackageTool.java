@@ -52,7 +52,7 @@ public class SimulateUpgradePackageTool implements ToolHandler {
         Configuration base = context.workspace().configuration(Params.requiredText(input, "baseConfigId"));
         String configId = Params.requiredText(input, "configId");
         if (configId.equals(base.configId())) {
-            throw new IllegalArgumentException("configId trebuie să fie diferit de baseConfigId");
+            throw new IllegalArgumentException("configId must differ from baseConfigId");
         }
         Map<String, String> replace = new LinkedHashMap<>();
         input.path("replace").fields().forEachRemaining(e -> replace.put(e.getKey(), e.getValue().asText()));
@@ -69,7 +69,7 @@ public class SimulateUpgradePackageTool implements ToolHandler {
         if (cfg.metrics().containsKey("hp_per_ha") || cfg.metrics().containsKey("export_share_pct")) {
             result.put("sizing", ConfigurationMetrics.sizingOk(context, cfg.metrics()) ? "PASS" : "FAIL");
         }
-        return context.ok(result, "Configurația " + configId + (cfg.passesThreshold() ? " trece" : " nu trece")
-                + " pragul verde");
+        return context.ok(result, "Configuration " + configId + (cfg.passesThreshold() ? " passes" : " fails")
+                + " the green threshold");
     }
 }

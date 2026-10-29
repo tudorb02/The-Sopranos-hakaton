@@ -8,7 +8,7 @@
     "il_2003"
   ],
   "questionnaire": {
-    "crops_main": "grâu 5,8 t/ha; porumb 7,2 t/ha; floarea-soarelui 2,9 t/ha",
+    "crops_main": "wheat 5.8 t/ha; maize 7.2 t/ha; sunflower 2.9 t/ha",
     "replaced_machine_year": 2004,
     "replaced_machine_hp": 240,
     "tillage": "ARATURA",

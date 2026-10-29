@@ -20,8 +20,8 @@ public final class FinancingConfig {
     }
 
     public static JsonNode requireLine(ToolContext context, String lineId) {
-        return line(context, lineId).orElseThrow(() -> new IllegalArgumentException("Linia de finanțare " + lineId
-                + " nu există"));
+        return line(context, lineId).orElseThrow(() -> new IllegalArgumentException("Financing line " + lineId
+                + " does not exist"));
     }
 
     public static Optional<JsonNode> guarantee(ToolContext context, String guaranteeId) {
@@ -36,7 +36,7 @@ public final class FinancingConfig {
     public static List<String> moduleLines(ToolContext context) {
         var financing = context.module().financing();
         if (financing == null) {
-            throw new IllegalArgumentException("Modulul " + context.module().moduleId() + " nu are finanțare configurată");
+            throw new IllegalArgumentException("Module " + context.module().moduleId() + " has no financing configured");
         }
         List<String> lines = new ArrayList<>();
         for (String id : new String[]{financing.standardLine(), financing.greenLine(), financing.cofinancingLine(),

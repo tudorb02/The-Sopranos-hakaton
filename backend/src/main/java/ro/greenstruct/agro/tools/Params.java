@@ -23,7 +23,7 @@ public final class Params {
     public static String requiredText(JsonNode input, String field) {
         String value = input.path(field).asText("");
         if (value.isBlank()) {
-            throw new IllegalArgumentException("Lipsește câmpul „" + field + "” din input");
+            throw new IllegalArgumentException("Field \"" + field + "\" missing from input");
         }
         return value;
     }
@@ -41,6 +41,6 @@ public final class Params {
                 return item;
             }
         }
-        throw new IllegalArgumentException("Nu există " + idField + " = " + id);
+        throw new IllegalArgumentException("No " + idField + " = " + id);
     }
 }

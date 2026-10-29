@@ -29,7 +29,7 @@ public final class CalcPlaceholders {
         private final String name;
 
         public UnresolvedCalcException(String name) {
-            super("Calcul lipsă la reluare: " + name);
+            super("Missing calculation on replay: " + name);
             this.name = name;
         }
 

@@ -87,11 +87,11 @@ public final class OrganicPlans {
         haByCrop.forEach((crop, ha) -> {
             FarmInfo.Crop latest = context.farm().farm().crops().stream()
                     .filter(c -> c.crop().equals(crop)).max(java.util.Comparator.comparingInt(FarmInfo.Crop::year))
-                    .orElseThrow(() -> new IllegalArgumentException("Cultura „" + crop
-                            + "” nu are producție istorică la APIA"));
+                    .orElseThrow(() -> new IllegalArgumentException("Crop \"" + crop
+                            + "\" has no historical yield at APIA"));
             if (!prices.path(crop).isNumber()) {
-                throw new IllegalArgumentException("Nu avem prețul de referință pentru cultura „" + crop
-                        + "” (config/modules/ecologic.json, cropPriceEurPerT)");
+                throw new IllegalArgumentException("No reference price for crop \"" + crop
+                        + "\" (config/modules/ecologic.json, cropPriceEurPerT)");
             }
             crops.add(new CropPlan(crop, ha, latest.yieldTPerHa(), prices.path(crop).decimalValue()));
         });
@@ -102,7 +102,7 @@ public final class OrganicPlans {
     public static Setup setup(ToolContext context) {
         Map<String, BigDecimal> baseline = context.workspace().baseline();
         if (!baseline.containsKey("conversion_ha")) {
-            throw new IllegalArgumentException("Rulează întâi compute_baseline");
+            throw new IllegalArgumentException("Run compute_baseline first");
         }
         List<CropPlan> crops = crops(context);
         BigDecimal farmHa = crops.stream().map(CropPlan::ha).reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -174,7 +174,7 @@ public final class OrganicPlans {
     private static MonthlyProfile profile(ToolContext context) {
         CashflowInfo cashflow = context.farm().cashflow();
         if (cashflow == null) {
-            throw new IllegalArgumentException("Fără acord Open Banking nu putem calcula golul de lichiditate lunar");
+            throw new IllegalArgumentException("Without Open Banking consent we cannot compute the monthly liquidity gap");
         }
         BigDecimal[] in = zeros();
         BigDecimal[] out = zeros();
@@ -189,13 +189,13 @@ public final class OrganicPlans {
         for (var entry : (Iterable<Map.Entry<String, JsonNode>>) schedule::fields) {
             Month month = MONTHS.get(entry.getKey());
             if (month == null) {
-                throw new IllegalStateException("subsidyPaymentSharePct: lună necunoscută " + entry.getKey());
+                throw new IllegalStateException("subsidyPaymentSharePct: unknown month " + entry.getKey());
             }
             subsidies[month.getValue() - 1] = entry.getValue().decimalValue();
             total = total.add(entry.getValue().decimalValue());
         }
         if (total.compareTo(BigDecimal.valueOf(100)) != 0) {
-            throw new IllegalStateException("subsidyPaymentSharePct trebuie să dea 100, dă " + total);
+            throw new IllegalStateException("subsidyPaymentSharePct must add up to 100, got " + total);
         }
         List<BigDecimal> subsidyShares = java.util.Arrays.stream(subsidies).map(v -> fraction(v)).toList();
         return new MonthlyProfile(OrganicCalculator.monthlyShares(List.of(in)),

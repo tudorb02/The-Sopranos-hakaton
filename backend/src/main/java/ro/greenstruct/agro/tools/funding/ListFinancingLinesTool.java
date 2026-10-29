@@ -47,12 +47,12 @@ public class ListFinancingLinesTool implements ToolHandler {
         for (String lineId : FinancingConfig.moduleLines(context)) {
             JsonNode line = FinancingConfig.requireLine(context, lineId);
             String key = "line." + FinancingConfig.shortId(lineId);
-            context.calc(key + ".rate", "Dobândă " + line.path("nameRo").asText(), FinancingConfig.rate(line), Unit.PCT)
+            context.calc(key + ".rate", "Interest rate " + line.path("nameRo").asText(), FinancingConfig.rate(line), Unit.PCT)
                     .source("config/financing-lines.json (demo)").add();
             BigDecimal upfront = line.path("collateralUpfrontEur").decimalValue();
             if (upfront.signum() > 0) {
-                context.calc(key + ".collateral_initial", "Costuri inițiale ipotecă", upfront, Unit.EUR).add();
-                context.calc(key + ".collateral_annual", "Costuri anuale ipotecă",
+                context.calc(key + ".collateral_initial", "Mortgage upfront costs", upfront, Unit.EUR).add();
+                context.calc(key + ".collateral_annual", "Mortgage annual costs",
                         line.path("collateralAnnualEur").decimalValue(), Unit.EUR_PER_YEAR).add();
             }
             ObjectNode node = lines.addObject();
@@ -69,12 +69,12 @@ public class ListFinancingLinesTool implements ToolHandler {
                         g.path("coveragePct").decimalValue(), Unit.PCT).source(g.path("sourceRo").asText()).add());
             }
         }
-        context.calc("line.term", "Durata creditului", BigDecimal.valueOf(FinancingConfig.termMonths(context, input)),
+        context.calc("line.term", "Loan term", BigDecimal.valueOf(FinancingConfig.termMonths(context, input)),
                 Unit.MONTHS).add();
-        context.calc("line.horizon", "Orizontul comparației", BigDecimal.valueOf(FinancingConfig.horizonYears(context)),
+        context.calc("line.horizon", "Comparison horizon", BigDecimal.valueOf(FinancingConfig.horizonYears(context)),
                 Unit.YEARS).add();
-        context.calc("line.affordability_limit", "Limita ratelor față de cashflow",
+        context.calc("line.affordability_limit", "Instalment limit vs cash flow",
                 RuleValues.financingDefault(context, "affordabilityLimitPct"), Unit.PCT).add();
-        return context.ok(result, "Am încărcat liniile de finanțare pentru modulul " + context.module().nameRo());
+        return context.ok(result, "Loaded the financing lines for module " + context.module().nameRo());
     }
 }

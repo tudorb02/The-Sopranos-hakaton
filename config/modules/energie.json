@@ -1,11 +1,11 @@
 {
   "moduleId": "energie",
-  "nameRo": "Energie la fermă",
+  "nameRo": "On-farm energy",
   "icon": "☀️",
   "status": "DEMO_READY",
-  "descriptionRo": "Panouri solare, pompe solare, agrivoltaic.",
+  "descriptionRo": "Solar panels, solar pumps, agrivoltaics.",
   "examplesRo": [
-    "panouri solare",
+    "solar panels",
     "agrivoltaic"
   ],
   "indicator": "RENEWABLE_GENERATION",
@@ -13,34 +13,34 @@
     "kind": "BY_NATURE",
     "value": null,
     "unit": null,
-    "sourceRo": "regenerabil prin natura investiției; se verifică dimensionarea după consum",
+    "sourceRo": "renewable by the nature of the investment; the sizing against consumption is checked",
     "demo": true
   },
   "requiredDocs": [
     {
       "docType": "OFFER",
-      "labelRo": "Oferta / proforma și fișa tehnică a instalației",
+      "labelRo": "Offer / pro forma and technical data sheet of the installation",
       "required": true
     },
     {
       "docType": "ENERGY_INVOICES",
-      "labelRo": "Facturile de energie electrică pe ultimele 12 luni",
+      "labelRo": "Electricity invoices for the last 12 months",
       "required": true
     }
   ],
   "questionnaire": [
     {
       "questionId": "mounting",
-      "labelRo": "Unde se montează panourile?",
+      "labelRo": "Where will the panels be mounted?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "ACOPERIS",
-          "labelRo": "pe acoperiș"
+          "labelRo": "on a roof"
         },
         {
           "value": "TEREN_NEPRODUCTIV",
-          "labelRo": "pe teren neproductiv"
+          "labelRo": "on unproductive land"
         },
         {
           "value": "AGRIVOLTAIC",
@@ -48,7 +48,7 @@
         },
         {
           "value": "TEREN_AGRICOL",
-          "labelRo": "pe teren agricol productiv"
+          "labelRo": "on productive farmland"
         }
       ],
       "prefillFrom": "NONE",
@@ -56,59 +56,59 @@
     },
     {
       "questionId": "available_area_m2",
-      "labelRo": "Ce suprafață aveți disponibilă pentru panouri (m²)?",
+      "labelRo": "What area do you have available for panels (m²)?",
       "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": true
     },
     {
       "questionId": "daytime_share_pct",
-      "labelRo": "Ce parte din consumul de energie are loc ziua (aproximativ, %)?",
+      "labelRo": "What share of your energy use happens during the day (approx., %)?",
       "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": true
     },
     {
       "questionId": "diesel_pump_litres_year",
-      "labelRo": "Dacă înlocuiți o pompă pe motorină cu una solară: câți litri consumă pompa actuală pe an?",
+      "labelRo": "If you are replacing a diesel pump with a solar one: how many litres does the current pump use per year?",
       "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": false
     },
     {
       "questionId": "has_grid_notice",
-      "labelRo": "Aveți avizul de racordare pentru vânzarea surplusului în rețea?",
+      "labelRo": "Do you have the grid connection approval for selling surplus to the grid?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": false
     },
     {
       "questionId": "cashin_months",
-      "labelRo": "În ce luni încasați cel mai mult?",
+      "labelRo": "In which months do you receive the most income?",
       "type": "MONTHS",
       "prefillFrom": "OPEN_BANKING",
       "required": true
     },
     {
       "questionId": "old_equipment_fate",
-      "labelRo": "Ce faceți cu echipamentul vechi pe care îl înlocuiți (invertoare, cabluri, pompe)?",
+      "labelRo": "What do you do with the old equipment you are replacing (inverters, cables, pumps)?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "CASARE",
-          "labelRo": "casare"
+          "labelRo": "scrapping"
         },
         {
           "value": "VANZARE",
-          "labelRo": "vânzare"
+          "labelRo": "sale"
         },
         {
           "value": "REZERVA",
-          "labelRo": "îl păstrez ca rezervă"
+          "labelRo": "I keep it as a spare"
         },
         {
           "value": "NU_E_CAZUL",
-          "labelRo": "nu e cazul"
+          "labelRo": "not applicable"
         }
       ],
       "prefillFrom": "NONE",
@@ -120,27 +120,27 @@
   "dnsh": [
     {
       "objective": "CLIMATE_ADAPTATION",
-      "checkRo": "Panourile nu sunt pe parcele cu risc ridicat de inundații sau grindină, sau sunt asigurate.",
+      "checkRo": "The panels are not on parcels at high risk of flooding or hail, or they are insured.",
       "evidence": "PARCEL_RISK"
     },
     {
       "objective": "WATER_MARINE_RESOURCES",
-      "checkRo": "Panourile se spală fără surse noi de apă și fără detergenți care ajung în ape.",
+      "checkRo": "The panels are cleaned without new water sources and without detergents reaching water bodies.",
       "evidence": "WATER_USE"
     },
     {
       "objective": "CIRCULAR_ECONOMY",
-      "checkRo": "Panourile și invertoarele se predau la sfârșitul vieții la un colector autorizat de deșeuri electrice; echipamentul vechi este vândut sau predat unui colector autorizat.",
+      "checkRo": "At end of life, panels and inverters are handed over to an authorised e-waste collector; the old equipment is sold or handed over to an authorised collector.",
       "evidence": "OLD_EQUIPMENT_FATE"
     },
     {
       "objective": "POLLUTION_PREVENTION",
-      "checkRo": "Echipamentele sunt certificate (IEC 61215 / 61730) și nu conțin substanțe periculoase peste limitele UE.",
+      "checkRo": "The equipment is certified (IEC 61215 / 61730) and contains no hazardous substances above EU limits.",
       "evidence": "EQUIPMENT_CERTIFICATES"
     },
     {
       "objective": "BIODIVERSITY",
-      "checkRo": "Parcelele nu sunt în arii Natura 2000 sau există aviz de mediu; panourile nu ocupă teren agricol productiv.",
+      "checkRo": "The parcels are not in Natura 2000 areas, or there is an environmental approval; the panels do not occupy productive farmland.",
       "evidence": "NATURA_2000_PARCELS"
     }
   ],
@@ -168,7 +168,7 @@
   "parameters": {
     "pvYieldKwhPerKwp": {
       "value": 1250,
-      "sourceRo": "Producția specifică a panourilor, sudul României; valoare de pornire din documentele de test Product (data/demo/test-documents/reference/constants.json), de înlocuit cu PVGIS pe locația fermei"
+      "sourceRo": "Specific yield of the panels, southern Romania; starting value from the Product test documents (data/demo/test-documents/reference/constants.json), to be replaced with PVGIS for the farm's location"
     },
     "monthlyProductionShare": {
       "value": [
@@ -185,23 +185,23 @@
         0.045,
         0.035
       ],
-      "sourceRo": "Profilul lunar al producției, ianuarie–decembrie, suma 1; profil de demo (data/demo/test-documents/reference/constants.json), de înlocuit cu PVGIS"
+      "sourceRo": "Monthly production profile, January–December, sums to 1; demo profile (data/demo/test-documents/reference/constants.json), to be replaced with PVGIS"
     },
     "sellPriceEurPerKwh": {
       "value": 0.06,
-      "sourceRo": "Prețul de vânzare a surplusului în rețea; valoare de demo (data/demo/test-documents/reference/constants.json), de confirmat cu mentorii"
+      "sourceRo": "Selling price of the surplus fed into the grid; demo value (data/demo/test-documents/reference/constants.json), to be confirmed with the mentors"
     },
     "maxExportSharePct": {
       "value": 30,
-      "sourceRo": "Regula de dimensionare din demo-ul Product: cel mult 30% din producție vândută în rețea; o instalație supradimensionată vinde ieftin"
+      "sourceRo": "Sizing rule from the Product demo: at most 30% of production sold to the grid; an oversized installation sells cheaply"
     },
     "daytimeShareDefaultPct": {
       "value": 55,
-      "sourceRo": "README §6, categoria 2: ponderea consumului de zi, ex. 55%; folosită doar dacă fermierul nu răspunde"
+      "sourceRo": "README §6, category 2: daytime share of consumption, e.g. 55%; used only if the farmer does not answer"
     },
     "areaM2PerKwp": {
       "value": 5.5,
-      "sourceRo": "Suprafața de acoperiș pe kWp, din oferta de test Solar Câmpia Demo: 1.650 m² pentru 300 kWp; estimare, de validat"
+      "sourceRo": "Roof area per kWp, from the Solar Câmpia Demo test offer: 1,650 m² for 300 kWp; estimate, to be validated"
     },
     "eligibleMountings": {
       "value": [
@@ -209,7 +209,7 @@
         "TEREN_NEPRODUCTIV",
         "AGRIVOLTAIC"
       ],
-      "sourceRo": "README §6, categoria 2, pragul verde: acoperiș, teren neproductiv sau agrivoltaic; terenul agricol productiv nu e eligibil"
+      "sourceRo": "README §6, category 2, green threshold: roof, unproductive land or agrivoltaic; productive farmland is not eligible"
     }
   },
   "substantialContribution": "CLIMATE_MITIGATION",
@@ -227,6 +227,10 @@
     "kwp",
     "agrivoltaic",
     "solar",
-    "fotovolt"
+    "fotovolt",
+    "photovoltaic",
+    "panel",
+    "inverter",
+    "heat pump"
   ]
 }

@@ -30,7 +30,7 @@ public final class UpgradePackages {
         replace.forEach((componentId, catalogId) -> {
             boolean removed = components.removeIf(c -> c.componentId().equals(componentId));
             if (!removed) {
-                throw new IllegalArgumentException("Componenta " + componentId + " nu există în " + base.configId());
+                throw new IllegalArgumentException("Component " + componentId + " does not exist in " + base.configId());
             }
             components.add(CatalogItems.toComponent(CatalogItems.item(context, catalogId), tractors));
         });
@@ -43,7 +43,7 @@ public final class UpgradePackages {
                 boolean anyUsed = components.stream().anyMatch(c -> c.category().equals(item.path("mirrorsCategory")
                         .asText()) && EquipmentAge.isUsed(c));
                 if (!anyUsed) {
-                    throw new IllegalArgumentException(item.path("nameRo").asText() + " înlocuiește doar utilaje second-hand");
+                    throw new IllegalArgumentException(item.path("nameRo").asText() + " only replaces second-hand machinery");
                 }
                 components.replaceAll(c -> c.category().equals(item.path("mirrorsCategory").asText())
                         && EquipmentAge.isUsed(c)
@@ -71,7 +71,7 @@ public final class UpgradePackages {
                 return;
             }
         }
-        throw new IllegalArgumentException(item.path("nameRo").asText() + " se montează doar împreună cu: " + required);
+        throw new IllegalArgumentException(item.path("nameRo").asText() + " can only be installed together with: " + required);
     }
 
     /** The configuration chain ends at the configuration built from the offer (no base). */

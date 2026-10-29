@@ -1,62 +1,62 @@
 {
   "moduleId": "zootehnie",
-  "nameRo": "Zootehnie & biogaz",
+  "nameRo": "Livestock & biogas",
   "icon": "🐄",
   "status": "DEMO_READY",
-  "descriptionRo": "Digestor, stocarea gunoiului de grajd.",
+  "descriptionRo": "Digester, manure storage.",
   "examplesRo": [
-    "digestor",
-    "stocare gunoi de grajd"
+    "digester",
+    "manure storage"
   ],
   "indicator": "EMISSION_REDUCTION_PCT",
   "threshold": {
     "kind": "MIN_PCT",
     "value": 50,
     "unit": "PCT",
-    "sourceRo": "README §6, categoria 4: reducere de metan ≥ 50% pe gestionarea gunoiului de grajd și gunoi valorificat (energie sau îngrășământ); prag demo, de confirmat cu Raiffeisen",
+    "sourceRo": "README §6, category 4: methane reduction ≥ 50% in manure management and the manure put to use (energy or fertiliser); demo threshold, to be confirmed with Raiffeisen",
     "demo": true
   },
   "requiredDocs": [
     {
       "docType": "OFFER",
-      "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+      "labelRo": "Offer / pro forma and technical data sheet of the new investment",
       "required": true
     },
     {
       "docType": "ENVIRONMENTAL_PERMIT",
-      "labelRo": "Autorizația de mediu (sau cererea depusă)",
+      "labelRo": "Environmental permit (or the submitted application)",
       "required": true
     },
     {
       "docType": "ENERGY_INVOICES",
-      "labelRo": "Facturile de energie pe 12 luni (dacă biogazul produce energie pentru fermă)",
+      "labelRo": "Energy invoices for 12 months (if the biogas produces energy for the farm)",
       "required": false
     }
   ],
   "questionnaire": [
     {
       "questionId": "livestock_confirmed",
-      "labelRo": "Confirmați numărul și specia animalelor din registrul ANSVSA?",
+      "labelRo": "Do you confirm the number and species of animals in the ANSVSA register?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": true
     },
     {
       "questionId": "manure_storage",
-      "labelRo": "Cum stocați acum gunoiul de grajd?",
+      "labelRo": "How do you store manure now?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "PLATFORMA_DESCOPERITA",
-          "labelRo": "platformă descoperită (gunoi solid)"
+          "labelRo": "uncovered platform (solid manure)"
         },
         {
           "value": "BAZIN_DESCOPERIT",
-          "labelRo": "bazin descoperit (dejecții lichide)"
+          "labelRo": "uncovered tank (liquid slurry)"
         },
         {
           "value": "MIXT_DESCOPERIT",
-          "labelRo": "platformă descoperită (solid) și bazin descoperit (lichid)"
+          "labelRo": "uncovered platform (solid) and uncovered tank (liquid)"
         }
       ],
       "prefillFrom": "NONE",
@@ -64,20 +64,20 @@
     },
     {
       "questionId": "digestate_use",
-      "labelRo": "Ce faceți cu digestatul?",
+      "labelRo": "What do you do with the digestate?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "INGRASAMANT",
-          "labelRo": "îngrășământ pe terenurile proprii"
+          "labelRo": "fertiliser on my own land"
         },
         {
           "value": "VANZARE",
-          "labelRo": "îl vând ca îngrășământ"
+          "labelRo": "I sell it as fertiliser"
         },
         {
           "value": "NEVALORIFICAT",
-          "labelRo": "nu îl valorific"
+          "labelRo": "I don't use it"
         }
       ],
       "prefillFrom": "NONE",
@@ -85,31 +85,31 @@
     },
     {
       "questionId": "fertilisation_plan",
-      "labelRo": "Aveți plan de fertilizare pentru aplicarea digestatului pe teren?",
+      "labelRo": "Do you have a fertilisation plan for spreading the digestate on land?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": false
     },
     {
       "questionId": "old_equipment_fate",
-      "labelRo": "Ce faceți cu utilajul vechi și cu deșeurile (ambalaje, folie)?",
+      "labelRo": "What do you do with the old equipment and the waste (packaging, plastic film)?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "CASARE",
-          "labelRo": "casare"
+          "labelRo": "scrapping"
         },
         {
           "value": "VANZARE",
-          "labelRo": "vânzare"
+          "labelRo": "sale"
         },
         {
           "value": "REZERVA",
-          "labelRo": "îl păstrez ca rezervă"
+          "labelRo": "I keep it as a spare"
         },
         {
           "value": "NU_E_CAZUL",
-          "labelRo": "nu e cazul"
+          "labelRo": "not applicable"
         }
       ],
       "prefillFrom": "NONE",
@@ -117,23 +117,23 @@
     },
     {
       "questionId": "cashin_months",
-      "labelRo": "În ce luni încasați cel mai mult?",
+      "labelRo": "In which months do you receive the most income?",
       "type": "MONTHS",
       "prefillFrom": "OPEN_BANKING",
       "required": true
     },
     {
       "questionId": "loan_term",
-      "labelRo": "Pe câți ani vreți creditul?",
+      "labelRo": "Over how many years do you want the loan?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "ANI_5",
-          "labelRo": "5 ani"
+          "labelRo": "5 years"
         },
         {
           "value": "ANI_7",
-          "labelRo": "7 ani"
+          "labelRo": "7 years"
         }
       ],
       "prefillFrom": "NONE",
@@ -145,27 +145,27 @@
   "dnsh": [
     {
       "objective": "CLIMATE_ADAPTATION",
-      "checkRo": "Amplasamentul fermei nu e expus la inundații care ar spăla bazinele de dejecții.",
+      "checkRo": "The farm's site is not exposed to floods that would wash out the slurry tanks.",
       "evidence": "PARCEL_RISK"
     },
     {
       "objective": "WATER_MARINE_RESOURCES",
-      "checkRo": "Digestatul se aplică pe teren conform planului de fertilizare în zonele vulnerabile la nitrați.",
+      "checkRo": "The digestate is spread according to the fertilisation plan in nitrate vulnerable zones.",
       "evidence": "NITRATE_PARCELS"
     },
     {
       "objective": "CIRCULAR_ECONOMY",
-      "checkRo": "Gunoiul de grajd și digestatul sunt valorificate (energie sau îngrășământ), iar echipamentul vechi e predat unui colector autorizat.",
+      "checkRo": "Manure and digestate are put to use (energy or fertiliser), and the old equipment is handed over to an authorised collector.",
       "evidence": "DIGESTATE_USE"
     },
     {
       "objective": "POLLUTION_PREVENTION",
-      "checkRo": "Există autorizație de mediu valabilă, iar digestatul se stochează în bazin impermeabil și acoperit.",
+      "checkRo": "There is a valid environmental permit, and the digestate is stored in a sealed, covered tank.",
       "evidence": "ENVIRONMENTAL_PERMIT"
     },
     {
       "objective": "BIODIVERSITY",
-      "checkRo": "Amplasamentul nu e în arii Natura 2000 sau există aviz de mediu.",
+      "checkRo": "The site is not in Natura 2000 areas, or there is an environmental approval.",
       "evidence": "NATURA_2000_PARCELS"
     }
   ],
@@ -197,44 +197,44 @@
           "PLATFORMA_DESCOPERITA": 3
         }
       },
-      "sourceRo": "IPCC 2006, vol. 4, cap. 10 (Tier 1, Europa de Est, climat rece): EF = VS × B0 × 0,67 × MCF; bovine de lapte, 985 kg VS/an, B0 0,24 m³/kg VS, MCF 17% lichid / 2% solid. Valoarea mixtă (22) e cea din demo-ul Product (DEMO-0004). Estimare echipă, de validat cu mentorii"
+      "sourceRo": "IPCC 2006, vol. 4, ch. 10 (Tier 1, Eastern Europe, cool climate): EF = VS × B0 × 0.67 × MCF; dairy cattle, 985 kg VS/yr, B0 0.24 m³/kg VS, MCF 17% liquid / 2% solid. The mixed value (22) is the one from the Product demo (DEMO-0004). Team estimate, to be validated with the mentors"
     },
     "biogasKwhPerHead": {
       "value": {
         "BOVINE": 1500
       },
-      "sourceRo": "Energie electrică pe cap și an: fișa ofertei demo DEMO-0004 (225.000 kWh/an la 150 de capete). Se folosește doar când oferta nu dă energia produsă. Estimare echipă, de validat"
+      "sourceRo": "Electricity per head per year: data sheet of the demo offer DEMO-0004 (225,000 kWh/yr for 150 head). Used only when the offer does not state the energy produced. Team estimate, to be validated"
     },
     "nitrogenKgPerHeadYear": {
       "value": {
         "BOVINE": 40
       },
-      "sourceRo": "Azot din digestat disponibil plantelor, care înlocuiește azotul mineral (aprox. jumătate din azotul excretat de o vacă de lapte, ordin de mărime IPCC 2006 vol. 4 cap. 10). Estimare echipă, de validat cu mentorii"
+      "sourceRo": "Plant-available nitrogen from digestate, replacing mineral nitrogen (approx. half the nitrogen excreted by a dairy cow, order of magnitude from IPCC 2006 vol. 4 ch. 10). Team estimate, to be validated with the mentors"
     },
     "electricitySellEurPerKwh": {
       "value": 0.06,
-      "sourceRo": "Prețul de vânzare a energiei în rețea: constante demo Product (data/demo/test-documents/reference/constants.json). Estimare echipă, de validat"
+      "sourceRo": "Selling price of electricity to the grid: Product demo constants (data/demo/test-documents/reference/constants.json). Team estimate, to be validated"
     },
     "nitrogenEurPerKg": {
       "value": 1,
-      "sourceRo": "Prețul azotului mineral înlocuit: constante demo Product (data/demo/test-documents/reference/constants.json). Estimare echipă, de validat"
+      "sourceRo": "Price of the replaced mineral nitrogen: Product demo constants (data/demo/test-documents/reference/constants.json). Team estimate, to be validated"
     },
     "fertiliserDigestateUses": {
       "value": [
         "INGRASAMANT"
       ],
-      "sourceRo": "Folosirea digestatului pe terenul propriu înlocuiește azot mineral (README §6, categoria 4, calculul 6)"
+      "sourceRo": "Using the digestate on own land replaces mineral nitrogen (README §6, category 4, calculation 6)"
     },
     "valorisingDigestateUses": {
       "value": [
         "INGRASAMANT",
         "VANZARE"
       ],
-      "sourceRo": "README §6, categoria 4, pragul verde: gunoiul e valorificat ca energie sau ca îngrășământ"
+      "sourceRo": "README §6, category 4, green threshold: manure is put to use as energy or as fertiliser"
     },
     "safetyMarginPct": {
       "value": 2,
-      "sourceRo": "Marja peste prag cerută de echipă"
+      "sourceRo": "Margin above the threshold required by the team"
     }
   },
   "substantialContribution": "CLIMATE_MITIGATION",
@@ -252,6 +252,17 @@
     "vaci",
     "laguna",
     "cogenerare",
-    "ferma de lapte"
+    "ferma de lapte",
+    "digester",
+    "biogas",
+    "manure",
+    "cattle",
+    "cows",
+    "dairy",
+    "lagoon",
+    "slurry",
+    "cogeneration",
+    "barn",
+    "milking"
   ]
 }

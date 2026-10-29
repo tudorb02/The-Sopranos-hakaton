@@ -1,17 +1,17 @@
 {
   "module": "energie",
-  "note": "Instalații fotovoltaice complete (panouri, invertoare, structură, montaj, racordare), pe trepte de putere. role: ALTERNATIVE înlocuiește instalația din ofertă (redimensionare, README §13); fiecare treaptă înlocuiește liniile PV_SYSTEM și INSTALLATION_WORKS din ofertă. Prețurile sunt estimate (~720 EUR/kWp); condiție înainte de tragere: oferta actualizată a furnizorului.",
+  "note": "Complete PV systems (panels, inverters, structure, installation, grid connection), by power step. role: ALTERNATIVE replaces the system in the offer (resizing, README §13); each step replaces the PV_SYSTEM and INSTALLATION_WORKS lines of the offer. Prices are estimates (~720 EUR/kWp); condition precedent to drawdown: the supplier's updated offer.",
   "items": [
     {
       "catalogId": "nrg.pv100",
       "category": "PV_SYSTEM",
-      "nameRo": "Instalație fotovoltaică 100 kWp (panouri, invertoare, structură, montaj)",
+      "nameRo": "PV system 100 kWp (panels, inverters, structure, installation)",
       "role": "ALTERNATIVE",
       "costEur": 72000,
       "effect": {
         "pvKwp": 100
       },
-      "sourceRo": "Catalog de upgrade-uri Product (data/demo/test-documents/reference/upgrades.json, PV-100); preț estimativ",
+      "sourceRo": "Product upgrade catalogue (data/demo/test-documents/reference/upgrades.json, PV-100); estimated price",
       "replacesCategories": [
         "PV_SYSTEM",
         "INSTALLATION_WORKS"
@@ -20,13 +20,13 @@
     {
       "catalogId": "nrg.pv150",
       "category": "PV_SYSTEM",
-      "nameRo": "Instalație fotovoltaică 150 kWp (panouri, invertoare, structură, montaj)",
+      "nameRo": "PV system 150 kWp (panels, inverters, structure, installation)",
       "role": "ALTERNATIVE",
       "costEur": 108000,
       "effect": {
         "pvKwp": 150
       },
-      "sourceRo": "Catalog de upgrade-uri Product (data/demo/test-documents/reference/upgrades.json, PV-150); preț estimativ",
+      "sourceRo": "Product upgrade catalogue (data/demo/test-documents/reference/upgrades.json, PV-150); estimated price",
       "replacesCategories": [
         "PV_SYSTEM",
         "INSTALLATION_WORKS"
@@ -35,13 +35,13 @@
     {
       "catalogId": "nrg.pv200",
       "category": "PV_SYSTEM",
-      "nameRo": "Instalație fotovoltaică 200 kWp (panouri, invertoare, structură, montaj)",
+      "nameRo": "PV system 200 kWp (panels, inverters, structure, installation)",
       "role": "ALTERNATIVE",
       "costEur": 144000,
       "effect": {
         "pvKwp": 200
       },
-      "sourceRo": "Catalog de upgrade-uri Product (data/demo/test-documents/reference/upgrades.json, PV-200); preț estimativ",
+      "sourceRo": "Product upgrade catalogue (data/demo/test-documents/reference/upgrades.json, PV-200); estimated price",
       "replacesCategories": [
         "PV_SYSTEM",
         "INSTALLATION_WORKS"
@@ -50,13 +50,13 @@
     {
       "catalogId": "nrg.pv300",
       "category": "PV_SYSTEM",
-      "nameRo": "Instalație fotovoltaică 300 kWp (panouri, invertoare, structură, montaj)",
+      "nameRo": "PV system 300 kWp (panels, inverters, structure, installation)",
       "role": "ALTERNATIVE",
       "costEur": 210000,
       "effect": {
         "pvKwp": 300
       },
-      "sourceRo": "Catalog de upgrade-uri Product (data/demo/test-documents/reference/upgrades.json, PV-300); preț estimativ",
+      "sourceRo": "Product upgrade catalogue (data/demo/test-documents/reference/upgrades.json, PV-300); estimated price",
       "replacesCategories": [
         "PV_SYSTEM",
         "INSTALLATION_WORKS"

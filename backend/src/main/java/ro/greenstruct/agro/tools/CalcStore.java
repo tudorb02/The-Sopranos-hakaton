@@ -95,11 +95,11 @@ public class CalcStore {
         }
     }
 
-    /** Romanian formatting: 85.000 EUR, 15,03%, 1.760,34 EUR/lună. */
+    /** English formatting: 85,000 EUR, 15.03%, 1,760.34 EUR/month. */
     static String display(BigDecimal value, Unit unit) {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setGroupingSeparator('.');
-        symbols.setDecimalSeparator(',');
+        symbols.setGroupingSeparator(',');
+        symbols.setDecimalSeparator('.');
         symbols.setMinusSign('−');
         String pattern = unit.displayDecimals() == 0 ? "#,##0" : "#,##0." + "0".repeat(unit.displayDecimals());
         DecimalFormat format = new DecimalFormat(pattern, symbols);

@@ -59,7 +59,7 @@ class DocumentConformityTest {
         read(OFFER, "FERTILIZER_INVOICES", null);
 
         assertThat(conformity.problems(run)).containsExactly(
-                "Documentul oferta.pdf a fost încărcat ca ofertă, dar este facturi de îngrășăminte");
+                "Document oferta.pdf was uploaded as offer, but it is fertiliser invoices");
     }
 
     @Test
@@ -74,24 +74,24 @@ class DocumentConformityTest {
         read(PERMIT, "WATER_PERMIT_ANAR", "DEMO-0001");
 
         assertThat(conformity.problems(run)).containsExactly(
-                "Documentul autorizatie.pdf este pe CUI-ul DEMO-0001, nu pe CUI-ul firmei (45871203)");
+                "Document autorizatie.pdf is addressed to CUI DEMO-0001, not to the company's CUI (45871203)");
     }
 
     @Test
     void anOfferForAnotherCategoryIsRejected() {
         ModuleDefinition energy = mock(ModuleDefinition.class);
         when(energy.moduleId()).thenReturn("energie");
-        when(energy.nameRo()).thenReturn("Energie la fermă");
+        when(energy.nameRo()).thenReturn("On-farm energy");
         when(classifier.classify(anyString(), any())).thenReturn(Optional.of(energy));
 
         assertThat(conformity.problems(run)).containsExactly(
-                "Oferta oferta.pdf este pentru Energie la fermă, nu pentru irigatii");
+                "Offer oferta.pdf is for On-farm energy, not for irigatii");
     }
 
     @Test
     void aDocumentTheExtractorCouldNotReadIsRejectedUntilItIsRead() {
-        workspaces.forRun(run.id()).putExtractionFailure(OFFER.documentId(), "Documentul oferta.pdf nu a putut fi citit");
-        assertThat(conformity.problems(run)).containsExactly("Documentul oferta.pdf nu a putut fi citit");
+        workspaces.forRun(run.id()).putExtractionFailure(OFFER.documentId(), "Document oferta.pdf could not be read");
+        assertThat(conformity.problems(run)).containsExactly("Document oferta.pdf could not be read");
 
         read(OFFER, "OFFER", null);
         assertThat(conformity.problems(run)).isEmpty();

@@ -25,16 +25,16 @@ final class FundsConfig {
     }
 
     static JsonNode requireFund(ToolContext context, String fundId) {
-        return fund(context, fundId).orElseThrow(() -> new IllegalArgumentException("Fondul " + fundId
-                + " nu există în config/funds.json"));
+        return fund(context, fundId).orElseThrow(() -> new IllegalArgumentException("Fund " + fundId
+                + " does not exist in config/funds.json"));
     }
 
     /** primaryFund, alternatives and bondCategories of the dossier's module. */
     static JsonNode module(ToolContext context) {
         JsonNode module = context.reference().funds().path("modules").path(context.module().moduleId());
         if (module.isMissingNode()) {
-            throw new IllegalArgumentException("Modulul " + context.module().moduleId()
-                    + " nu are fonduri în config/funds.json");
+            throw new IllegalArgumentException("Module " + context.module().moduleId()
+                    + " has no funds in config/funds.json");
         }
         return module;
     }

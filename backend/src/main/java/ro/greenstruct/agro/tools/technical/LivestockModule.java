@@ -47,11 +47,11 @@ public class LivestockModule implements ModuleCalculator {
     public ToolOutput baseline(JsonNode input, ToolContext context) {
         String storage = context.questionnaire().path("manure_storage").asText("");
         if (storage.isBlank()) {
-            throw new IllegalArgumentException("Lipsește răspunsul „manure_storage” (cum stocați gunoiul de grajd azi)");
+            throw new IllegalArgumentException("The answer 'manure_storage' is missing (how you store manure today)");
         }
         JsonNode register = context.farm().farm().livestock();
         if (register == null || !register.isArray() || register.isEmpty()) {
-            throw new IllegalArgumentException("Registrul ANSVSA nu arată animale la această fermă");
+            throw new IllegalArgumentException("The ANSVSA register shows no animals at this farm");
         }
         BigDecimal heads = BigDecimal.ZERO;
         BigDecimal methane = BigDecimal.ZERO;
@@ -73,16 +73,16 @@ public class LivestockModule implements ModuleCalculator {
         Optional<BigDecimal> invoiced = context.workspace().documentOfType("ENERGY_INVOICES")
                 .flatMap(doc -> doc.number("ENERGY_KWH"));
 
-        Calc headsCalc = context.calc("baseline.heads", "Animale în fermă (registrul ANSVSA)", heads, Unit.COUNT)
+        Calc headsCalc = context.calc("baseline.heads", "Animals on the farm (ANSVSA register)", heads, Unit.COUNT)
                 .source("ANSVSA").add();
-        Calc methaneCalc = context.calc("baseline.methane", "Metan din gunoiul de grajd azi", methane,
-                Unit.KG_CH4_PER_YEAR).formula("capete × factor CH₄ (specie, sistem de stocare)")
+        Calc methaneCalc = context.calc("baseline.methane", "Methane from manure today", methane,
+                Unit.KG_CH4_PER_YEAR).formula("heads × CH₄ factor (species, storage system)")
                 .source(context.paramSource("ch4KgPerHeadYear")).dependsOn(headsCalc).add();
-        context.calc("baseline.co2", "Emisii de gunoi de grajd azi", co2e, Unit.T_CO2_PER_YEAR)
+        context.calc("baseline.co2", "Manure emissions today", co2e, Unit.T_CO2_PER_YEAR)
                 .formula("kg CH₄ × GWP / 1000").dependsOn(methaneCalc).add();
         if (invoiced.isPresent()) {
-            context.calc("baseline.farm_energy", "Energia electrică consumată la fermă", invoiced.get(),
-                    Unit.KWH_PER_YEAR).formula("din facturile de energie pe 12 luni").add();
+            context.calc("baseline.farm_energy", "Electricity used on the farm", invoiced.get(),
+                    Unit.KWH_PER_YEAR).formula("from the 12-month energy invoices").add();
         }
 
         Map<String, BigDecimal> baseline = new HashMap<>();
@@ -100,16 +100,16 @@ public class LivestockModule implements ModuleCalculator {
         result.set("species", context.mapper().valueToTree(species));
         List<String> warnings = new ArrayList<>();
         if (!context.questionnaire().path("livestock_confirmed").asBoolean(false)) {
-            warnings.add("Numărul de animale din registrul ANSVSA nu a fost confirmat de fermier");
+            warnings.add("The number of animals in the ANSVSA register has not been confirmed by the farmer");
         }
         if (invoiced.isEmpty()) {
-            warnings.add("Fără facturi de energie: toată energia produsă se consideră vândută în rețea");
+            warnings.add("No energy invoices: all energy produced is treated as sold to the grid");
         }
         if (!warnings.isEmpty()) {
             result.set("warnings", context.mapper().valueToTree(warnings));
         }
-        return context.ok(result, "Situația actuală: " + methaneCalc.display() + " din " + heads.toPlainString()
-                + " de animale");
+        return context.ok(result, "Current situation: " + methaneCalc.display() + " from " + heads.toPlainString()
+                + " animals");
     }
 
     @Override
@@ -159,29 +159,29 @@ public class LivestockModule implements ModuleCalculator {
     public List<Calc> emit(ToolContext context, Configuration cfg) {
         String p = cfg.configId() + ".";
         List<Calc> calcs = new ArrayList<>();
-        calcs.add(context.calc(p + "methane_reduction_pct", "Reducerea emisiilor de metan", cfg.metric("indicator_pct"),
-                Unit.PCT).formula("1 − CH₄ nou / CH₄ azi").add());
-        calcs.add(context.calc(p + "methane_new", "Metan după investiție", cfg.metric("ch4_new_kg"),
-                Unit.KG_CH4_PER_YEAR).formula("CH₄ azi × (1 − reducerea sistemului)").add());
-        calcs.add(context.calc(p + "methane_saved", "Metan evitat pe an", cfg.metric("ch4_saved_kg"),
+        calcs.add(context.calc(p + "methane_reduction_pct", "Methane emission reduction", cfg.metric("indicator_pct"),
+                Unit.PCT).formula("1 − new CH₄ / CH₄ today").add());
+        calcs.add(context.calc(p + "methane_new", "Methane after the investment", cfg.metric("ch4_new_kg"),
+                Unit.KG_CH4_PER_YEAR).formula("CH₄ today × (1 − system reduction)").add());
+        calcs.add(context.calc(p + "methane_saved", "Methane avoided per year", cfg.metric("ch4_saved_kg"),
                 Unit.KG_CH4_PER_YEAR).add());
         if (cfg.metricOrZero("energy_kwh").signum() > 0) {
-            calcs.add(context.calc(p + "energy_produced", "Energie electrică produsă din biogaz",
-                    cfg.metric("energy_kwh"), Unit.KWH_PER_YEAR).formula("din fișa ofertei, altfel capete × kWh pe cap")
+            calcs.add(context.calc(p + "energy_produced", "Electricity produced from biogas",
+                    cfg.metric("energy_kwh"), Unit.KWH_PER_YEAR).formula("from the offer data sheet, else heads × kWh per head")
                     .add());
-            calcs.add(context.calc(p + "energy_own", "Energie folosită la fermă", cfg.metric("energy_own_kwh"),
-                    Unit.KWH_PER_YEAR).formula("min(energie produsă, consumul fermei)").add());
-            calcs.add(context.calc(p + "energy_sold", "Energie vândută în rețea", cfg.metric("energy_sold_kwh"),
-                    Unit.KWH_PER_YEAR).formula("energie produsă − energie folosită la fermă").add());
+            calcs.add(context.calc(p + "energy_own", "Energy used on the farm", cfg.metric("energy_own_kwh"),
+                    Unit.KWH_PER_YEAR).formula("min(energy produced, farm consumption)").add());
+            calcs.add(context.calc(p + "energy_sold", "Energy sold to the grid", cfg.metric("energy_sold_kwh"),
+                    Unit.KWH_PER_YEAR).formula("energy produced − energy used on the farm").add());
         }
         if (cfg.metricOrZero("nitrogen_kg").signum() > 0) {
-            calcs.add(context.calc(p + "nitrogen_digestate", "Azot din digestat care înlocuiește îngrășământul mineral",
-                    cfg.metric("nitrogen_kg"), Unit.KG_N_PER_YEAR).formula("capete × kg N pe cap").add());
+            calcs.add(context.calc(p + "nitrogen_digestate", "Nitrogen from digestate replacing mineral fertiliser",
+                    cfg.metric("nitrogen_kg"), Unit.KG_N_PER_YEAR).formula("heads × kg N per head").add());
         }
-        calcs.add(context.calc(p + "savings_energy", "Valoarea energiei pe an", cfg.metric("savings_energy_eur"),
-                Unit.EUR_PER_YEAR).formula("kWh la fermă × preț + kWh vânduți × preț de vânzare").add());
-        calcs.add(context.calc(p + "savings_fertiliser", "Valoarea azotului din digestat pe an",
-                cfg.metric("savings_fertiliser_eur"), Unit.EUR_PER_YEAR).formula("kg N × preț azot").add());
+        calcs.add(context.calc(p + "savings_energy", "Energy value per year", cfg.metric("savings_energy_eur"),
+                Unit.EUR_PER_YEAR).formula("farm kWh × price + kWh sold × sell price").add());
+        calcs.add(context.calc(p + "savings_fertiliser", "Value of the digestate nitrogen per year",
+                cfg.metric("savings_fertiliser_eur"), Unit.EUR_PER_YEAR).formula("kg N × nitrogen price").add());
         return calcs;
     }
 
@@ -203,27 +203,27 @@ public class LivestockModule implements ModuleCalculator {
     @Override
     public void describeRules(ToolContext context) {
         var module = context.module();
-        context.calc("rules.threshold.methane_reduction", "Pragul verde: reducerea emisiilor de metan",
+        context.calc("rules.threshold.methane_reduction", "Green threshold: methane emission reduction",
                 RuleValues.thresholdPct(context), Unit.PCT).source(module.threshold().sourceRo()).add();
-        context.calc("rules.factor.gwp_methane", "GWP al metanului (100 de ani)", RuleValues.factor(context, "methaneGwp"),
+        context.calc("rules.factor.gwp_methane", "Methane GWP (100 years)", RuleValues.factor(context, "methaneGwp"),
                 Unit.COUNT).source(RuleValues.factorSource(context, "methaneGwp")).add();
         String storage = context.questionnaire().path("manure_storage").asText("");
         JsonNode register = context.farm().farm().livestock();
         if (!storage.isBlank() && register != null && register.isArray() && !register.isEmpty()) {
             String species = register.get(0).path("species").asText();
-            context.calc("rules.factor.ch4_per_head", "Factor de emisie CH₄ pe cap și an (" + species + ", " + storage + ")",
+            context.calc("rules.factor.ch4_per_head", "CH₄ emission factor per head and year (" + species + ", " + storage + ")",
                     perHead(context, "ch4KgPerHeadYear", species, storage), Unit.KG_CH4_PER_YEAR)
                     .source(context.paramSource("ch4KgPerHeadYear")).add();
-            context.calc("rules.energy.kwh_per_head", "Energie electrică din biogaz pe cap și an",
+            context.calc("rules.energy.kwh_per_head", "Electricity from biogas per head and year",
                     perHead(context, "biogasKwhPerHead", species, null), Unit.KWH_PER_YEAR)
                     .source(context.paramSource("biogasKwhPerHead")).add();
         }
-        context.calc("rules.price.electricity", "Prețul energiei electrice", RuleValues.price(context, "electricityEurPerKwh"),
+        context.calc("rules.price.electricity", "Electricity price", RuleValues.price(context, "electricityEurPerKwh"),
                 Unit.EUR_PER_KWH).source(RuleValues.priceSource(context, "electricityEurPerKwh")).add();
-        context.calc("rules.price.electricity_sell", "Prețul de vânzare a energiei în rețea",
+        context.calc("rules.price.electricity_sell", "Sell price of energy to the grid",
                 context.param("electricitySellEurPerKwh"), Unit.EUR_PER_KWH)
                 .source(context.paramSource("electricitySellEurPerKwh")).add();
-        context.calc("rules.price.nitrogen", "Prețul azotului mineral înlocuit", context.param("nitrogenEurPerKg"),
+        context.calc("rules.price.nitrogen", "Price of the mineral nitrogen replaced", context.param("nitrogenEurPerKg"),
                 Unit.EUR_PER_KG_N).source(context.paramSource("nitrogenEurPerKg")).add();
     }
 
@@ -250,7 +250,7 @@ public class LivestockModule implements ModuleCalculator {
 
     @Override
     public void horizonImpact(ToolContext context, Configuration cfg, BigDecimal years) {
-        context.calc("impact.energy_horizon", "Energie produsă din biogaz pe orizont",
+        context.calc("impact.energy_horizon", "Energy produced from biogas over the horizon",
                 cfg.metric("energy_kwh").multiply(years, MC), Unit.KWH).add();
     }
 
@@ -286,8 +286,8 @@ public class LivestockModule implements ModuleCalculator {
             node = node.path(storage);
         }
         if (!node.isNumber()) {
-            throw new IllegalArgumentException("Config-ul „" + name + "” nu are valoare pentru specia " + species
-                    + (storage == null ? "" : " și stocarea " + storage));
+            throw new IllegalArgumentException("Config '" + name + "' has no value for species " + species
+                    + (storage == null ? "" : " and storage " + storage));
         }
         return node.decimalValue();
     }
@@ -302,7 +302,7 @@ public class LivestockModule implements ModuleCalculator {
         try {
             return LocalDate.parse(raw.trim(), RO_DATE);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Data „" + raw + "” din autorizație nu are formatul zz.ll.aaaa");
+            throw new IllegalArgumentException("Date '" + raw + "' in the permit is not in dd.mm.yyyy format");
         }
     }
 }

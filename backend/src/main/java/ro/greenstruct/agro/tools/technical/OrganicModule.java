@@ -47,12 +47,12 @@ public class OrganicModule implements ModuleCalculator {
         BigDecimal conversionHa = questionnaire.has("conversion_ha")
                 ? questionnaire.path("conversion_ha").decimalValue() : area;
         if (conversionHa.signum() <= 0 || conversionHa.compareTo(area) > 0) {
-            throw new IllegalArgumentException("Hectarele în conversie (" + conversionHa.toPlainString()
-                    + ") trebuie să fie între 1 și suprafața parcelelor alese (" + area.toPlainString() + " ha)");
+            throw new IllegalArgumentException("Hectares in conversion (" + conversionHa.toPlainString()
+                    + ") must be between 1 and the area of the selected parcels (" + area.toPlainString() + " ha)");
         }
         int startYear = questionnaire.path("conversion_start_year").asInt(0);
         if (startYear < 2000) {
-            throw new IllegalArgumentException("Lipsește anul de început al conversiei (conversion_start_year)");
+            throw new IllegalArgumentException("Conversion start year missing (conversion_start_year)");
         }
 
         BigDecimal nitrogen;
@@ -62,12 +62,12 @@ public class OrganicModule implements ModuleCalculator {
             BigDecimal productKg = invoices.get().lines().stream().map(l -> l.numbers().get("QUANTITY"))
                     .filter(v -> v != null).reduce(BigDecimal.ZERO, BigDecimal::add);
             nitrogen = OrganicCalculator.nitrogenInFertilizerKg(productKg, context.param("fertilizerNContentPct"));
-            nitrogenSource = "din facturile de îngrășăminte × conținutul de azot";
+            nitrogenSource = "from the fertiliser invoices × nitrogen content";
         } else if (questionnaire.has("nitrogen_kg_ha")) {
             nitrogen = OrganicCalculator.nitrogenAvoidedKg(questionnaire.path("nitrogen_kg_ha").decimalValue(), conversionHa);
-            nitrogenSource = "kg N/ha declarat × hectare în conversie";
+            nitrogenSource = "declared kg N/ha × hectares in conversion";
         } else {
-            throw new IllegalArgumentException("Lipsesc facturile de îngrășăminte sau răspunsul nitrogen_kg_ha");
+            throw new IllegalArgumentException("Fertiliser invoices or the nitrogen_kg_ha answer missing");
         }
         BigDecimal co2 = OrganicCalculator.co2eAvoidedTonnes(nitrogen, RuleValues.factor(context, "nitrogenKgCo2ePerKgN"));
 
@@ -75,18 +75,18 @@ public class OrganicModule implements ModuleCalculator {
         var parameters = OrganicPlans.parameters(context);
         YearResult conventional = OrganicCalculator.conventional(crops, startYear, parameters);
 
-        Calc areaCalc = context.calc("baseline.area", "Suprafața parcelelor alese", area, Unit.HA).source("APIA").add();
-        context.calc("baseline.conversion_ha", "Hectare care trec la bio", conversionHa, Unit.HA)
-                .source("răspunsul fermierului + contractul de certificare").add();
-        Calc nitrogenCalc = context.calc("baseline.nitrogen", "Azot mineral aplicat azi", nitrogen, Unit.KG_N_PER_YEAR)
+        Calc areaCalc = context.calc("baseline.area", "Area of the selected parcels", area, Unit.HA).source("APIA").add();
+        context.calc("baseline.conversion_ha", "Hectares converting to organic", conversionHa, Unit.HA)
+                .source("farmer's answer + certification contract").add();
+        Calc nitrogenCalc = context.calc("baseline.nitrogen", "Mineral nitrogen applied today", nitrogen, Unit.KG_N_PER_YEAR)
                 .formula(nitrogenSource).dependsOn(areaCalc).add();
-        context.calc("baseline.co2", "CO₂e din azotul mineral azi", co2, Unit.T_CO2_PER_YEAR)
-                .formula("kg N × 4,29 kg CO₂e/kg N / 1.000").source(RuleValues.factorSource(context, "nitrogenKgCo2ePerKgN"))
+        context.calc("baseline.co2", "CO₂e from mineral nitrogen today", co2, Unit.T_CO2_PER_YEAR)
+                .formula("kg N × 4.29 kg CO₂e/kg N / 1,000").source(RuleValues.factorSource(context, "nitrogenKgCo2ePerKgN"))
                 .dependsOn(nitrogenCalc).add();
-        context.calc("baseline.revenue_conventional", "Venitul din culturi azi", conventional.revenueEur(),
-                Unit.EUR_PER_YEAR).formula("Σ ha × producție/ha × preț convențional").source("APIA + config").add();
-        context.calc("baseline.margin_conventional", "Marja fermei convenționale", conventional.marginEur(),
-                Unit.EUR_PER_YEAR).formula("venit − ha × cost convențional/ha").source("config/modules/ecologic.json").add();
+        context.calc("baseline.revenue_conventional", "Crop revenue today", conventional.revenueEur(),
+                Unit.EUR_PER_YEAR).formula("Σ ha × yield/ha × conventional price").source("APIA + config").add();
+        context.calc("baseline.margin_conventional", "Margin of the conventional farm", conventional.marginEur(),
+                Unit.EUR_PER_YEAR).formula("revenue − ha × conventional cost/ha").source("config/modules/ecologic.json").add();
 
         Map<String, BigDecimal> baseline = new HashMap<>();
         baseline.put("area_ha", area);
@@ -101,11 +101,11 @@ public class OrganicModule implements ModuleCalculator {
         result.put("dataSource", invoices.isPresent() ? "MIXED" : "NORMS");
         result.put("conversionStartYear", startYear);
         if (invoices.isEmpty()) {
-            result.putArray("warnings").add("Fără facturi de îngrășăminte: azotul e cel declarat de fermier");
+            result.putArray("warnings").add("No fertiliser invoices: nitrogen is as declared by the farmer");
         }
-        return context.ok(result, "Situația actuală: " + conversionHa.stripTrailingZeros().toPlainString()
-                + " ha trec la bio din " + startYear + ", marja convențională " + conventional.marginEur().setScale(0,
-                java.math.RoundingMode.HALF_EVEN).toPlainString() + " EUR/an");
+        return context.ok(result, "Current situation: " + conversionHa.stripTrailingZeros().toPlainString()
+                + " ha convert to organic from " + startYear + ", conventional margin " + conventional.marginEur().setScale(0,
+                java.math.RoundingMode.HALF_EVEN).toPlainString() + " EUR/yr");
     }
 
     @Override
@@ -144,29 +144,29 @@ public class OrganicModule implements ModuleCalculator {
         String p = cfg.configId() + ".";
         int startYear = context.workspace().baseline().get("start_year").intValueExact();
         List<Calc> calcs = new ArrayList<>();
-        calcs.add(context.calc(p + "certified_area", "Hectare certificate sau în conversie", cfg.metric("certified_area_ha"),
-                Unit.HA).formula("hectarele din contractul de certificare (0 fără contract sau certificat)").add());
-        calcs.add(context.calc(p + "ha_year1", "Hectare care intră în conversie în primul an", cfg.metric("ha_year1"),
-                Unit.HA).formula(cfg.metric("phased").signum() > 0 ? "prima tranșă a planului etapizat" : "toate hectarele")
+        calcs.add(context.calc(p + "certified_area", "Hectares certified or in conversion", cfg.metric("certified_area_ha"),
+                Unit.HA).formula("hectares in the certification contract (0 without a contract or certificate)").add());
+        calcs.add(context.calc(p + "ha_year1", "Hectares entering conversion in the first year", cfg.metric("ha_year1"),
+                Unit.HA).formula(cfg.metric("phased").signum() > 0 ? "first tranche of the phased plan" : "all hectares")
                 .add());
-        calcs.add(context.calc(p + "nitrogen_saved", "Azot mineral evitat pe an", cfg.metric("nitrogen_saved_kg"),
-                Unit.KG_N_PER_YEAR).formula("kg N/ha × ha (sau kg N din facturi)").add());
+        calcs.add(context.calc(p + "nitrogen_saved", "Mineral nitrogen avoided per year", cfg.metric("nitrogen_saved_kg"),
+                Unit.KG_N_PER_YEAR).formula("kg N/ha × ha (or kg N from invoices)").add());
         int years = (int) cfg.metrics().keySet().stream().filter(k -> k.startsWith("margin_y")).count();
         for (int i = 1; i <= years; i++) {
-            calcs.add(context.calc(p + "margin_y" + i, "Marja față de convențional, anul " + (startYear + i - 1),
+            calcs.add(context.calc(p + "margin_y" + i, "Margin vs conventional, year " + (startYear + i - 1),
                     cfg.metric("margin_y" + i), Unit.EUR_PER_YEAR)
-                    .formula("(venit − cheltuieli + plăți bio) − marja convențională").add());
+                    .formula("(revenue − expenses + organic payments) − conventional margin").add());
         }
-        calcs.add(context.calc(p + "margin_total", "Marja cumulată față de convențional pe " + years + " ani",
+        calcs.add(context.calc(p + "margin_total", "Cumulative margin vs conventional over " + years + " years",
                 cfg.metric("margin_total_eur"), Unit.EUR).add());
-        calcs.add(context.calc(p + "gap_y1", "Golul de lichiditate în primul an (fără rate)", cfg.metric("gap_y1_total_eur"),
-                Unit.EUR).formula("Σ lunar max(0, cheltuieli + rate − venituri − subvenții), față de ferma convențională")
+        calcs.add(context.calc(p + "gap_y1", "Liquidity gap in the first year (no instalments)", cfg.metric("gap_y1_total_eur"),
+                Unit.EUR).formula("Σ monthly max(0, expenses + instalments − revenue − subsidies), vs the conventional farm")
                 .add());
-        calcs.add(context.calc(p + "gap_y1_peak", "Cel mai mare gol lunar din primul an", cfg.metric("gap_y1_peak_eur"),
+        calcs.add(context.calc(p + "gap_y1_peak", "Largest monthly gap in the first year", cfg.metric("gap_y1_peak_eur"),
                 Unit.EUR_PER_MONTH).add());
-        calcs.add(context.calc(p + "prefinancing_capacity", "Capacitatea de prefinanțare APIA în primul an",
+        calcs.add(context.calc(p + "prefinancing_capacity", "APIA pre-financing capacity in the first year",
                 cfg.metric("coverage_y1_eur"), Unit.EUR)
-                .formula("procent de avans × (subvenții APIA azi + plăți bio din primul an)")
+                .formula("advance percentage × (APIA subsidies today + first-year organic payments)")
                 .source(context.paramSource("apiaPrefinancingAdvancePct")).add());
         return calcs;
     }
@@ -191,20 +191,20 @@ public class OrganicModule implements ModuleCalculator {
     @Override
     public void describeRules(ToolContext context) {
         // CERTIFICATION has no numeric threshold: one certificate or conversion contract must exist
-        context.calc("rules.threshold.certification", "Pragul verde: certificat ecologic UE sau contract de conversie",
-                BigDecimal.ONE, Unit.COUNT).formula("cel puțin un certificat sau contract cu un organism de certificare")
+        context.calc("rules.threshold.certification", "Green threshold: EU organic certificate or conversion contract",
+                BigDecimal.ONE, Unit.COUNT).formula("at least one certificate or contract with a certification body")
                 .source(context.module().threshold().sourceRo()).add();
-        rule(context, "yieldPctConversionYear1", "Producția în anul 1 de conversie, din cea convențională", Unit.PCT);
-        rule(context, "yieldPctConversionYear2", "Producția în anul 2 de conversie, din cea convențională", Unit.PCT);
-        rule(context, "yieldPctCertified", "Producția după certificare, din cea convențională", Unit.PCT);
-        rule(context, "organicPricePremiumPct", "Prima de preț bio după certificare", Unit.PCT);
-        rule(context, "costEurPerHaConventional", "Cheltuieli pe hectar, agricultura convențională", Unit.EUR_PER_HA);
-        rule(context, "costEurPerHaOrganic", "Cheltuieli pe hectar, agricultura ecologică", Unit.EUR_PER_HA);
-        rule(context, "conversionPaymentEurPerHa", "Plata pentru conversie (anii de conversie)", Unit.EUR_PER_HA);
-        rule(context, "maintenancePaymentEurPerHa", "Plata pentru menținere (după certificare)", Unit.EUR_PER_HA);
-        rule(context, "apiaPrefinancingAdvancePct", "Avansul prefinanțării subvențiilor APIA (F5)", Unit.PCT);
-        rule(context, "maxGraceMonths", "Perioada maximă de grație", Unit.MONTHS);
-        context.calc("rules.factor.nitrogen", "Factor de emisie al azotului mineral (kg CO₂e/kg N)",
+        rule(context, "yieldPctConversionYear1", "Yield in conversion year 1, as share of conventional", Unit.PCT);
+        rule(context, "yieldPctConversionYear2", "Yield in conversion year 2, as share of conventional", Unit.PCT);
+        rule(context, "yieldPctCertified", "Yield after certification, as share of conventional", Unit.PCT);
+        rule(context, "organicPricePremiumPct", "Organic price premium after certification", Unit.PCT);
+        rule(context, "costEurPerHaConventional", "Expenses per hectare, conventional farming", Unit.EUR_PER_HA);
+        rule(context, "costEurPerHaOrganic", "Expenses per hectare, organic farming", Unit.EUR_PER_HA);
+        rule(context, "conversionPaymentEurPerHa", "Conversion payment (conversion years)", Unit.EUR_PER_HA);
+        rule(context, "maintenancePaymentEurPerHa", "Maintenance payment (after certification)", Unit.EUR_PER_HA);
+        rule(context, "apiaPrefinancingAdvancePct", "Advance of the APIA subsidy pre-financing (F5)", Unit.PCT);
+        rule(context, "maxGraceMonths", "Maximum grace period", Unit.MONTHS);
+        context.calc("rules.factor.nitrogen", "Mineral nitrogen emission factor (kg CO₂e/kg N)",
                 RuleValues.factor(context, "nitrogenKgCo2ePerKgN"), Unit.RATIO)
                 .source(RuleValues.factorSource(context, "nitrogenKgCo2ePerKgN")).add();
     }
@@ -221,9 +221,9 @@ public class OrganicModule implements ModuleCalculator {
 
     @Override
     public void horizonImpact(ToolContext context, Configuration cfg, BigDecimal years) {
-        context.calc("impact.certified_area", "Hectare bio certificate sau în conversie", cfg.metric("certified_area_ha"),
+        context.calc("impact.certified_area", "Organic hectares certified or in conversion", cfg.metric("certified_area_ha"),
                 Unit.HA).add();
-        context.calc("impact.margin_horizon", "Marja cumulată față de convențional pe orizont",
+        context.calc("impact.margin_horizon", "Cumulative margin vs conventional over the horizon",
                 cfg.metric("margin_total_eur"), Unit.EUR).add();
     }
 

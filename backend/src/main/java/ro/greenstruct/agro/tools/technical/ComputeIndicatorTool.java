@@ -55,7 +55,7 @@ public class ComputeIndicatorTool implements ToolHandler {
         String configId = input.path("configId").asText("cfg_initial");
         String documentId = Params.requiredText(input, "documentId");
         DocumentFacts offer = context.workspace().document(documentId)
-                .orElseThrow(() -> new IllegalArgumentException("Extrage întâi documentul " + documentId));
+                .orElseThrow(() -> new IllegalArgumentException("Extract document " + documentId + " first"));
 
         Configuration cfg = ConfigurationMetrics.build(context, configId, null,
                 offerComponents(offer, context.today().getYear(), context.calculator()));
@@ -75,8 +75,8 @@ public class ComputeIndicatorTool implements ToolHandler {
         ArrayNode components = result.putArray("components");
         cfg.components().forEach(c -> components.addObject().put("componentId", c.componentId())
                 .put("category", c.category()).put("nameRo", c.nameRo()));
-        return context.ok(result, "Oferta inițială: " + (cfg.passesThreshold() ? "trece" : "nu trece")
-                + " pragul verde");
+        return context.ok(result, "Initial offer: " + (cfg.passesThreshold() ? "passes" : "fails")
+                + " the green threshold");
     }
 
     /**
@@ -97,7 +97,7 @@ public class ComputeIndicatorTool implements ToolHandler {
                     "OFFER", null, quantity, price, attributes));
         }
         if (components.isEmpty()) {
-            throw new IllegalArgumentException("Oferta " + offer.documentId() + " nu are poziții cu preț");
+            throw new IllegalArgumentException("Offer " + offer.documentId() + " has no priced lines");
         }
         return components;
     }

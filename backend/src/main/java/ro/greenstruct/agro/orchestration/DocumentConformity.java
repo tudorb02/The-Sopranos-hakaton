@@ -36,14 +36,14 @@ public class DocumentConformity {
     private static final Set<String> OFFER_TYPES = Set.of("OFFER", "TECHNICAL_SHEET");
 
     private static final Map<String, String> LABELS = Map.ofEntries(
-            Map.entry("OFFER", "ofertă"), Map.entry("TECHNICAL_SHEET", "fișă tehnică"),
-            Map.entry("CURRENT_EQUIPMENT", "fișa echipamentului vechi"),
-            Map.entry("WATER_PERMIT_ANAR", "autorizație de gospodărire a apelor"),
-            Map.entry("WATER_CONSUMPTION", "consum de apă"), Map.entry("ENERGY_INVOICES", "facturi de energie"),
-            Map.entry("FUEL_INVOICES", "facturi de motorină"), Map.entry("FERTILIZER_INVOICES", "facturi de îngrășăminte"),
-            Map.entry("ENVIRONMENTAL_PERMIT", "autorizație de mediu"),
-            Map.entry("CERTIFICATION_CONTRACT", "contract de certificare"), Map.entry("BUSINESS_PLAN", "plan de afaceri"),
-            Map.entry("OTHER", "alt tip de document"));
+            Map.entry("OFFER", "offer"), Map.entry("TECHNICAL_SHEET", "technical data sheet"),
+            Map.entry("CURRENT_EQUIPMENT", "data sheet of the old equipment"),
+            Map.entry("WATER_PERMIT_ANAR", "water management permit"),
+            Map.entry("WATER_CONSUMPTION", "water consumption"), Map.entry("ENERGY_INVOICES", "energy invoices"),
+            Map.entry("FUEL_INVOICES", "diesel invoices"), Map.entry("FERTILIZER_INVOICES", "fertiliser invoices"),
+            Map.entry("ENVIRONMENTAL_PERMIT", "environmental permit"),
+            Map.entry("CERTIFICATION_CONTRACT", "certification contract"), Map.entry("BUSINESS_PLAN", "business plan"),
+            Map.entry("OTHER", "other document type"));
 
     private final WorkspaceStore workspaces;
     private final OfferClassifier classifier;
@@ -58,7 +58,7 @@ public class DocumentConformity {
         this.modules = modules;
     }
 
-    /** The problems found, in Romanian, one per document and rule; empty when the documents are conform. */
+    /** The problems found, in English, one per document and rule; empty when the documents are conform. */
     public List<String> problems(Run run) {
         RunWorkspace workspace = workspaces.forRun(run.id());
         List<String> problems = new ArrayList<>();
@@ -75,12 +75,12 @@ public class DocumentConformity {
             String declared = stored.get().docType();
             String detected = extraction.path("documentType").asText();
             if (!sameKind(declared, detected)) {
-                problems.add("Documentul " + file + " a fost încărcat ca " + label(declared) + ", dar este "
+                problems.add("Document " + file + " was uploaded as " + label(declared) + ", but it is "
                         + label(detected));
             }
             String recipient = recipientCui(field(extraction, "RECIPIENT_CUI"));
             if (!recipient.isEmpty() && !recipient.equals(dossierCui)) {
-                problems.add("Documentul " + file + " este pe CUI-ul " + recipient + ", nu pe CUI-ul firmei ("
+                problems.add("Document " + file + " is addressed to CUI " + recipient + ", not to the company's CUI ("
                         + dossierCui + ")");
             }
         }
@@ -94,8 +94,8 @@ public class DocumentConformity {
             if (category.isPresent() && !category.get().moduleId().equals(run.request().moduleId())) {
                 String dossierModule = modules.find(run.request().moduleId()).map(ModuleDefinition::nameRo)
                         .orElse(run.request().moduleId());
-                problems.add("Oferta " + document.fileName() + " este pentru " + category.get().nameRo()
-                        + ", nu pentru " + dossierModule);
+                problems.add("Offer " + document.fileName() + " is for " + category.get().nameRo()
+                        + ", not for " + dossierModule);
             }
         }
         return problems;
@@ -124,7 +124,7 @@ public class DocumentConformity {
     /** "CUI: RO 45871203", "C.I.F. 45871203" and "45871203" all give "45871203"; other codes stay as written. */
     static String recipientCui(String raw) {
         String value = raw == null ? "" : raw.toUpperCase(java.util.Locale.ROOT)
-                .replaceAll("^\\s*(CUI|C\\.U\\.I\\.|CIF|C\\.I\\.F\\.|COD FISCAL)\\s*:?", "");
+                .replaceAll("^\\s*(CUI|C\\.U\\.I\\.|CIF|C\\.I\\.F\\.|COD FISCAL|VAT ID|VAT|TAX ID)\\s*:?", "");
         return Cui.normalize(value.replaceAll("[\\s:]", ""));
     }
 

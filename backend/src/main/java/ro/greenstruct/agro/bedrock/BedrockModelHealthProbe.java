@@ -35,11 +35,11 @@ public class BedrockModelHealthProbe implements BedrockHealthProbe {
             return new ModelStatus(role, modelId, true, (System.nanoTime() - started) / 1_000_000, null);
         } catch (BedrockCallException e) {
             return new ModelStatus(role, modelId, false, null, switch (e.kind()) {
-                case THROTTLED -> "Modelul e limitat temporar (throttling)";
-                case TIMEOUT -> "Modelul nu a răspuns la timp";
-                case NO_NETWORK -> "Fără conexiune la AWS";
-                case UNAVAILABLE -> "Serviciul Bedrock e indisponibil";
-                case REJECTED -> "Cererea a fost respinsă: " + e.getMessage();
+                case THROTTLED -> "The model is temporarily rate-limited (throttling)";
+                case TIMEOUT -> "The model did not respond in time";
+                case NO_NETWORK -> "No connection to AWS";
+                case UNAVAILABLE -> "The Bedrock service is unavailable";
+                case REJECTED -> "The request was rejected: " + e.getMessage();
             });
         }
     }

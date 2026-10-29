@@ -23,7 +23,7 @@ public class ModuleCalculators {
     public ModuleCalculator require(String calculatorId) {
         ModuleCalculator calculator = calculatorId == null ? null : byId.get(calculatorId);
         if (calculator == null) {
-            throw new IllegalArgumentException("Modulul nu are încă un calculator (" + calculatorId + ")");
+            throw new IllegalArgumentException("The module has no calculator yet (" + calculatorId + ")");
         }
         return calculator;
     }

@@ -24,7 +24,7 @@ final class AnafCompanyMapper {
     private AnafCompanyMapper() {
     }
 
-    /** A company plus, when ANAF says it cannot borrow (inactive, deregistered), the reason in Romanian. */
+    /** A company plus, when ANAF says it cannot borrow (inactive, deregistered), the reason in English. */
     record AnafCompany(CompanyInfo info, String blockedReasonRo) {
     }
 
@@ -74,13 +74,13 @@ final class AnafCompanyMapper {
     private static String blockedReason(JsonNode general, JsonNode inactive) {
         String deregistered = inactive.path("dataRadiere").asText();
         if (!deregistered.isBlank() || plain(general.path("stare_inregistrare").asText()).startsWith("RADIERE")) {
-            return "Firma " + general.path("denumire").asText() + " este radiată la ANAF"
-                    + (deregistered.isBlank() ? "" : " din " + deregistered) + " și nu poate primi finanțare.";
+            return "Company " + general.path("denumire").asText() + " is deregistered at ANAF"
+                    + (deregistered.isBlank() ? "" : " since " + deregistered) + " and cannot receive financing.";
         }
         if (inactive.path("statusInactivi").asBoolean()) {
             String since = inactive.path("dataInactivare").asText();
-            return "Firma " + general.path("denumire").asText() + " este declarată inactivă fiscal de ANAF"
-                    + (since.isBlank() ? "" : " din " + since) + ". Finanțarea e posibilă doar după reactivare.";
+            return "Company " + general.path("denumire").asText() + " is declared tax-inactive by ANAF"
+                    + (since.isBlank() ? "" : " since " + since) + ". Financing is possible only after reactivation.";
         }
         return null;
     }
@@ -129,7 +129,7 @@ final class AnafCompanyMapper {
         if (balanceSheet != null && caen != null && Integer.parseInt(caen) == balanceSheet.path("caen").asInt()) {
             return withCommaBelow(balanceSheet.path("den_caen").asText());
         }
-        return caen == null ? "Cod CAEN necunoscut" : "Cod CAEN " + caen;
+        return caen == null ? "Unknown CAEN code" : "CAEN code " + caen;
     }
 
     /** Indicators are matched by their label: the I-numbers differ between company and bank balance sheets. */

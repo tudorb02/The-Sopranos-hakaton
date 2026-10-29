@@ -65,7 +65,7 @@ public class RunWorkspace {
 
     public synchronized Map<String, BigDecimal> baseline() {
         if (baseline == null) {
-            throw new IllegalArgumentException("Apelează întâi compute_baseline");
+            throw new IllegalArgumentException("Call compute_baseline first");
         }
         return baseline;
     }
@@ -77,7 +77,7 @@ public class RunWorkspace {
     public synchronized Configuration configuration(String configId) {
         Configuration configuration = configurations.get(configId);
         if (configuration == null) {
-            throw new IllegalArgumentException("Configurația " + configId + " nu există; configurații: "
+            throw new IllegalArgumentException("Configuration " + configId + " does not exist; configurations: "
                     + configurations.keySet());
         }
         return configuration;
@@ -97,7 +97,7 @@ public class RunWorkspace {
 
     public synchronized GreenTierResult greenTier() {
         if (greenTier == null) {
-            throw new IllegalArgumentException("Apelează întâi determine_green_tier");
+            throw new IllegalArgumentException("Call determine_green_tier first");
         }
         return greenTier;
     }
@@ -109,7 +109,7 @@ public class RunWorkspace {
     public synchronized FinancingOption option(String optionId) {
         FinancingOption option = options.get(optionId);
         if (option == null) {
-            throw new IllegalArgumentException("Opțiunea " + optionId + " nu există; apelează întâi build_funding_stack");
+            throw new IllegalArgumentException("Option " + optionId + " does not exist; call build_funding_stack first");
         }
         return option;
     }

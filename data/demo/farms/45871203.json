@@ -5,7 +5,7 @@
     "name": "Legume Bărăgan Demo SRL",
     "legalForm": "SRL",
     "caen": "0113",
-    "caenLabelRo": "Cultivarea legumelor, a pepenilor, a rădăcinoaselor și tuberculilor",
+    "caenLabelRo": "Growing of vegetables and melons, roots and tubers",
     "county": "Călărași",
     "locality": "Com. Demo",
     "registeredAt": "2014-03-12",
@@ -28,19 +28,19 @@
     "crops": [
       {
         "year": 2026,
-        "crop": "legume în câmp",
+        "crop": "field vegetables",
         "ha": 40,
         "yieldTPerHa": 38
       },
       {
         "year": 2025,
-        "crop": "legume în câmp",
+        "crop": "field vegetables",
         "ha": 40,
         "yieldTPerHa": 35
       },
       {
         "year": 2024,
-        "crop": "legume în câmp",
+        "crop": "field vegetables",
         "ha": 38,
         "yieldTPerHa": 31
       }
@@ -85,7 +85,7 @@
           "parcelId": "ct_0412_01",
           "blockId": "BF-0412",
           "areaHa": 16,
-          "crop": "tomate",
+          "crop": "tomatoes",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "HIGH",
@@ -130,7 +130,7 @@
           "parcelId": "ct_0412_02",
           "blockId": "BF-0412",
           "areaHa": 14,
-          "crop": "ardei",
+          "crop": "peppers",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "HIGH",
@@ -175,7 +175,7 @@
           "parcelId": "ct_0412_03",
           "blockId": "BF-0412",
           "areaHa": 10,
-          "crop": "varză",
+          "crop": "cabbage",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "HIGH",

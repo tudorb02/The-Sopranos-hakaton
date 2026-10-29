@@ -29,8 +29,8 @@ public final class AssessedDnsh {
         JsonNode checks = context.run().agentOutputs()
                 .getOrDefault(AgentSlot.TECHNICAL_AUDITOR, MissingNode.getInstance()).path("dnshChecks");
         if (!checks.isArray() || checks.isEmpty()) {
-            throw new IllegalArgumentException("Lipsește statusul DNSH: trimite dnshStatus sau așteaptă evaluarea "
-                    + "auditorului tehnic");
+            throw new IllegalArgumentException("DNSH status missing: send dnshStatus or wait for the "
+                    + "technical auditor's assessment");
         }
         List<DnshStatus> statuses = new ArrayList<>();
         checks.forEach(check -> statuses.add(parse(check.path("status").asText())));
@@ -43,6 +43,6 @@ public final class AssessedDnsh {
                 return value;
             }
         }
-        throw new IllegalArgumentException("Status DNSH necunoscut: " + status);
+        throw new IllegalArgumentException("Unknown DNSH status: " + status);
     }
 }

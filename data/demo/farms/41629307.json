@@ -5,7 +5,7 @@
     "name": "Ferma Bio Mureș Demo SRL",
     "legalForm": "SRL",
     "caen": "0111",
-    "caenLabelRo": "Cultivarea cerealelor (exclusiv orez), plantelor leguminoase și a plantelor producătoare de semințe oleaginoase",
+    "caenLabelRo": "Growing of cereals (except rice), leguminous crops and oil seeds",
     "county": "Mureș",
     "locality": "Comuna Demo",
     "registeredAt": "2016-05-17",
@@ -28,21 +28,21 @@
     "crops": [
       {
         "year": 2026,
-        "crop": "grâu",
+        "crop": "wheat",
         "ha": 50,
-        "yieldTPerHa": 6.0
+        "yieldTPerHa": 6
       },
       {
         "year": 2026,
-        "crop": "porumb",
+        "crop": "maize",
         "ha": 40,
-        "yieldTPerHa": 8.0
+        "yieldTPerHa": 8
       },
       {
         "year": 2026,
-        "crop": "soia",
+        "crop": "soybeans",
         "ha": 30,
-        "yieldTPerHa": 3.0
+        "yieldTPerHa": 3
       }
     ],
     "livestock": [],
@@ -85,7 +85,7 @@
           "parcelId": "mu_3101",
           "blockId": "BF-3101",
           "areaHa": 50,
-          "crop": "grâu",
+          "crop": "wheat",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "MEDIUM",
@@ -128,7 +128,7 @@
           "parcelId": "mu_3102",
           "blockId": "BF-3102",
           "areaHa": 40,
-          "crop": "porumb",
+          "crop": "maize",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "MEDIUM",
@@ -171,7 +171,7 @@
           "parcelId": "mu_3103",
           "blockId": "BF-3103",
           "areaHa": 30,
-          "crop": "soia",
+          "crop": "soybeans",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "MEDIUM",
@@ -258,7 +258,7 @@
       }
     ],
     "annualNetEur": 39000,
-    "avgMonthlyNetEur": 3250.0,
+    "avgMonthlyNetEur": 3250,
     "peakMonths": [
       "OCT",
       "DEC",

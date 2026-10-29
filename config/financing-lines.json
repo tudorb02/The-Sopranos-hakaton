@@ -1,23 +1,23 @@
 {
   "version": "2026-10-demo",
-  "note": "Toate condițiile sunt valori de demo, de confirmat cu mentorii Raiffeisen.",
+  "note": "All terms are demo values, to be confirmed with the Raiffeisen mentors.",
   "defaults": {
     "firstInstallmentOffsetMonths": 4,
     "affordabilityLimitPct": 40,
-    "sourceRo": "Prima rată la 4 luni după luna analizei; limita: ratele pe 12 luni ≤ 40% din cashflow-ul net anual; utilajele second-hand: vechimea la ultima rată ≤ 12 ani (regulă de demo, de confirmat)",
+    "sourceRo": "First instalment 4 months after the analysis month; limit: 12 months of instalments ≤ 40% of annual net cashflow; second-hand machinery: age at the last instalment ≤ 12 years (demo rule, to be confirmed)",
     "maxEquipmentAgeAtMaturityYears": 12
   },
   "lines": [
     {
       "lineId": "rbro.invest.standard",
-      "nameRo": "Credit standard de investiții",
+      "nameRo": "Standard investment loan",
       "kind": "STANDARD_LOAN",
       "green": false,
       "annualRatePct": 8.9,
       "collateral": "MORTGAGE",
       "collateralUpfrontEur": 1450,
       "collateralAnnualEur": 380,
-      "collateralNoteRo": "evaluare + notar/CF; asigurare imobil anuală",
+      "collateralNoteRo": "valuation + notary/land register; annual property insurance",
       "repayment": [
         "EQUAL_MONTHLY"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "lineId": "rbro.invest.machinery",
-      "nameRo": "Credit standard pentru utilaje (gaj pe utilaj)",
+      "nameRo": "Standard machinery loan (pledge on the machine)",
       "kind": "STANDARD_LOAN",
       "green": false,
       "annualRatePct": 7.5,
@@ -41,7 +41,7 @@
     },
     {
       "lineId": "rbro.agri.green_investeu",
-      "nameRo": "Credit verde Raiffeisen pentru agricultură, garantat InvestEU",
+      "nameRo": "Raiffeisen green loan for agriculture, InvestEU-guaranteed",
       "kind": "GREEN_LOAN",
       "green": true,
       "annualRatePct": 6.4,
@@ -53,13 +53,13 @@
         "EQUAL_MONTHLY",
         "SEASONAL"
       ],
-      "requiresRo": "Configurația finanțată trece pragul verde al modulului",
+      "requiresRo": "The financed configuration passes the module's green threshold",
       "demo": true,
       "maxTermMonths": 84
     },
     {
       "lineId": "rbro.agri.cofinancing_fgcr",
-      "nameRo": "Credit de cofinanțare pentru proiecte AFIR, garantat FGCR",
+      "nameRo": "Co-financing loan for AFIR projects, FGCR-guaranteed",
       "kind": "CO_FINANCING_LOAN",
       "green": false,
       "annualRatePct": 6.0,
@@ -76,7 +76,7 @@
     },
     {
       "lineId": "rbro.agri.bridge_afir",
-      "nameRo": "Credit-punte până la încasarea grantului AFIR",
+      "nameRo": "Bridge loan until the AFIR grant is paid out",
       "kind": "BRIDGE_LOAN",
       "green": false,
       "annualRatePct": 7.0,
@@ -92,7 +92,7 @@
     },
     {
       "lineId": "rbro.agri.credit_bio",
-      "nameRo": "Credit BIO Raiffeisen pentru agricultură ecologică",
+      "nameRo": "Raiffeisen Credit BIO for organic farming",
       "kind": "GREEN_LOAN",
       "green": true,
       "annualRatePct": 6.9,
@@ -103,8 +103,8 @@
         "EQUAL_MONTHLY",
         "SEASONAL"
       ],
-      "requiresRo": "Certificat ecologic UE sau contract de conversie cu un organism de certificare",
-      "sourceRo": "README §3, F3: Credit BIO (Raiffeisen, din 2021) pentru teren certificat ecologic sau în conversie; condițiile (dobânda, durata) sunt de confirmat cu Raiffeisen. Durata de 5 ani și grația de maximum 12 luni: README §13",
+      "requiresRo": "EU organic certificate or conversion contract with a certification body",
+      "sourceRo": "README §3, F3: Credit BIO (Raiffeisen, since 2021) for certified organic or in-conversion land; the terms (interest rate, term) are to be confirmed with Raiffeisen. 5-year term and grace period of up to 12 months: README §13",
       "demo": true,
       "maxTermMonths": 60
     }
@@ -112,14 +112,14 @@
   "guarantees": [
     {
       "guaranteeId": "eif.investeu.sustainability",
-      "nameRo": "Garanție FEI – InvestEU Sustainability",
+      "nameRo": "EIF guarantee – InvestEU Sustainability",
       "coveragePct": 70,
-      "sourceRo": "Acord FEI cu Raiffeisen, 25.10.2023; procentul pentru 2026 e de confirmat",
+      "sourceRo": "EIF agreement with Raiffeisen, 25 Oct 2023; the 2026 percentage is to be confirmed",
       "demo": true
     },
     {
       "guaranteeId": "fgcr.cofinancing",
-      "nameRo": "Garanție FGCR pentru cofinanțarea proiectelor PS PAC",
+      "nameRo": "FGCR guarantee for co-financing CAP Strategic Plan (PS PAC) projects",
       "coveragePct": 80,
       "sourceRo": "fgcr.ro (max. 80%)",
       "demo": true

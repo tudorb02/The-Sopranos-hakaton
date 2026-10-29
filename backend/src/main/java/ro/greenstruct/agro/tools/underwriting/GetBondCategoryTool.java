@@ -48,11 +48,11 @@ public class GetBondCategoryTool implements ToolHandler {
                     .put("nameRo", category.path("nameRo").asText());
         }
         if (fitting.isEmpty()) {
-            throw new IllegalArgumentException("Modulul " + context.module().moduleId()
-                    + " nu are o categorie de obligațiuni verzi în config/funds.json");
+            throw new IllegalArgumentException("Module " + context.module().moduleId()
+                    + " has no green bond category in config/funds.json");
         }
         result.put("proposed", fitting.get(0).path("categoryId").asText());
         result.put("sourceRo", context.reference().funds().path("bondCategoriesSourceRo").asText());
-        return context.ok(result, "Categoria propusă: " + fitting.get(0).path("nameEn").asText());
+        return context.ok(result, "Proposed category: " + fitting.get(0).path("nameEn").asText());
     }
 }

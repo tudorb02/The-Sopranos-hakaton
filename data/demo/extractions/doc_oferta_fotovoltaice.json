@@ -38,7 +38,7 @@
     {
       "lineId": "ln_1",
       "category": "PV_SYSTEM",
-      "descriptionRo": "Panouri fotovoltaice monocristaline 550 Wp, certificate IEC 61215 / 61730",
+      "descriptionRo": "Monocrystalline PV panels 550 Wp, IEC 61215 / 61730 certified",
       "fields": [
         {
           "key": "QUANTITY",
@@ -59,7 +59,7 @@
     {
       "lineId": "ln_2",
       "category": "PV_SYSTEM",
-      "descriptionRo": "Invertoare trifazate 100 kW",
+      "descriptionRo": "Three-phase inverters 100 kW",
       "fields": [
         {
           "key": "QUANTITY",
@@ -80,7 +80,7 @@
     {
       "lineId": "ln_3",
       "category": "PV_SYSTEM",
-      "descriptionRo": "Structură de montaj pe acoperiș, cabluri, protecții",
+      "descriptionRo": "Roof mounting structure, cables, protection devices",
       "fields": [
         {
           "key": "LINE_PRICE_NET",
@@ -94,7 +94,7 @@
     {
       "lineId": "ln_4",
       "category": "INSTALLATION_WORKS",
-      "descriptionRo": "Proiectare, montaj, punere în funcțiune, dosar de racordare",
+      "descriptionRo": "Design, installation, commissioning, grid connection file",
       "fields": [
         {
           "key": "LINE_PRICE_NET",

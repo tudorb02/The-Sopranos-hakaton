@@ -45,6 +45,6 @@ public class GetDnshCriteriaTool implements ToolHandler {
                 .put("objective", check.objective())
                 .put("checkRo", check.checkRo())
                 .put("evidence", check.evidence()));
-        return context.ok(result, "Am încărcat criteriile DNSH ale modulului");
+        return context.ok(result, "Loaded the module's DNSH criteria");
     }
 }

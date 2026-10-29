@@ -54,6 +54,6 @@ public class GetModuleRulesTool implements ToolHandler {
                 .put("category", item.path("category").asText())
                 .put("role", item.path("role").asText())
                 .put("nameRo", item.path("nameRo").asText()));
-        return context.ok(result, "Regulile modulului " + module.nameRo() + " sunt încărcate");
+        return context.ok(result, "Rules of module " + module.nameRo() + " loaded");
     }
 }

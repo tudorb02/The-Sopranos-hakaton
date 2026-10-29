@@ -59,7 +59,7 @@ public class CheckAffordabilityTool implements ToolHandler {
     public ToolOutput execute(JsonNode input, ToolContext context) {
         CashflowInfo cashflow = context.farm().cashflow();
         if (cashflow == null) {
-            throw new IllegalArgumentException("Fără acord Open Banking nu putem verifica capacitatea de plată");
+            throw new IllegalArgumentException("Without Open Banking consent we cannot run the affordability check");
         }
         BigDecimal limitPct = RuleValues.financingDefault(context, "affordabilityLimitPct");
         BigDecimal minDscr = HUNDRED.divide(limitPct, MC);
@@ -68,7 +68,7 @@ public class CheckAffordabilityTool implements ToolHandler {
         for (String optionId : Params.textList(input, "optionIds")) {
             FinancingOption option = context.workspace().option(optionId);
             if (option.schedule() == null) {
-                throw new IllegalArgumentException("Apelează întâi build_scenario pentru opțiunea " + optionId);
+                throw new IllegalArgumentException("Call build_scenario first for option " + optionId);
             }
             AffordabilityResult check = AffordabilityCalculator.check(option.schedule(), cashflow.netByCalendarMonth(),
                     minDscr);
@@ -76,8 +76,8 @@ public class CheckAffordabilityTool implements ToolHandler {
                     .map(i -> i.paymentEur()).reduce(BigDecimal.ZERO, BigDecimal::add);
             BigDecimal ratio = firstYear.divide(cashflow.annualNetEur(), MC).multiply(HUNDRED, MC);
             context.calc("option_" + optionId.toLowerCase() + ".affordability_ratio",
-                    "Ratele din primul an față de cashflow-ul net", ratio, Unit.PCT)
-                    .formula("rate pe 12 luni / cashflow net anual (Open Banking)").add();
+                    "First-year instalments vs net cash flow", ratio, Unit.PCT)
+                    .formula("12-month instalments / annual net cash flow (Open Banking)").add();
 
             String verdict = !check.meetsMinimum() ? "FAIL"
                     : check.deficitMonths().isEmpty() ? "PASS" : "PASS_WITH_WARNING";
@@ -86,6 +86,6 @@ public class CheckAffordabilityTool implements ToolHandler {
             List<String> deficits = check.deficitMonths().stream().map(Object::toString).toList();
             node.set("deficitMonths", context.mapper().valueToTree(deficits));
         }
-        return context.ok(result, "Am verificat capacitatea de plată");
+        return context.ok(result, "Affordability checked");
     }
 }

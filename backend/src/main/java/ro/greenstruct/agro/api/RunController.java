@@ -100,28 +100,28 @@ public class RunController {
         List<String> parcelIds = mapper.convertValue(requiredJson(request, "parcelIds", true), mapper.getTypeFactory()
                 .constructCollectionType(List.class, String.class));
         if (parcelIds.isEmpty()) {
-            throw new IllegalArgumentException("Alege cel puțin o parcelă");
+            throw new IllegalArgumentException("Choose at least one parcel");
         }
         JsonNode questionnaire = requiredJson(request, "questionnaire", false);
         if (!questionnaire.isObject()) {
-            throw new IllegalArgumentException("questionnaire trebuie să fie un obiect JSON");
+            throw new IllegalArgumentException("questionnaire must be a JSON object");
         }
         List<ManifestEntry> manifest = mapper.convertValue(requiredJson(request, "documentManifest", true),
                 mapper.getTypeFactory().constructCollectionType(List.class, ManifestEntry.class));
         List<MultipartFile> files = request.getFiles("documents");
         if (files.isEmpty() || files.size() > MAX_DOCUMENTS) {
-            throw new IllegalArgumentException("Încarcă între 1 și " + MAX_DOCUMENTS + " documente");
+            throw new IllegalArgumentException("Upload between 1 and " + MAX_DOCUMENTS + " documents");
         }
         if (manifest.size() != files.size()) {
-            throw new IllegalArgumentException("documentManifest are " + manifest.size() + " intrări, dar s-au încărcat "
-                    + files.size() + " fișiere");
+            throw new IllegalArgumentException("documentManifest has " + manifest.size() + " entries, but "
+                    + files.size() + " files were uploaded");
         }
 
         List<StoredDocument> stored = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             ManifestEntry entry = manifest.get(i);
             if (entry.docType() == null || entry.docType().isBlank()) {
-                throw new IllegalArgumentException("documentManifest[" + i + "].docType lipsește");
+                throw new IllegalArgumentException("documentManifest[" + i + "].docType is missing");
             }
             stored.add(store(entry.docType(), entry.fileName(), files.get(i)));
         }
@@ -132,7 +132,7 @@ public class RunController {
     @PostMapping("/demo/{scenario}")
     public ResponseEntity<RunCreated> startDemo(@PathVariable String scenario) {
         if (!demoScenarios.available().contains(scenario)) {
-            throw new NotFoundException("Scenariul demo " + scenario + " nu există");
+            throw new NotFoundException("Demo scenario " + scenario + " does not exist");
         }
         return created(orchestrator.start(demoScenarios.load(scenario)).run());
     }
@@ -147,7 +147,7 @@ public class RunController {
     @GetMapping(path = "/{id}/report.pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> report(@PathVariable String id) {
         Run run = runs.find(id).orElseThrow(() -> new RunNotFoundException(id));
-        return ResponseEntity.ok().header("Content-Disposition", "inline; filename=\"raport-verde-" + id + ".pdf\"")
+        return ResponseEntity.ok().header("Content-Disposition", "inline; filename=\"green-report-" + id + ".pdf\"")
                 .contentType(MediaType.APPLICATION_PDF).body(reports.build(run));
     }
 
@@ -182,7 +182,7 @@ public class RunController {
     public RunView requestDocuments(@PathVariable String id, @RequestBody RequestDocumentsRequest body) {
         String officerId = requiredOfficer(body.officerId());
         if (body.documents() == null || body.documents().isEmpty() || body.documents().size() > MAX_DOCUMENTS) {
-            throw new IllegalArgumentException("Cere între 1 și " + MAX_DOCUMENTS + " documente");
+            throw new IllegalArgumentException("Request between 1 and " + MAX_DOCUMENTS + " documents");
         }
         Instant now = Instant.now();
         List<PendingDocument> pending = body.documents().stream()
@@ -203,8 +203,8 @@ public class RunController {
         try {
             byte[] content = file.getBytes();
             if (!UploadedFileType.isPdfOrImage(content)) {
-                throw new UploadedFileType.UnsupportedFileTypeException("Fișierul " + fileName
-                        + " nu este un PDF sau o imagine (JPEG, PNG); încarcă documentul original");
+                throw new UploadedFileType.UnsupportedFileTypeException("File " + fileName
+                        + " is not a PDF or an image (JPEG, PNG); upload the original document");
             }
             return documents.save(null, docType, fileName, file.getContentType(), content);
         } catch (IOException e) {
@@ -223,7 +223,7 @@ public class RunController {
         if ("sme".equals(view)) {
             return RunViewMapper.View.SME;
         }
-        throw new IllegalArgumentException("view poate fi full sau sme");
+        throw new IllegalArgumentException("view can be full or sme");
     }
 
     private static Submission.Variant variant(String value) {
@@ -232,12 +232,12 @@ public class RunController {
                 return variant;
             }
         }
-        throw new IllegalArgumentException("variant poate fi CLASIC sau VERDE");
+        throw new IllegalArgumentException("variant can be CLASIC or VERDE");
     }
 
     private static String requireText(String value, String field) {
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("Câmpul " + field + " lipsește");
+            throw new IllegalArgumentException("Field " + field + " is missing");
         }
         return value;
     }
@@ -251,11 +251,11 @@ public class RunController {
         try {
             JsonNode node = mapper.readTree(raw);
             if (array && !node.isArray()) {
-                throw new IllegalArgumentException(field + " trebuie să fie un array JSON");
+                throw new IllegalArgumentException(field + " must be a JSON array");
             }
             return node;
         } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException(field + " nu e JSON valid");
+            throw new IllegalArgumentException(field + " is not valid JSON");
         }
     }
 

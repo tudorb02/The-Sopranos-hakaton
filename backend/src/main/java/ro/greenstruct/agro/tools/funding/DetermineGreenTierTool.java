@@ -70,8 +70,8 @@ public class DetermineGreenTierTool implements ToolHandler {
             // organic: an EU organic certificate or a conversion contract with a certification body
             case "CERTIFICATION" -> GreenTierCalculator.byCertification(context.run().request().documents().stream()
                     .anyMatch(doc -> "CERTIFICATION_CONTRACT".equals(doc.docType())), dnsh);
-            default -> throw new IllegalArgumentException("Nivelul verde pentru criteriul " + kind
-                    + " nu e încă disponibil");
+            default -> throw new IllegalArgumentException("The green tier for criterion " + kind
+                    + " is not available yet");
         };
         context.workspace().putGreenTier(tier);
 
@@ -80,7 +80,7 @@ public class DetermineGreenTierTool implements ToolHandler {
         result.put("thresholdMet", tier.thresholdMet());
         result.put("upgradeNeeded", tier.upgradeNeeded());
         result.put("dnshStatus", dnsh.name());
-        return context.ok(result, "Nivelul verde: " + tier.tier().name());
+        return context.ok(result, "Green tier: " + tier.tier().name());
     }
 
     private static GreenTierResult byThreshold(ToolContext context, Configuration requested, Configuration financed,
@@ -93,13 +93,13 @@ public class DetermineGreenTierTool implements ToolHandler {
         GreenTierResult tier = GreenTierCalculator.forThreshold(RuleValues.thresholdPct(context), multiplier,
                 requestedPct, upgraded, dnsh);
 
-        Calc threshold = context.calc("green_tier.threshold", "Pragul verde", RuleValues.thresholdPct(context),
+        Calc threshold = context.calc("green_tier.threshold", "Green threshold", RuleValues.thresholdPct(context),
                 Unit.PCT).source(context.module().threshold().sourceRo()).add();
-        context.calc("green_tier.requested_indicator", "Indicatorul investiției cerute", requestedPct, Unit.PCT).add();
-        context.calc("green_tier.financed_indicator", "Indicatorul investiției finanțate de creditul verde",
+        context.calc("green_tier.requested_indicator", "Indicator of the requested investment", requestedPct, Unit.PCT).add();
+        context.calc("green_tier.financed_indicator", "Indicator of the investment financed by the green loan",
                 tier.financedIndicatorPct(), Unit.PCT).add();
-        context.calc("green_tier.verde_plus_min", "Pragul pentru Verde Plus", tier.verdePlusMinPct(), Unit.PCT)
-                .formula("prag × multiplicator").source(multiplierNode.path("sourceRo").asText(null))
+        context.calc("green_tier.verde_plus_min", "Threshold for Verde Plus", tier.verdePlusMinPct(), Unit.PCT)
+                .formula("threshold × multiplier").source(multiplierNode.path("sourceRo").asText(null))
                 .dependsOn(threshold).add();
         return tier;
     }

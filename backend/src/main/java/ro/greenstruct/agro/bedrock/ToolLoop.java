@@ -69,8 +69,8 @@ public class ToolLoop {
     public Result run(Request request) throws InterruptedException {
         List<ToolSpec> tools = new ArrayList<>(request.tools());
         tools.add(new ToolSpec(request.submitTool(),
-                "Trimite rezultatul final al analizei. Se cheamă o singură dată, la sfârșit; input-ul trebuie să "
-                        + "respecte exact schema, iar cifrele sunt referite doar prin calcId.",
+                "Submits the final result of the analysis. Call it only once, at the end; the input must "
+                        + "match the schema exactly, and figures are referenced only by calcId.",
                 request.schemas().forBedrock(request.submitTool())));
 
         List<Message> messages = new ArrayList<>();
@@ -97,8 +97,8 @@ public class ToolLoop {
             }
 
             if (toolUses.isEmpty()) {
-                messages.add(Message.user(new Text("Nu ai apelat nicio unealtă. Continuă cu uneltele disponibile "
-                        + "sau încheie acum cu " + request.submitTool() + ".")));
+                messages.add(Message.user(new Text("You did not call any tool. Continue with the available tools "
+                        + "or finish now with " + request.submitTool() + ".")));
                 continue;
             }
 
@@ -125,13 +125,13 @@ public class ToolLoop {
             List<Block> reply = new ArrayList<>();
             for (ToolUse use : toolUses) {
                 reply.add(results.getOrDefault(use.id(), new ToolResult(use.id(),
-                        mapper.createObjectNode().put("error", "Trimite un singur " + request.submitTool() + "."),
+                        mapper.createObjectNode().put("error", "Send a single " + request.submitTool() + "."),
                         true)));
             }
             messages.add(Message.user(reply));
         }
         throw new AgentFailureException("AGENT_MAX_ITERATIONS", request.context().slot().label()
-                + " nu a ajuns la rezultat în " + settings.maxIterations() + " iterații", true, null);
+                + " did not reach a result within " + settings.maxIterations() + " iterations", true, null);
     }
 
     // ---- tools and submit
@@ -150,8 +150,8 @@ public class ToolLoop {
         if (issues.isEmpty()) {
             for (String calcId : CalcPlaceholders.calcIds(input)) {
                 if (!request.calcs().exists(calcId)) {
-                    issues.add(new SchemaSupport.Issue("/", "calcId necunoscut: " + calcId
-                            + ". Folosește doar calcId-urile primite de la unelte."));
+                    issues.add(new SchemaSupport.Issue("/", "unknown calcId: " + calcId
+                            + ". Use only the calcIds returned by the tools."));
                 }
             }
         }
@@ -165,10 +165,10 @@ public class ToolLoop {
         String first = issues.getFirst().messageRo();
         request.context().toolResult(use.id(), use.name(), false, 0, mapper.createArrayNode(),
                 mapper.createObjectNode().set("errors", errors),
-                "⚠️ Output respins de validare: " + first + " Agentul se corectează");
+                "⚠️ Output rejected by validation: " + first + " The agent is correcting itself");
         ObjectNode content = mapper.createObjectNode();
         content.put("ok", false);
-        content.put("message", "Rezultatul nu respectă schema. Corectează și cheamă din nou "
+        content.put("message", "The result does not match the schema. Correct it and call again "
                 + request.submitTool() + ".");
         content.set("errors", errors);
         return new ToolResult(use.id(), content, true);
@@ -207,7 +207,7 @@ public class ToolLoop {
                     }
                     state.retried = true;
                     request.context().degraded("RETRY", e.kind().eventReason(), attempt + 1,
-                            "Bedrock a răspuns cu " + e.kind() + "; reîncerc după " + wait.toMillis() + " ms.");
+                            "Bedrock answered with " + e.kind() + "; retrying in " + wait.toMillis() + " ms.");
                     sleeper.sleep(wait);
                     wait = wait.multipliedBy(2);
                 }
@@ -215,12 +215,12 @@ public class ToolLoop {
             if (state.modelIndex + 1 < request.models().size()) {
                 state.modelIndex++;
                 request.context().degraded("FALLBACK_MODEL", last.kind().eventReason(), 1,
-                        "Trec pe modelul de rezervă " + request.models().get(state.modelIndex) + ".");
+                        "Switching to the fallback model " + request.models().get(state.modelIndex) + ".");
             } else {
                 break;
             }
         }
         throw new AgentFailureException("BEDROCK_UNAVAILABLE",
-                "Bedrock nu răspunde (" + (last == null ? "fără detalii" : last.kind()) + ")", true, last);
+                "Bedrock is not responding (" + (last == null ? "no details" : last.kind()) + ")", true, last);
     }
 }

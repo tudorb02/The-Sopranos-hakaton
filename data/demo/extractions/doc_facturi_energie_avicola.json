@@ -24,7 +24,7 @@
     {
       "lineId": "ln_1",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-25-10-2207",
+      "descriptionRo": "Energy invoice ED-25-10-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",
@@ -52,7 +52,7 @@
     {
       "lineId": "ln_2",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-25-11-2207",
+      "descriptionRo": "Energy invoice ED-25-11-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",
@@ -80,7 +80,7 @@
     {
       "lineId": "ln_3",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-25-12-2207",
+      "descriptionRo": "Energy invoice ED-25-12-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",
@@ -108,7 +108,7 @@
     {
       "lineId": "ln_4",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-26-01-2207",
+      "descriptionRo": "Energy invoice ED-26-01-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",
@@ -136,7 +136,7 @@
     {
       "lineId": "ln_5",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-26-02-2207",
+      "descriptionRo": "Energy invoice ED-26-02-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",
@@ -164,7 +164,7 @@
     {
       "lineId": "ln_6",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-26-03-2207",
+      "descriptionRo": "Energy invoice ED-26-03-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",
@@ -192,7 +192,7 @@
     {
       "lineId": "ln_7",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-26-04-2207",
+      "descriptionRo": "Energy invoice ED-26-04-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",
@@ -220,7 +220,7 @@
     {
       "lineId": "ln_8",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-26-05-2207",
+      "descriptionRo": "Energy invoice ED-26-05-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",
@@ -248,7 +248,7 @@
     {
       "lineId": "ln_9",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-26-06-2207",
+      "descriptionRo": "Energy invoice ED-26-06-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",
@@ -276,7 +276,7 @@
     {
       "lineId": "ln_10",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-26-07-2207",
+      "descriptionRo": "Energy invoice ED-26-07-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",
@@ -304,7 +304,7 @@
     {
       "lineId": "ln_11",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-26-08-2207",
+      "descriptionRo": "Energy invoice ED-26-08-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",
@@ -332,7 +332,7 @@
     {
       "lineId": "ln_12",
       "category": "OTHER",
-      "descriptionRo": "Factură energie ED-26-09-2207",
+      "descriptionRo": "Energy invoice ED-26-09-2207",
       "fields": [
         {
           "key": "PERIOD_FROM",

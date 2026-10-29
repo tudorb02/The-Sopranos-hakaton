@@ -291,6 +291,6 @@ class PostHarvestToolChainTest {
         ToolOutput output = chain.callRaw(run, "compute_baseline", "{}");
 
         assertThat(output.ok()).isFalse();
-        assertThat(output.messageRo()).contains("facturile de energie");
+        assertThat(output.messageRo()).contains("energy invoices");
     }
 }

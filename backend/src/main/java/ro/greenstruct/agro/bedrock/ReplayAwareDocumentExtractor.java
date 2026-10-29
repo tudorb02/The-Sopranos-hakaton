@@ -30,7 +30,7 @@ public class ReplayAwareDocumentExtractor implements DocumentExtractor {
         }
         if (bedrock == null) {
             throw new AgentFailureException("BEDROCK_UNAVAILABLE",
-                    "Citirea documentelor prin Bedrock nu e configurată", false, null);
+                    "Document reading through Bedrock is not configured", false, null);
         }
         return bedrock.extract(document, content, module);
     }

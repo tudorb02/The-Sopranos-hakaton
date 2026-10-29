@@ -5,7 +5,7 @@
     "name": "Avicola Dealul Verde SRL",
     "legalForm": "SRL",
     "caen": "0147",
-    "caenLabelRo": "Creșterea păsărilor",
+    "caenLabelRo": "Raising of poultry",
     "county": "Prahova",
     "locality": "Dealul Verde",
     "registeredAt": "2016-05-17",
@@ -28,19 +28,19 @@
     "crops": [
       {
         "year": 2026,
-        "crop": "incintă fermă (hale)",
+        "crop": "farmyard (halls)",
         "ha": 3.2,
         "yieldTPerHa": 0
       },
       {
         "year": 2025,
-        "crop": "incintă fermă (hale)",
+        "crop": "farmyard (halls)",
         "ha": 3.2,
         "yieldTPerHa": 0
       },
       {
         "year": 2024,
-        "crop": "incintă fermă (hale)",
+        "crop": "farmyard (halls)",
         "ha": 3.2,
         "yieldTPerHa": 0
       }
@@ -90,7 +90,7 @@
           "parcelId": "ph_0207_01",
           "blockId": "BF-0207",
           "areaHa": 3.2,
-          "crop": "incintă fermă (hale)",
+          "crop": "farmyard (halls)",
           "natura2000": false,
           "nitrateVulnerable": false,
           "droughtRisk": "MEDIUM",

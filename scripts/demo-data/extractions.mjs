@@ -31,8 +31,28 @@ function write(documentId, documentType, moduleId, doc, documentFields, lineItem
   console.log('wrote', documentId);
 }
 
+// The PDFs (and DEMO-000X.json) are Romanian; line descriptions are shown in the English UI, so they are translated
+// here. rawValues stay exactly as printed in the PDFs.
+const DESCRIPTIONS_EN = {
+  'Panouri fotovoltaice monocristaline 550 Wp, certificate IEC 61215 / 61730': 'Monocrystalline PV panels 550 Wp, IEC 61215 / 61730 certified',
+  'Invertoare trifazate 100 kW': 'Three-phase inverters 100 kW',
+  'Structură de montaj pe acoperiș, cabluri, protecții': 'Roof mounting structure, cables, protection devices',
+  'Proiectare, montaj, punere în funcțiune, dosar de racordare': 'Design, installation, commissioning, grid connection file',
+  'Digestor anaerob din beton, cu agitatoare': 'Concrete anaerobic digester with agitators',
+  'Unitate de cogenerare 30 kWe / 45 kWt': 'Cogeneration unit 30 kWe / 45 kWth',
+  'Pompe, conducte, automatizare, racordare': 'Pumps, piping, automation, grid connection',
+  'Agregat frigorific cu compresoare semiermetice, agent R404A': 'Refrigeration unit with semi-hermetic compressors, R404A refrigerant',
+  'Vaporizatoare pentru celule': 'Evaporators for the cold rooms',
+  'Automatizare, montaj, punere în funcțiune': 'Automation, installation, commissioning',
+};
+const en = (descriptionRo) => {
+  const text = DESCRIPTIONS_EN[descriptionRo];
+  if (!text) throw new Error(`no English description for "${descriptionRo}"`);
+  return text;
+};
+
 const line = (n, category, descriptionRo, quantity, price, ...extra) => ({
-  lineId: `ln_${n}`, category, descriptionRo,
+  lineId: `ln_${n}`, category, descriptionRo: en(descriptionRo),
   fields: [...(quantity ? [field('QUANTITY', quantity, 'PCS')] : []), field('LINE_PRICE_NET', `${ro(money(price))} EUR`, 'EUR'), ...extra],
 });
 
@@ -44,7 +64,7 @@ const periodFrom = (period) => {
 function energyInvoices(documentId, moduleId, doc, withLines) {
   const kwh = doc.invoices.reduce((s, i) => s + i.qty, 0);
   const lines = withLines ? doc.invoices.map((inv, i) => ({
-    lineId: `ln_${i + 1}`, category: 'OTHER', descriptionRo: `Factură energie ${inv.number}`,
+    lineId: `ln_${i + 1}`, category: 'OTHER', descriptionRo: `Energy invoice ${inv.number}`,
     fields: [field('PERIOD_FROM', periodFrom(inv.period), 'DATE'), field('ENERGY_KWH', `${ro(inv.qty)} kWh`, 'KWH'),
       field('ENERGY_COST', `${ro(Math.round(inv.qty * doc.unitPriceEur * 100) / 100)} EUR`, 'EUR')],
   })) : [];

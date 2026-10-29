@@ -65,17 +65,17 @@ public class CalculateImpactTool implements ToolHandler {
                 transition = transition.add(component.costEur());
             }
         }
-        context.calc("label.green_amount", "Sumă etichetată verde", green, Unit.EUR).add();
-        context.calc("label.taxonomy_amount", "Din care aliniată la Taxonomia UE", taxonomy, Unit.EUR).add();
-        context.calc("label.transition_amount", "Sumă etichetată tranziție", transition, Unit.EUR).add();
-        context.calc("label.green_share", "Ponderea verde a investiției", toPct(green.divide(cfg.totalCost(), MC)),
-                Unit.PCT).formula("sumă verde / investiție totală").add();
+        context.calc("label.green_amount", "Amount labelled green", green, Unit.EUR).add();
+        context.calc("label.taxonomy_amount", "Of which aligned with the EU Taxonomy", taxonomy, Unit.EUR).add();
+        context.calc("label.transition_amount", "Amount labelled transition", transition, Unit.EUR).add();
+        context.calc("label.green_share", "Green share of the investment", toPct(green.divide(cfg.totalCost(), MC)),
+                Unit.PCT).formula("green amount / total investment").add();
 
         BigDecimal years = BigDecimal.valueOf(FinancingConfig.horizonYears(context));
         context.calculator().horizonImpact(context, cfg, years);
-        context.calc("impact.co2_horizon", "CO₂ evitat pe orizont", cfg.metric("co2_avoided_t").multiply(years, MC),
+        context.calc("impact.co2_horizon", "CO₂ avoided over the horizon", cfg.metric("co2_avoided_t").multiply(years, MC),
                 Unit.T_CO2).add();
         return context.ok(context.newResult().put("configId", cfg.configId()),
-                "Am calculat impactul configurației " + cfg.configId());
+                "Computed the impact of configuration " + cfg.configId());
     }
 }

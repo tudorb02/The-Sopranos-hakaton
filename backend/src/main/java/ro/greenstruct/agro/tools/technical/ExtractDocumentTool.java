@@ -31,13 +31,13 @@ public class ExtractDocumentTool implements ToolHandler {
             "WATER_PERMIT_ANAR", "doc.permit", "FERTILIZER_INVOICES", "doc.fertilizer");
 
     private static final Map<String, FieldCalc> FIELD_CALCS = Map.of(
-            "TOTAL_NET", new FieldCalc("total_net", "Valoarea ofertei fără TVA", Unit.EUR),
-            "APPLICATION_EFFICIENCY_PCT", new FieldCalc("efficiency", "Eficiența declarată", Unit.PCT),
-            "IRRIGATED_AREA_HA", new FieldCalc("area", "Suprafața irigată", Unit.HA),
-            "PUMP_POWER_KW", new FieldCalc("pump_power", "Puterea pompei", Unit.KW),
-            "ENERGY_KWH", new FieldCalc("kwh_12m", "Energie facturată în 12 luni", Unit.KWH_PER_YEAR),
-            "FUEL_LITRES", new FieldCalc("litres_12m", "Motorină facturată în 12 luni", Unit.L_PER_YEAR),
-            "PERMITTED_VOLUME_M3", new FieldCalc("volume", "Volum autorizat de apă", Unit.M3_PER_YEAR));
+            "TOTAL_NET", new FieldCalc("total_net", "Offer value excl. VAT", Unit.EUR),
+            "APPLICATION_EFFICIENCY_PCT", new FieldCalc("efficiency", "Declared efficiency", Unit.PCT),
+            "IRRIGATED_AREA_HA", new FieldCalc("area", "Irrigated area", Unit.HA),
+            "PUMP_POWER_KW", new FieldCalc("pump_power", "Pump power", Unit.KW),
+            "ENERGY_KWH", new FieldCalc("kwh_12m", "Energy invoiced over 12 months", Unit.KWH_PER_YEAR),
+            "FUEL_LITRES", new FieldCalc("litres_12m", "Diesel invoiced over 12 months", Unit.L_PER_YEAR),
+            "PERMITTED_VOLUME_M3", new FieldCalc("volume", "Permitted water volume", Unit.M3_PER_YEAR));
 
     private record FieldCalc(String key, String labelRo, Unit unit) {
     }
@@ -79,17 +79,17 @@ public class ExtractDocumentTool implements ToolHandler {
         String documentId = Params.requiredText(input, "documentId");
         StoredDocument document = context.run().request().documents().stream()
                 .filter(d -> d.documentId().equals(documentId)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Documentul " + documentId + " nu e în dosar"));
+                .orElseThrow(() -> new IllegalArgumentException("Document " + documentId + " is not in the dossier"));
         DocumentExtractor reader = extractor.getIfAvailable();
         if (reader == null) {
-            throw new AgentFailureException("BEDROCK_UNAVAILABLE", "Citirea documentelor prin Bedrock nu e configurată",
+            throw new AgentFailureException("BEDROCK_UNAVAILABLE", "Document reading via Bedrock is not configured",
                     false, null);
         }
         JsonNode extraction;
         try {
             extraction = reader.extract(document, documents.read(document), context.module());
         } catch (Exception e) {
-            String reason = "Documentul " + document.fileName() + " nu a putut fi citit";
+            String reason = "Document " + document.fileName() + " could not be read";
             context.workspace().putExtractionFailure(documentId, reason);
             throw new AgentFailureException("DOCUMENT_UNREADABLE", reason, true, e);
         }
@@ -118,6 +118,6 @@ public class ExtractDocumentTool implements ToolHandler {
         }
         var result = context.newResult();
         result.set("extraction", extraction);
-        return context.ok(result, "Am citit documentul " + facts.documentId());
+        return context.ok(result, "Read document " + facts.documentId());
     }
 }

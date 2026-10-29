@@ -54,7 +54,7 @@ public class ToolContext {
 
     public FarmProfile farm() {
         if (run.farmProfile() == null) {
-            throw new IllegalStateException("Datele fermei nu sunt încă încărcate");
+            throw new IllegalStateException("Farm data not loaded yet");
         }
         return run.farmProfile();
     }

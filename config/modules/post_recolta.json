@@ -1,56 +1,56 @@
 {
   "moduleId": "post_recolta",
-  "nameRo": "Post-recoltă",
+  "nameRo": "Post-harvest",
   "icon": "❄️",
   "status": "DEMO_READY",
-  "descriptionRo": "Depozite frigorifice, uscătoare, sere.",
+  "descriptionRo": "Cold stores, dryers, greenhouses.",
   "examplesRo": [
-    "depozit frigorific",
-    "uscător",
-    "seră"
+    "cold store",
+    "dryer",
+    "greenhouse"
   ],
   "indicator": "ENERGY_SAVING_PCT",
   "threshold": {
     "kind": "MIN_PCT",
     "value": 20,
     "unit": "PCT",
-    "sourceRo": "README §6, categoria 5: economie de energie ≥ 20% și agent frigorific cu potențial redus de încălzire globală; prag demo, de confirmat cu Raiffeisen",
+    "sourceRo": "README §6, category 5: energy saving ≥ 20% and a refrigerant with a low global warming potential; demo threshold, to be confirmed with Raiffeisen",
     "demo": true
   },
   "requiredDocs": [
     {
       "docType": "OFFER",
-      "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+      "labelRo": "Offer / pro forma and technical data sheet of the new investment",
       "required": true
     },
     {
       "docType": "ENERGY_INVOICES",
-      "labelRo": "Facturile de energie (curent și/sau gaz) pe ultimele 12 luni",
+      "labelRo": "Energy invoices (electricity and/or gas) for the last 12 months",
       "required": true
     },
     {
       "docType": "CURRENT_EQUIPMENT",
-      "labelRo": "Fișa echipamentului vechi (pentru o precizie mai bună decât din facturi)",
+      "labelRo": "Data sheet of the old equipment (for better accuracy than from invoices)",
       "required": false
     }
   ],
   "questionnaire": [
     {
       "questionId": "activity",
-      "labelRo": "Ce faceți în spațiul vizat de investiție?",
+      "labelRo": "What do you do in the space covered by the investment?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "DEPOZIT_FRIGORIFIC",
-          "labelRo": "depozit frigorific"
+          "labelRo": "cold store"
         },
         {
           "value": "USCATOR",
-          "labelRo": "uscător"
+          "labelRo": "dryer"
         },
         {
           "value": "SERA",
-          "labelRo": "seră"
+          "labelRo": "greenhouse"
         }
       ],
       "prefillFrom": "NONE",
@@ -58,52 +58,52 @@
     },
     {
       "questionId": "stored_product",
-      "labelRo": "Ce depozitați, uscați sau cultivați?",
+      "labelRo": "What do you store, dry or grow?",
       "type": "TEXT",
       "prefillFrom": "APIA",
       "required": true
     },
     {
       "questionId": "quantity",
-      "labelRo": "Cât: tone pe an (depozit, uscător) sau m² de seră?",
+      "labelRo": "How much: tonnes per year (store, dryer) or m² of greenhouse?",
       "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": true
     },
     {
       "questionId": "operating_months",
-      "labelRo": "Câte luni pe an funcționează?",
+      "labelRo": "How many months a year does it operate?",
       "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": true
     },
     {
       "questionId": "gas_kwh_year",
-      "labelRo": "Câți kWh de gaz consumați pe an în acest spațiu (dacă folosiți gaz)?",
+      "labelRo": "How many kWh of gas do you use per year in this space (if you use gas)?",
       "type": "NUMBER",
       "prefillFrom": "NONE",
       "required": false
     },
     {
       "questionId": "old_equipment_fate",
-      "labelRo": "Ce faceți cu utilajul vechi și cu agentul frigorific?",
+      "labelRo": "What do you do with the old equipment and the refrigerant?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "CASARE",
-          "labelRo": "casare, cu recuperarea agentului frigorific"
+          "labelRo": "scrapping, with refrigerant recovery"
         },
         {
           "value": "VANZARE",
-          "labelRo": "vânzare"
+          "labelRo": "sale"
         },
         {
           "value": "REZERVA",
-          "labelRo": "îl păstrez ca rezervă"
+          "labelRo": "I keep it as a spare"
         },
         {
           "value": "NU_E_CAZUL",
-          "labelRo": "nu e cazul"
+          "labelRo": "not applicable"
         }
       ],
       "prefillFrom": "NONE",
@@ -111,34 +111,34 @@
     },
     {
       "questionId": "offtake_contracts",
-      "labelRo": "Aveți contracte de vânzare cu procesatori sau retaileri?",
+      "labelRo": "Do you have sales contracts with processors or retailers?",
       "type": "BOOLEAN",
       "prefillFrom": "NONE",
       "required": false
     },
     {
       "questionId": "cashin_months",
-      "labelRo": "În ce luni încasați cel mai mult?",
+      "labelRo": "In which months do you receive the most income?",
       "type": "MONTHS",
       "prefillFrom": "OPEN_BANKING",
       "required": true
     },
     {
       "questionId": "loan_term",
-      "labelRo": "Pe câți ani vreți creditul?",
+      "labelRo": "Over how many years do you want the loan?",
       "type": "SINGLE_CHOICE",
       "options": [
         {
           "value": "ANI_3",
-          "labelRo": "3 ani"
+          "labelRo": "3 years"
         },
         {
           "value": "ANI_5",
-          "labelRo": "5 ani"
+          "labelRo": "5 years"
         },
         {
           "value": "ANI_7",
-          "labelRo": "7 ani"
+          "labelRo": "7 years"
         }
       ],
       "prefillFrom": "NONE",
@@ -150,27 +150,27 @@
   "dnsh": [
     {
       "objective": "CLIMATE_ADAPTATION",
-      "checkRo": "Amplasamentul depozitului nu e expus la inundații sau secetă severă.",
+      "checkRo": "The store's site is not exposed to flooding or severe drought.",
       "evidence": "PARCEL_RISK"
     },
     {
       "objective": "WATER_MARINE_RESOURCES",
-      "checkRo": "Investiția nu adaugă consum de apă și nu e pe parcele vulnerabile la nitrați.",
+      "checkRo": "The investment adds no water use and is not on nitrate-vulnerable parcels.",
       "evidence": "NITRATE_PARCELS"
     },
     {
       "objective": "CIRCULAR_ECONOMY",
-      "checkRo": "Agregatul vechi se predă la reciclare autorizată, cu recuperarea agentului frigorific.",
+      "checkRo": "The old unit is handed over for authorised recycling, with refrigerant recovery.",
       "evidence": "OLD_EQUIPMENT_FATE"
     },
     {
       "objective": "POLLUTION_PREVENTION",
-      "checkRo": "Agentul frigorific are potențial de încălzire globală (GWP) redus, sub limita din config.",
+      "checkRo": "The refrigerant has a low global warming potential (GWP), below the limit in the config.",
       "evidence": "REFRIGERANT_GWP"
     },
     {
       "objective": "BIODIVERSITY",
-      "checkRo": "Amplasamentul nu e în arii Natura 2000 sau există aviz de mediu.",
+      "checkRo": "The site is not in Natura 2000 areas, or there is an environmental approval.",
       "evidence": "NATURA_2000_PARCELS"
     }
   ],
@@ -207,19 +207,19 @@
         "USCATOR": "T",
         "SERA": "M2"
       },
-      "sourceRo": "README §6, categoria 5, calculul 1: consumul pe unitate = kWh pe an / tone (sau / m² de seră)"
+      "sourceRo": "README §6, category 5, calculation 1: consumption per unit = kWh per year / tonnes (or / m² of greenhouse)"
     },
     "maxRefrigerantGwp": {
       "value": 675,
-      "sourceRo": "Criteriul DNSH (prevenirea poluării) pentru echipamente de răcire în Taxonomia UE, Reg. (UE) 2021/2139: GWP al agentului frigorific ≤ 675. Valoare de validat cu banca"
+      "sourceRo": "DNSH criterion (pollution prevention) for cooling equipment in the EU Taxonomy, Reg. (EU) 2021/2139: refrigerant GWP ≤ 675. Value to be validated with the bank"
     },
     "gasEurPerKwh": {
       "value": 0.05,
-      "sourceRo": "Prețul gazului pentru IMM-uri; estimare echipă, de validat cu mentorii"
+      "sourceRo": "Gas price for SMEs; team estimate, to be validated with the mentors"
     },
     "safetyMarginPct": {
       "value": 2,
-      "sourceRo": "Marja peste prag cerută de echipă"
+      "sourceRo": "Margin above the threshold required by the team"
     }
   },
   "substantialContribution": "CLIMATE_MITIGATION",
@@ -236,6 +236,16 @@
     "post-recolta",
     "post recolta",
     "izolatie termica",
-    "depozit"
+    "depozit",
+    "cold store",
+    "cold storage",
+    "refrigeration",
+    "refrigerated",
+    "dryer",
+    "greenhouse",
+    "post-harvest",
+    "storage",
+    "sorting",
+    "thermal insulation"
   ]
 }

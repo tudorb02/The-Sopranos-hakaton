@@ -1,41 +1,41 @@
 {
   "module": "utilaje",
-  "note": "Prețuri estimate (README §13: prețul upgrade-ului vine din catalog; oferta actualizată a furnizorului e condiție înainte de tragere). Reducerile de motorină se înmulțesc (l/ha = l/ha tractor × Π(1 − reducere)); cele de azot se adună. Articolele cu role ALTERNATIVE înlocuiesc tractoarele second-hand din ofertă cu tractoare noi Stage V de aceeași putere.",
+  "note": "Estimated prices (README §13: the upgrade price comes from the catalogue; the supplier's updated offer is a condition precedent to drawdown). Diesel reductions multiply (l/ha = tractor l/ha × Π(1 − reduction)); nitrogen reductions add up. Items with role ALTERNATIVE replace the second-hand tractors in the offer with new Stage V tractors of the same power.",
   "items": [
     {
       "catalogId": "utl.gps.rtk",
       "category": "PRECISION_GUIDANCE",
-      "nameRo": "Pilot automat GPS RTK (mai puține suprapuneri)",
+      "nameRo": "GPS RTK autosteer (less overlap)",
       "role": "INDICATOR",
       "costEurPerTractor": 16000,
       "effect": {
         "dieselReductionPct": 9,
         "nitrogenReductionPct": 5
       },
-      "sourceRo": "Catalogul Product (data/demo/test-documents/reference/upgrades.json, MCH-GPS): −9% motorină, −5% azot; preț estimat pe tractor. Motorină: Haapala et al., Agronomy Research 23(1), 2025; azot: studiu CEMEPE (−4,8…8,8%)"
+      "sourceRo": "Product catalogue (data/demo/test-documents/reference/upgrades.json, MCH-GPS): −9% diesel, −5% nitrogen; estimated price per tractor. Diesel: Haapala et al., Agronomy Research 23(1), 2025; nitrogen: CEMEPE study (−4.8…8.8%)"
     },
     {
       "catalogId": "utl.vra.module",
       "category": "PRECISION_VARIABLE_RATE",
-      "nameRo": "Modul de dozare variabilă a îngrășămintelor",
+      "nameRo": "Variable-rate fertiliser application module",
       "role": "INDICATOR",
       "costEur": 11000,
       "effect": {
         "nitrogenReductionPct": 12
       },
-      "sourceRo": "Catalogul Product (data/demo/test-documents/reference/upgrades.json, MCH-VRA): −12% azot; preț estimat pe fermă"
+      "sourceRo": "Product catalogue (data/demo/test-documents/reference/upgrades.json, MCH-VRA): −12% nitrogen; estimated price per farm"
     },
     {
       "catalogId": "utl.tractor.new_stage_v",
       "category": "TRACTOR",
-      "nameRo": "Tractoare noi Stage V, aceeași putere și același număr ca în ofertă",
+      "nameRo": "New Stage V tractors, same power and same number as in the offer",
       "role": "ALTERNATIVE",
       "mirrorsCategory": "TRACTOR",
       "costEurPerHp": 525,
       "effect": {
         "dieselSavingVsOldPct": 12
       },
-      "sourceRo": "Preț ≈ 520–530 EUR/CP în ofertele demo; 600–1.000 EUR/CP la mărci premium, de verificat în Baza de prețuri AFIR. Economie 12% față de consumul actual: 1 − 246/280 g/kWh (DLG PowerMix 2018+ față de un tractor de peste 15 ani, +14% conform Nebraska/UNL), estimare de validat. Se propune doar în locul tractoarelor second-hand."
+      "sourceRo": "Price ≈ 520–530 EUR/HP in the demo offers; 600–1,000 EUR/HP for premium brands, to be checked in the AFIR price database. 12% saving vs current consumption: 1 − 246/280 g/kWh (DLG PowerMix 2018+ vs a tractor over 15 years old, +14% per Nebraska/UNL), estimate to be validated. Proposed only in place of second-hand tractors."
     }
   ]
 }
