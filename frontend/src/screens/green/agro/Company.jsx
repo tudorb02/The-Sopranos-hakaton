@@ -1,13 +1,14 @@
-// Step 1: the company. The CUI is looked up in the backend (GET /api/farms/{cui}); the two consents decide what we may read.
+// Step 1: the company signed in with the business account, loaded from the backend (GET /api/farms/{cui}); the two
+// consents decide what we may read.
 
-import { useId, useState } from "react";
+import { useId } from "react";
 
 import { Actions, ErrorCard, Loading, NextButton } from "../../../components/live.jsx";
 import { Group, IconTile, NoteCard, PrivacyPromise, Src } from "../../../components/ui.jsx";
 import { greenLegal } from "../../../data/green/legal.js";
 import { eur, ha } from "../../../lib/format.js";
 import { useFarm } from "../../../lib/hooks.js";
-import { DEMO_FARMS, MONTHS_RO, SME_STATUS_RO } from "../../../lib/labels.js";
+import { MONTHS_RO, SME_STATUS_RO } from "../../../lib/labels.js";
 import { patchFlow, useFlow } from "../../../lib/session.js";
 
 function ConsentSwitch({ label, hint, checked, onChange }) {
@@ -27,18 +28,8 @@ const fromSource = (source) => <Src kind="obs" label={`from ${source}`} />;
 
 export function Company() {
   const flow = useFlow();
-  const [input, setInput] = useState(flow.cui);
   const farm = useFarm(flow.cui);
-  const inputId = useId();
   const profile = farm.data;
-
-  const lookup = (cui) => {
-    const clean = cui.trim().replace(/^RO/i, "");
-    setInput(clean);
-    // a different company starts a new request
-    if (clean !== flow.cui) patchFlow({ cui: clean, moduleId: null, parcelIds: null, answers: {}, runId: null });
-    else farm.reload();
-  };
 
   const consents = flow.consents;
   const canContinue = Boolean(profile) && consents.apia;
@@ -47,36 +38,8 @@ export function Company() {
     <>
       <header className="intro">
         <h1 className="page-title">Your company</h1>
-        <p className="small muted">We take the data from the public registries and, with your consent, from APIA and your accounts. You only confirm it.</p>
+        <p className="small muted">The company you are signed in with. We take its data from the public registries and, with your consent, from APIA and your accounts. You only confirm it.</p>
       </header>
-
-      <form
-        className="card cui-form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          lookup(input);
-        }}
-      >
-        <div className="field">
-          <label htmlFor={inputId}>Tax identification code (CUI)</label>
-          <div className="input">
-            <input id={inputId} inputMode="numeric" autoComplete="off" placeholder="for example 45871203" value={input} onChange={(e) => setInput(e.target.value)} />
-          </div>
-        </div>
-        <button type="submit" className="btn btn--small" disabled={!input.trim() || farm.loading}>
-          Find the company
-        </button>
-      </form>
-
-      <Group label="Demo farms (fictional data)">
-        <div className="chips" role="group" aria-label="Demo farms">
-          {DEMO_FARMS.map((demo) => (
-            <button key={demo.cui} type="button" className="chip" aria-pressed={flow.cui === demo.cui ? "true" : "false"} onClick={() => lookup(demo.cui)}>
-              {demo.name}
-            </button>
-          ))}
-        </div>
-      </Group>
 
       {farm.loading && flow.cui ? <Loading label="Looking up the company in the registries…" /> : null}
       <ErrorCard error={farm.error} onRetry={farm.reload} />

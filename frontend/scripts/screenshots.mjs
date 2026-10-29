@@ -101,7 +101,7 @@ await evaluate("sessionStorage.clear(); localStorage.clear(); 0");
 await go("/verde/agro");
 await shot("00-intro");
 await go("/verde/agro/firma");
-check(await click("button.chip", "Legume Bărăgan"), "firm: demo farm chip");
+check(await waitText("Legume Bărăgan Demo SRL"), "firm: the signed-in company is preloaded");
 check(await waitText("Your consents"), "firm: company loaded from /api/farms");
 check((await bodyText()).includes("Your company is an SME".toLowerCase()), "firm: SME status in plain words");
 await evaluate(`document.querySelectorAll('input[role=switch]')[0].click(); 0`);

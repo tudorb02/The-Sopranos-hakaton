@@ -4,11 +4,14 @@
 
 import { useSyncExternalStore } from "react";
 
+import { business } from "../data/accounts.js";
+
 const FLOW_KEY = "gs.flow";
 const RUN_KEY = "gs.runId";
 const RECENT_KEY = "gs.recentRuns";
 
-const EMPTY_FLOW = { cui: "", consents: { apia: false, openBanking: false }, moduleId: null, parcelIds: null, answers: {}, runId: null };
+// The company is the one signed in with the business account, so the flow starts with its CUI.
+const EMPTY_FLOW = { cui: business.cui, consents: { apia: false, openBanking: false }, moduleId: null, parcelIds: null, answers: {}, runId: null };
 
 function read(key, fallback) {
   try {
@@ -20,6 +23,7 @@ function read(key, fallback) {
 }
 
 let flow = { ...EMPTY_FLOW, ...read(FLOW_KEY, {}) };
+if (!flow.cui) flow.cui = business.cui;
 let files = []; // [{ docType, file }]
 const listeners = new Set();
 

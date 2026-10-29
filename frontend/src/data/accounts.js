@@ -13,10 +13,12 @@ export const accounts = {
     { id: "pf", profile: "Employee", name: "Daria Ionescu", initial: "D", detail: "RON current account · RO12 RZBR •••• 1234", href: "#/intra/pf" },
     { id: "student", profile: "Student", name: "Matei Popescu", initial: "M", detail: "RON current account · RO45 RZBR •••• 5678", href: "#/intra/student" },
   ],
-  pj: [{ id: "pj", profile: "Vegetable farm", name: "Legume Bărăgan SRL", initial: "L", detail: "RON current account · CUI 4•••••7", href: "#/firma" }],
+  pj: [{ id: "pj", profile: "Vegetable farm", name: "Legume Bărăgan SRL", initial: "L", detail: "RON current account · CUI 4•••••3", href: "#/firma" }],
 };
 
 export const business = {
+  // the company signed in with the business account: its data comes from the backend (fictional demo farm)
+  cui: "45871203",
   subtitle: "Legume Bărăgan SRL · legal entity",
   products: [
     { icon: "card", name: "Business accounts" },
