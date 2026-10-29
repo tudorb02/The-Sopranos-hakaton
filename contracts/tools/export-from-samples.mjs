@@ -13,15 +13,15 @@ const read = (name) => JSON.parse(readFileSync(join(samples, name), 'utf8'));
 const write = (file, value, summary) =>
   writeFileSync(join(ROOT, file), JSON.stringify({ summary, value }, null, 2) + '\n');
 
-write('examples/modules.json', read('ModuleList__all.json'), 'Cele 6 module, așa cum le servește backend-ul');
+write('examples/modules.json', read('ModuleList__all.json'), 'The 6 modules, as the backend serves them');
 const scenarios = readdirSync(samples)
   .filter((f) => f.startsWith('RunView__full_trimis_'))
   .map((f) => f.slice('RunView__full_trimis_'.length, -'.json'.length));
 for (const id of scenarios) {
   write(`examples/run-${id}.json`, read(`RunView__full_trimis_${id}.json`),
-    `Dosarul demo „${id}”, trimis de IMM la bancă (răspuns real al backend-ului, din fixtures/${id}.ndjson)`);
+    `The demo dossier "${id}", sent by the SME to the bank (real backend response, from fixtures/${id}.ndjson)`);
   const farm = `FarmProfile__${id}.json`;
-  if (existsSync(join(samples, farm))) write(`examples/farm-${id}.json`, read(farm), `Profilul fermei demo „${id}”`);
+  if (existsSync(join(samples, farm))) write(`examples/farm-${id}.json`, read(farm), `The profile of the demo farm "${id}"`);
   const events = readdirSync(samples)
     .filter((f) => f.startsWith(`RunEvent__${id}_`))
     .map((f) => read(f))

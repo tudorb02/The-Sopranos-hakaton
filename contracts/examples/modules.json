@@ -1,57 +1,57 @@
 {
-  "summary": "Cele 6 module, așa cum le servește backend-ul",
+  "summary": "The 6 modules, as the backend serves them",
   "value": [
     {
       "moduleId": "irigatii",
-      "nameRo": "Irigații",
+      "nameRo": "Irrigation",
       "icon": "💧",
       "status": "DEMO_READY",
-      "descriptionRo": "Picurare, aspersie cu senzori, pompe solare.",
+      "descriptionRo": "Drip, sprinkler with sensors, solar pumps.",
       "examplesRo": [
-        "picurare",
-        "aspersie cu senzori"
+        "drip",
+        "sprinkler with sensors"
       ],
       "indicator": "WATER_SAVING_PCT",
       "threshold": {
         "kind": "MIN_PCT",
         "value": 25,
         "unit": "PCT",
-        "sourceRo": "README §6, categoria 1: economie de apă ≥ 25% față de sistemul actual (propunere, de confirmat cu Raiffeisen)",
+        "sourceRo": "README §6, category 1: water saving ≥ 25% versus the current system (proposal, to be confirmed with Raiffeisen)",
         "demo": true
       },
       "requiredDocs": [
         {
           "docType": "OFFER",
-          "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+          "labelRo": "Offer / pro forma and technical data sheet of the new investment",
           "required": true
         },
         {
           "docType": "CURRENT_EQUIPMENT",
-          "labelRo": "Ce se înlocuiește: fișă tehnică, poză cu eticheta sau descriere",
+          "labelRo": "What is being replaced: technical data sheet, photo of the label or a description",
           "required": false
         },
         {
           "docType": "WATER_PERMIT_ANAR",
-          "labelRo": "Autorizația de gospodărire a apelor (ANAR)",
+          "labelRo": "Water management permit (ANAR)",
           "required": true
         },
         {
           "docType": "ENERGY_INVOICES",
-          "labelRo": "Consumul actual de apă sau energia de pompare (12 luni)",
+          "labelRo": "Current water use or pumping energy (12 months)",
           "required": true
         }
       ],
       "questionnaire": [
         {
           "questionId": "crops_main",
-          "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
+          "labelRo": "Main crops and average yield (t/ha) over the last 3 years",
           "type": "TEXT",
           "prefillFrom": "APIA",
           "required": true
         },
         {
           "questionId": "nitrogen_kg_ha",
-          "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)?",
+          "labelRo": "How much nitrogen fertiliser do you use (kg N/ha)?",
           "type": "NUMBER",
           "unit": "KG_N_PER_HA",
           "prefillFrom": "NONE",
@@ -59,16 +59,16 @@
         },
         {
           "questionId": "tillage",
-          "labelRo": "Cum lucrați solul?",
+          "labelRo": "How do you till the soil?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "ARATURA",
-              "labelRo": "arătură"
+              "labelRo": "ploughing"
             },
             {
               "value": "MINIMA",
-              "labelRo": "lucrare minimă"
+              "labelRo": "minimum tillage"
             },
             {
               "value": "NO_TILL",
@@ -80,20 +80,20 @@
         },
         {
           "questionId": "cover_crops",
-          "labelRo": "Folosiți culturi de acoperire sau rotație?",
+          "labelRo": "Do you use cover crops or crop rotation?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "DA",
-              "labelRo": "da"
+              "labelRo": "yes"
             },
             {
               "value": "ROTATIE",
-              "labelRo": "doar rotație"
+              "labelRo": "rotation only"
             },
             {
               "value": "NU",
-              "labelRo": "nu"
+              "labelRo": "no"
             }
           ],
           "prefillFrom": "APIA",
@@ -101,28 +101,28 @@
         },
         {
           "questionId": "irrigation_current",
-          "labelRo": "Irigați acum? Cu ce sistem?",
+          "labelRo": "Do you irrigate now? With which system?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "NU",
-              "labelRo": "nu irig"
+              "labelRo": "I don't irrigate"
             },
             {
               "value": "ASPERSIE_VECHE",
-              "labelRo": "aspersie veche"
+              "labelRo": "old sprinkler"
             },
             {
               "value": "ASPERSIE",
-              "labelRo": "aspersie"
+              "labelRo": "sprinkler"
             },
             {
               "value": "PICURARE",
-              "labelRo": "picurare"
+              "labelRo": "drip"
             },
             {
               "value": "BRAZDE",
-              "labelRo": "pe brazde"
+              "labelRo": "furrow"
             }
           ],
           "prefillFrom": "APIA",
@@ -130,19 +130,19 @@
         },
         {
           "questionId": "crop_insurance",
-          "labelRo": "Aveți asigurare pentru culturi?",
+          "labelRo": "Do you have crop insurance?",
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": true
         },
         {
           "questionId": "certifications",
-          "labelRo": "Aveți certificări?",
+          "labelRo": "Do you have certifications?",
           "type": "MULTI_CHOICE",
           "options": [
             {
               "value": "ECOLOGIC",
-              "labelRo": "ecologic"
+              "labelRo": "organic"
             },
             {
               "value": "GLOBALGAP",
@@ -150,7 +150,7 @@
             },
             {
               "value": "NICIUNA",
-              "labelRo": "niciuna"
+              "labelRo": "none"
             }
           ],
           "prefillFrom": "NONE",
@@ -158,38 +158,38 @@
         },
         {
           "questionId": "offtake_contracts",
-          "labelRo": "Aveți contracte de vânzare cu procesatori sau retaileri?",
+          "labelRo": "Do you have sales contracts with processors or retailers?",
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": false
         },
         {
           "questionId": "cashin_months",
-          "labelRo": "În ce luni încasați cel mai mult?",
+          "labelRo": "In which months do you receive the most income?",
           "type": "MONTHS",
           "prefillFrom": "OPEN_BANKING",
           "required": true
         },
         {
           "questionId": "old_equipment_fate",
-          "labelRo": "Ce faceți cu utilajul vechi și cu deșeurile (ambalaje, folie)?",
+          "labelRo": "What do you do with the old equipment and the waste (packaging, plastic film)?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "CASARE",
-              "labelRo": "casare"
+              "labelRo": "scrapping"
             },
             {
               "value": "VANZARE",
-              "labelRo": "vânzare"
+              "labelRo": "sale"
             },
             {
               "value": "REZERVA",
-              "labelRo": "îl păstrez ca rezervă"
+              "labelRo": "I keep it as a spare"
             },
             {
               "value": "NU_E_CAZUL",
-              "labelRo": "nu e cazul"
+              "labelRo": "not applicable"
             }
           ],
           "prefillFrom": "NONE",
@@ -197,24 +197,24 @@
         },
         {
           "questionId": "water_source",
-          "labelRo": "De unde luați apa?",
+          "labelRo": "Where do you get your water from?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "ANIF",
-              "labelRo": "rețeaua ANIF"
+              "labelRo": "ANIF network"
             },
             {
               "value": "PUT",
-              "labelRo": "puț propriu"
+              "labelRo": "own well"
             },
             {
               "value": "RAU_LAC",
-              "labelRo": "râu sau lac"
+              "labelRo": "river or lake"
             },
             {
               "value": "BAZIN",
-              "labelRo": "bazin de acumulare"
+              "labelRo": "storage reservoir"
             }
           ],
           "prefillFrom": "NONE",
@@ -222,7 +222,7 @@
         },
         {
           "questionId": "pump_lift_m",
-          "labelRo": "De la ce adâncime sau înălțime pompați apa (metri)?",
+          "labelRo": "From what depth or height do you pump the water (metres)?",
           "type": "NUMBER",
           "unit": "M",
           "prefillFrom": "NONE",
@@ -232,12 +232,12 @@
     },
     {
       "moduleId": "energie",
-      "nameRo": "Energie la fermă",
+      "nameRo": "On-farm energy",
       "icon": "☀️",
       "status": "DEMO_READY",
-      "descriptionRo": "Panouri solare, pompe solare, agrivoltaic.",
+      "descriptionRo": "Solar panels, solar pumps, agrivoltaics.",
       "examplesRo": [
-        "panouri solare",
+        "solar panels",
         "agrivoltaic"
       ],
       "indicator": "RENEWABLE_GENERATION",
@@ -245,34 +245,34 @@
         "kind": "BY_NATURE",
         "value": null,
         "unit": null,
-        "sourceRo": "regenerabil prin natura investiției; se verifică dimensionarea după consum",
+        "sourceRo": "renewable by the nature of the investment; the sizing against consumption is checked",
         "demo": true
       },
       "requiredDocs": [
         {
           "docType": "OFFER",
-          "labelRo": "Oferta / proforma și fișa tehnică a instalației",
+          "labelRo": "Offer / pro forma and technical data sheet of the installation",
           "required": true
         },
         {
           "docType": "ENERGY_INVOICES",
-          "labelRo": "Facturile de energie electrică pe ultimele 12 luni",
+          "labelRo": "Electricity invoices for the last 12 months",
           "required": true
         }
       ],
       "questionnaire": [
         {
           "questionId": "mounting",
-          "labelRo": "Unde se montează panourile?",
+          "labelRo": "Where will the panels be mounted?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "ACOPERIS",
-              "labelRo": "pe acoperiș"
+              "labelRo": "on a roof"
             },
             {
               "value": "TEREN_NEPRODUCTIV",
-              "labelRo": "pe teren neproductiv"
+              "labelRo": "on unproductive land"
             },
             {
               "value": "AGRIVOLTAIC",
@@ -280,7 +280,7 @@
             },
             {
               "value": "TEREN_AGRICOL",
-              "labelRo": "pe teren agricol productiv"
+              "labelRo": "on productive farmland"
             }
           ],
           "prefillFrom": "NONE",
@@ -288,59 +288,59 @@
         },
         {
           "questionId": "available_area_m2",
-          "labelRo": "Ce suprafață aveți disponibilă pentru panouri (m²)?",
+          "labelRo": "What area do you have available for panels (m²)?",
           "type": "NUMBER",
           "prefillFrom": "NONE",
           "required": true
         },
         {
           "questionId": "daytime_share_pct",
-          "labelRo": "Ce parte din consumul de energie are loc ziua (aproximativ, %)?",
+          "labelRo": "What share of your energy use happens during the day (approx., %)?",
           "type": "NUMBER",
           "prefillFrom": "NONE",
           "required": true
         },
         {
           "questionId": "diesel_pump_litres_year",
-          "labelRo": "Dacă înlocuiți o pompă pe motorină cu una solară: câți litri consumă pompa actuală pe an?",
+          "labelRo": "If you are replacing a diesel pump with a solar one: how many litres does the current pump use per year?",
           "type": "NUMBER",
           "prefillFrom": "NONE",
           "required": false
         },
         {
           "questionId": "has_grid_notice",
-          "labelRo": "Aveți avizul de racordare pentru vânzarea surplusului în rețea?",
+          "labelRo": "Do you have the grid connection approval for selling surplus to the grid?",
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": false
         },
         {
           "questionId": "cashin_months",
-          "labelRo": "În ce luni încasați cel mai mult?",
+          "labelRo": "In which months do you receive the most income?",
           "type": "MONTHS",
           "prefillFrom": "OPEN_BANKING",
           "required": true
         },
         {
           "questionId": "old_equipment_fate",
-          "labelRo": "Ce faceți cu echipamentul vechi pe care îl înlocuiți (invertoare, cabluri, pompe)?",
+          "labelRo": "What do you do with the old equipment you are replacing (inverters, cables, pumps)?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "CASARE",
-              "labelRo": "casare"
+              "labelRo": "scrapping"
             },
             {
               "value": "VANZARE",
-              "labelRo": "vânzare"
+              "labelRo": "sale"
             },
             {
               "value": "REZERVA",
-              "labelRo": "îl păstrez ca rezervă"
+              "labelRo": "I keep it as a spare"
             },
             {
               "value": "NU_E_CAZUL",
-              "labelRo": "nu e cazul"
+              "labelRo": "not applicable"
             }
           ],
           "prefillFrom": "NONE",
@@ -350,74 +350,74 @@
     },
     {
       "moduleId": "utilaje",
-      "nameRo": "Utilaje & precizie",
+      "nameRo": "Machinery & precision",
       "icon": "🚜",
       "status": "DEMO_READY",
-      "descriptionRo": "Tractor eficient, pilot automat GPS, dozare variabilă.",
+      "descriptionRo": "Efficient tractor, GPS autosteer, variable-rate application.",
       "examplesRo": [
-        "tractor eficient Stage V",
-        "pilot automat GPS",
-        "dozare variabilă"
+        "efficient Stage V tractor",
+        "GPS autosteer",
+        "variable-rate application"
       ],
       "indicator": "FUEL_SAVING_PCT",
       "threshold": {
         "kind": "MIN_PCT",
         "value": 20,
         "unit": "PCT",
-        "sourceRo": "README §6, categoria 3: reducere ≥ 20% a motorinei pe hectar SAU a azotului pe hectar (propunere, de validat cu mentorii)",
+        "sourceRo": "README §6, category 3: ≥ 20% reduction in diesel per hectare OR in nitrogen per hectare (proposal, to be validated with the mentors)",
         "demo": true
       },
       "requiredDocs": [
         {
           "docType": "OFFER",
-          "labelRo": "Oferta / proforma și fișa tehnică a tractorului (cu consumul în l/ha)",
+          "labelRo": "Offer / pro forma and technical data sheet of the tractor (with consumption in l/ha)",
           "required": true
         },
         {
           "docType": "CURRENT_EQUIPMENT",
-          "labelRo": "Fișa utilajului înlocuit (an de fabricație, putere) sau talonul",
+          "labelRo": "Data sheet of the replaced machine (year of manufacture, power) or its registration certificate",
           "required": false
         },
         {
           "docType": "FERTILIZER_INVOICES",
-          "labelRo": "Facturile de îngrășăminte cu azot pe 12 luni (obligatorii pentru precizie)",
+          "labelRo": "Nitrogen fertiliser invoices for 12 months (mandatory for precision farming)",
           "required": false
         }
       ],
       "questionnaire": [
         {
           "questionId": "crops_main",
-          "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
+          "labelRo": "Main crops and average yield (t/ha) over the last 3 years",
           "type": "TEXT",
           "prefillFrom": "APIA",
           "required": true
         },
         {
           "questionId": "replaced_machine_year",
-          "labelRo": "Anul de fabricație al utilajului înlocuit",
+          "labelRo": "Year of manufacture of the replaced machine",
           "type": "NUMBER",
           "prefillFrom": "NONE",
           "required": true
         },
         {
           "questionId": "replaced_machine_hp",
-          "labelRo": "Puterea utilajului înlocuit (CP)",
+          "labelRo": "Power of the replaced machine (HP)",
           "type": "NUMBER",
           "prefillFrom": "NONE",
           "required": true
         },
         {
           "questionId": "tillage",
-          "labelRo": "Cum lucrați solul? (arătură, lucrare minimă sau no-till)",
+          "labelRo": "How do you till the soil? (ploughing, minimum tillage or no-till)",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "ARATURA",
-              "labelRo": "arătură"
+              "labelRo": "ploughing"
             },
             {
               "value": "MINIMA",
-              "labelRo": "lucrare minimă"
+              "labelRo": "minimum tillage"
             },
             {
               "value": "NO_TILL",
@@ -429,7 +429,7 @@
         },
         {
           "questionId": "nitrogen_kg_ha",
-          "labelRo": "Câte îngrășăminte cu azot folosiți (kg N/ha)? Se folosește doar dacă lipsesc facturile",
+          "labelRo": "How much nitrogen fertiliser do you use (kg N/ha)? Used only if the invoices are missing",
           "type": "NUMBER",
           "unit": "KG_N_PER_HA",
           "prefillFrom": "NONE",
@@ -437,20 +437,20 @@
         },
         {
           "questionId": "cover_crops",
-          "labelRo": "Folosiți culturi de acoperire sau rotație?",
+          "labelRo": "Do you use cover crops or crop rotation?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "DA",
-              "labelRo": "da"
+              "labelRo": "yes"
             },
             {
               "value": "ROTATIE",
-              "labelRo": "doar rotație"
+              "labelRo": "rotation only"
             },
             {
               "value": "NU",
-              "labelRo": "nu"
+              "labelRo": "no"
             }
           ],
           "prefillFrom": "APIA",
@@ -458,19 +458,19 @@
         },
         {
           "questionId": "crop_insurance",
-          "labelRo": "Aveți asigurare pentru culturi?",
+          "labelRo": "Do you have crop insurance?",
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": true
         },
         {
           "questionId": "certifications",
-          "labelRo": "Aveți certificări?",
+          "labelRo": "Do you have certifications?",
           "type": "MULTI_CHOICE",
           "options": [
             {
               "value": "ECOLOGIC",
-              "labelRo": "ecologic"
+              "labelRo": "organic"
             },
             {
               "value": "GLOBALGAP",
@@ -478,7 +478,7 @@
             },
             {
               "value": "NICIUNA",
-              "labelRo": "niciuna"
+              "labelRo": "none"
             }
           ],
           "prefillFrom": "NONE",
@@ -486,31 +486,31 @@
         },
         {
           "questionId": "cashin_months",
-          "labelRo": "În ce luni încasați cel mai mult?",
+          "labelRo": "In which months do you receive the most income?",
           "type": "MONTHS",
           "prefillFrom": "OPEN_BANKING",
           "required": true
         },
         {
           "questionId": "old_equipment_fate",
-          "labelRo": "Ce faceți cu utilajul înlocuit (casare, vânzare, rezervă)?",
+          "labelRo": "What do you do with the replaced machine (scrapping, sale, spare)?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "CASARE",
-              "labelRo": "casare"
+              "labelRo": "scrapping"
             },
             {
               "value": "VANZARE",
-              "labelRo": "vânzare"
+              "labelRo": "sale"
             },
             {
               "value": "REZERVA",
-              "labelRo": "îl păstrez ca rezervă"
+              "labelRo": "I keep it as a spare"
             },
             {
               "value": "NU_E_CAZUL",
-              "labelRo": "nu e cazul"
+              "labelRo": "not applicable"
             }
           ],
           "prefillFrom": "NONE",
@@ -518,27 +518,27 @@
         },
         {
           "questionId": "manager_competences",
-          "labelRo": "Administratorul are studii sau un curs de calificare în agricultură?",
+          "labelRo": "Does the manager have an agricultural degree or a vocational course in agriculture?",
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": false
         },
         {
           "questionId": "loan_term",
-          "labelRo": "Pe câți ani vreți creditul?",
+          "labelRo": "Over how many years do you want the loan?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "ANI_3",
-              "labelRo": "3 ani"
+              "labelRo": "3 years"
             },
             {
               "value": "ANI_5",
-              "labelRo": "5 ani"
+              "labelRo": "5 years"
             },
             {
               "value": "ANI_7",
-              "labelRo": "7 ani"
+              "labelRo": "7 years"
             }
           ],
           "prefillFrom": "NONE",
@@ -548,63 +548,63 @@
     },
     {
       "moduleId": "zootehnie",
-      "nameRo": "Zootehnie & biogaz",
+      "nameRo": "Livestock & biogas",
       "icon": "🐄",
       "status": "DEMO_READY",
-      "descriptionRo": "Digestor, stocarea gunoiului de grajd.",
+      "descriptionRo": "Digester, manure storage.",
       "examplesRo": [
-        "digestor",
-        "stocare gunoi de grajd"
+        "digester",
+        "manure storage"
       ],
       "indicator": "EMISSION_REDUCTION_PCT",
       "threshold": {
         "kind": "MIN_PCT",
         "value": 50,
         "unit": "PCT",
-        "sourceRo": "README §6, categoria 4: reducere de metan ≥ 50% pe gestionarea gunoiului de grajd și gunoi valorificat (energie sau îngrășământ); prag demo, de confirmat cu Raiffeisen",
+        "sourceRo": "README §6, category 4: methane reduction ≥ 50% in manure management and the manure put to use (energy or fertiliser); demo threshold, to be confirmed with Raiffeisen",
         "demo": true
       },
       "requiredDocs": [
         {
           "docType": "OFFER",
-          "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+          "labelRo": "Offer / pro forma and technical data sheet of the new investment",
           "required": true
         },
         {
           "docType": "ENVIRONMENTAL_PERMIT",
-          "labelRo": "Autorizația de mediu (sau cererea depusă)",
+          "labelRo": "Environmental permit (or the submitted application)",
           "required": true
         },
         {
           "docType": "ENERGY_INVOICES",
-          "labelRo": "Facturile de energie pe 12 luni (dacă biogazul produce energie pentru fermă)",
+          "labelRo": "Energy invoices for 12 months (if the biogas produces energy for the farm)",
           "required": false
         }
       ],
       "questionnaire": [
         {
           "questionId": "livestock_confirmed",
-          "labelRo": "Confirmați numărul și specia animalelor din registrul ANSVSA?",
+          "labelRo": "Do you confirm the number and species of animals in the ANSVSA register?",
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": true
         },
         {
           "questionId": "manure_storage",
-          "labelRo": "Cum stocați acum gunoiul de grajd?",
+          "labelRo": "How do you store manure now?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "PLATFORMA_DESCOPERITA",
-              "labelRo": "platformă descoperită (gunoi solid)"
+              "labelRo": "uncovered platform (solid manure)"
             },
             {
               "value": "BAZIN_DESCOPERIT",
-              "labelRo": "bazin descoperit (dejecții lichide)"
+              "labelRo": "uncovered tank (liquid slurry)"
             },
             {
               "value": "MIXT_DESCOPERIT",
-              "labelRo": "platformă descoperită (solid) și bazin descoperit (lichid)"
+              "labelRo": "uncovered platform (solid) and uncovered tank (liquid)"
             }
           ],
           "prefillFrom": "NONE",
@@ -612,20 +612,20 @@
         },
         {
           "questionId": "digestate_use",
-          "labelRo": "Ce faceți cu digestatul?",
+          "labelRo": "What do you do with the digestate?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "INGRASAMANT",
-              "labelRo": "îngrășământ pe terenurile proprii"
+              "labelRo": "fertiliser on my own land"
             },
             {
               "value": "VANZARE",
-              "labelRo": "îl vând ca îngrășământ"
+              "labelRo": "I sell it as fertiliser"
             },
             {
               "value": "NEVALORIFICAT",
-              "labelRo": "nu îl valorific"
+              "labelRo": "I don't use it"
             }
           ],
           "prefillFrom": "NONE",
@@ -633,31 +633,31 @@
         },
         {
           "questionId": "fertilisation_plan",
-          "labelRo": "Aveți plan de fertilizare pentru aplicarea digestatului pe teren?",
+          "labelRo": "Do you have a fertilisation plan for spreading the digestate on land?",
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": false
         },
         {
           "questionId": "old_equipment_fate",
-          "labelRo": "Ce faceți cu utilajul vechi și cu deșeurile (ambalaje, folie)?",
+          "labelRo": "What do you do with the old equipment and the waste (packaging, plastic film)?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "CASARE",
-              "labelRo": "casare"
+              "labelRo": "scrapping"
             },
             {
               "value": "VANZARE",
-              "labelRo": "vânzare"
+              "labelRo": "sale"
             },
             {
               "value": "REZERVA",
-              "labelRo": "îl păstrez ca rezervă"
+              "labelRo": "I keep it as a spare"
             },
             {
               "value": "NU_E_CAZUL",
-              "labelRo": "nu e cazul"
+              "labelRo": "not applicable"
             }
           ],
           "prefillFrom": "NONE",
@@ -665,23 +665,23 @@
         },
         {
           "questionId": "cashin_months",
-          "labelRo": "În ce luni încasați cel mai mult?",
+          "labelRo": "In which months do you receive the most income?",
           "type": "MONTHS",
           "prefillFrom": "OPEN_BANKING",
           "required": true
         },
         {
           "questionId": "loan_term",
-          "labelRo": "Pe câți ani vreți creditul?",
+          "labelRo": "Over how many years do you want the loan?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "ANI_5",
-              "labelRo": "5 ani"
+              "labelRo": "5 years"
             },
             {
               "value": "ANI_7",
-              "labelRo": "7 ani"
+              "labelRo": "7 years"
             }
           ],
           "prefillFrom": "NONE",
@@ -691,57 +691,57 @@
     },
     {
       "moduleId": "post_recolta",
-      "nameRo": "Post-recoltă",
+      "nameRo": "Post-harvest",
       "icon": "❄️",
       "status": "DEMO_READY",
-      "descriptionRo": "Depozite frigorifice, uscătoare, sere.",
+      "descriptionRo": "Cold stores, dryers, greenhouses.",
       "examplesRo": [
-        "depozit frigorific",
-        "uscător",
-        "seră"
+        "cold store",
+        "dryer",
+        "greenhouse"
       ],
       "indicator": "ENERGY_SAVING_PCT",
       "threshold": {
         "kind": "MIN_PCT",
         "value": 20,
         "unit": "PCT",
-        "sourceRo": "README §6, categoria 5: economie de energie ≥ 20% și agent frigorific cu potențial redus de încălzire globală; prag demo, de confirmat cu Raiffeisen",
+        "sourceRo": "README §6, category 5: energy saving ≥ 20% and a refrigerant with a low global warming potential; demo threshold, to be confirmed with Raiffeisen",
         "demo": true
       },
       "requiredDocs": [
         {
           "docType": "OFFER",
-          "labelRo": "Oferta / proforma și fișa tehnică a investiției noi",
+          "labelRo": "Offer / pro forma and technical data sheet of the new investment",
           "required": true
         },
         {
           "docType": "ENERGY_INVOICES",
-          "labelRo": "Facturile de energie (curent și/sau gaz) pe ultimele 12 luni",
+          "labelRo": "Energy invoices (electricity and/or gas) for the last 12 months",
           "required": true
         },
         {
           "docType": "CURRENT_EQUIPMENT",
-          "labelRo": "Fișa echipamentului vechi (pentru o precizie mai bună decât din facturi)",
+          "labelRo": "Data sheet of the old equipment (for better accuracy than from invoices)",
           "required": false
         }
       ],
       "questionnaire": [
         {
           "questionId": "activity",
-          "labelRo": "Ce faceți în spațiul vizat de investiție?",
+          "labelRo": "What do you do in the space covered by the investment?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "DEPOZIT_FRIGORIFIC",
-              "labelRo": "depozit frigorific"
+              "labelRo": "cold store"
             },
             {
               "value": "USCATOR",
-              "labelRo": "uscător"
+              "labelRo": "dryer"
             },
             {
               "value": "SERA",
-              "labelRo": "seră"
+              "labelRo": "greenhouse"
             }
           ],
           "prefillFrom": "NONE",
@@ -749,52 +749,52 @@
         },
         {
           "questionId": "stored_product",
-          "labelRo": "Ce depozitați, uscați sau cultivați?",
+          "labelRo": "What do you store, dry or grow?",
           "type": "TEXT",
           "prefillFrom": "APIA",
           "required": true
         },
         {
           "questionId": "quantity",
-          "labelRo": "Cât: tone pe an (depozit, uscător) sau m² de seră?",
+          "labelRo": "How much: tonnes per year (store, dryer) or m² of greenhouse?",
           "type": "NUMBER",
           "prefillFrom": "NONE",
           "required": true
         },
         {
           "questionId": "operating_months",
-          "labelRo": "Câte luni pe an funcționează?",
+          "labelRo": "How many months a year does it operate?",
           "type": "NUMBER",
           "prefillFrom": "NONE",
           "required": true
         },
         {
           "questionId": "gas_kwh_year",
-          "labelRo": "Câți kWh de gaz consumați pe an în acest spațiu (dacă folosiți gaz)?",
+          "labelRo": "How many kWh of gas do you use per year in this space (if you use gas)?",
           "type": "NUMBER",
           "prefillFrom": "NONE",
           "required": false
         },
         {
           "questionId": "old_equipment_fate",
-          "labelRo": "Ce faceți cu utilajul vechi și cu agentul frigorific?",
+          "labelRo": "What do you do with the old equipment and the refrigerant?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "CASARE",
-              "labelRo": "casare, cu recuperarea agentului frigorific"
+              "labelRo": "scrapping, with refrigerant recovery"
             },
             {
               "value": "VANZARE",
-              "labelRo": "vânzare"
+              "labelRo": "sale"
             },
             {
               "value": "REZERVA",
-              "labelRo": "îl păstrez ca rezervă"
+              "labelRo": "I keep it as a spare"
             },
             {
               "value": "NU_E_CAZUL",
-              "labelRo": "nu e cazul"
+              "labelRo": "not applicable"
             }
           ],
           "prefillFrom": "NONE",
@@ -802,34 +802,34 @@
         },
         {
           "questionId": "offtake_contracts",
-          "labelRo": "Aveți contracte de vânzare cu procesatori sau retaileri?",
+          "labelRo": "Do you have sales contracts with processors or retailers?",
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": false
         },
         {
           "questionId": "cashin_months",
-          "labelRo": "În ce luni încasați cel mai mult?",
+          "labelRo": "In which months do you receive the most income?",
           "type": "MONTHS",
           "prefillFrom": "OPEN_BANKING",
           "required": true
         },
         {
           "questionId": "loan_term",
-          "labelRo": "Pe câți ani vreți creditul?",
+          "labelRo": "Over how many years do you want the loan?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "ANI_3",
-              "labelRo": "3 ani"
+              "labelRo": "3 years"
             },
             {
               "value": "ANI_5",
-              "labelRo": "5 ani"
+              "labelRo": "5 years"
             },
             {
               "value": "ANI_7",
-              "labelRo": "7 ani"
+              "labelRo": "7 years"
             }
           ],
           "prefillFrom": "NONE",
@@ -839,55 +839,55 @@
     },
     {
       "moduleId": "ecologic",
-      "nameRo": "Ecologic & regenerativ",
+      "nameRo": "Organic & regenerative",
       "icon": "🌱",
       "status": "DEMO_READY",
-      "descriptionRo": "Conversie bio: conversia integrală sau etapizată, golul de lichiditate din anii de conversie.",
+      "descriptionRo": "Organic conversion: full or phased conversion, the liquidity gap in the conversion years.",
       "examplesRo": [
-        "conversie bio",
-        "utilaje pentru combaterea mecanică a buruienilor"
+        "organic conversion",
+        "machinery for mechanical weed control"
       ],
       "indicator": "CERTIFIED_AREA_HA",
       "threshold": {
         "kind": "CERTIFICATION",
         "value": null,
         "unit": "HA",
-        "sourceRo": "Certificare ecologică UE sau contract de conversie cu un organism de certificare (README §6, categoria 6)",
+        "sourceRo": "EU organic certification or a conversion contract with a certification body (README §6, category 6)",
         "demo": true
       },
       "requiredDocs": [
         {
           "docType": "OFFER",
-          "labelRo": "Oferta / proforma și fișa tehnică a investiției (utilaje pentru agricultura ecologică)",
+          "labelRo": "Offer / pro forma and technical data sheet of the investment (machinery for organic farming)",
           "required": true
         },
         {
           "docType": "CERTIFICATION_CONTRACT",
-          "labelRo": "Contractul cu organismul de certificare sau certificatul ecologic",
+          "labelRo": "Contract with the certification body or the organic certificate",
           "required": true
         },
         {
           "docType": "BUSINESS_PLAN",
-          "labelRo": "Planul de conversie (calendarul pe culturi)",
+          "labelRo": "Conversion plan (timeline by crop)",
           "required": false
         },
         {
           "docType": "FERTILIZER_INVOICES",
-          "labelRo": "Facturile de îngrășăminte cu azot pe ultimele 12 luni",
+          "labelRo": "Nitrogen fertiliser invoices for the last 12 months",
           "required": false
         }
       ],
       "questionnaire": [
         {
           "questionId": "crops_main",
-          "labelRo": "Culturile principale și producția medie (t/ha) pe ultimii 3 ani",
+          "labelRo": "Main crops and average yield (t/ha) over the last 3 years",
           "type": "TEXT",
           "prefillFrom": "APIA",
           "required": true
         },
         {
           "questionId": "conversion_ha",
-          "labelRo": "Câte hectare treceți la agricultura ecologică?",
+          "labelRo": "How many hectares are you converting to organic farming?",
           "type": "NUMBER",
           "unit": "HA",
           "prefillFrom": "NONE",
@@ -895,14 +895,14 @@
         },
         {
           "questionId": "conversion_start_year",
-          "labelRo": "Din ce an începe conversia?",
+          "labelRo": "In which year does the conversion start?",
           "type": "NUMBER",
           "prefillFrom": "NONE",
           "required": true
         },
         {
           "questionId": "nitrogen_kg_ha",
-          "labelRo": "Câte îngrășăminte cu azot folosiți acum (kg N/ha)?",
+          "labelRo": "How much nitrogen fertiliser do you use now (kg N/ha)?",
           "type": "NUMBER",
           "unit": "KG_N_PER_HA",
           "prefillFrom": "NONE",
@@ -910,16 +910,16 @@
         },
         {
           "questionId": "tillage",
-          "labelRo": "Cum lucrați solul?",
+          "labelRo": "How do you till the soil?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "ARATURA",
-              "labelRo": "arătură"
+              "labelRo": "ploughing"
             },
             {
               "value": "MINIMA",
-              "labelRo": "lucrare minimă"
+              "labelRo": "minimum tillage"
             },
             {
               "value": "NO_TILL",
@@ -931,20 +931,20 @@
         },
         {
           "questionId": "cover_crops",
-          "labelRo": "Folosiți culturi de acoperire sau rotație?",
+          "labelRo": "Do you use cover crops or crop rotation?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "DA",
-              "labelRo": "da"
+              "labelRo": "yes"
             },
             {
               "value": "ROTATIE",
-              "labelRo": "doar rotație"
+              "labelRo": "rotation only"
             },
             {
               "value": "NU",
-              "labelRo": "nu"
+              "labelRo": "no"
             }
           ],
           "prefillFrom": "APIA",
@@ -952,19 +952,19 @@
         },
         {
           "questionId": "crop_insurance",
-          "labelRo": "Aveți asigurare pentru culturi?",
+          "labelRo": "Do you have crop insurance?",
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": false
         },
         {
           "questionId": "certifications",
-          "labelRo": "Aveți certificări?",
+          "labelRo": "Do you have certifications?",
           "type": "MULTI_CHOICE",
           "options": [
             {
               "value": "ECOLOGIC",
-              "labelRo": "ecologic"
+              "labelRo": "organic"
             },
             {
               "value": "GLOBALGAP",
@@ -972,7 +972,7 @@
             },
             {
               "value": "NICIUNA",
-              "labelRo": "niciuna"
+              "labelRo": "none"
             }
           ],
           "prefillFrom": "NONE",
@@ -980,38 +980,38 @@
         },
         {
           "questionId": "offtake_contracts",
-          "labelRo": "Aveți contracte de vânzare cu procesatori bio sau retaileri?",
+          "labelRo": "Do you have sales contracts with organic processors or retailers?",
           "type": "BOOLEAN",
           "prefillFrom": "NONE",
           "required": false
         },
         {
           "questionId": "cashin_months",
-          "labelRo": "În ce luni încasați cel mai mult?",
+          "labelRo": "In which months do you receive the most income?",
           "type": "MONTHS",
           "prefillFrom": "OPEN_BANKING",
           "required": true
         },
         {
           "questionId": "old_equipment_fate",
-          "labelRo": "Ce faceți cu echipamentul vechi și cu deșeurile (ambalaje, folie)?",
+          "labelRo": "What do you do with the old equipment and the waste (packaging, plastic film)?",
           "type": "SINGLE_CHOICE",
           "options": [
             {
               "value": "CASARE",
-              "labelRo": "casare"
+              "labelRo": "scrapping"
             },
             {
               "value": "VANZARE",
-              "labelRo": "vânzare"
+              "labelRo": "sale"
             },
             {
               "value": "REZERVA",
-              "labelRo": "îl păstrez ca rezervă"
+              "labelRo": "I keep it as a spare"
             },
             {
               "value": "NU_E_CAZUL",
-              "labelRo": "nu e cazul"
+              "labelRo": "not applicable"
             }
           ],
           "prefillFrom": "NONE",

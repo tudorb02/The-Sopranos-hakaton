@@ -1,5 +1,5 @@
 {
-  "summary": "Profilul fermei demo „energie”",
+  "summary": "The profile of the demo farm \"energie\"",
   "value": {
     "cui": "41726035",
     "company": {
@@ -7,7 +7,7 @@
       "name": "Avicola Dealul Verde SRL",
       "legalForm": "SRL",
       "caen": "0147",
-      "caenLabelRo": "Creșterea păsărilor",
+      "caenLabelRo": "Raising of poultry",
       "county": "Prahova",
       "locality": "Dealul Verde",
       "registeredAt": "2016-05-17",
@@ -31,19 +31,19 @@
       "crops": [
         {
           "year": 2026,
-          "crop": "incintă fermă (hale)",
+          "crop": "farmyard (halls)",
           "ha": 3.2,
           "yieldTPerHa": 0
         },
         {
           "year": 2025,
-          "crop": "incintă fermă (hale)",
+          "crop": "farmyard (halls)",
           "ha": 3.2,
           "yieldTPerHa": 0
         },
         {
           "year": 2024,
-          "crop": "incintă fermă (hale)",
+          "crop": "farmyard (halls)",
           "ha": 3.2,
           "yieldTPerHa": 0
         }
@@ -67,24 +67,32 @@
             "coordinates": [
               [
                 [
-                  26.116,
-                  44.95
+                  26.178714,
+                  44.887092
                 ],
                 [
-                  26.12,
-                  44.95
+                  26.177458,
+                  44.888003
                 ],
                 [
-                  26.12,
-                  44.954
+                  26.177309,
+                  44.888133
                 ],
                 [
-                  26.116,
-                  44.954
+                  26.177849,
+                  44.888548
                 ],
                 [
-                  26.116,
-                  44.95
+                  26.178864,
+                  44.889305
+                ],
+                [
+                  26.180589,
+                  44.888204
+                ],
+                [
+                  26.178714,
+                  44.887092
                 ]
               ]
             ]
@@ -93,7 +101,7 @@
             "parcelId": "ph_0207_01",
             "blockId": "BF-0207",
             "areaHa": 3.2,
-            "crop": "incintă fermă (hale)",
+            "crop": "farmyard (halls)",
             "natura2000": false,
             "nitrateVulnerable": false,
             "droughtRisk": "MEDIUM",

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://contracts.greenstruct.ro/schemas/submit_underwriting_report.json",
   "title": "submit_underwriting_report",
-  "description": "Output-ul final al Agentului 3 (underwriter verde): raportul de conformitate pentru comitetul de credit. Fondul propus și cerințele lui, etichete pe fiecare componentă, DNSH pe cele 5 obiective, impact, condiții înainte de tragere, KPI-uri de monitorizare. Toate cifrele prin calcId.",
+  "description": "Final output of Agent 3 (green underwriter): the compliance report for the credit committee. The proposed fund and its requirements, labels per component, DNSH on the 5 objectives, impact, conditions precedent to drawdown, monitoring KPIs. All figures by calcId.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,7 +15,7 @@
     "moduleId": { "$ref": "#/$defs/moduleId" },
     "recommendedOptionId": { "type": "string", "enum": ["A", "B", "C"] },
     "criterion": {
-      "description": "Criteriul verde folosit, valoarea atinsă față de prag și sursa pragului.",
+      "description": "The green criterion used, the value reached against the threshold, and the source of the threshold.",
       "type": "object",
       "additionalProperties": false,
       "required": ["indicator", "valueCalcId", "thresholdCalcId", "result", "sourceRo"],
@@ -28,7 +28,7 @@
       }
     },
     "componentLabels": {
-      "description": "Eticheta fiecărei componente din configurația recomandată.",
+      "description": "The label of each component in the recommended configuration.",
       "type": "array",
       "minItems": 1,
       "maxItems": 12,
@@ -46,7 +46,7 @@
               "MEASURABLE_SAVING_NO_LABEL", "LEGAL_MINIMUM_ONLY", "NONE"
             ]
           },
-          "taxonomyActivity": { "description": "Doar pentru TAXONOMY_ALIGNED, ex. \"4.1\".", "type": "string", "pattern": "^[0-9]{1,2}\\.[0-9]{1,2}$" },
+          "taxonomyActivity": { "description": "Only for TAXONOMY_ALIGNED, e.g. \"4.1\".", "type": "string", "pattern": "^[0-9]{1,2}\\.[0-9]{1,2}$" },
           "amountCalcId": { "$ref": "#/$defs/calcRef" },
           "rationaleRo": { "type": "string", "maxLength": 400 }
         }
@@ -63,14 +63,14 @@
       }
     },
     "greenBond": {
-      "description": "Încadrarea în portofoliul de obligațiuni verzi (F2, README §3.3): categoria propusă de get_bond_category. Încadrarea finală o face banca; categoria agricultură trebuie confirmată cu mentorii (cadrul RBI 2025).",
+      "description": "Classification in the green bond portfolio (F2, README §3.3): the category proposed by get_bond_category. The bank makes the final classification; the agriculture category must be confirmed with the mentors (RBI 2025 framework).",
       "type": "object",
       "additionalProperties": false,
       "required": ["category", "status", "noteRo"],
       "properties": {
         "category": {
           "type": "string",
-          "description": "categoryId din config/funds.json (bondCategories), sau NONE.",
+          "description": "categoryId from config/funds.json (bondCategories), or NONE.",
           "enum": ["AGRICULTURE_FORESTRY", "RENEWABLE_ENERGY", "ENERGY_EFFICIENCY", "CLEAN_TRANSPORTATION", "POLLUTION_PREVENTION_CONTROL", "NONE"]
         },
         "status": { "type": "string", "enum": ["ELIGIBLE", "TO_CONFIRM", "NOT_ELIGIBLE"] },
@@ -79,13 +79,13 @@
       }
     },
     "fund": {
-      "description": "Fondul propus (README §3.1, §3.3), din select_fund, și cerințele lui bifate (§3.2), din check_fund_requirements. Cerințele care nu se aplică fondului lipsesc; cele TO_CONFIRM devin condiții înainte de tragere. Doar pentru bancă: IMM-ul vede „Credit verde Raiffeisen”.",
+      "description": "The proposed fund (README §3.1, §3.3), from select_fund, and its requirements checked off (§3.2), from check_fund_requirements. Requirements that do not apply to the fund are absent; TO_CONFIRM ones become conditions precedent to drawdown. Bank only: the SME sees \"Raiffeisen green credit\".",
       "type": "object",
       "additionalProperties": false,
       "required": ["fundId", "role", "requirements", "alternatives"],
       "properties": {
         "fundId": { "$ref": "#/$defs/fundId" },
-        "role": { "description": "PRIMARY = fondul principal al categoriei; ALTERNATIVE = una din alternativele ei.", "type": "string", "enum": ["PRIMARY", "ALTERNATIVE"] },
+        "role": { "description": "PRIMARY = the main fund of the category; ALTERNATIVE = one of its alternatives.", "type": "string", "enum": ["PRIMARY", "ALTERNATIVE"] },
         "requirements": {
           "type": "array",
           "maxItems": 7,
@@ -98,16 +98,16 @@
                 "type": "string",
                 "enum": ["SME_STATUS", "ELIGIBLE_CATEGORY", "TECHNICAL_THRESHOLD", "DNSH", "IMPACT_QUANTIFIED", "CLIENT_BENEFIT", "PERIODIC_REPORTING"]
               },
-              "level": { "description": "REQUIRED = cerință clară; PROBABLE = probabilă, de confirmat (README §3.2).", "type": "string", "enum": ["REQUIRED", "PROBABLE"] },
+              "level": { "description": "REQUIRED = clear requirement; PROBABLE = probable, to be confirmed (README §3.2).", "type": "string", "enum": ["REQUIRED", "PROBABLE"] },
               "status": { "type": "string", "enum": ["MET", "TO_CONFIRM", "NOT_MET"] },
               "evidenceCalcIds": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/calcRef" } },
-              "conditionId": { "description": "Condiția care rezolvă o cerință TO_CONFIRM.", "$ref": "#/$defs/conditionId" },
+              "conditionId": { "description": "The condition that resolves a TO_CONFIRM requirement.", "$ref": "#/$defs/conditionId" },
               "noteRo": { "type": "string", "maxLength": 300 }
             }
           }
         },
         "alternatives": {
-          "description": "Celelalte fonduri ale categoriei.",
+          "description": "The other funds of the category.",
           "type": "array",
           "maxItems": 5,
           "items": {
@@ -124,11 +124,11 @@
       }
     },
     "substantialContribution": {
-      "description": "Obiectivul de mediu la care investiția contribuie substanțial. DNSH se verifică pe celelalte 5.",
+      "description": "The environmental objective to which the investment contributes substantially. DNSH is checked on the other 5.",
       "$ref": "#/$defs/objective"
     },
     "dnsh": {
-      "description": "Exact 5 rânduri: cele 5 obiective diferite de substantialContribution.",
+      "description": "Exactly 5 rows: the 5 objectives other than substantialContribution.",
       "type": "array",
       "minItems": 5,
       "maxItems": 5,
@@ -146,7 +146,7 @@
       }
     },
     "impact": {
-      "description": "Impactul de mediu pe an (m³, kWh, litri, kg N, t CO₂).",
+      "description": "Environmental impact per year (m³, kWh, litres, kg N, t CO₂).",
       "type": "array",
       "minItems": 1,
       "maxItems": 10,
@@ -162,7 +162,7 @@
       }
     },
     "conditionsPrecedent": {
-      "description": "Orice informație lipsă devine condiție, nu motiv de respingere.",
+      "description": "Any missing information becomes a condition, not a reason for rejection.",
       "type": "array",
       "maxItems": 15,
       "items": {
@@ -181,7 +181,7 @@
           "dueDate": { "type": "string", "format": "date" },
           "blocking": { "type": "boolean" },
           "missingFieldKey": {
-            "description": "fieldKey din technicalAssessment.missingFields pe care îl rezolvă condiția: datele lipsă devin condiții, nu motive de respingere (README §5.3).",
+            "description": "fieldKey from technicalAssessment.missingFields that the condition resolves: missing data becomes conditions, not reasons for rejection (README §5.3).",
             "type": "string",
             "pattern": "^[a-z][a-z0-9_]{2,40}$"
           }
@@ -231,9 +231,9 @@
         }
       }
     },
-    "committeeSummaryRo": { "description": "Rezumatul pentru comitetul de credit.", "type": "string", "maxLength": 1500 },
+    "committeeSummaryRo": { "description": "Summary for the credit committee.", "type": "string", "maxLength": 1500 },
     "farmerNextSteps": {
-      "description": "Lista de pași pentru fermier (ecranul „După aprobare”).",
+      "description": "List of steps for the farmer (the \"After approval\" screen).",
       "type": "array",
       "minItems": 1,
       "maxItems": 10,
@@ -252,7 +252,7 @@
   "$defs": {
     "calcRef": { "type": "string", "pattern": "^calc_[a-f0-9]{12}$" },
     "conditionId": { "type": "string", "pattern": "^cp_[a-z0-9_]{2,40}$" },
-    "fundId": { "description": "Fondurile din config/funds.json (README §3.1).", "type": "string", "enum": ["F1", "F2", "F3", "F4", "F5", "F6"] },
+    "fundId": { "description": "The funds in config/funds.json (README §3.1).", "type": "string", "enum": ["F1", "F2", "F3", "F4", "F5", "F6"] },
     "moduleId": { "type": "string", "enum": ["irigatii", "energie", "utilaje", "zootehnie", "post_recolta", "ecologic"] },
     "indicator": {
       "type": "string",

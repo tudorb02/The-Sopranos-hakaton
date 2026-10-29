@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://contracts.greenstruct.ro/schemas/submit_technical_assessment.json",
   "title": "submit_technical_assessment",
-  "description": "Output-ul final al Agentului 1 (auditor tehnic). Toate cifrele sunt referite prin calcId, obținut din uneltele deterministe. Nu conține numere.",
+  "description": "Final output of Agent 1 (technical auditor). All figures are referenced by calcId, obtained from the deterministic tools. Contains no numbers.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -28,7 +28,7 @@
       "$ref": "#/$defs/indicator"
     },
     "threshold": {
-      "description": "Pragul verde din config-ul modulului (valoarea vine din get_module_rules).",
+      "description": "The green threshold from the module config (the value comes from get_module_rules).",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -46,7 +46,7 @@
       }
     },
     "baseline": {
-      "description": "Situația actuală: ce se înlocuiește și cât consumă azi ferma.",
+      "description": "Current situation: what is being replaced and how much the farm consumes today.",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -81,7 +81,7 @@
       }
     },
     "configurations": {
-      "description": "Configurația inițială (din ofertă), cea recomandată și, opțional, alternative.",
+      "description": "The initial configuration (from the offer), the recommended one and, optionally, alternatives.",
       "type": "array",
       "minItems": 1,
       "maxItems": 4,
@@ -105,7 +105,7 @@
       ]
     },
     "dnshChecks": {
-      "description": "Verificările DNSH preliminare. Agentul 3 compune tabelul final.",
+      "description": "Preliminary DNSH checks. Agent 3 builds the final table.",
       "type": "array",
       "minItems": 1,
       "maxItems": 6,
@@ -140,7 +140,7 @@
       }
     },
     "sizingCheck": {
-      "description": "Dimensionarea (ex. putere tractoare / suprafață, regula AFIR Anexa 6). NOT_APPLICABLE la irigații.",
+      "description": "Sizing (e.g. tractor power / area, AFIR Annex 6 rule). NOT_APPLICABLE for irrigation.",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -205,12 +205,12 @@
       }
     },
     "summaryRo": {
-      "description": "Rezumat pentru ofițer.",
+      "description": "Summary for the officer.",
       "type": "string",
       "maxLength": 800
     },
     "farmerMessageRo": {
-      "description": "Mesaj simplu pentru fermier, fără jargon.",
+      "description": "Simple message for the farmer, without jargon.",
       "type": "string",
       "maxLength": 400
     }
@@ -310,7 +310,7 @@
           "$ref": "#/$defs/calcRef"
         },
         "upgradeCostCalcId": {
-          "description": "Costul suplimentar față de configurația inițială.",
+          "description": "The extra cost compared with the initial configuration.",
           "$ref": "#/$defs/calcRef"
         },
         "indicatorCalcId": {

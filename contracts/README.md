@@ -1,18 +1,18 @@
 # contracts/
 
-Singurul loc unde se schimbă formatul datelor dintre frontend, backend și agenții de pe Bedrock (contract-first). Orice schimbare de aici se anunță rolurilor afectate și trece `npm run check`.
+The single place where the data format between the frontend, the backend and the Bedrock agents changes (contract-first). Every change here is announced to the roles affected and passes `npm run check`.
 
-| Fișier | Ce conține | Cine îl folosește |
+| File | Contents | Used by |
 |---|---|---|
-| [`openapi.yaml`](openapi.yaml) | API-ul REST (OpenAPI 3.1): module, fermă, dosare, SSE, acțiunile ofițerului, health | frontend (Prism, tipuri), backend (controllere) |
-| [`schemas/submit_*.json`](schemas/) | output-urile agenților (JSON Schema 2020-12) | Bedrock (scheme de unelte), backend (validare networknt), frontend (tipuri TS) |
-| [`schemas/event.json`](schemas/event.json) | plicul evenimentelor SSE și `calcResult` | backend (`SseHub`), frontend (timeline) |
-| [`events.md`](events.md) | catalogul evenimentelor, cu un exemplu pentru fiecare tip | toți |
-| [`fixtures/*.ndjson`](fixtures/) | câte un dosar complet, un eveniment pe linie: `irigatii` și `utilaje` | frontend (timeline fără backend), backend (teste în modul REPLAY) |
-| [`examples/*.json`](examples/) | exemplele din `openapi.yaml` (servite de Prism), generate din fixtures | frontend |
-| [`tools/`](tools/) | generatorul de fixtures și validatorul | toți |
+| [`openapi.yaml`](openapi.yaml) | the REST API (OpenAPI 3.1): modules, farm, dossiers, SSE, officer actions, health | frontend (Prism, types), backend (controllers) |
+| [`schemas/submit_*.json`](schemas/) | the agent outputs (JSON Schema 2020-12) | Bedrock (tool schemas), backend (networknt validation), frontend (TS types) |
+| [`schemas/event.json`](schemas/event.json) | the SSE event envelope and `calcResult` | backend (`SseHub`), frontend (timeline) |
+| [`events.md`](events.md) | the event catalogue, with one example per type | everyone |
+| [`fixtures/*.ndjson`](fixtures/) | one complete dossier per demo scenario, one event per line | frontend (timeline without a backend), backend (tests in REPLAY mode) |
+| [`examples/*.json`](examples/) | the examples in `openapi.yaml` (served by Prism) | frontend |
+| [`tools/`](tools/) | the export script for fixtures and examples, and the validators | everyone |
 
-## Comenzi
+## Commands
 
 ```bash
 cd contracts && npm install
@@ -22,60 +22,60 @@ cd contracts && npm install
 npm run check
 ```
 
-`check` rulează ambele verificări:
-- `npm run lint`: `redocly lint openapi.yaml` (excepțiile justificate sunt în `.redocly.lint-ignore.yaml`);
-- `npm run validate`: [`tools/validate.mjs`](tools/validate.mjs), care verifică:
-  - schemele compilează (Ajv, strict), iar `$defs` copiate între fișiere sunt identice;
-  - schemele agenților nu au câmpuri numerice (singura excepție: numărul paginii la extracție);
-  - fiecare linie din fixtures respectă `event.json`, iar fiecare `output` respectă schema `submit_*`;
-  - `seq` fără goluri, tranziții de stare permise, evenimentele agentului doar în starea lui;
-  - fiecare `calcId` folosit a fost emis înainte de o unealtă; `configId`, `componentId`, `conditionId` există;
-  - DNSH are 5 obiective diferite de contribuția substanțială; B e recomandat doar dacă e eligibil, are avantaj net și trece testul de plată;
-  - exemplele din `events.md` și din `openapi.yaml` respectă schemele.
+`check` runs both checks:
+- `npm run lint`: `redocly lint openapi.yaml` (the justified exceptions are in `.redocly.lint-ignore.yaml`);
+- `npm run validate`: [`tools/validate.mjs`](tools/validate.mjs), which checks that:
+  - the schemas compile (Ajv, strict), and `$defs` copied between files are identical;
+  - the agent schemas have no numeric fields (the only exception: the page number in extraction);
+  - every line in the fixtures follows `event.json`, and every `output` follows its `submit_*` schema;
+  - `seq` has no gaps, state transitions are allowed, and agent events occur only in that agent's state;
+  - every `calcId` used was emitted earlier by a tool; `configId`, `componentId`, `conditionId` exist;
+  - DNSH has 5 objectives other than the substantial contribution; B is recommended only if it is eligible, has a net advantage and passes the affordability test;
+  - the examples in `events.md` and in `openapi.yaml` follow the schemas.
 
-Alte comenzi:
+Other commands:
 
 ```bash
 npm run mock
 ```
 
-Pornește Prism pe `http://localhost:4010` (`Prefer: example=utilaje` alege exemplul).
+Starts Prism on `http://localhost:4010` (`Prefer: example=utilaje` picks the example).
 
 ```bash
 npm run validate:samples
 ```
 
-Verifică răspunsurile reale ale backend-ului față de contract. Testul `ContractSamplesTest` din `backend/` (rulat de `mvn test`) scrie răspunsurile și evenimentele SSE în `backend/target/contract-samples/<Schema>__<caz>.json`; scriptul le validează pe toate.
+Checks the backend's real responses against the contract. The `ContractSamplesTest` test in `backend/` (run by `mvn test`) writes the responses and SSE events to `backend/target/contract-samples/<Schema>__<case>.json`; the script validates all of them.
 
 ```bash
-npm run gen
+(cd ../backend && mvn test -Dtest=ContractSamplesTest) && npm run gen
 ```
 
-Regenerează `fixtures/` și `examples/` după o schimbare de format. Cifrele vin din [`tools/gen-fixtures.mjs`](tools/gen-fixtures.mjs), care aplică formulele din planul de arhitectură (§4, §5).
+Regenerates `fixtures/` and `examples/` after a format change. `npm run gen` runs [`tools/export-from-samples.mjs`](tools/export-from-samples.mjs), which copies the real backend responses from `backend/target/contract-samples/` (produced by `ContractSamplesTest`), so the fixtures cannot drift from the code. [`tools/gen-fixtures.mjs`](tools/gen-fixtures.mjs) is legacy: do not run it, it overwrites the real fixtures.
 
-Fără npm install, doar cu npx:
+Without npm install, with npx only:
 
 ```bash
 npx @redocly/cli@2.62.1 lint openapi.yaml
 ```
 
-## Reguli
+## Rules
 
-1. **Cifrele vin doar din motor.** Singurul loc cu numere este `calcResult` (în `agent.tool_result.data.calcs` și în `RunView.calcs`). Output-urile agenților referă cifrele prin `calcId` (`^calc_[a-f0-9]{12}$`). Backend-ul respinge un `submit_*` care referă un `calcId` necunoscut.
-2. **Scheme închise.** `additionalProperties: false` peste tot, enum-uri unde se poate, texte libere în română cu `maxLength`. Cheile și identificatorii sunt în engleză.
-3. **Schemele agenților sunt autonome** (doar `$ref` locale), ca să poată fi trimise direct la Bedrock. Backend-ul scoate `$schema`, `$id` și `title` înainte de `toolSpec.inputSchema`; numele uneltei e `title`. Dacă Bedrock refuză `$ref`, backend-ul le expandează la încărcare.
-4. **Evenimentele SSE** sunt toate mesaje nenumite, cu `id = seq`. Detaliile sunt în `events.md`.
+1. **Figures come only from the engine.** The only place with numbers is `calcResult` (in `agent.tool_result.data.calcs` and in `RunView.calcs`). Agent outputs reference figures by `calcId` (`^calc_[a-f0-9]{12}$`). The backend rejects a `submit_*` that references an unknown `calcId`.
+2. **Closed schemas.** `additionalProperties: false` everywhere, enums where possible, free texts in English with `maxLength`. Keys and identifiers are in English; field names keep the historical `Ro` suffix (`labelRo`, `sourceRo`, `messageRo`, ...) for compatibility.
+3. **Agent schemas are self-contained** (local `$ref` only), so they can be sent to Bedrock directly. The backend removes `$schema`, `$id` and `title` before `toolSpec.inputSchema`; the tool name is `title`. If Bedrock rejects `$ref`, the backend expands them on load.
+4. **SSE events** are all unnamed messages, with `id = seq`. The details are in `events.md`.
 
-## Cifrele din demo (generate, de folosit ca așteptări în testele JUnit)
+## Demo figures (expected values for the JUnit tests)
 
-| | Irigații (40 ha legume, Constanța) | Utilaje (400 ha cereale, Călărași) |
+| | Irrigation (40 ha vegetables, Constanța) | Machinery (400 ha cereals, Călărași) |
 |---|---|---|
-| Inițial | aspersie clasică 85.000 EUR, 15,0% economie de apă (prag 25%) | 4 tractoare Stage V 440.000 EUR, 12,0% economie de motorină (prag 20%) |
-| Recomandat | picurare + senzori + contor + pompă solară 125.000 EUR, 32,0% | + pachet de precizie 52.000 EUR, 20,8%; precizia = 10,6% din valoare |
-| Impact/an | 74.937 m³ apă, 97.503 kWh din rețea, 22,4 t CO₂ | 7.488 l motorină, 3.000 kg N, 19,9 t CO₂ |
-| A | credit standard 8,9%, 60 luni: 1.760 EUR/lună + ipotecă | credit standard 7,5%, 84 luni: 6.749 EUR/lună |
-| B | credit verde 6,4% + garanție FEI 70%, rate iul–oct: 7.360 EUR/rată | grant DR-12 200.000 EUR + cofinanțare 292.000 EUR la 6,0% cu FGCR 80%: 4.266 EUR/lună + punte 200.000 EUR |
-| Avantaj net B | 67.327 EUR în 5 ani; upgrade amortizat în 22,7 luni | 241.532 EUR în 7 ani; precizia amortizată în 32,6 luni |
-| Grant | nicio sesiune AFIR deschisă (DR-26), spus explicit | DR-12 deschis până la 02.12.2026 |
+| Initial | classic sprinkler 85,000 EUR, 15.0% water saving (threshold 25%) | 4 Stage V tractors 440,000 EUR, 12.0% diesel saving (threshold 20%) |
+| Recommended | drip + sensors + meter + solar pump 125,000 EUR, 32.0% | + precision package 52,000 EUR, 20.8%; precision = 10.6% of the value |
+| Impact/yr | 74,937 m³ water, 97,503 kWh from the grid, 22.4 t CO₂ | 7,488 l diesel, 3,000 kg N, 19.9 t CO₂ |
+| A | standard loan 8.9%, 60 months: 1,760 EUR/month + mortgage | standard loan 7.5%, 84 months: 6,749 EUR/month |
+| B | green loan 6.4% + EIF guarantee 70%, Jul–Oct instalments: 7,360 EUR/instalment | grant DR-12 200,000 EUR + co-financing 292,000 EUR at 6.0% with FGCR 80%: 4,266 EUR/month + bridge 200,000 EUR |
+| Net advantage B | 67,327 EUR over 5 years; upgrade paid back in 22.7 months | 241,532 EUR over 7 years; precision paid back in 32.6 months |
+| Grant | no open AFIR session (DR-26), stated explicitly | DR-12 open until 2026-12-02 |
 
-Dobânzile, pragurile, prețurile și acoperirea garanțiilor sunt valori demo, de confirmat cu mentorii Raiffeisen. Ele trebuie să stea în `config/`, nu în cod.
+Interest rates, thresholds, prices and guarantee coverage are demo values, to be confirmed with the Raiffeisen mentors. They must live in `config/`, not in code.

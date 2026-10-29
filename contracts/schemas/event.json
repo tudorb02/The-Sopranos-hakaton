@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://contracts.greenstruct.ro/schemas/event.json",
   "title": "RunEvent",
-  "description": "Plicul unui eveniment SSE (GET /api/runs/{id}/events) și al unei linii din fixtures/*.ndjson. Vezi contracts/events.md.",
+  "description": "Envelope of one SSE event (GET /api/runs/{id}/events) and of one line in fixtures/*.ndjson. See contracts/events.md.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -16,7 +16,7 @@
   ],
   "properties": {
     "seq": {
-      "description": "Număr de ordine per dosar, începe de la 1, fără goluri. Trimis și ca `id:` în SSE.",
+      "description": "Sequence number per dossier, starts at 1, no gaps. Also sent as `id:` in SSE.",
       "type": "integer",
       "minimum": 1
     },
@@ -38,7 +38,7 @@
       ]
     },
     "agent": {
-      "description": "null pentru state.transition și run.*.",
+      "description": "null for state.transition and run.*.",
       "anyOf": [
         {
           "$ref": "#/$defs/agent"
@@ -53,7 +53,7 @@
       "format": "date-time"
     },
     "message": {
-      "description": "Linia din timeline, în română, gata de afișat.",
+      "description": "The timeline line, in English, ready to display.",
       "type": "string",
       "minLength": 1,
       "maxLength": 300
@@ -268,7 +268,7 @@
       ]
     },
     "source": {
-      "description": "De unde vine output-ul agentului (badge-ul live / cache / fallback).",
+      "description": "Where the agent output comes from (the live / cache / fallback badge).",
       "type": "string",
       "enum": [
         "LIVE",
@@ -315,7 +315,7 @@
       "pattern": "^tooluse_[A-Za-z0-9_-]{6,64}$"
     },
     "calcResult": {
-      "description": "O cifră produsă de motorul determinist. Singurul loc unde apar numere; agenții le referă prin calcId.",
+      "description": "One figure produced by the deterministic engine. The only place where numbers appear; agents reference them by calcId.",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -335,7 +335,7 @@
           "$ref": "#/$defs/toolName"
         },
         "key": {
-          "description": "Cheie stabilă, lizibilă (ex. option_b.installment).",
+          "description": "Stable, readable key (e.g. option_b.installment).",
           "type": "string",
           "pattern": "^[a-z][a-z0-9_.]{2,80}$"
         },
@@ -395,7 +395,7 @@
           ]
         },
         "display": {
-          "description": "Valoarea formatată românește (ex. \"85.000 EUR\", \"15,0%\").",
+          "description": "The value formatted in English (e.g. \"85,000 EUR\", \"15.0%\").",
           "type": "string",
           "maxLength": 60
         },
@@ -404,7 +404,7 @@
           "maxLength": 300
         },
         "sourceRo": {
-          "description": "Sursa parametrului (config, document, catalog).",
+          "description": "Source of the parameter (config, document, catalog).",
           "type": "string",
           "maxLength": 240
         },
@@ -416,7 +416,7 @@
           }
         },
         "series": {
-          "description": "Serie lunară (ex. graficul de rambursare). Doar pentru calc-urile de tip schedule.",
+          "description": "Monthly series (e.g. the repayment schedule). Only for schedule-type calcs.",
           "type": "array",
           "maxItems": 120,
           "items": {
@@ -486,7 +486,7 @@
           "maxLength": 300
         },
         "dataSources": {
-          "description": "Doar la DATE_FIRMA: de unde au venit datele firmei.",
+          "description": "Only at DATE_FIRMA: where the company data came from.",
           "type": "array",
           "maxItems": 8,
           "items": {
@@ -599,7 +599,7 @@
           "maximum": 30
         },
         "input": {
-          "description": "Input-ul cerut de model. Referă id-uri (config, catalog, calcId), nu cifre.",
+          "description": "The input requested by the model. References ids (config, catalog, calcId), not figures.",
           "type": "object"
         }
       }
@@ -634,7 +634,7 @@
           "minimum": 0
         },
         "calcs": {
-          "description": "Cifrele noi produse de unealtă.",
+          "description": "The new figures produced by the tool.",
           "type": "array",
           "maxItems": 60,
           "items": {
@@ -642,11 +642,11 @@
           }
         },
         "result": {
-          "description": "Rezultatul structurat, fără cifre (verdicte, id-uri). La extract_document conține `extraction`.",
+          "description": "The structured result, without figures (verdicts, ids). For extract_document it contains `extraction`.",
           "type": "object"
         },
         "errors": {
-          "description": "Doar la status ERROR (ex. submit_* respins de validarea schemei).",
+          "description": "Only with status ERROR (e.g. a submit_* rejected by schema validation).",
           "type": "array",
           "maxItems": 20,
           "items": {
@@ -815,7 +815,7 @@
       ],
       "properties": {
         "level": {
-          "description": "Nivelul de fallback la care s-a trecut.",
+          "description": "The fallback level that was switched to.",
           "type": "string",
           "enum": [
             "RETRY",
@@ -889,7 +889,7 @@
           "$ref": "#/$defs/calcRef"
         },
         "sources": {
-          "description": "Sursa output-ului pentru fiecare agent (pentru badge).",
+          "description": "Source of the output for each agent (for the badge).",
           "type": "object",
           "additionalProperties": false,
           "required": [

@@ -2,49 +2,50 @@ openapi: 3.1.0
 info:
   title: GreenStruct Agro API
   version: 0.1.0
-  summary: Contractul dintre frontend (React) și backend (Spring Boot) pentru GreenStruct Agro.
+  summary: The contract between the frontend (React) and the backend (Spring Boot) for GreenStruct Agro.
   description: |
-    Fermierul descrie o investiție, 3 agenți AI pe AWS Bedrock o analizează, iar ofițerul Raiffeisen primește
-    raportul de credit verde.
+    The farmer describes an investment, 3 AI agents on AWS Bedrock analyse it, and the Raiffeisen officer receives
+    the green credit report.
 
-    Reguli:
-    - Toate cifrele vin din motorul determinist. Output-urile agenților referă cifrele prin `calcId`;
-      `RunView.calcs` le rezolvă (valoare, unitate, text formatat, formulă, sursă).
-    - Textele vizibile pentru utilizator sunt în română; cheile și identificatorii în engleză.
-    - Evenimentele live (SSE) sunt descrise în `events.md` și `schemas/event.json`.
-    - Output-urile agenților sunt în `schemas/submit_*.json` (aceleași scheme se trimit la Bedrock ca unelte).
-    - Erorile au mereu forma `{ "error": { "code", "message" } }`.
+    Rules:
+    - All figures come from the deterministic engine. Agent outputs reference figures by `calcId`;
+      `RunView.calcs` resolves them (value, unit, formatted text, formula, source).
+    - User-visible texts are in English; keys and identifiers are in English. The `Ro` suffix of some field names
+      (`labelRo`, `sourceRo`, `messageRo`, ...) is historical and kept for compatibility. Uploaded documents may be in Romanian.
+    - Live events (SSE) are described in `events.md` and `schemas/event.json`.
+    - Agent outputs are in `schemas/submit_*.json` (the same schemas are sent to Bedrock as tools).
+    - Errors always have the shape `{ "error": { "code", "message" } }`.
   license:
     name: Proprietary (hackathon demo)
     identifier: LicenseRef-Proprietary
 servers:
   - url: /
-    description: Același origin. Local, Vite face proxy către backend (localhost:8080) sau către Prism (localhost:4010, npm run mock).
+    description: Same origin. Locally, Vite proxies to the backend (localhost:8080) or to Prism (localhost:4010, npm run mock).
 security: []
 tags:
   - name: modules
-    description: Cele 6 module de investiții (carduri, documente, întrebări).
+    description: The 6 investment modules (cards, documents, questions).
   - name: farms
-    description: Profilul fermei din ANAF, APIA și Open Banking (mock în demo).
+    description: The farm profile from ANAF, APIA and Open Banking (mocked in the demo).
   - name: runs
-    description: Dosarele analizate de agenți.
+    description: The dossiers analysed by the agents.
   - name: portfolio
-    description: Totalurile băncii pe credite verzi, fonduri și impact.
+    description: The bank's totals for green credits, funds and impact.
   - name: officer
-    description: Acțiunile ofițerului de credit.
+    description: The credit officer's actions.
   - name: health
-    description: Starea serviciilor externe înainte de demo.
+    description: Status of the external services before the demo.
 
 paths:
   /api/modules:
     get:
       tags: [modules]
       operationId: listModules
-      summary: Lista modulelor
-      description: Cele 6 carduri, cu documentele cerute și chestionarul fiecărui modul. Doar `irigatii` și `utilaje` sunt `DEMO_READY`.
+      summary: List of modules
+      description: The 6 cards, with the required documents and the questionnaire of each module. Only `irigatii` and `utilaje` are `DEMO_READY`.
       responses:
         '200':
-          description: Modulele.
+          description: The modules.
           content:
             application/json:
               schema:
@@ -59,8 +60,8 @@ paths:
     post:
       tags: [modules]
       operationId: classifyOffer
-      summary: Categoria investiției, din ofertă
-      description: Aplicația recunoaște singură categoria din oferta încărcată (cuvinte-cheie din `config/modules`, în numele fișierului și în textul PDF-ului). `moduleId` e null dacă oferta nu spune ce se cumpără.
+      summary: Investment category, from the offer
+      description: The app detects the category from the uploaded offer on its own (keywords from `config/modules`, in the file name and in the PDF text). `moduleId` is null if the offer does not say what is being bought.
       requestBody:
         required: true
         content:
@@ -74,7 +75,7 @@ paths:
                   format: binary
       responses:
         '200':
-          description: Categoria găsită.
+          description: The category found.
           content:
             application/json:
               schema:
@@ -90,13 +91,13 @@ paths:
     get:
       tags: [farms]
       operationId: getFarm
-      summary: Profilul fermei după CUI
-      description: Date firmă (ANAF/ONRC), parcele APIA ca GeoJSON cu straturile de risc, rezumatul cashflow-ului din Open Banking.
+      summary: Farm profile by CUI
+      description: Company data (ANAF/ONRC), APIA parcels as GeoJSON with the risk layers, and the cashflow summary from Open Banking.
       parameters:
         - $ref: '#/components/parameters/Cui'
       responses:
         '200':
-          description: Profilul fermei.
+          description: The farm profile.
           content:
             application/json:
               schema:
@@ -117,10 +118,10 @@ paths:
     post:
       tags: [runs]
       operationId: createRun
-      summary: Creează un dosar și pornește analiza
+      summary: Create a dossier and start the analysis
       description: |
-        Multipart: CUI, modul, parcele, chestionar (JSON) și documente. Analiza pornește asincron;
-        progresul se urmărește pe `GET /api/runs/{id}/events`.
+        Multipart: CUI, module, parcels, questionnaire (JSON) and documents. The analysis starts asynchronously;
+        progress is followed on `GET /api/runs/{id}/events`.
       requestBody:
         required: true
         content:
@@ -152,13 +153,13 @@ paths:
     post:
       tags: [runs]
       operationId: createDemoRun
-      summary: Încarcă dosarul demo
-      description: Butonul „Încarcă dosarul demo”. Folosește documentele și datele fixe din `data/demo/`. Modul de rulare (LIVE, HYBRID, REPLAY) vine din configurația serverului.
+      summary: Load the demo dossier
+      description: The "Load the demo dossier" button. Uses the fixed documents and data from `data/demo/`. The run mode (LIVE, HYBRID, REPLAY) comes from the server configuration.
       parameters:
         - name: scenario
           in: path
           required: true
-          description: Scenariul demo.
+          description: The demo scenario.
           schema:
             $ref: '#/components/schemas/DemoScenario'
       responses:
@@ -171,24 +172,24 @@ paths:
     get:
       tags: [runs]
       operationId: getRun
-      summary: Starea completă a dosarului
+      summary: Full state of the dossier
       description: |
-        Output-urile agenților și toate cifrele rezolvate (`calcs`). Se poate cere oricând; câmpurile agenților sunt `null` până termină agentul respectiv.
-        Cu `view=sme`, răspunsul e ce vede IMM-ul (README §13, „IMM-ul nu vede fondurile”): fără `officerNotesRo` în recomandarea de finanțare
-        și doar partea din raportul verde care îl privește (`SmeUnderwritingReport`).
+        The agent outputs and all resolved figures (`calcs`). Can be requested at any time; agent fields are `null` until that agent finishes.
+        With `view=sme`, the response is what the SME sees (README §13, "the SME does not see the funds"): no `officerNotesRo` in the funding
+        recommendation and only the part of the green report that concerns it (`SmeUnderwritingReport`).
       parameters:
         - $ref: '#/components/parameters/RunId'
         - name: view
           in: query
           required: false
-          description: '`full` (implicit) = dosarul așa cum îl primește banca; `sme` = ce vede IMM-ul.'
+          description: '`full` (default) = the dossier as the bank receives it; `sme` = what the SME sees.'
           schema:
             type: string
             enum: [full, sme]
             default: full
       responses:
         '200':
-          description: Dosarul.
+          description: The dossier.
           content:
             application/json:
               schema:
@@ -205,45 +206,45 @@ paths:
     get:
       tags: [runs]
       operationId: streamRunEvents
-      summary: Fluxul live de evenimente (SSE)
+      summary: Live event stream (SSE)
       description: |
-        Server-Sent Events. Trimite întâi istoricul (de la `Last-Event-ID` + 1 sau de la `after` + 1), apoi evenimentele live.
-        Fiecare eveniment e un mesaj nenumit (`message`) cu `id: <seq>` și `data: <RunEvent JSON>`.
-        Fluxul se închide după `run.completed` sau `run.failed`; tranzițiile de după (`GATA → TRIMIS` la trimiterea cererii,
-        `TRIMIS → APROBAT → MONITORIZARE` la aprobare) se primesc la reconectare. Catalogul complet e în `events.md`.
+        Server-Sent Events. Sends the history first (from `Last-Event-ID` + 1 or from `after` + 1), then the live events.
+        Each event is an unnamed message (`message`) with `id: <seq>` and `data: <RunEvent JSON>`.
+        The stream closes after `run.completed` or `run.failed`; the later transitions (`GATA → TRIMIS` when the application is submitted,
+        `TRIMIS → APROBAT → MONITORIZARE` on approval) are received on reconnect. The full catalogue is in `events.md`.
       parameters:
         - $ref: '#/components/parameters/RunId'
         - name: Last-Event-ID
           in: header
           required: false
-          description: Ultimul `seq` primit (trimis automat de EventSource la reconectare).
+          description: The last `seq` received (sent automatically by EventSource on reconnect).
           schema:
             type: integer
             minimum: 0
         - name: after
           in: query
           required: false
-          description: Alternativă la header pentru prima conectare (EventSource nu poate seta header-e).
+          description: Alternative to the header for the first connection (EventSource cannot set headers).
           schema:
             type: integer
             minimum: 0
       responses:
         '200':
-          description: Flux SSE.
+          description: SSE stream.
           content:
             text/event-stream:
               schema:
                 type: string
-                description: Linii SSE; fiecare câmp `data` conține un RunEvent serializat JSON.
+                description: SSE lines; each `data` field contains a RunEvent serialised as JSON.
                 contentMediaType: application/json
                 contentSchema:
                   $ref: '#/components/schemas/RunEvent'
               example: |
                 id: 1
-                data: {"seq":1,"runId":"run_irg7k2xq4m9p","type":"state.transition","agent":null,"at":"2026-10-28T09:30:00.000Z","message":"Dosar creat: irigații, 40 ha, 3 documente încărcate","data":{"from":null,"to":"CREAT","actor":"FARMER"}}
+                data: {"seq":1,"runId":"run_irg7k2xq4m9p","type":"state.transition","agent":null,"at":"2026-10-28T09:30:00.000Z","message":"Dossier created: irrigation, 40 ha, 3 documents uploaded","data":{"from":null,"to":"CREAT","actor":"FARMER"}}
 
                 id: 2
-                data: {"seq":2,"runId":"run_irg7k2xq4m9p","type":"state.transition","agent":null,"at":"2026-10-28T09:30:01.200Z","message":"Am preluat datele firmei: ANAF, APIA, Open Banking, risc climatic","data":{"from":"CREAT","to":"DATE_FIRMA","actor":"SYSTEM"}}
+                data: {"seq":2,"runId":"run_irg7k2xq4m9p","type":"state.transition","agent":null,"at":"2026-10-28T09:30:01.200Z","message":"Company data retrieved: ANAF, APIA, Open Banking, climate risk","data":{"from":"CREAT","to":"DATE_FIRMA","actor":"SYSTEM"}}
 
         '404':
           $ref: '#/components/responses/NotFound'
@@ -252,12 +253,12 @@ paths:
     post:
       tags: [runs]
       operationId: submitRun
-      summary: IMM-ul trimite cererea la bancă
+      summary: The SME submits the application to the bank
       description: |
-        Doar din starea `GATA`. IMM-ul alege unul din cele două carduri (README §7, pasul 9); dosarul trece în `TRIMIS`
-        (`state.transition`, `actor: FARMER`). `CLASIC` = opțiunea de tip `STANDARD`; `VERDE` = opțiunea verde recomandată
-        (`GREEN_PACKAGE` sau `GREEN_PACKAGE_WITH_GRANT`, cu `greenEligible: true`). Dacă dosarul nu are opțiunea cerută
-        (de ex. `VERDE` sub prag, fără upgrade), răspunsul e `409`. Răspunde cu ce vede IMM-ul (`view=sme`).
+        Only from state `GATA`. The SME picks one of the two cards (README §7, step 9); the dossier moves to `TRIMIS`
+        (`state.transition`, `actor: FARMER`). `CLASIC` = the `STANDARD` option; `VERDE` = the recommended green option
+        (`GREEN_PACKAGE` or `GREEN_PACKAGE_WITH_GRANT`, with `greenEligible: true`). If the dossier does not have the requested option
+        (e.g. `VERDE` below the threshold, without an upgrade), the response is `409`. Responds with what the SME sees (`view=sme`).
       parameters:
         - $ref: '#/components/parameters/RunId'
       requestBody:
@@ -270,7 +271,7 @@ paths:
               variant: VERDE
       responses:
         '200':
-          description: Dosarul trimis, așa cum îl vede IMM-ul.
+          description: The submitted dossier, as the SME sees it.
           content:
             application/json:
               schema:
@@ -286,8 +287,8 @@ paths:
     post:
       tags: [officer]
       operationId: approveRun
-      summary: Banca aprobă dosarul
-      description: Aprobarea finală, doar din starea `TRIMIS`. Mută dosarul în `APROBAT`, apoi în `MONITORIZARE` (tragerea e simulată în demo), cu câte un `state.transition`.
+      summary: The bank approves the dossier
+      description: Final approval, only from state `TRIMIS`. Moves the dossier to `APROBAT`, then to `MONITORIZARE` (the drawdown is simulated in the demo), with one `state.transition` each.
       parameters:
         - $ref: '#/components/parameters/RunId'
       requestBody:
@@ -298,7 +299,7 @@ paths:
               $ref: '#/components/schemas/ApproveRequest'
       responses:
         '200':
-          description: Dosarul actualizat.
+          description: The updated dossier.
           content:
             application/json:
               schema:
@@ -314,8 +315,8 @@ paths:
     post:
       tags: [officer]
       operationId: requestDocuments
-      summary: Ofițerul cere documente
-      description: Doar din starea `TRIMIS`. Starea rămâne `TRIMIS`; documentele cerute apar în `RunView.pendingDocuments` și la fermier.
+      summary: The officer requests documents
+      description: Only from state `TRIMIS`. The state stays `TRIMIS`; the requested documents appear in `RunView.pendingDocuments` and on the farmer's side.
       parameters:
         - $ref: '#/components/parameters/RunId'
       requestBody:
@@ -326,7 +327,7 @@ paths:
               $ref: '#/components/schemas/RequestDocumentsRequest'
       responses:
         '200':
-          description: Dosarul actualizat.
+          description: The updated dossier.
           content:
             application/json:
               schema:
@@ -342,13 +343,13 @@ paths:
     get:
       tags: [officer]
       operationId: getRunReport
-      summary: Raportul verde în PDF
-      description: Decizie, nivel verde, prag, DNSH, fond, cerințe, categoria F2, condiții, riscuri (README §8). Disponibil după `APROBAT`.
+      summary: The green report as PDF
+      description: Decision, green tier, threshold, DNSH, fund, requirements, F2 category, conditions, risks (README §8). Available after `APROBAT`.
       parameters:
         - $ref: '#/components/parameters/RunId'
       responses:
         '200':
-          description: Raportul.
+          description: The report.
           content:
             application/pdf:
               schema:
@@ -363,13 +364,13 @@ paths:
     post:
       tags: [officer]
       operationId: simulateMonitoring
-      summary: Simulează 12 luni
-      description: Doar din `MONITORIZARE`, pentru un dosar cu credit verde. Încarcă date de monitorizare simulate (README §13), compară impactul real cu cel estimat și aplică bonusul de impact dacă estimarea se confirmă. O singură dată pe dosar.
+      summary: Simulate 12 months
+      description: Only from `MONITORIZARE`, for a dossier with a green credit. Loads simulated monitoring data (README §13), compares the actual impact with the estimate and applies the impact bonus if the estimate is confirmed. Once per dossier.
       parameters:
         - $ref: '#/components/parameters/RunId'
       responses:
         '200':
-          description: Dosarul actualizat, cu `monitoring` completat.
+          description: The updated dossier, with `monitoring` filled in.
           content:
             application/json:
               schema:
@@ -383,11 +384,11 @@ paths:
     get:
       tags: [portfolio]
       operationId: getPortfolio
-      summary: Portofoliul de credite verzi
-      description: Totaluri pe categorii, pe fonduri și impact, din dosarele aprobate (`MONITORIZARE`) cu credit verde.
+      summary: Green credit portfolio
+      description: Totals by category, by fund and impact, from the approved dossiers (`MONITORIZARE`) with a green credit.
       responses:
         '200':
-          description: Portofoliul.
+          description: The portfolio.
           content:
             application/json:
               schema:
@@ -397,11 +398,11 @@ paths:
     get:
       tags: [health]
       operationId: getBedrockHealth
-      summary: Starea AWS Bedrock
-      description: Indicatorul verde/roșu dinainte de demo. Răspunde mereu 200; starea e în corp.
+      summary: AWS Bedrock status
+      description: The green/red indicator before the demo. Always responds 200; the status is in the body.
       responses:
         '200':
-          description: Starea Bedrock și a fallback-ului.
+          description: Status of Bedrock and of the fallback.
           content:
             application/json:
               schema:
@@ -428,23 +429,23 @@ components:
       name: cui
       in: path
       required: true
-      description: Codul unic de înregistrare, cu sau fără prefixul RO.
+      description: The unique registration code (CUI), with or without the RO prefix.
       schema:
         $ref: '#/components/schemas/Cui'
     RunId:
       name: id
       in: path
       required: true
-      description: Id-ul dosarului.
+      description: The dossier id.
       schema:
         $ref: '#/components/schemas/RunId'
 
   responses:
     RunCreated:
-      description: Dosar creat; analiza rulează asincron.
+      description: Dossier created; the analysis runs asynchronously.
       headers:
         Location:
-          description: URL-ul dosarului.
+          description: The dossier URL.
           schema:
             type: string
       content:
@@ -457,7 +458,7 @@ components:
             runUrl: /api/runs/run_irg7k2xq4m9p
             eventsUrl: /api/runs/run_irg7k2xq4m9p/events
     BadRequest:
-      description: Cerere invalidă.
+      description: Invalid request.
       content:
         application/json:
           schema:
@@ -465,9 +466,9 @@ components:
           example:
             error:
               code: VALIDATION_ERROR
-              message: Câmpul moduleId lipsește.
+              message: The moduleId field is missing.
     NotFound:
-      description: Resursa nu există.
+      description: The resource does not exist.
       content:
         application/json:
           schema:
@@ -475,9 +476,9 @@ components:
           example:
             error:
               code: NOT_FOUND
-              message: Dosarul nu există.
+              message: The dossier does not exist.
     Conflict:
-      description: Acțiunea nu e permisă în starea curentă.
+      description: The action is not allowed in the current state.
       content:
         application/json:
           schema:
@@ -485,9 +486,9 @@ components:
           example:
             error:
               code: INVALID_STATE
-              message: Dosarul poate fi aprobat doar din starea TRIMIS; acum e în GATA.
+              message: The dossier can only be approved from state TRIMIS; it is now in GATA.
     PayloadTooLarge:
-      description: Fișier prea mare.
+      description: File too large.
       content:
         application/json:
           schema:
@@ -495,9 +496,9 @@ components:
           example:
             error:
               code: FILE_TOO_LARGE
-              message: Fiecare document poate avea cel mult 20 MB.
+              message: Each document can be at most 20 MB.
     Unprocessable:
-      description: Cererea e validă ca formă, dar nu se poate procesa (ex. modul neconfigurat).
+      description: The request is well-formed but cannot be processed (e.g. module not configured).
       content:
         application/json:
           schema:
@@ -505,9 +506,9 @@ components:
           example:
             error:
               code: MODULE_NOT_READY
-              message: Modulul zootehnie nu este încă disponibil pentru analiză completă.
+              message: The livestock module is not yet available for a full analysis.
     UpstreamError:
-      description: Un serviciu extern (ANAF, APIA, Open Banking) nu răspunde și nu există date în cache.
+      description: An external service (ANAF, APIA, Open Banking) is not responding and there is no cached data.
       content:
         application/json:
           schema:
@@ -515,9 +516,9 @@ components:
           example:
             error:
               code: UPSTREAM_UNAVAILABLE
-              message: APIA nu răspunde. Reîncearcă în câteva minute.
+              message: APIA is not responding. Try again in a few minutes.
     InternalError:
-      description: Eroare internă.
+      description: Internal error.
       content:
         application/json:
           schema:
@@ -525,7 +526,7 @@ components:
           example:
             error:
               code: INTERNAL
-              message: A apărut o eroare. Reîncearcă.
+              message: Something went wrong. Try again.
 
   schemas:
     # ---------- primitives ----------
@@ -545,7 +546,7 @@ components:
       $ref: './schemas/event.json#/$defs/runState'
     RunMode:
       type: string
-      description: LIVE = Bedrock real; HYBRID = live cu fallback pe cache/golden; REPLAY = rulare înregistrată, cifrele recalculate live.
+      description: LIVE = real Bedrock; HYBRID = live with fallback to cache/golden; REPLAY = recorded run, figures recalculated live.
       enum: [LIVE, HYBRID, REPLAY]
     Month:
       type: string
@@ -569,11 +570,11 @@ components:
           properties:
             code:
               type: string
-              description: Cod stabil, în engleză, pentru frontend.
+              description: Stable code, in English, for the frontend.
               enum: [VALIDATION_ERROR, NOT_FOUND, INVALID_STATE, FILE_TOO_LARGE, UNSUPPORTED_FILE_TYPE, MODULE_NOT_READY, UPSTREAM_UNAVAILABLE, BEDROCK_UNAVAILABLE, INTERNAL]
             message:
               type: string
-              description: Mesaj în română, gata de afișat.
+              description: Message in English, ready to display.
               maxLength: 300
             details:
               type: array
@@ -609,7 +610,7 @@ components:
           maxLength: 8
         status:
           type: string
-          description: DEMO_READY = config + catalog + calculator complet; CONFIG_ONLY = card și config, calculator generic.
+          description: DEMO_READY = config + catalog + full calculator; CONFIG_ONLY = card and config, generic calculator.
           enum: [DEMO_READY, CONFIG_ONLY]
         descriptionRo:
           type: string
@@ -639,7 +640,7 @@ components:
               maxLength: 240
             demo:
               type: boolean
-              description: true = prag propus, de confirmat cu Raiffeisen.
+              description: true = proposed threshold, to be confirmed with Raiffeisen.
         requiredDocs:
           type: array
           items:
@@ -748,12 +749,12 @@ components:
           minimum: 0
         turnoverEur:
           type: [number, 'null']
-          description: null când firma nu are bilanț depus în ultimii doi ani.
+          description: null when the company has not filed a balance sheet in the last two years.
         netProfitEur:
           type: [number, 'null']
         totalAssetsEur:
           type: [number, 'null']
-          description: Active imobilizate + active circulante + cheltuieli în avans, din ultimul bilanț; null fără bilanț.
+          description: Fixed assets + current assets + prepaid expenses, from the latest balance sheet; null without a balance sheet.
         financialYear:
           type: integer
         vatPayer:
@@ -761,11 +762,11 @@ components:
         smeStatus:
           type: string
           enum: [SME, NOT_SME, UNKNOWN]
-          description: IMM = sub 250 de angajați și (cifra de afaceri ≤ 50 mil. EUR sau active totale ≤ 43 mil. EUR), Recomandarea 2003/361/CE. UNKNOWN când bilanțul nu dă cifrele.
+          description: SME = fewer than 250 employees and (turnover ≤ EUR 50 million or total assets ≤ EUR 43 million), Recommendation 2003/361/EC. UNKNOWN when the balance sheet does not give the figures.
         manager:
           type: [object, 'null']
           additionalProperties: false
-          description: Doar ce trebuie pentru eligibilitate (DR-12); fără nume sau CNP. null pentru firmele căutate la ANAF, unde datele sunt la ONRC.
+          description: Only what is needed for eligibility (DR-12); no name or CNP (personal ID). null for companies looked up at ANAF, where the data sits with ONRC.
           required: [age, installedAt]
           properties:
             age:
@@ -784,7 +785,7 @@ components:
           type: number
         standardOutputEur:
           type: number
-          description: Producția standard (SO), pentru eligibilitatea AFIR.
+          description: Standard output (SO), for AFIR eligibility.
         irrigatedNow:
           type: boolean
         currentIrrigation:
@@ -823,7 +824,7 @@ components:
           type: number
     ParcelCollection:
       type: object
-      description: GeoJSON FeatureCollection (RFC 7946), coordonate WGS84 [lon, lat].
+      description: GeoJSON FeatureCollection (RFC 7946), WGS84 coordinates [lon, lat].
       additionalProperties: false
       required: [type, features]
       properties:
@@ -865,7 +866,7 @@ components:
               type: string
             blockId:
               type: string
-              description: Blocul fizic APIA.
+              description: The APIA physical block.
             areaHa:
               type: number
             crop:
@@ -885,10 +886,10 @@ components:
               $ref: '#/components/schemas/RiskLevel'
             et0SeasonMm:
               type: number
-              description: Evapotranspirația de referință ET₀ pe sezonul de irigare, în mm (date climatice; mock în demo).
+              description: Reference evapotranspiration ET₀ over the irrigation season, in mm (climate data; mocked in the demo).
             effectiveRainSeasonMm:
               type: number
-              description: Ploaia efectivă pe sezonul de irigare, în mm (date climatice; mock în demo).
+              description: Effective rainfall over the irrigation season, in mm (climate data; mocked in the demo).
     RiskLevel:
       type: string
       enum: [LOW, MEDIUM, HIGH]
@@ -962,7 +963,7 @@ components:
           $ref: '#/components/schemas/QuestionnaireAnswers'
         documentManifest:
           type: array
-          description: Un element per fișier din `documents`, în aceeași ordine.
+          description: One element per file in `documents`, in the same order.
           minItems: 1
           maxItems: 10
           items:
@@ -992,7 +993,7 @@ components:
               type: boolean
     QuestionnaireAnswers:
       type: object
-      description: Răspunsurile, cheie = `questionId` din `GET /api/modules`.
+      description: The answers, key = `questionId` from `GET /api/modules`.
       propertyNames:
         pattern: '^[a-z][a-z0-9_]{2,40}$'
       additionalProperties:
@@ -1024,7 +1025,7 @@ components:
         moduleId:
           $ref: '#/components/schemas/ModuleId'
         scenario:
-          description: Scenariul demo, dacă dosarul a fost creat cu `POST /api/runs/demo/{scenario}`.
+          description: The demo scenario, if the dossier was created with `POST /api/runs/demo/{scenario}`.
           anyOf:
             - $ref: '#/components/schemas/DemoScenario'
             - type: 'null'
@@ -1041,7 +1042,7 @@ components:
         lastEventSeq:
           type: integer
           minimum: 0
-          description: Ultimul `seq` emis; frontend-ul se poate abona la SSE cu `after=lastEventSeq`.
+          description: The last `seq` emitted; the frontend can subscribe to SSE with `after=lastEventSeq`.
         farm:
           $ref: '#/components/schemas/FarmProfile'
         parcelIds:
@@ -1073,31 +1074,31 @@ components:
                 - $ref: './schemas/submit_technical_assessment.json'
                 - type: 'null'
             fundingRecommendation:
-              description: Cu `view=sme`, `SmeFundingRecommendation`.
+              description: With `view=sme`, `SmeFundingRecommendation`.
               anyOf:
                 - $ref: './schemas/submit_funding_recommendation.json'
                 - $ref: '#/components/schemas/SmeFundingRecommendation'
                 - type: 'null'
             underwritingReport:
-              description: Cu `view=sme`, `SmeUnderwritingReport`.
+              description: With `view=sme`, `SmeUnderwritingReport`.
               anyOf:
                 - $ref: './schemas/submit_underwriting_report.json'
                 - $ref: '#/components/schemas/SmeUnderwritingReport'
                 - type: 'null'
         calcs:
           type: object
-          description: Toate cifrele dosarului, cheie = calcId. Rezolvă orice `*CalcId` din output-urile agenților.
+          description: All figures of the dossier, key = calcId. Resolves any `*CalcId` in the agent outputs.
           propertyNames:
             pattern: '^calc_[a-f0-9]{12}$'
           additionalProperties:
             $ref: '#/components/schemas/CalcResult'
         monitoring:
-          description: Rezultatul lui „Simulează 12 luni”; `null` până atunci.
+          description: The result of "Simulate 12 months"; `null` until then.
           anyOf:
             - $ref: '#/components/schemas/MonitoringResult'
             - type: 'null'
         submission:
-          description: Varianta trimisă la bancă; `null` până la `POST /api/runs/{id}/submit`.
+          description: The variant submitted to the bank; `null` until `POST /api/runs/{id}/submit`.
           anyOf:
             - $ref: '#/components/schemas/Submission'
             - type: 'null'
@@ -1110,7 +1111,7 @@ components:
           items:
             $ref: '#/components/schemas/PendingDocument'
         error:
-          description: Doar în starea ESUAT.
+          description: Only in state ESUAT.
           anyOf:
             - $ref: '#/components/schemas/RunError'
             - type: 'null'
@@ -1187,8 +1188,8 @@ components:
     Variant:
       type: string
       description: |
-        Cele două carduri ale IMM-ului (README §7). `CLASIC` = opțiunea de tip `STANDARD`; `VERDE` = opțiunea verde
-        (`GREEN_PACKAGE` sau `GREEN_PACKAGE_WITH_GRANT`) recomandată, sau singura opțiune verde, cu `greenEligible: true`.
+        The SME's two cards (README §7). `CLASIC` = the `STANDARD` option; `VERDE` = the recommended green option
+        (`GREEN_PACKAGE` or `GREEN_PACKAGE_WITH_GRANT`), or the only green option, with `greenEligible: true`.
       enum: [CLASIC, VERDE]
     SubmitRequest:
       type: object
@@ -1205,7 +1206,7 @@ components:
         variant:
           $ref: '#/components/schemas/Variant'
         optionId:
-          description: Opțiunea din `agents.fundingRecommendation.options` care corespunde variantei.
+          description: The option in `agents.fundingRecommendation.options` that matches the variant.
           $ref: './schemas/submit_funding_recommendation.json#/$defs/optionId'
         submittedAt:
           type: string
@@ -1213,7 +1214,7 @@ components:
     SmeFundingRecommendation:
       type: object
       additionalProperties: false
-      description: '`submit_funding_recommendation` fără `officerNotesRo`, notele pentru bancă (doar în `view=sme`).'
+      description: '`submit_funding_recommendation` without `officerNotesRo`, the notes for the bank (only in `view=sme`).'
       required: [options, recommendedOptionId, recommendationBasis, greenTier, programChecks, grantOutlook, comparison, farmerExplanationRo]
       properties:
         options:
@@ -1236,9 +1237,9 @@ components:
       type: object
       additionalProperties: false
       description: |
-        Partea din `submit_underwriting_report` pe care o vede IMM-ul (doar în `view=sme`): decizia, criteriul, impactul,
-        condițiile înainte de tragere, indicatorii de monitorizare și pașii următori. Fondul și cerințele lui, categoria
-        din cadrul obligațiunilor verzi, etichetele, DNSH, riscurile și rezumatul pentru comitet rămân la bancă.
+        The part of `submit_underwriting_report` that the SME sees (only in `view=sme`): the decision, the criterion, the impact,
+        the conditions precedent to drawdown, the monitoring indicators and the next steps. The fund and its requirements, the
+        green bond framework category, the labels, DNSH, the risks and the committee summary stay with the bank.
       required: [decision, moduleId, recommendedOptionId, criterion, impact, conditionsPrecedent, monitoringKpis, farmerNextSteps]
       properties:
         decision:
@@ -1285,7 +1286,7 @@ components:
           maxLength: 1000
         acceptedConditionIds:
           type: array
-          description: Condițiile din raport pe care ofițerul le păstrează. Lipsă = toate.
+          description: The conditions from the report that the officer keeps. Absent = all.
           items:
             type: string
             pattern: '^cp_[a-z0-9_]{2,40}$'
@@ -1300,7 +1301,7 @@ components:
         messageRo:
           type: string
           maxLength: 1000
-          description: Mesajul afișat fermierului.
+          description: The message shown to the farmer.
         documents:
           type: array
           minItems: 1
@@ -1325,7 +1326,7 @@ components:
     MonitoringResult:
       type: object
       additionalProperties: false
-      description: Impactul real față de cel estimat, la 12 luni de la tragere (simulat în demo). Cifrele sunt în `RunView.calcs`.
+      description: Actual impact against the estimate, 12 months after drawdown (simulated in the demo). The figures are in `RunView.calcs`.
       required: [months, simulated, metrics, confirmed, impactBonusApplied, rateBeforeCalcId, rateAfterCalcId, bonusPpCalcId]
       properties:
         months:
@@ -1358,10 +1359,10 @@ components:
                 type: boolean
         confirmed:
           type: boolean
-          description: Impactul real confirmă estimarea (toate metricile în toleranța din config).
+          description: The actual impact confirms the estimate (all metrics within the tolerance in config).
         impactBonusApplied:
           type: boolean
-          description: Bonusul de impact (propunere de produs, nu un produs Raiffeisen existent) e aplicat doar dacă `confirmed`.
+          description: The impact bonus (a product proposal, not an existing Raiffeisen product) is applied only if `confirmed`.
         rateBeforeCalcId:
           type: string
           pattern: '^calc_[a-f0-9]{12}$'
@@ -1374,7 +1375,7 @@ components:
     Portfolio:
       type: object
       additionalProperties: false
-      description: Totaluri calculate de motor din dosarele aprobate. Sumele sunt în EUR.
+      description: Totals calculated by the engine from the approved dossiers. Amounts are in EUR.
       required: [generatedAt, loanCount, totalAmountEur, byModule, byFund, byTier, impact, monitoring, parametersDemo]
       properties:
         generatedAt:
@@ -1463,7 +1464,7 @@ components:
               minimum: 0
         parametersDemo:
           type: boolean
-          description: true cât timp parametrii din `config/` sunt marcați `demo`; zona ofițerului îi afișează ca „parametri demo”.
+          description: true while the parameters in `config/` are marked `demo`; the officer area shows them as "demo parameters".
 
     # ---------- health ----------
     BedrockHealth:
@@ -1473,7 +1474,7 @@ components:
       properties:
         status:
           type: string
-          description: UP = toate modelele răspund; DEGRADED = merge cu retry sau model de rezervă; DOWN = doar REPLAY.
+          description: UP = all models respond; DEGRADED = works with retry or a backup model; DOWN = REPLAY only.
           enum: [UP, DEGRADED, DOWN]
         region:
           type: string
@@ -1507,6 +1508,6 @@ components:
                 maxLength: 300
         goldenRunsAvailable:
           type: array
-          description: Scenariile demo pentru care există o rulare înregistrată (fallback nivelul 4).
+          description: The demo scenarios for which a recorded run exists (fallback level 4).
           items:
             $ref: '#/components/schemas/DemoScenario'

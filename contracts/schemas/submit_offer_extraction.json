@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://contracts.greenstruct.ro/schemas/submit_offer_extraction.json",
   "title": "submit_offer_extraction",
-  "description": "Ce a citit modelul dintr-un singur document (ofertă, fișă tehnică, factură, aviz). Un apel cu unealtă forțată per document. Valorile se copiază exact cum apar în document (rawValue, text); backend-ul le normalizează determinist și le dă calcId. Nu se deduce și nu se calculează nimic.",
+  "description": "What the model read from a single document (offer, technical data sheet, invoice, permit). One forced-tool call per document. Values are copied exactly as they appear in the document (rawValue, text); the backend normalises them deterministically and gives them a calcId. Nothing is inferred and nothing is calculated.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -38,7 +38,7 @@
       "maxLength": 160
     },
     "documentFields": {
-      "description": "Câmpuri la nivel de document (furnizor, total, dată, sistem de irigare etc.).",
+      "description": "Document-level fields (supplier, total, date, irrigation system, etc.).",
       "type": "array",
       "maxItems": 40,
       "items": {
@@ -46,7 +46,7 @@
       }
     },
     "lineItems": {
-      "description": "Pozițiile din ofertă/factură. Gol pentru documente fără poziții (aviz ANAR).",
+      "description": "The line items of the offer/invoice. Empty for documents without line items (ANAR permit).",
       "type": "array",
       "maxItems": 30,
       "items": {
@@ -81,7 +81,7 @@
       }
     },
     "missingFields": {
-      "description": "Câmpuri cerute de modul care nu apar în document. Devin condiții, nu motive de respingere.",
+      "description": "Fields required by the module that do not appear in the document. They become conditions, not reasons for rejection.",
       "type": "array",
       "maxItems": 20,
       "items": {
@@ -131,7 +131,7 @@
           "$ref": "#/$defs/fieldKey"
         },
         "rawValue": {
-          "description": "Textul exact din document, fără conversii (ex. \"85.000,00 EUR\").",
+          "description": "The exact text from the document, without conversion (e.g. \"85.000,00 EUR\" in a Romanian offer).",
           "type": "string",
           "maxLength": 160
         },
