@@ -9,9 +9,10 @@
       "role": "INDICATOR",
       "costEur": 26000,
       "effect": {
-        "methaneReductionPct": 85
+        "methaneReductionPct": 85,
+        "energyUpliftPct": 10
       },
-      "sourceRo": "Product demo catalogue (data/demo/test-documents/reference/upgrades.json, LIV-COVER): estimated price, 85% total reduction together with the digester"
+      "sourceRo": "Product demo catalogue (data/demo/test-documents/reference/upgrades.json, LIV-COVER): estimated price, 85% total reduction together with the digester. energyUpliftPct: the residual biogas from the covered tank reaches the cogeneration unit, +10% energy (demo value; the literature usually gives 5–15%), to be confirmed"
     }
   ]
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import ro.greenstruct.agro.engine.affordability.AffordabilityCalculator;
 import ro.greenstruct.agro.engine.affordability.AffordabilityResult;
+import ro.greenstruct.agro.engine.affordability.DebtServiceCoverage;
 import ro.greenstruct.agro.external.model.CashflowInfo;
 import ro.greenstruct.agro.orchestration.AgentSlot;
 import ro.greenstruct.agro.tools.Params;
@@ -24,8 +25,8 @@ import static ro.greenstruct.agro.engine.Decimals.HUNDRED;
 import static ro.greenstruct.agro.engine.Decimals.MC;
 
 /**
- * Do the first year's installments fit the farm's Open Banking cash flow? PASS when the yearly ratio is under
- * the limit and no month runs short; PASS_WITH_WARNING when some months run short; FAIL over the limit.
+ * Can the farm carry the loan? FAIL when the DSCR with the investment's savings is under the minimum;
+ * PASS_WITH_WARNING when some months of today's cash flow run short of the installment; PASS otherwise.
  * The bridge loan is excluded: it is repaid by the grant.
  */
 @Component
@@ -38,8 +39,9 @@ public class CheckAffordabilityTool implements ToolHandler {
 
     @Override
     public String description() {
-        return "Checks each option's first-year installments against the farm's net cash flow from Open Banking: "
-                + "yearly ratio against the limit and months where the installment exceeds that month's cash flow.";
+        return "Checks each option against the minimum DSCR (today's net cash flow from Open Banking plus the "
+                + "option's yearly savings, over the heaviest loan year) and lists the months where the installment "
+                + "exceeds that month's cash flow. The first-year ratio to today's cash flow is reported for information.";
     }
 
     @Override
@@ -61,8 +63,10 @@ public class CheckAffordabilityTool implements ToolHandler {
         if (cashflow == null) {
             throw new IllegalArgumentException("Without Open Banking consent we cannot run the affordability check");
         }
-        BigDecimal limitPct = RuleValues.financingDefault(context, "affordabilityLimitPct");
-        BigDecimal minDscr = HUNDRED.divide(limitPct, MC);
+        // An investment loan is repaid from today's cash flow plus the savings the investment brings, so the
+        // minimum is on the DSCR with savings. The old rule (installments ≤ 40% of today's cash flow) failed both
+        // the classic and the green biogas loan and then still recommended the classic one (29.10.2026).
+        BigDecimal minDscr = RuleValues.financingDefault(context, "minDscr");
 
         ObjectNode result = context.newResult();
         for (String optionId : Params.textList(input, "optionIds")) {
@@ -70,8 +74,12 @@ public class CheckAffordabilityTool implements ToolHandler {
             if (option.schedule() == null) {
                 throw new IllegalArgumentException("Call build_scenario first for option " + optionId);
             }
+            // months where today's cash flow alone does not cover the installment are reported as a warning
             AffordabilityResult check = AffordabilityCalculator.check(option.schedule(), cashflow.netByCalendarMonth(),
-                    minDscr);
+                    BigDecimal.ONE);
+            DebtServiceCoverage.Result coverage = DebtServiceCoverage.compute(cashflow.annualNetEur(),
+                    option.total("savings_year"), option.schedule());
+            boolean meetsMinimum = coverage.dscr() != null && coverage.dscr().compareTo(minDscr) >= 0;
             BigDecimal firstYear = option.schedule().installments().stream().limit(12)
                     .map(i -> i.paymentEur()).reduce(BigDecimal.ZERO, BigDecimal::add);
             BigDecimal ratio = firstYear.divide(cashflow.annualNetEur(), MC).multiply(HUNDRED, MC);
@@ -79,7 +87,7 @@ public class CheckAffordabilityTool implements ToolHandler {
                     "First-year instalments vs net cash flow", ratio, Unit.PCT)
                     .formula("12-month instalments / annual net cash flow (Open Banking)").add();
 
-            String verdict = !check.meetsMinimum() ? "FAIL"
+            String verdict = !meetsMinimum ? "FAIL"
                     : check.deficitMonths().isEmpty() ? "PASS" : "PASS_WITH_WARNING";
             ObjectNode node = result.putObject(optionId);
             node.put("result", verdict);

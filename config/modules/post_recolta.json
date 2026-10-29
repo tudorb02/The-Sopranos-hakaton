@@ -224,8 +224,8 @@
   },
   "substantialContribution": "CLIMATE_MITIGATION",
   "financing": {
-    "termMonths": 60,
-    "horizonYears": 5,
+    "termMonths": 84,
+    "horizonYears": 7,
     "standardLine": "rbro.invest.standard",
     "greenLine": "rbro.agri.green_investeu"
   },

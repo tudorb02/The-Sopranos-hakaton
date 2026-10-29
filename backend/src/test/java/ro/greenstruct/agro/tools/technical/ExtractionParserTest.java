@@ -1,5 +1,7 @@
 package ro.greenstruct.agro.tools.technical;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,50 @@ class ExtractionParserTest {
 
         assertThat(ExtractionParser.parse(extraction).number("TOTAL_NET"))
                 .hasValueSatisfying(v -> assertThat(v).isEqualByComparingTo("10375.00"));
+    }
+
+    @Test
+    void offerLinesLeftAsOtherGetTheirCategoryFromTheDescription() {
+        ObjectNode extraction = MAPPER.createObjectNode().put("documentId", "doc_biogas_01").put("documentType", "OFFER");
+        var lines = extraction.putArray("lineItems");
+        lines.addObject().put("lineId", "ln_1").put("category", "OTHER")
+                .put("descriptionRo", "Digestor anaerob din beton, cu agitatoare").putArray("fields");
+        lines.addObject().put("lineId", "ln_2").put("category", "OTHER")
+                .put("descriptionRo", "Unitate de cogenerare 30 kWe / 45 kWt").putArray("fields");
+        lines.addObject().put("lineId", "ln_3").put("category", "PV_SYSTEM")
+                .put("descriptionRo", "Structură de montaj pe acoperiș").putArray("fields");
+        lines.addObject().put("lineId", "ln_4").put("category", "OTHER")
+                .put("descriptionRo", "Pompe, conducte, automatizare, racordare").putArray("fields");
+        extraction.putArray("documentFields");
+
+        assertThat(ExtractionParser.parse(extraction).lines()).extracting(DocumentFacts.LineFacts::category)
+                .containsExactly("DIGESTER", "COGENERATION", "PV_SYSTEM", "OTHER");
+    }
+
+    @Test
+    void englishOfferLinesLeftAsOtherGetTheirCategoryToo() {
+        ObjectNode extraction = MAPPER.createObjectNode().put("documentId", "doc_biogas_02").put("documentType", "OFFER");
+        var lines = extraction.putArray("lineItems");
+        for (String description : List.of("Concrete anaerobic digester with agitators", "Cogeneration unit 30 kWe / 45 kWth",
+                "Gastight digestate cover with gas recovery", "Hose-reel irrigation machine, 110 mm x 400 m hose",
+                "Soil moisture sensors with automatic scheduling", "Delivery and training")) {
+            lines.addObject().put("lineId", "ln_" + (lines.size() + 1)).put("category", "OTHER")
+                    .put("descriptionRo", description).putArray("fields");
+        }
+        extraction.putArray("documentFields");
+
+        assertThat(ExtractionParser.parse(extraction).lines()).extracting(DocumentFacts.LineFacts::category)
+                .containsExactly("DIGESTER", "COGENERATION", "DIGESTATE_COVER", "IRRIGATION_SPRINKLER",
+                        "SOIL_MOISTURE_SENSORS", "OTHER");
+    }
+
+    @Test
+    void invoiceLinesKeepTheirCategory() {
+        ObjectNode extraction = invoices("ENERGY_INVOICES", "4.300");
+        ((ObjectNode) extraction.withArray("lineItems").get(0)).put("descriptionRo", "Stație de pompare, mai 2026");
+        extraction.putArray("documentFields");
+
+        assertThat(ExtractionParser.parse(extraction).lines().getFirst().category()).isEqualTo("OTHER");
     }
 
     @Test

@@ -218,31 +218,31 @@ class PostHarvestToolChainTest {
         chain.assertValue(run, "green_tier.requested_indicator", "12.0588");
         chain.assertValue(run, "green_tier.financed_indicator", "29.647");
         chain.assertValue(run, "green_tier.verde_plus_min", "30");
-        // green (70% guaranteed, Verde cu upgrade): 2 + 0.9 + 0.3375 + 0.324 + 1.35 + 1.77 − 0.4 + 0.2 = 6.4815
+        // green (70% guaranteed, Verde cu upgrade): 2.618 + 1.1 + 0.3375 + 0.324 + 1.35 + 1.77 − 0.4 + 0.2 = 7.2995
         chain.call(run, "price_loan", "{}");
-        chain.assertValue(run, "pricing.classic.rate", "8.9");
-        chain.assertValue(run, "pricing.green.rate", "6.4815");
+        chain.assertValue(run, "pricing.classic.rate", "9.518");
+        chain.assertValue(run, "pricing.green.rate", "7.2995");
 
         // PMT = P·r / (1 − (1 + r)^−60), r = rate / 12
         chain.call(run, "build_scenario", "{\"optionId\": \"A\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        chain.assertValue(run, "option_a.installment", "2443.76");
-        chain.assertValue(run, "option_a.total_interest", "28625.78");
+        chain.assertValue(run, "option_a.installment", "2479.26");
+        chain.assertValue(run, "option_a.total_interest", "30755.46");
         chain.assertValue(run, "option_a.collateral_costs", "3350");
         chain.assertValue(run, "option_a.savings_horizon", "10250");
-        chain.assertValue(run, "option_a.net_cost", "139725.78");
+        chain.assertValue(run, "option_a.net_cost", "141855.46");
         chain.call(run, "build_scenario", "{\"optionId\": \"B\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        chain.assertValue(run, "option_b.installment", "2777.16");
-        chain.assertValue(run, "option_b.total_interest", "24629.76");
+        chain.assertValue(run, "option_b.installment", "2831.88");
+        chain.assertValue(run, "option_b.total_interest", "27912.72");
         chain.assertValue(run, "option_b.savings_horizon", "25200");
-        chain.assertValue(run, "option_b.net_cost", "141429.76");
+        chain.assertValue(run, "option_b.net_cost", "144712.72");
 
         // (38,000 net cash flow + yearly savings) / (12 × installment)
         chain.call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
-        chain.assertValue(run, "option_a.dscr", "1.3657");
-        chain.assertValue(run, "option_b.dscr", "1.2915");
+        chain.assertValue(run, "option_a.dscr", "1.3462");
+        chain.assertValue(run, "option_b.dscr", "1.2665");
 
         chain.call(run, "compare_scenarios", "{\"optionIds\": [\"A\", \"B\"]}");
-        chain.assertValue(run, "compare.net_advantage", "-1703.99");
+        chain.assertValue(run, "compare.net_advantage", "-2857.26");
 
         chain.call(run, "calculate_impact", "{\"configId\": \"cfg_recommended\"}");
         // unit 74,000 + evaporators 26,000 + R290 supplement 9,000 + panels 15,000 = 124,000 of 142,000

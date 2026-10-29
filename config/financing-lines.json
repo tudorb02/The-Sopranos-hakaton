@@ -4,7 +4,8 @@
   "defaults": {
     "firstInstallmentOffsetMonths": 4,
     "affordabilityLimitPct": 40,
-    "sourceRo": "First instalment 4 months after the analysis month; limit: 12 months of instalments ≤ 40% of annual net cashflow; second-hand machinery: age at the last instalment ≤ 12 years (demo rule, to be confirmed)",
+    "minDscr": 1.25,
+    "sourceRo": "First instalment 4 months after the analysis month; affordability: DSCR ≥ 1.25 (annual net cashflow + the investment's savings, against the instalments of the heaviest year; usual threshold 1.2–1.3 for investment loans); 12 months of instalments against today's cashflow (40%) are for information only; second-hand machinery: age at the last instalment ≤ 12 years (demo rules, to be confirmed)",
     "maxEquipmentAgeAtMaturityYears": 12
   },
   "lines": [

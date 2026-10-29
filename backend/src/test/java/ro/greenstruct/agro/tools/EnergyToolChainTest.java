@@ -227,32 +227,42 @@ class EnergyToolChainTest {
         // 70% FEI InvestEU guarantee on 72,000 EUR
         assertValue(run, "option_b.guarantee.amount", "50400");
 
-        // Annuities over 84 months, computed separately: 210,000 at 8.9% → 3,368.06 (interest 72,916.93);
-        // 72,000 at 6.4% → 1,065.68 (interest 17,516.88). Mortgage costs 1,450 + 380 × 7 years = 4,110.
+        // the rates come from price_loan (by component), not from the fixed line rates
+        JsonNode tier = call(run, "determine_green_tier", "{\"requestedConfigId\": \"cfg_initial\","
+                + " \"financedConfigId\": \"cfg_recommended\", \"dnshStatus\": \"PASS\"}");
+        assertThat(tier.path("tier").asText()).isEqualTo("VERDE");
+        call(run, "price_loan", "{}");
+        assertValue(run, "pricing.classic.rate", "9.518");
+        assertValue(run, "pricing.green.rate", "7.2995");
+
+        // Annuities over 84 months, computed separately: 210,000 at 9.518% → 3,434.17 (interest 78,470.47);
+        // 72,000 at 7.2995% → 1,097.24 (interest 20,168.56). Mortgage costs 1,450 + 380 × 7 years = 4,110.
         call(run, "build_scenario", "{\"optionId\": \"A\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        assertValue(run, "option_a.installment", "3368.06");
-        assertValue(run, "option_a.total_interest", "72916.93");
+        assertValue(run, "option_a.installment", "3434.17");
+        assertValue(run, "option_a.total_interest", "78470.47");
         assertValue(run, "option_a.collateral_costs", "4110");
         // 37,872.50 × 7 years
         assertValue(run, "option_a.savings_horizon", "265107.5");
-        assertValue(run, "option_a.net_cost", "21919.43");
+        assertValue(run, "option_a.net_cost", "27472.97");
         call(run, "build_scenario", "{\"optionId\": \"B\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        assertValue(run, "option_b.installment", "1065.68");
-        assertValue(run, "option_b.total_interest", "17516.88");
+        assertValue(run, "option_b.installment", "1097.24");
+        assertValue(run, "option_b.total_interest", "20168.56");
         // 20,548.75 × 7 years
         assertValue(run, "option_b.savings_horizon", "143841.25");
-        assertValue(run, "option_b.net_cost", "-54324.37");
+        assertValue(run, "option_b.net_cost", "-51672.69");
 
         JsonNode comparison = call(run, "compare_scenarios", "{\"optionIds\": [\"A\", \"B\"]}");
         assertThat(comparison.path("better").asText()).isEqualTo("B");
-        assertValue(run, "compare.net_advantage", "76243.8");
+        assertValue(run, "compare.net_advantage", "79145.66");
 
-        // Yearly installments / yearly net cash flow of 101,000 EUR: 40.4 / 12.66 (limit 40%)
+        // Both pass the DSCR minimum of 1.25 with the savings: A (101,000 + 37,872.50) / (12 × 3,434.17) = 3.37,
+        // B (101,000 + 20,548.75) / (12 × 1,097.24) = 9.23. The ratio to today's cash flow is informational:
+        // yearly installments / 101,000 EUR = 40.80% / 13.04%
         JsonNode affordability = call(run, "check_affordability", "{\"optionIds\": [\"A\", \"B\"]}");
-        assertThat(affordability.path("A").path("result").asText()).isNotEqualTo("PASS");
+        assertThat(affordability.path("A").path("result").asText()).startsWith("PASS");
         assertThat(affordability.path("B").path("result").asText()).isEqualTo("PASS");
-        assertValue(run, "option_a.affordability_ratio", "40.02");
-        assertValue(run, "option_b.affordability_ratio", "12.66");
+        assertValue(run, "option_a.affordability_ratio", "40.80");
+        assertValue(run, "option_b.affordability_ratio", "13.04");
 
         JsonNode labels = call(run, "get_labeling_rules", "{\"configId\": \"cfg_recommended\"}");
         assertThat(labels.path("rules")).anySatisfy(rule -> {

@@ -49,12 +49,10 @@ public final class FinancingConfig {
     }
 
     /**
-     * Loan term in months: the tool input, else the farmer's answer (loan_term = ANI_7), else the module default.
+     * Loan term in months: the farmer's answer (loan_term = ANI_7), else the module default. A term in the tool
+     * input is ignored: the agent once sent 60 months for a 7-year module (live run, 29.10.2026).
      */
     public static int termMonths(ToolContext context, JsonNode input) {
-        if (input.has("termMonths")) {
-            return input.path("termMonths").asInt();
-        }
         String answer = context.questionnaire().path("loan_term").asText("");
         if (answer.startsWith("ANI_")) {
             return Integer.parseInt(answer.substring(4)) * 12;

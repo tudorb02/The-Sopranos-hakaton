@@ -221,36 +221,36 @@ class MachineryToolChainTest {
         chain.assertValue(run, "green_tier.verde_plus_min", "30");
 
         chain.call(run, "price_loan", "{}");
-        // classic: 2.00 + 1.20 + 3% × 45% + 75% × 12% × 12% + 1.50 + 1.77 = 8.90
-        chain.assertValue(run, "pricing.classic.rate", "8.90");
-        // green: 2.00 + 0.90 + 0.3375 + 0.324 + 1.35 + 1.77 − 0.40 = 6.2815, plus 0.20 pp for the tier below Verde Plus
-        chain.assertValue(run, "pricing.green.rate", "6.48");
+        // classic: 2.618 + 1.20 + 3% × 45% + 75% × 12% × 12% + 1.50 + 1.77 = 9.518
+        chain.assertValue(run, "pricing.classic.rate", "9.518");
+        // green: 2.618 + 1.10 + 0.3375 + 0.324 + 1.35 + 1.77 − 0.40 = 7.0995, plus 0.20 pp for the tier below Verde Plus
+        chain.assertValue(run, "pricing.green.rate", "7.2995");
 
         chain.call(run, "build_scenario", "{\"optionId\": \"A\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
         chain.call(run, "build_scenario", "{\"optionId\": \"B\", \"scheduleType\": \"EQUAL_MONTHLY\"}");
-        // A: 185,000 over 60 months at 8.9%/12; B: 201,000 over 60 months at 6.4815%/12
-        chain.assertValue(run, "option_a.installment", "3831.32");
-        chain.assertValue(run, "option_b.installment", "3931.05");
-        chain.assertValue(run, "option_a.total_interest", "44879.40");
-        chain.assertValue(run, "option_b.total_interest", "34863.26");
+        // A: 185,000 over 60 months at 9.518%/12; B: 201,000 over 60 months at 7.2995%/12
+        chain.assertValue(run, "option_a.installment", "3886.97");
+        chain.assertValue(run, "option_b.installment", "4008.50");
+        chain.assertValue(run, "option_a.total_interest", "48218.31");
+        chain.assertValue(run, "option_b.total_interest", "39510.26");
         // 5 years of savings: A 5 × 7,020.60, B 5 × 15,518.21
         chain.assertValue(run, "option_a.savings.fuel_eur", "7020.6");
         chain.assertValue(run, "option_b.savings.fuel_eur", "11317.21");
         chain.assertValue(run, "option_b.savings.inputs_eur", "4201");
-        // net cost = investment + interest − savings: 185,000 + 44,879.40 − 35,103.00; 201,000 + 34,863.26 − 77,591.03
-        chain.assertValue(run, "option_a.net_cost", "194776.40");
-        chain.assertValue(run, "option_b.net_cost", "158272.22");
+        // net cost = investment + interest − savings: 185,000 + 48,218.31 − 35,103.00; 201,000 + 39,510.26 − 77,591.03
+        chain.assertValue(run, "option_a.net_cost", "198115.31");
+        chain.assertValue(run, "option_b.net_cost", "162919.23");
 
         chain.call(run, "compute_dscr", "{\"optionIds\": [\"A\", \"B\"]}");
-        // (74,000 + 7,020.60) / (12 × 3,831.32); (74,000 + 15,518.21) / (12 × 3,931.05)
-        chain.assertValue(run, "option_a.dscr", "1.7622");
-        chain.assertValue(run, "option_b.dscr", "1.8977");
+        // (74,000 + 7,020.60) / (12 × 3,886.97); (74,000 + 15,518.21) / (12 × 4,008.50)
+        chain.assertValue(run, "option_a.dscr", "1.7370");
+        chain.assertValue(run, "option_b.dscr", "1.8610");
 
         JsonNode comparison = chain.call(run, "compare_scenarios", "{\"optionIds\": [\"A\", \"B\"]}");
         assertThat(comparison.path("better").asText()).isEqualTo("B");
-        chain.assertValue(run, "compare.net_advantage", "36504.18");
+        chain.assertValue(run, "compare.net_advantage", "35196.08");
         chain.assertValue(run, "compare.driver.investment", "-16000");
-        chain.assertValue(run, "compare.driver.interest", "10016.14");
+        chain.assertValue(run, "compare.driver.interest", "8708.05");
         chain.assertValue(run, "compare.driver.savings", "42488.03");
         // the 16,000 EUR GPS pays back from (15,518.21 − 7,020.60) / 12 = 708.13 EUR a month more: 22.6 months
         chain.assertValue(run, "compare.upgrade_payback", "22.59");

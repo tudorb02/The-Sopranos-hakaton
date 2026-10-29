@@ -1,11 +1,11 @@
 {
   "version": "2026-10-28",
-  "noteRo": "Interest rate by components (README §4, step 6): rate = index + margin; margin = funding cost + PD × LGD × (1 − g) + RW_effective × capital ratio × cost of capital + operating cost + target profit. The values are the illustrative ones from the README, chosen so that a classic credit at 8.90% becomes a green credit at ~6.3%. The bank puts its real parameters here. Green adjustments are added to the margin (negative = lower interest rate). The EIF guarantee percentage (g) comes from funds.json (F1). Mortgage costs (valuation, notary, registration, insurance) stay with the financing lines in financing-lines.json: collateralUpfrontEur and collateralAnnualEur.",
+  "noteRo": "Interest rate by components (README §4, step 6): rate = index + margin; margin = funding cost + PD × LGD × (1 − g) + RW_effective × capital ratio × cost of capital + operating cost + target profit. The risk and cost parameters are illustrative; the index is the real EURIBOR fixing, and the green funding advantage is the one found in studies (−0.10 pp). The bank puts its real parameters here. Green adjustments are added to the margin (negative = lower interest rate). The EIF guarantee percentage (g) comes from funds.json (F1). Mortgage costs (valuation, notary, registration, insurance) stay with the financing lines in financing-lines.json: collateralUpfrontEur and collateralAnnualEur.",
   "currency": "EUR",
   "index": {
     "name": "EURIBOR_3M",
-    "value": 2,
-    "sourceRo": "EURIBOR 3M (EMMI), illustrative rounded value, around the 2025–2026 level; replaced with the fixing on the day of the analysis (README §13: currency EUR, index EURIBOR 3M)",
+    "value": 2.618,
+    "sourceRo": "EURIBOR 3M (EMMI), fixing of 27.10.2026 (euribor-rates.eu); updated with the fixing on the day of the analysis (README §13: currency EUR, index EURIBOR 3M)",
     "demo": true
   },
   "classic": {
@@ -37,8 +37,8 @@
       "demo": true
     },
     "fundingCostAdjustmentPp": {
-      "value": -0.3,
-      "sourceRo": "README §4, step 6: dedicated green funding from the green bonds also bought by the EBRD and IFC (F2), −0.30 pp",
+      "value": -0.1,
+      "sourceRo": "Dedicated green funding from the green bonds (F2), −0.10 pp: studies find a greenium of 4–15 basis points in Europe (ABN AMRO 2025, AXA IM, Banque de France); prudent value, to be confirmed with the bank's treasury",
       "demo": true
     },
     "operationalCostAdjustmentPp": {
