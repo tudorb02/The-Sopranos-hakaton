@@ -165,7 +165,7 @@ export function GeoMap({ collection, selected, onToggle, risk = false, height = 
       style,
       onEachFeature: (feature, path) => {
         const p = feature.properties;
-        path.bindTooltip(`${p.parcelId} · ${p.crop} · ${p.areaHa} ha`, { sticky: true, className: "map-tip" });
+        path.bindTooltip(`${p.parcelId} · ${p.areaHa} ha`, { sticky: true, className: "map-tip" });
         path.on("click", () => props.current.onToggle?.(feature.id));
       },
     }).addTo(map);
@@ -196,7 +196,7 @@ export function GeoMap({ collection, selected, onToggle, risk = false, height = 
   const label = collection.features
     .map((f) => {
       const p = f.properties;
-      return `${p.parcelId} ${p.crop}, ${p.areaHa} ha${selected?.has(f.id) ? ", selected" : ""}, drought risk ${RISK_RO[p.droughtRisk]}`;
+      return `${p.parcelId}, ${p.areaHa} ha${selected?.has(f.id) ? ", selected" : ""}, drought risk ${RISK_RO[p.droughtRisk]}`;
     })
     .join("; ");
   return (

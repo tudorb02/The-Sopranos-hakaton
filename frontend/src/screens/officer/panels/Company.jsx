@@ -79,7 +79,6 @@ export function CompanyPanel({ run }) {
             <thead>
               <tr>
                 <th>Parcel</th>
-                <th>Crop</th>
                 <th className="num">ha</th>
                 <th>Drought</th>
                 <th>Water stress</th>
@@ -94,7 +93,6 @@ export function CompanyPanel({ run }) {
                 return (
                   <tr key={f.id} className={selected.has(f.id) ? "is-picked" : undefined}>
                     <td>{p.parcelId}</td>
-                    <td>{p.crop}</td>
                     <td className="num">{p.areaHa}</td>
                     <td>
                       <Tag tone={riskTone(p.droughtRisk)}>{RISK_RO[p.droughtRisk]}</Tag>

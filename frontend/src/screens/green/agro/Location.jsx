@@ -70,7 +70,7 @@ export function Location() {
                       <input type="checkbox" className="check" checked={selected.has(f.id)} onChange={() => toggle(f.id)} />
                       <span className="row-main">
                         <span className="row-name">
-                          {f.properties.parcelId} · {f.properties.crop}
+                          {f.properties.parcelId}
                         </span>
                         <span className="flag-list">
                           {flags.length ? (
