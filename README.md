@@ -622,7 +622,7 @@ La fiecare pas, backend-ul trimite un **eveniment live (SSE)** către ambele zon
 
 | Zonă | Tehnologie |
 |---|---|
-| Frontend | Vite + React + TypeScript + Tailwind + shadcn/ui · Leaflet (OpenStreetMap cu internet, parcele pe fundal simplu fără internet) · Recharts (grafice) |
+| Frontend | Vite + React + TypeScript + Tailwind + shadcn/ui · Leaflet (satelit Esri cu internet, parcelele pe fundal simplu fără internet; contururile parcelelor demo vin din OpenStreetMap) · Recharts (grafice) |
 | Backend | Java 21 + Spring Boot 3.5 (Maven), pipeline pe thread-uri virtuale |
 | AI | AWS Bedrock, Converse API (AWS SDK for Java v2) cu Claude (citire PDF + tool use), regiune UE. **Opțional:** fără credențiale AWS, aplicația merge din rulările demo înregistrate |
 | Date externe | **ANAF live** (API-urile publice de TVA și bilanț, fără cheie) pentru orice CUI real · mock-uri pentru APIA, ANSVSA, Open Banking, hărți de risc și pentru fermele demo |
@@ -744,7 +744,7 @@ Deciziile luate pentru versiunea de hackathon. Ce nu e scris aici urmează restu
 | **Moneda: EUR** | indice EURIBOR 3M. Moneda rămâne parametru în config |
 | **Durata creditului** | 5 ani pentru irigații, utilaje, post-recoltă și ecologic · 7 ani pentru fotovoltaice și biogaz · grație de maximum 12 luni, până la prima recoltă după investiție (config pe categorie) |
 | **Parametri demo** | pragurile și parametrii dobânzii sunt cei ilustrativi din acest document, marcați „parametri demo” în zona ofițerului, până răspund mentorii |
-| **Limba** | interfața e în română; codul, variabilele și commit-urile sunt în engleză |
+| **Limba** | interfața, textele generate de backend și răspunsurile agenților sunt în engleză (format englezesc al numerelor: 85,000 EUR, 15.0%). Documentele demo încărcate (oferte, facturi) rămân în română, deci clasificarea și citirea lor păstrează cuvintele românești și le adaugă pe cele englezești. Câmpurile `*Ro` din contract își păstrează numele, pentru compatibilitate. Codul, variabilele și commit-urile sunt în engleză |
 | **Branding** | „Raiffeisen” apare ca text, cu o temă de culori proprie. Logo-ul oficial se adaugă doar cu acordul organizatorilor |
 
 ### Tehnic
@@ -756,6 +756,7 @@ Deciziile luate pentru versiunea de hackathon. Ce nu e scris aici urmează restu
 | **Fără login, fără bază de date** | vezi [§11](#11-arhitectura-tehnică) |
 | **PDF-uri demo generate de un script** | din aceleași date JSON ca mock-urile, ca cifrele să fie mereu identice |
 | **Demo local** | rulează pe laptopul de prezentare, fără hosting |
+| **Harta parcelelor** | Leaflet pe imagini satelit Esri World Imagery (fără cheie; `VITE_MAP_TILES` le înlocuiește). Parcelele demo au contururi reale de câmpuri din OpenStreetMap, alese o singură dată de `scripts/demo-parcels/fetch-osm-parcels.mjs` la ±20% din `areaHa` (sursa fiecărei parcele în `sources.json`, licență ODbL); se schimbă doar geometria, nu suprafețele. Fără internet, parcelele apar pe fundal simplu. Un adaptor APIA real ar trimite geometria direct, fără schimbări în frontend |
 
 ### Ordinea de construcție
 

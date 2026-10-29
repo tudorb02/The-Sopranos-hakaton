@@ -114,7 +114,7 @@ src/lib/sse.js        evenimentele live prin fetch streaming, cu reconectare ?af
 src/lib/calc.js       rezolvă calcId -> display; opțiunile clasic / verde
 src/lib/hooks.js      useRun, useRunEvents, useModules, useFarm
 src/lib/session.js    schița cererii și dosarul curent (sessionStorage)
-src/lib/labels.js     texte românești pentru enum-uri (copie statică, fără cifre)
+src/lib/labels.js     textele în engleză pentru enum-uri (copie statică, fără cifre)
 src/screens/green/agro/   pașii IMM-ului   src/screens/officer/   zona ofițerului
 src/green-live.css    stilurile noi (fluxul IMM și zona ofițerului)
 ```
