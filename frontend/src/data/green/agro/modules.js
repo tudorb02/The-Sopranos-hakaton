@@ -1,31 +1,31 @@
 // The static copy of the agricultural flow (design/pj-greenstruct.md §1): the welcome screen. The categories, documents,
 // questions, thresholds and every figure come from the backend (GET /api/modules, GET /api/runs/{id}).
 
-export const sectorName = "Agricultură";
+export const sectorName = "Agriculture";
 
 // The client-facing voice of the three agents is one voice that helps prepare the credit application.
 export const intro = {
-  title: "Pregătim împreună cererea de credit",
-  lead: "Pregătești tot dosarul în aplicație. Îți arată, pe lângă creditul clasic, un credit verde cu dobândă mai mică, ce să schimbi ca investiția să devină verde și ce clauze să ceri. Banca mai dă doar aprobarea finală.",
-  duration: "Circa 10 minute, cu documentele la îndemână",
+  title: "Let's prepare the credit application together",
+  lead: "You prepare the whole dossier in the app. Next to the classic credit, it shows you a green credit with a lower interest rate, what to change so the investment becomes green and which clauses to ask for. The bank only gives the final approval.",
+  duration: "About 10 minutes, with the documents at hand",
   steps: [
-    "Confirmi datele firmei, luate din ANAF, APIA și din conturi",
-    "Alegi parcelele",
-    "Încarci oferta: recunoaștem singuri ce investiție vrei să faci, apoi cerem restul documentelor esențiale",
-    "Răspunzi la câteva întrebări, completate unde se poate",
-    "Compari creditul clasic cu cel verde și vezi ce să schimbi",
-    "Îți verificăm cererea înainte s-o trimiți",
+    "You confirm the company data, taken from ANAF, APIA and your accounts",
+    "You choose the parcels",
+    "You upload the offer: we recognise the investment you want to make, then ask for the other essential documents",
+    "You answer a few questions, prefilled where possible",
+    "You compare the classic credit with the green one and see what to change",
+    "We check your application before you send it",
   ],
   does: [
-    "Îți spune ce lipsește din dosar și ce îi crește șansele de aprobare",
-    "Caută cea mai ieftină schimbare care face investiția verde",
-    "Potrivește ratele cu lunile în care încasezi",
-    "Îți arată clauzele pe care le poți cere în contract",
+    "Tells you what is missing from the dossier and what improves its chances of approval",
+    "Looks for the cheapest change that makes the investment green",
+    "Matches the instalments to the months when you get paid",
+    "Shows you the clauses you can ask for in the contract",
   ],
   doesNot: [
-    "Nu ascunde și nu înfrumusețează date: dosarul trebuie să fie corect",
-    "Nu promite aprobarea: aprobarea finală o dă banca",
-    "Nu face calculele: cifrele le calculează banca, după formule fixe",
+    "Does not hide or embellish data: the dossier must be accurate",
+    "Does not promise approval: the bank gives the final approval",
+    "Does not do the calculations: the bank calculates the figures with fixed formulas",
   ],
-  bring: ["Oferta sau factura proformă, cu fișa tehnică", "Pentru irigații: autorizația de gospodărire a apelor (ANAR)"],
+  bring: ["The offer or pro forma invoice, with the technical data sheet", "For irrigation: the water management permit (ANAR)"],
 };

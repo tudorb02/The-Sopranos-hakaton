@@ -24,7 +24,7 @@ export function farmerFeed(events) {
       tone = "warn";
     }
     if (!text) continue;
-    if (SME_HIDDEN.test(text)) text = e.type === "agent.degraded" ? "Folosesc o analiză salvată, ca să nu te las să aștepți." : NEUTRAL_TOOL_LINE;
+    if (SME_HIDDEN.test(text)) text = e.type === "agent.degraded" ? "Using a saved analysis so you do not have to wait." : NEUTRAL_TOOL_LINE;
     const previous = lines.at(-1);
     if (previous && previous.text === text && previous.agent === e.agent) continue; // the same step twice in a row
     lines.push({ key: e.seq, agent: e.agent, text, tone });

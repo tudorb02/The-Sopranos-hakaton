@@ -17,7 +17,7 @@ function CurrentRequest() {
     return (
       <ul className="card rows">
         <li className="row">
-          <span className="row-name muted">Nu ai nicio cerere încă.</span>
+          <span className="row-name muted">You have no applications yet.</span>
         </li>
       </ul>
     );
@@ -28,8 +28,8 @@ function CurrentRequest() {
         <a className="row row--link" href="#/verde/agro/dosar">
           <IconTile icon={MODULE_ICONS[run?.moduleId] ?? "leaf"} tone="sand" />
           <span className="row-main">
-            <span className="row-name">{run ? `${run.farm.company.name}` : "Cererea ta"}</span>
-            <span className="row-note">Agricultură · {runId}</span>
+            <span className="row-name">{run ? `${run.farm.company.name}` : "Your application"}</span>
+            <span className="row-note">Agriculture · {runId}</span>
           </span>
           <span className="status is-on">{run ? STATE_RO[run.state] : "…"}</span>
         </a>
@@ -55,19 +55,19 @@ export default function Business() {
         <p className="small">{greenEntry.text}</p>
         <div className="btn-row">
           <a className="btn btn--ink btn--small" href="#/verde">
-            Începe
+            Start
           </a>
           <a className="btn btn--text btn--small btn--on-yellow" href="#/ofiter">
-            Zona ofițer (demo)
+            Officer zone (demo)
           </a>
         </div>
       </section>
 
-      <Group label="Cererile tale">
+      <Group label="Your applications">
         <CurrentRequest />
       </Group>
 
-      <Group label="Produsele firmei">
+      <Group label="Company products">
         <ul className="card rows">
           {business.products.map((product) => (
             <li key={product.name} className="row">

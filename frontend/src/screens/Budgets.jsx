@@ -8,13 +8,13 @@ export default function Budgets() {
   return (
     <>
       <section className="card hero-card" aria-labelledby="budgets-title">
-        <p className="eyebrow">Perioada de buget · {cycle.label}</p>
+        <p className="eyebrow">Budget period · {cycle.label}</p>
         <h1 id="budgets-title" className="hero-label">
-          Disponibil până pe {cycle.endsOn}
+          Available until {cycle.endsOn}
         </h1>
         <Amount value={cycle.left} size="lg" />
         <p className="hero-sub">
-          din {lei(cycle.spendable)} · ai folosit {lei(cycle.spent)}
+          of {lei(cycle.spendable)} · you have used {lei(cycle.spent)}
         </p>
         <div className="split">
           <Allocation parts={allocation} total={cycle.total} />
@@ -39,7 +39,7 @@ export default function Budgets() {
         </Section>
       ))}
 
-      <Section title="Fără buget" aside={<span className="small muted num">{lei(unbudgeted.total)}</span>}>
+      <Section title="No budget" aside={<span className="small muted num">{lei(unbudgeted.total)}</span>}>
         <ul className="card rows">
           {unbudgeted.items.map((item) => (
             <ValueRow key={item.name} icon={item.icon} name={item.name} note={item.note} value={lei(item.lei)} />
@@ -49,8 +49,8 @@ export default function Budgets() {
 
       <InfoCard
         icon="help"
-        title="O întrebare scurtă"
-        text={`Ce reprezintă plata de ${lei(question.amount)} către ${question.merchant} din ${question.date}?`}
+        title="A quick question"
+        text={`What is the ${lei(question.amount)} payment to ${question.merchant} on ${question.date}?`}
       >
         <div className="chips">
           {question.options.map((option) => (
@@ -60,17 +60,17 @@ export default function Budgets() {
           ))}
         </div>
         <a className="link" href={`#/cheltuieli/${question.txId}`}>
-          Deschide plata
+          Open payment
         </a>
       </InfoCard>
 
       <details className="card disclosure">
-        <summary>Sănătate și donații</summary>
-        <p>Le vezi doar tu. Coach-ul nu le comentează și nu propune bugete aici.</p>
+        <summary>Health and donations</summary>
+        <p>Only you see these. The coach does not comment on them or suggest budgets here.</p>
       </details>
 
       <button type="button" className="btn btn--block">
-        Adaugă un buget
+        Add a budget
       </button>
     </>
   );

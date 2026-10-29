@@ -1,5 +1,5 @@
 // Step 5: the questions of the category (GET /api/modules questionnaire), prefilled from APIA / Open Banking where the
-// farm data allows. "Trimite la analiză" creates the dossier (POST /api/runs, multipart).
+// farm data allows. "Send for analysis" creates the dossier (POST /api/runs, multipart).
 
 import { useEffect, useId, useMemo, useState } from "react";
 
@@ -57,8 +57,8 @@ function Question({ question, value, source, onChange }) {
         <Chips
           label={question.labelRo}
           options={[
-            { value: "true", labelRo: "Da" },
-            { value: "false", labelRo: "Nu" },
+            { value: "true", labelRo: "Yes" },
+            { value: "false", labelRo: "No" },
           ]}
           selected={typeof value === "boolean" ? String(value) : undefined}
           onChange={(v) => onChange(v === undefined ? undefined : v === "true")}
@@ -86,7 +86,7 @@ function Question({ question, value, source, onChange }) {
         <div className="field">
           <label htmlFor={id}>
             {question.labelRo}
-            {question.required ? "" : " (opțional)"}
+            {question.required ? "" : " (optional)"}
           </label>
           {control}
         </div>
@@ -94,12 +94,12 @@ function Question({ question, value, source, onChange }) {
         <>
           <p className="question-label">
             {question.labelRo}
-            {question.required ? "" : " (opțional)"}
+            {question.required ? "" : " (optional)"}
           </p>
           {control}
         </>
       )}
-      {source ? <Src kind="obs" label={`completat din ${source}`} /> : null}
+      {source ? <Src kind="obs" label={`filled in from ${source}`} /> : null}
     </div>
   );
 }
@@ -125,10 +125,10 @@ export function Questions() {
   }, [prefilled]);
 
   if (!flow.cui) {
-    return <Missing href="#/verde/agro/firma" label="Începe cu firma">Mai întâi alege firma.</Missing>;
+    return <Missing href="#/verde/agro/firma" label="Start with the company">Choose the company first.</Missing>;
   }
   if (!flow.moduleId) {
-    return <Missing href="#/verde/agro/documente" label="Încarcă oferta">Mai întâi încarcă oferta, ca să știm ce investiție faci.</Missing>;
+    return <Missing href="#/verde/agro/documente" label="Upload the offer">Upload the offer first, so we know what investment you are making.</Missing>;
   }
 
   const set = (id, value) => {
@@ -163,11 +163,11 @@ export function Questions() {
   return (
     <>
       <header className="intro">
-        <h1 className="page-title">Câteva întrebări</h1>
-        <p className="small muted">Doar ce ne trebuie pentru calcul. Le-am completat din APIA și din încasări unde am putut.</p>
+        <h1 className="page-title">A few questions</h1>
+        <p className="small muted">Only what we need for the calculation. We filled them in from APIA and your income where we could.</p>
       </header>
 
-      {modules.loading || farm.loading ? <Loading label="Pregătesc întrebările…" /> : null}
+      {modules.loading || farm.loading ? <Loading label="Preparing the questions…" /> : null}
       <ErrorCard error={modules.error ?? farm.error} onRetry={() => (modules.error ? modules.reload() : farm.reload())} />
 
       {module ? (
@@ -178,13 +178,13 @@ export function Questions() {
         </div>
       ) : null}
 
-      <ErrorCard error={error} onRetry={send} retryLabel="Trimite din nou" />
+      <ErrorCard error={error} onRetry={send} retryLabel="Send again" />
 
       <Actions>
         <NextButton href="#/verde/agro/analiza" onClick={send} busy={busy} disabled={!module || missing.length > 0}>
-          Trimite la analiză
+          Send for analysis
         </NextButton>
-        {missing.length ? <p className="small muted">Mai ai de completat {missing.length} întrebări obligatorii.</p> : null}
+        {missing.length ? <p className="small muted">{missing.length} required questions are still unanswered.</p> : null}
       </Actions>
     </>
   );

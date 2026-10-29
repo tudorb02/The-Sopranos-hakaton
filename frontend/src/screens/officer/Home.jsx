@@ -10,7 +10,7 @@ import { DEMO_FARMS, STATE_RO } from "../../lib/labels.js";
 import { currentRunId, recentRuns, rememberRun } from "../../lib/session.js";
 import { PortfolioPanel } from "./panels/Portfolio.jsx";
 
-const MODULE_NAMES = { irigatii: "Irigații", energie: "Energie la fermă", utilaje: "Utilaje și precizie", zootehnie: "Zootehnie și biogaz", post_recolta: "Post-recoltă", ecologic: "Ecologic" };
+const MODULE_NAMES = { irigatii: "Irrigation", energie: "Farm energy", utilaje: "Machinery and precision", zootehnie: "Livestock and biogas", post_recolta: "Post-harvest", ecologic: "Organic" };
 
 function RecentRow({ runId }) {
   const [info, setInfo] = useState(null);
@@ -24,13 +24,13 @@ function RecentRow({ runId }) {
   return (
     <tr>
       <td className="num">{runId}</td>
-      <td>{info?.name ?? (info?.gone ? "Dosar indisponibil (backend repornit?)" : "…")}</td>
+      <td>{info?.name ?? (info?.gone ? "Dossier unavailable (backend restarted?)" : "…")}</td>
       <td>{info?.moduleId ? MODULE_NAMES[info.moduleId] : ""}</td>
       <td>{info?.state ? <Tag>{STATE_RO[info.state]}</Tag> : null}</td>
       <td>
         {info?.gone ? null : (
           <a className="btn btn--outline btn--small" href={`#/ofiter/dosar/${runId}`} onClick={() => rememberRun(runId)}>
-            Deschide
+            Open
           </a>
         )}
       </td>
@@ -64,9 +64,9 @@ export function OfficerHome() {
   const valid = /^run_[0-9a-z]{12}$/.test(id.trim());
 
   return (
-    <OfficerFrame page="home" title="Dosarele de credit verde" subtitle="Deschide un dosar după id, sau încarcă dosarul demo al unei categorii.">
+    <OfficerFrame page="home" title="Green credit dossiers" subtitle="Open a dossier by id, or load the demo dossier of a category.">
       <div className="panels">
-        <Panel n={1} title="Deschide un dosar">
+        <Panel n={1} title="Open a dossier">
           <form
             className="inline-form"
             onSubmit={(e) => {
@@ -75,20 +75,20 @@ export function OfficerHome() {
             }}
           >
             <div className="field">
-              <label htmlFor="run-id">Id-ul dosarului</label>
+              <label htmlFor="run-id">Dossier id</label>
               <div className="input">
                 <input id="run-id" placeholder="run_xxxxxxxxxxxx" value={id} onChange={(e) => setId(e.target.value)} />
               </div>
             </div>
             <button type="submit" className="btn btn--small" disabled={!valid}>
-              Deschide
+              Open
             </button>
           </form>
 
-          <h3 className="sub-title">Sau încarcă un dosar demo</h3>
+          <h3 className="sub-title">Or load a demo dossier</h3>
           <div className="inline-form">
             <div className="field">
-              <label htmlFor="scenario">Categoria</label>
+              <label htmlFor="scenario">Category</label>
               <div className="input input--select">
                 <select id="scenario" value={scenario} onChange={(e) => setScenario(e.target.value)}>
                   {DEMO_FARMS.map((f) => (
@@ -100,16 +100,16 @@ export function OfficerHome() {
               </div>
             </div>
             <button type="button" className="btn btn--small" onClick={loadDemo} disabled={busy}>
-              {busy ? "Se încarcă…" : "Încarcă dosarul demo"}
+              {busy ? "Loading…" : "Load the demo dossier"}
             </button>
           </div>
           <ErrorCard error={error} />
           <p className="small muted">
-            Dosarul pornește analiza celor 3 agenți. Ca ofițerul să poată aproba, IMM-ul trebuie să fi trimis cererea (zona IMM, pasul 9).
+            The dossier starts the analysis by the 3 agents. For the officer to approve, the SME must have sent the application (SME zone, step 7).
           </p>
         </Panel>
 
-        <Panel n={2} title="Dosare recente (din această sesiune)">
+        <Panel n={2} title="Recent dossiers (from this session)">
           {recentRuns().length ? (
             <table className="table">
               <tbody>
@@ -119,12 +119,12 @@ export function OfficerHome() {
               </tbody>
             </table>
           ) : (
-            <p className="small muted">Niciun dosar încă.</p>
+            <p className="small muted">No dossiers yet.</p>
           )}
           <p className="small muted">
-            Agenți Bedrock:{" "}
-            {health.data ? <Tag tone={health.data.status === "UP" ? "ok" : "warn"}>{health.data.status === "UP" ? "pornit" : "oprit, rulează din înregistrări"}</Tag> : "…"}{" "}
-            {health.data ? `· mod ${health.data.mode}` : ""}
+            Bedrock agents:{" "}
+            {health.data ? <Tag tone={health.data.status === "UP" ? "ok" : "warn"}>{health.data.status === "UP" ? "on" : "off, running from recordings"}</Tag> : "…"}{" "}
+            {health.data ? `· mode ${health.data.mode}` : ""}
           </p>
           <ErrorCard error={health.error} onRetry={health.reload} />
         </Panel>

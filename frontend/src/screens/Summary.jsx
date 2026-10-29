@@ -5,9 +5,9 @@ import { lei } from "../lib/format.js";
 import { usePersona } from "../persona.js";
 
 const SHORTCUTS = [
-  { href: "#/cheltuieli", icon: "receipt", label: "Cheltuieli" },
-  { href: "#/bugete", icon: "pie", label: "Bugete" },
-  { href: "#/chat", icon: "chat", label: "Întreabă" },
+  { href: "#/cheltuieli", icon: "receipt", label: "Spending" },
+  { href: "#/bugete", icon: "pie", label: "Budgets" },
+  { href: "#/chat", icon: "chat", label: "Ask" },
 ];
 
 // Without a stable income (Matei), the necessary expenses come right after the main figure.
@@ -41,11 +41,11 @@ export default function Summary() {
       <section className="card card--yellow hero-card" aria-labelledby="summary-title">
         <p className="eyebrow">{today.label}</p>
         <h1 id="summary-title" className="hero-label">
-          Disponibil până pe {cycle.endsOn}
+          Available until {cycle.endsOn}
         </h1>
         <Amount value={cycle.left} size="xl" />
         <p className="hero-sub">
-          Circa {cycle.perDay} lei pe zi, pentru următoarele {cycle.daysLeftLabel}. {cycle.basis} <Src kind="est" />
+          About {cycle.perDay} RON a day for the next {cycle.daysLeftLabel}. {cycle.basis} <Src kind="est" />
         </p>
         {cycle.pace ? (
           <p className="hero-alert">
@@ -60,13 +60,13 @@ export default function Summary() {
 
       <InfoCard icon={lastMessage.icon} meta={lastMessage.meta} title={lastMessage.title} text={lastMessage.text} />
 
-      <Section title="Săptămâna aceasta" aside={<span className="small muted num">{lei(week.spent)} în {week.daysSoFar} zile</span>}>
+      <Section title="This week" aside={<span className="small muted num">{lei(week.spent)} in {week.daysSoFar} days</span>}>
         <div className="card">
           <WeekStrip week={week} />
         </div>
       </Section>
 
-      <Section title="Bugete" aside={<a className="link" href="#/bugete">Vezi toate</a>}>
+      <Section title="Budgets" aside={<a className="link" href="#/bugete">See all</a>}>
         <ul className="card rows">
           {budgets
             .filter((budget) => budget.onHome)
@@ -76,7 +76,7 @@ export default function Summary() {
         </ul>
       </Section>
 
-      <Section title="Ce am observat">
+      <Section title="What I noticed">
         <div className="card insight">
           <p className="insight-figure num">
             <span className="marker">{insight.figure}</span>
@@ -87,7 +87,7 @@ export default function Summary() {
         </div>
       </Section>
 
-      <Section title="Ce urmează">
+      <Section title="Coming up">
         <div className="card">
           <Agenda items={agenda} />
         </div>

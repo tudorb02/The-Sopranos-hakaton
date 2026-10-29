@@ -18,11 +18,11 @@ const REACHED = {
 };
 
 const HEADLINES = {
-  GATA: ["Cererea nu e trimisă încă", "Ai ofertele gata. Alege varianta și trimite cererea la bancă."],
-  TRIMIS: ["Cererea e la bancă", "Un ofițer o verifică. Te anunțăm aici dacă are nevoie de documente sau când o aprobă."],
-  APROBAT: ["Cererea ta a fost aprobată", "Banca a aprobat cererea. Urmează condițiile dinainte de tragere."],
-  MONITORIZARE: ["Cererea ta a fost aprobată", "Creditul e activ. La 12 luni măsurăm cât ai economisit, față de estimare."],
-  ESUAT: ["Analiza s-a oprit", "Pornește din nou analiza sau încearcă un dosar demo."],
+  GATA: ["The application has not been sent yet", "Your offers are ready. Choose the option and send the application to the bank."],
+  TRIMIS: ["The application is with the bank", "An officer is checking it. We will tell you here if they need documents or when they approve it."],
+  APROBAT: ["Your application has been approved", "The bank approved the application. Next come the conditions precedent to drawdown."],
+  MONITORIZARE: ["Your application has been approved", "The credit is active. At 12 months we measure how much you saved, against the estimate."],
+  ESUAT: ["The analysis stopped", "Start the analysis again or try a demo dossier."],
 };
 
 export function Dossier() {
@@ -31,38 +31,38 @@ export function Dossier() {
 
   if (!runId) {
     return (
-      <Missing href="#/verde/agro/documente" label="Începe un dosar">
-        Nu ai niciun dosar început.
+      <Missing href="#/verde/agro/documente" label="Start a dossier">
+        You have not started a dossier.
       </Missing>
     );
   }
   const report = run?.agents.underwritingReport;
   const state = run?.state;
-  const [headline, text] = HEADLINES[state] ?? ["Dosarul tău", "Analiza este în curs."];
+  const [headline, text] = HEADLINES[state] ?? ["Your dossier", "The analysis is in progress."];
   const pendingByCondition = new Set((run?.pendingDocuments ?? []).map((d) => d.conditionId).filter(Boolean));
   const comment = [...(run?.officerActions ?? [])].reverse().find((a) => a.commentRo);
   const steps = [
-    { label: "Cererea trimisă", note: run?.submission ? `Varianta aleasă: ${run.submission.variant === "VERDE" ? "credit verde" : "credit clasic"}` : "Încă netrimisă", done: Boolean(REACHED.TRIMIS.includes(state)) },
-    { label: "Aprobarea băncii", note: REACHED.APROBAT.includes(state) ? "Aprobat" : "Banca verifică dosarul", done: REACHED.APROBAT.includes(state) },
-    { label: "Monitorizare la 12 luni", note: run?.monitoring ? "Impact măsurat" : "După un an măsurăm economiile reale", done: Boolean(run?.monitoring) },
+    { label: "Application sent", note: run?.submission ? `Chosen option: ${run.submission.variant === "VERDE" ? "green credit" : "classic credit"}` : "Not sent yet", done: Boolean(REACHED.TRIMIS.includes(state)) },
+    { label: "Bank approval", note: REACHED.APROBAT.includes(state) ? "Approved" : "The bank is checking the dossier", done: REACHED.APROBAT.includes(state) },
+    { label: "Monitoring at 12 months", note: run?.monitoring ? "Impact measured" : "After one year we measure the real savings", done: Boolean(run?.monitoring) },
   ];
 
   return (
     <>
-      {loading ? <Loading label="Încarc dosarul…" /> : null}
+      {loading ? <Loading label="Loading the dossier…" /> : null}
       <ErrorCard error={error} onRetry={reload} />
 
       {run ? (
         <>
           <section className="card hero-card" aria-labelledby="dossier-title">
-            <p className="eyebrow">Dosarul tău · {run.runId}</p>
+            <p className="eyebrow">Your dossier · {run.runId}</p>
             <h1 id="dossier-title" className="card-title">
               {headline}
             </h1>
             <p className="hero-sub">{text}</p>
             {state === "GATA" ? (
               <a className="btn btn--small" href="#/verde/agro/cerere">
-                Alege varianta
+                Choose the option
               </a>
             ) : null}
           </section>
@@ -81,10 +81,10 @@ export function Dossier() {
             ))}
           </ol>
 
-          {comment ? <NoteCard icon="mail">Mesajul băncii: {comment.commentRo}</NoteCard> : null}
+          {comment ? <NoteCard icon="mail">Message from the bank: {comment.commentRo}</NoteCard> : null}
 
           {run.pendingDocuments.length ? (
-            <Group label="Banca îți cere aceste documente">
+            <Group label="The bank asks you for these documents">
               <ul className="card rows">
                 {run.pendingDocuments.map((doc) => (
                   <ValueRow
@@ -92,7 +92,7 @@ export function Dossier() {
                     icon="file"
                     name={doc.labelRo}
                     note={DOC_TYPE_RO[doc.docType]}
-                    value={<span className="status status--warn">{doc.dueDate ? `până la ${doc.dueDate}` : "de trimis"}</span>}
+                    value={<span className="status status--warn">{doc.dueDate ? `by ${doc.dueDate}` : "to send"}</span>}
                   />
                 ))}
               </ul>
@@ -100,14 +100,14 @@ export function Dossier() {
           ) : null}
 
           {report?.conditionsPrecedent.length && REACHED.TRIMIS.includes(state) ? (
-            <Group label="Condiții înainte de tragere">
+            <Group label="Conditions precedent to drawdown">
               <ul className="card rows">
                 {report.conditionsPrecedent.map((c) => (
                   <ValueRow
                     key={c.conditionId}
                     name={c.descriptionRo}
                     note={CONDITION_TIMING_RO[c.timing]}
-                    value={pendingByCondition.has(c.conditionId) ? <span className="status status--warn">cerut de bancă</span> : <span className="status">{c.blocking ? "obligatoriu" : "după instalare"}</span>}
+                    value={pendingByCondition.has(c.conditionId) ? <span className="status status--warn">requested by the bank</span> : <span className="status">{c.blocking ? "mandatory" : "after installation"}</span>}
                   />
                 ))}
               </ul>
@@ -115,7 +115,7 @@ export function Dossier() {
           ) : null}
 
           {report?.farmerNextSteps.length ? (
-            <Group label="Pașii următori">
+            <Group label="Next steps">
               <ol className="card ticks">
                 {report.farmerNextSteps.map((step) => (
                   <li key={step.conditionId ?? step.stepRo}>
@@ -128,7 +128,7 @@ export function Dossier() {
           ) : null}
 
           {report?.impact.length ? (
-            <Group label="Impactul estimat, măsurat la 12 luni">
+            <Group label="Estimated impact, measured at 12 months">
               <ul className="card facts">
                 {report.impact
                   .filter((i) => i.period === "ANNUAL" && FARMER_IMPACTS.includes(i.metric))
@@ -143,21 +143,21 @@ export function Dossier() {
           ) : null}
 
           {run.monitoring ? (
-            <Group label="Rezultatul după 12 luni">
+            <Group label="The result after 12 months">
               <ul className="card facts">
                 {run.monitoring.metrics.map((m) => (
                   <li key={m.metric}>
                     <span className="fact-label">{calcOf(run, m.estimatedCalcId)?.labelRo}</span>
                     <span className="fact-value num">
-                      estimat {disp(run, m.estimatedCalcId)}, real {disp(run, m.actualCalcId)}
+                      estimated {disp(run, m.estimatedCalcId)}, actual {disp(run, m.actualCalcId)}
                     </span>
-                    <span className={m.withinTolerance ? "status is-on" : "status status--warn"}>{m.withinTolerance ? "confirmat" : "sub estimare"}</span>
+                    <span className={m.withinTolerance ? "status is-on" : "status status--warn"}>{m.withinTolerance ? "confirmed" : "below the estimate"}</span>
                   </li>
                 ))}
               </ul>
               {run.monitoring.impactBonusApplied ? (
                 <NoteCard icon="leaf">
-                  Estimarea s-a confirmat, deci dobânda ta scade de la {disp(run, run.monitoring.rateBeforeCalcId)} la {disp(run, run.monitoring.rateAfterCalcId)}.
+                  The estimate was confirmed, so your interest rate drops from {disp(run, run.monitoring.rateBeforeCalcId)} to {disp(run, run.monitoring.rateAfterCalcId)}.
                 </NoteCard>
               ) : null}
             </Group>

@@ -21,8 +21,8 @@ export function Request() {
 
   if (!runId) {
     return (
-      <Missing href="#/verde/agro/documente" label="Încarcă oferta">
-        Nu ai încă o analiză.
+      <Missing href="#/verde/agro/documente" label="Upload the offer">
+        You do not have an analysis yet.
       </Missing>
     );
   }
@@ -60,63 +60,63 @@ export function Request() {
       <input type="radio" className="radio" name="variant" checked={variant === kind} disabled={!o} onChange={() => setChoice(kind)} />
       <span className="row-main">
         <span className="row-name">{title}</span>
-        <span className="row-note">{o ? `${disp(run, loanOf(o).amountCalcId)} · dobândă ${disp(run, loanOf(o).rateCalcId)} · ${note}` : "Nu e disponibil pentru investiția cerută"}</span>
+        <span className="row-note">{o ? `${disp(run, loanOf(o).amountCalcId)} · interest rate ${disp(run, loanOf(o).rateCalcId)} · ${note}` : "Not available for the requested investment"}</span>
       </span>
-      {kind === "VERDE" && o && funding?.recommendedOptionId === o.optionId ? <span className="status is-on">recomandat</span> : null}
+      {kind === "VERDE" && o && funding?.recommendedOptionId === o.optionId ? <span className="status is-on">recommended</span> : null}
     </label>
   );
 
   return (
     <>
       <header className="intro">
-        <h1 className="page-title">Trimite cererea la bancă</h1>
-        <p className="small muted">Alegi varianta, iar cererea ajunge la bancă. Banca dă aprobarea finală.</p>
+        <h1 className="page-title">Send the application to the bank</h1>
+        <p className="small muted">You choose the option and the application goes to the bank. The bank gives the final approval.</p>
       </header>
 
-      {loading ? <Loading label="Încarc dosarul…" /> : null}
+      {loading ? <Loading label="Loading the dossier…" /> : null}
       <ErrorCard error={error} onRetry={reload} />
       {run && !funding ? (
-        <Missing href="#/verde/agro/analiza" label="Înapoi la analiză">
-          Analiza nu s-a terminat încă.
+        <Missing href="#/verde/agro/analiza" label="Back to the analysis">
+          The analysis has not finished yet.
         </Missing>
       ) : null}
 
       {alreadySent ? (
         <NoteCard icon="check">
-          Cererea a fost deja trimisă. <a href="#/verde/agro/dosar">Vezi statusul dosarului</a>.
+          The application has already been sent. <a href="#/verde/agro/dosar">See the dossier status</a>.
         </NoteCard>
       ) : null}
 
       {funding ? (
         <>
-          <Group label="Ce variantă trimiți">
-            <div className="variants" role="radiogroup" aria-label="Varianta de credit">
-              {option("CLASIC", classic, "Credit clasic", classic ? `rata ${disp(run, classic.headlineInstallmentCalcId)}` : "")}
-              {option("VERDE", green, "Credit verde Raiffeisen", green ? `rata ${disp(run, green.headlineInstallmentCalcId)}` : "")}
+          <Group label="Which option you send">
+            <div className="variants" role="radiogroup" aria-label="Credit option">
+              {option("CLASIC", classic, "Classic credit", classic ? `instalment ${disp(run, classic.headlineInstallmentCalcId)}` : "")}
+              {option("VERDE", green, "Raiffeisen green credit", green ? `instalment ${disp(run, green.headlineInstallmentCalcId)}` : "")}
             </div>
           </Group>
 
           {variant === "VERDE" && upgrade ? (
             <div className="card note-card accept-card">
               <p className="small">
-                <b>Investiția cerută e sub pragul verde.</b> Dacă alegi creditul verde, accepți și schimbările propuse la investiție
-                {upgradeCost ? ` (cost în plus: ${upgradeCost})` : ""}. Nu există credit verde fără ele.
+                <b>The requested investment is below the green threshold.</b> If you choose the green credit, you also accept the proposed changes to the investment
+                {upgradeCost ? ` (extra cost: ${upgradeCost})` : ""}. There is no green credit without them.
               </p>
               <label className="accept-row">
                 <input type="checkbox" className="check" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} />
-                <span className="small">Accept schimbările propuse la investiție</span>
+                <span className="small">I accept the proposed changes to the investment</span>
               </label>
             </div>
           ) : null}
 
           {variant === "VERDE" && valueOf(run, funding.comparison.netAdvantageCalcId) > 0 ? (
             <p className="small muted">
-              Câștigul estimat cu creditul verde: <b className="num">{disp(run, funding.comparison.netAdvantageCalcId)}</b>.
+              Estimated gain with the green credit: <b className="num">{disp(run, funding.comparison.netAdvantageCalcId)}</b>.
             </p>
           ) : null}
 
           {report?.conditionsPrecedent.length ? (
-            <Section title="Ce îți va cere banca înainte să primești banii">
+            <Section title="What the bank will ask for before you get the money">
               <ul className="card rows">
                 {report.conditionsPrecedent.map((c) => (
                   <ValueRow key={c.conditionId} name={c.descriptionRo} value={<span className="status">{CONDITION_TIMING_RO[c.timing]}</span>} />
@@ -126,13 +126,13 @@ export function Request() {
           ) : null}
 
           {variant === "VERDE" && report?.monitoringKpis.length ? (
-            <Section title="Ce te obligi să faci, cu creditul verde">
+            <Section title="What you commit to do, with the green credit">
               <ul className="card rows">
                 {report.monitoringKpis.map((k) => (
                   <ValueRow
                     key={k.kpiId}
                     name={calcOf(run, k.targetCalcId)?.labelRo ?? k.metric}
-                    note="Ne spui cât ai economisit, ca să putem confirma estimarea"
+                    note="You tell us how much you saved, so we can confirm the estimate"
                     value={<span className="status">{`${KPI_FREQUENCY_RO[k.frequency]}, ${KPI_FIRST_DUE_RO[k.firstDue]}`}</span>}
                   />
                 ))}
@@ -143,14 +143,14 @@ export function Request() {
       ) : null}
 
       <ErrorCard error={problem} />
-      {run?.state === "ESUAT" ? <ErrorCard error={{ code: "ANALYSIS_FAILED", message: run.error?.message ?? "Analiza s-a oprit." }} /> : null}
+      {run?.state === "ESUAT" ? <ErrorCard error={{ code: "ANALYSIS_FAILED", message: run.error?.message ?? "The analysis stopped." }} /> : null}
 
       <Actions>
         {alreadySent ? (
-          <NextButton href="#/verde/agro/dosar">Vezi dosarul</NextButton>
+          <NextButton href="#/verde/agro/dosar">See the dossier</NextButton>
         ) : (
           <NextButton href="#/verde/agro/dosar" onClick={send} busy={busy} disabled={!funding || run?.state !== "GATA" || (needsAccept && !accepted)}>
-            Trimite cererea la bancă
+            Send the application to the bank
           </NextButton>
         )}
       </Actions>

@@ -6,7 +6,7 @@ import { usePersona } from "../persona.js";
 
 const CORRECT = (
   <button type="button" className="btn btn--text btn--small">
-    Corectează
+    Correct
   </button>
 );
 
@@ -16,26 +16,26 @@ export default function Profile() {
   return (
     <>
       <header className="intro">
-        <h1 className="page-title">Ce știu despre tine</h1>
+        <h1 className="page-title">What I know about you</h1>
         <p className="small muted">
-          Corectează sau șterge orice rând. Aceste date nu sunt folosite pentru evaluarea creditelor sau în scop de marketing.{" "}
+          Correct or delete any line. This data is not used for credit assessment or for marketing.{" "}
           <a className="link" href="#/informare">
-            Cine îți vede datele
+            Who sees your data
           </a>
         </p>
         <p className="src-legend">
-          <Src kind="obs" label="observat în tranzacții" />
-          <Src kind="said" label="spus de tine" />
-          <Src kind="agreed" label="stabilit împreună" />
-          <Src kind="est" label="estimat" />
+          <Src kind="obs" label="observed in transactions" />
+          <Src kind="said" label="said by you" />
+          <Src kind="agreed" label="agreed together" />
+          <Src kind="est" label="estimated" />
         </p>
       </header>
 
       <Group
-        label="Extrasele tale"
+        label="Your statements"
         action={
           <a className="btn btn--text btn--small" href="#/extrase">
-            Gestionează
+            Manage
           </a>
         }
       >
@@ -46,15 +46,15 @@ export default function Profile() {
         </ul>
       </Group>
 
-      <Group label="Despre tine" action={CORRECT}>
+      <Group label="About you" action={CORRECT}>
         <Facts items={profile.about} />
       </Group>
 
-      <Group label="Banii tăi" action={CORRECT}>
+      <Group label="Your money" action={CORRECT}>
         <Facts items={profile.money} />
       </Group>
 
-      <Group label="Unde se duc banii · media pe lună">
+      <Group label="Where the money goes · monthly average">
         <ul className="card rows">
           {profile.spending.map((item) => (
             <li key={item.name} className="row row--bar">
@@ -69,11 +69,11 @@ export default function Profile() {
         </ul>
       </Group>
 
-      <Group label="Ce am observat">
+      <Group label="What I noticed">
         <Facts items={profile.observed} />
       </Group>
 
-      <Group label="Abonamente">
+      <Group label="Subscriptions">
         <ul className="card rows">
           {profile.subscriptions.map((sub) => (
             <li key={sub.name} className="row">
@@ -88,18 +88,18 @@ export default function Profile() {
               </div>
               <span className="row-value">
                 {lei(sub.lei)}
-                <span className="of"> / lună</span>
+                <span className="of"> / month</span>
               </span>
             </li>
           ))}
         </ul>
       </Group>
 
-      <Group label="Cum comunicăm" action={CORRECT}>
+      <Group label="How we talk" action={CORRECT}>
         <Facts items={profile.talk} />
       </Group>
 
-      <Group label="Confidențialitate">
+      <Group label="Privacy">
         <div className="card switches">
           {legal.screenPrivacy.map((item) => (
             <Switch key={item.id} label={item.label} hint={item.hint} defaultChecked={item.on} />
@@ -107,7 +107,7 @@ export default function Profile() {
         </div>
       </Group>
 
-      <Group label="Permisiuni">
+      <Group label="Permissions">
         <div className="card switches">
           {profile.permissions.map((item) => (
             <Switch key={item.id} label={item.label} hint={item.hint} defaultChecked={item.on} />
@@ -115,9 +115,9 @@ export default function Profile() {
         </div>
       </Group>
 
-      <Group label="Servicii care te-ar ajuta">
+      <Group label="Services that could help you">
         <div className="card switches">
-          <Switch label="Sugestii din serviciile băncii" hint={services.hint} defaultChecked={services.on} />
+          <Switch label="Suggestions from the bank's services" hint={services.hint} defaultChecked={services.on} />
         </div>
         <div className="service-list">
           {services.items.map((service) => (
@@ -126,7 +126,7 @@ export default function Profile() {
         </div>
       </Group>
 
-      <Group label="Ce nu știu încă">
+      <Group label="What I don't know yet">
         <div className="card stack">
           <div className="chips">
             {profile.unknown.map((topic) => (
@@ -135,7 +135,7 @@ export default function Profile() {
               </button>
             ))}
           </div>
-          <p className="small muted">Te întreb doar dacă vrei. Alege un subiect și vorbim.</p>
+          <p className="small muted">I only ask if you want me to. Pick a topic and we'll talk.</p>
         </div>
       </Group>
 
@@ -143,9 +143,9 @@ export default function Profile() {
 
       <div className="deactivate">
         <button type="button" className="btn btn--text btn--danger">
-          Dezactivează coach-ul
+          Turn off the coach
         </button>
-        <p className="small muted">Extrasele importate și răspunsurile tale se șterg. Contul și cardurile nu sunt afectate.</p>
+        <p className="small muted">Your imported statements and answers are deleted. Your account and cards are not affected.</p>
       </div>
     </>
   );

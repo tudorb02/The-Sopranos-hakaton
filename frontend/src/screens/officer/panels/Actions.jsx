@@ -1,4 +1,4 @@
-// Panel 6: the officer's actions: Aprobă (only from TRIMIS), Cere documente, the PDF report and "Simulează 12 luni".
+// Panel 6: the officer's actions: Approve (only from TRIMIS), Request documents, the PDF report and "Simulate 12 months".
 
 import { useState } from "react";
 
@@ -16,14 +16,14 @@ function MonitoringResult({ run }) {
   if (!m) return null;
   return (
     <div className="monitoring">
-      <h3 className="sub-title">Rezultatul după 12 luni {m.simulated ? <Tag tone="warn">simulat</Tag> : null}</h3>
+      <h3 className="sub-title">The result after 12 months {m.simulated ? <Tag tone="warn">simulated</Tag> : null}</h3>
       <table className="table table--tight">
         <thead>
           <tr>
-            <th>Metrică</th>
-            <th>Estimat</th>
-            <th>Real</th>
-            <th>Abatere</th>
+            <th>Metric</th>
+            <th>Estimated</th>
+            <th>Actual</th>
+            <th>Deviation</th>
             <th />
           </tr>
         </thead>
@@ -35,18 +35,18 @@ function MonitoringResult({ run }) {
               <td className="num">{disp(run, x.actualCalcId)}</td>
               <td className="num">{disp(run, x.deviationPctCalcId)}</td>
               <td>
-                <Tag tone={x.withinTolerance ? "ok" : "bad"}>{x.withinTolerance ? "în toleranță" : "în afara toleranței"}</Tag>
+                <Tag tone={x.withinTolerance ? "ok" : "bad"}>{x.withinTolerance ? "within tolerance" : "outside tolerance"}</Tag>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <p className="small">
-        Estimare confirmată: <Tag tone={m.confirmed ? "ok" : "bad"}>{m.confirmed ? "da" : "nu"}</Tag> · bonus de impact aplicat:{" "}
-        <Tag tone={m.impactBonusApplied ? "ok" : "info"}>{m.impactBonusApplied ? "da" : "nu"}</Tag>
+        Estimate confirmed: <Tag tone={m.confirmed ? "ok" : "bad"}>{m.confirmed ? "yes" : "no"}</Tag> · impact bonus applied:{" "}
+        <Tag tone={m.impactBonusApplied ? "ok" : "info"}>{m.impactBonusApplied ? "yes" : "no"}</Tag>
       </p>
       <p className="small">
-        Dobânda: <b className="num">{disp(run, m.rateBeforeCalcId)}</b> → <b className="num">{disp(run, m.rateAfterCalcId)}</b> (bonus {disp(run, m.bonusPpCalcId)}). Bonusul de impact e o propunere de produs, nu un produs Raiffeisen existent.
+        Interest rate: <b className="num">{disp(run, m.rateBeforeCalcId)}</b> → <b className="num">{disp(run, m.rateAfterCalcId)}</b> (bonus {disp(run, m.bonusPpCalcId)}). The impact bonus is a product proposal, not an existing Raiffeisen product.
       </p>
     </div>
   );
@@ -103,25 +103,25 @@ export function ActionsPanel({ run, onRun, onChanged }) {
   const setDoc = (i, patch) => setDocs((list) => list.map((d, j) => (j === i ? { ...d, ...patch } : d)));
 
   return (
-    <Panel n={6} title="Acțiuni" wide aside={<Tag tone={approved ? "ok" : state === "TRIMIS" ? "warn" : "info"}>{STATE_RO[state] ?? state}</Tag>}>
+    <Panel n={6} title="Actions" wide aside={<Tag tone={approved ? "ok" : state === "TRIMIS" ? "warn" : "info"}>{STATE_RO[state] ?? state}</Tag>}>
       {!canDecide && !approved ? (
         <p className="small field-error">
-          Dosarul e în starea „{STATE_RO[state] ?? state}”. Ofițerul poate aproba doar după ce IMM-ul a trimis cererea (zona IMM, pasul 9, starea „Trimis la bancă”).
+          The dossier is in the state “{STATE_RO[state] ?? state}”. The officer can approve only after the SME has sent the application (SME zone, step 7, state “Sent to the bank”).
         </p>
       ) : null}
       <ErrorCard error={error} />
 
       <div className="grid-2">
         <div>
-          <h3 className="sub-title">Decizia</h3>
+          <h3 className="sub-title">Decision</h3>
           <div className="field">
-            <label htmlFor="officer-id">Ofițer</label>
+            <label htmlFor="officer-id">Officer</label>
             <div className="input">
               <input id="officer-id" value={officerId} onChange={(e) => setOfficerId(e.target.value)} maxLength={60} />
             </div>
           </div>
           <div className="field">
-            <label htmlFor="approve-comment">Comentariu pentru dosar</label>
+            <label htmlFor="approve-comment">Comment for the dossier</label>
             <div className="input input--area">
               <textarea id="approve-comment" rows={2} value={comment} onChange={(e) => setComment(e.target.value)} maxLength={1000} />
             </div>
@@ -144,7 +144,7 @@ export function ActionsPanel({ run, onRun, onChanged }) {
                         })
                       }
                     />{" "}
-                    păstrez condiția: {c.descriptionRo}
+                    keep the condition: {c.descriptionRo}
                   </label>
                 </li>
               ))}
@@ -152,31 +152,31 @@ export function ActionsPanel({ run, onRun, onChanged }) {
           ) : null}
           <div className="btn-row">
             <button type="button" className="btn" disabled={!canDecide || busy !== null || !officerId.trim()} onClick={approve}>
-              {busy === "approve" ? "Se aprobă…" : "Aprobă"}
+              {busy === "approve" ? "Approving…" : "Approve"}
             </button>
             {approved ? (
               <a className="btn btn--outline" href={reportUrl(run.runId)} target="_blank" rel="noreferrer">
-                Descarcă raportul PDF
+                Download the PDF report
               </a>
             ) : (
-              <button type="button" className="btn btn--outline" disabled title="Raportul PDF e disponibil după aprobare">
-                Descarcă raportul PDF
+              <button type="button" className="btn btn--outline" disabled title="The PDF report is available after approval">
+                Download the PDF report
               </button>
             )}
           </div>
           <div className="btn-row">
             <button type="button" className="btn btn--outline" disabled={!canSimulate || busy !== null} onClick={() => act("simulate", () => simulateMonitoring(run.runId))}>
-              {busy === "simulate" ? "Se simulează…" : "Simulează 12 luni"}
+              {busy === "simulate" ? "Simulating…" : "Simulate 12 months"}
             </button>
-            {!canSimulate && !run.monitoring ? <span className="small muted">disponibil după aprobare, pentru un credit verde</span> : null}
+            {!canSimulate && !run.monitoring ? <span className="small muted">available after approval, for a green credit</span> : null}
           </div>
           <MonitoringResult run={run} />
         </div>
 
         <div>
-          <h3 className="sub-title">Cere documente</h3>
+          <h3 className="sub-title">Request documents</h3>
           <div className="field">
-            <label htmlFor="request-message">Mesaj pentru fermier</label>
+            <label htmlFor="request-message">Message for the farmer</label>
             <div className="input input--area">
               <textarea id="request-message" rows={2} value={message} onChange={(e) => setMessage(e.target.value)} maxLength={1000} />
             </div>
@@ -184,7 +184,7 @@ export function ActionsPanel({ run, onRun, onChanged }) {
           {docs.map((d, i) => (
             <div key={i} className="doc-form">
               <div className="input input--select">
-                <select aria-label="Tipul documentului" value={d.docType} onChange={(e) => setDoc(i, { docType: e.target.value })}>
+                <select aria-label="Document type" value={d.docType} onChange={(e) => setDoc(i, { docType: e.target.value })}>
                   {Object.entries(DOC_TYPE_RO).map(([value, label]) => (
                     <option key={value} value={value}>
                       {label}
@@ -193,11 +193,11 @@ export function ActionsPanel({ run, onRun, onChanged }) {
                 </select>
               </div>
               <div className="input">
-                <input aria-label="Ce document ceri, pe înțelesul fermierului" placeholder="Ce document ceri" value={d.labelRo} maxLength={200} onChange={(e) => setDoc(i, { labelRo: e.target.value })} />
+                <input aria-label="Which document you request, in plain words for the farmer" placeholder="Which document you request" value={d.labelRo} maxLength={200} onChange={(e) => setDoc(i, { labelRo: e.target.value })} />
               </div>
               <div className="input input--select">
-                <select aria-label="Condiția legată" value={d.conditionId} onChange={(e) => setDoc(i, { conditionId: e.target.value })}>
-                  <option value="">fără condiție</option>
+                <select aria-label="Linked condition" value={d.conditionId} onChange={(e) => setDoc(i, { conditionId: e.target.value })}>
+                  <option value="">no condition</option>
                   {conditions.map((c) => (
                     <option key={c.conditionId} value={c.conditionId}>
                       {c.conditionId}
@@ -206,31 +206,31 @@ export function ActionsPanel({ run, onRun, onChanged }) {
                 </select>
               </div>
               <div className="input">
-                <input aria-label="Termen" type="date" value={d.dueDate} onChange={(e) => setDoc(i, { dueDate: e.target.value })} />
+                <input aria-label="Due date" type="date" value={d.dueDate} onChange={(e) => setDoc(i, { dueDate: e.target.value })} />
               </div>
               {docs.length > 1 ? (
                 <button type="button" className="btn btn--text btn--small" onClick={() => setDocs((list) => list.filter((_, j) => j !== i))}>
-                  Șterge
+                  Remove
                 </button>
               ) : null}
             </div>
           ))}
           <div className="btn-row">
             <button type="button" className="btn btn--text btn--small" disabled={docs.length >= 10} onClick={() => setDocs((list) => [...list, { ...EMPTY_DOC }])}>
-              + Alt document
+              + Another document
             </button>
             <button type="button" className="btn btn--outline" disabled={!canDecide || busy !== null || !docs.some((d) => d.labelRo.trim())} onClick={sendRequest}>
-              {busy === "request" ? "Se trimite…" : "Cere documente"}
+              {busy === "request" ? "Sending…" : "Request documents"}
             </button>
           </div>
 
           {run.pendingDocuments.length ? (
             <>
-              <h3 className="sub-title">Documente cerute, în așteptare</h3>
+              <h3 className="sub-title">Requested documents, pending</h3>
               <ul className="plain-list small">
                 {run.pendingDocuments.map((p) => (
                   <li key={`${p.docType}-${p.requestedAt}`}>
-                    {p.labelRo} <span className="muted">({DOC_TYPE_RO[p.docType]}{p.conditionId ? `, ${p.conditionId}` : ""}{p.dueDate ? `, până la ${p.dueDate}` : ""})</span>
+                    {p.labelRo} <span className="muted">({DOC_TYPE_RO[p.docType]}{p.conditionId ? `, ${p.conditionId}` : ""}{p.dueDate ? `, by ${p.dueDate}` : ""})</span>
                   </li>
                 ))}
               </ul>
@@ -238,11 +238,11 @@ export function ActionsPanel({ run, onRun, onChanged }) {
           ) : null}
           {run.officerActions.length ? (
             <>
-              <h3 className="sub-title">Istoric</h3>
+              <h3 className="sub-title">History</h3>
               <ul className="plain-list small">
                 {run.officerActions.map((a) => (
                   <li key={a.at + a.action}>
-                    {a.action === "APPROVE" ? "Aprobat" : "Documente cerute"} de {a.officerId}
+                    {a.action === "APPROVE" ? "Approved" : "Documents requested"} by {a.officerId}
                     {a.commentRo ? `: ${a.commentRo}` : ""}
                   </li>
                 ))}

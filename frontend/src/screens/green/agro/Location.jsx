@@ -11,12 +11,12 @@ import { Missing } from "./shared.jsx";
 // The flags of a parcel as short plain phrases.
 export function parcelFlags(p) {
   const flags = [];
-  if (p.droughtRisk !== "LOW") flags.push({ text: `risc de secetă ${RISK_RO[p.droughtRisk]}`, warn: p.droughtRisk === "HIGH" });
-  if (p.waterStress !== "LOW") flags.push({ text: `lipsă de apă ${RISK_RO[p.waterStress]}`, warn: p.waterStress === "HIGH" });
-  if (p.hailRisk === "HIGH") flags.push({ text: "risc de grindină mare", warn: true });
-  if (p.floodRisk === "HIGH") flags.push({ text: "risc de inundație mare", warn: true });
-  if (p.natura2000) flags.push({ text: "zonă Natura 2000", warn: true });
-  if (p.nitrateVulnerable) flags.push({ text: "zonă vulnerabilă la nitrați", warn: true });
+  if (p.droughtRisk !== "LOW") flags.push({ text: `${RISK_RO[p.droughtRisk]} drought risk`, warn: p.droughtRisk === "HIGH" });
+  if (p.waterStress !== "LOW") flags.push({ text: `${RISK_RO[p.waterStress]} water stress`, warn: p.waterStress === "HIGH" });
+  if (p.hailRisk === "HIGH") flags.push({ text: "high hail risk", warn: true });
+  if (p.floodRisk === "HIGH") flags.push({ text: "high flood risk", warn: true });
+  if (p.natura2000) flags.push({ text: "Natura 2000 area", warn: true });
+  if (p.nitrateVulnerable) flags.push({ text: "nitrate vulnerable zone", warn: true });
   return flags;
 }
 
@@ -25,7 +25,7 @@ export function Location() {
   const farm = useFarm(flow.cui);
 
   if (!flow.cui) {
-    return <Missing href="#/verde/agro/firma" label="Alege firma">Mai întâi alege firma.</Missing>;
+    return <Missing href="#/verde/agro/firma" label="Choose the company">Choose the company first.</Missing>;
   }
   const features = farm.data?.parcels.features ?? [];
   // by default every parcel is chosen
@@ -44,11 +44,11 @@ export function Location() {
   return (
     <>
       <header className="intro">
-        <h1 className="page-title">Unde va fi investiția?</h1>
-        <p className="small muted">Bifează parcelele din APIA unde va fi investiția. Atinge o parcelă pe hartă sau în listă.</p>
+        <h1 className="page-title">Where will the investment be?</h1>
+        <p className="small muted">Tick the APIA parcels where the investment will be. Tap a parcel on the map or in the list.</p>
       </header>
 
-      {farm.loading ? <Loading label="Încarc parcelele…" /> : null}
+      {farm.loading ? <Loading label="Loading the parcels…" /> : null}
       <ErrorCard error={farm.error} onRetry={farm.reload} />
 
       {farm.data ? (
@@ -57,10 +57,10 @@ export function Location() {
             collection={farm.data.parcels}
             selected={selected}
             onToggle={toggle}
-            caption={`${selected.size} din ${features.length} parcele alese · harta merge și fără internet`}
+            caption={`${selected.size} of ${features.length} parcels selected · the map also works offline`}
           />
 
-          <Group label="Parcelele tale">
+          <Group label="Your parcels">
             <ul className="card rows">
               {features.map((f) => {
                 const flags = parcelFlags(f.properties);
@@ -80,7 +80,7 @@ export function Location() {
                               </span>
                             ))
                           ) : (
-                            <span className="status is-on">fără probleme văzute pe hartă</span>
+                            <span className="status is-on">no issues seen on the map</span>
                           )}
                         </span>
                       </span>
@@ -93,18 +93,18 @@ export function Location() {
           </Group>
 
           <NoteCard icon="leaf">
-            Pe hartă am verificat secetă, lipsa de apă, grindină, inundații, zonele Natura 2000 și cele vulnerabile la nitrați.{" "}
-            {drought ? `${drought} parcele au risc mare de secetă. ` : ""}
-            {natura ? `${natura} sunt în zone Natura 2000, unde poate fi nevoie de un aviz de mediu. ` : ""}
-            {nitrate ? `${nitrate} sunt în zone vulnerabile la nitrați. ` : ""}
-            {!drought && !natura && !nitrate ? "Nu am găsit probleme majore." : ""}
+            On the map we checked drought, water stress, hail, floods, Natura 2000 areas and nitrate vulnerable zones.{" "}
+            {drought ? `${drought} parcels have a high drought risk. ` : ""}
+            {natura ? `${natura} are in Natura 2000 areas, where an environmental opinion may be needed. ` : ""}
+            {nitrate ? `${nitrate} are in nitrate vulnerable zones. ` : ""}
+            {!drought && !natura && !nitrate ? "We found no major issues." : ""}
           </NoteCard>
         </>
       ) : null}
 
       <Actions>
         <NextButton href="#/verde/agro/documente" disabled={!farm.data || selected.size === 0}>
-          Continuă
+          Continue
         </NextButton>
       </Actions>
     </>

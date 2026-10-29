@@ -58,14 +58,14 @@ function OfficerLayout({ title, subtitle, panels, children }) {
     <div className="officer">
       <header className="officer-head">
         <div>
-          <p className="eyebrow">Raiffeisen · zona ofițerului (prototip, date fictive)</p>
+          <p className="eyebrow">Raiffeisen · officer zone (prototype, fictional data)</p>
           <h1 className="officer-title">{title}</h1>
           {subtitle ? <p className="small muted">{subtitle}</p> : null}
         </div>
         <div className="officer-nav">
           <RoleSwitch role="officer" />
           <a className="link" href="#/firma">
-            Înapoi la aplicația firmei
+            Back to the company app
           </a>
           {panels.count ? (
             <button type="button" className="btn btn--outline btn--small" onClick={() => panels.setAll(panels.anyOpen)}>
@@ -139,7 +139,7 @@ export function CalcLine({ calc }) {
       <span className="calc-label">{calc.labelRo}</span>
       <b className="num calc-value">{calc.display}</b>
       {calc.formula ? <span className="calc-formula small muted">= {calc.formula}</span> : null}
-      {calc.sourceRo ? <span className="calc-source small muted">sursa: {calc.sourceRo}</span> : null}
+      {calc.sourceRo ? <span className="calc-source small muted">source: {calc.sourceRo}</span> : null}
     </div>
   );
 }

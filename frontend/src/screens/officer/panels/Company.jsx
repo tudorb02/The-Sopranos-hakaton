@@ -14,7 +14,7 @@ export function CompanyPanel({ run }) {
   return (
     <Panel
       n={1}
-      title="Dosarul firmei"
+      title="Company dossier"
       wide
       aside={
         <span className="panel-aside">
@@ -31,34 +31,34 @@ export function CompanyPanel({ run }) {
           <h3 className="sub-title">ANAF / ONRC</h3>
           <KeyValues
             rows={[
-              ["Firma", `${company.name} (CUI ${company.cui})`],
-              ["Activitate", `CAEN ${company.caen} · ${company.caenLabelRo}`],
-              ["Sediu", `${company.locality ? `${company.locality}, ` : ""}${company.county}`],
-              ["Angajați", company.employees],
-              ["Cifră de afaceri", company.turnoverEur != null ? `${eur(company.turnoverEur)} (${company.financialYear})` : "fără bilanț"],
-              ["Active totale", company.totalAssetsEur != null ? eur(company.totalAssetsEur) : "fără bilanț"],
-              ["Statut IMM", <Tag key="sme" tone={company.smeStatus === "SME" ? "ok" : company.smeStatus === "NOT_SME" ? "bad" : "warn"}>{company.smeStatus}</Tag>],
-              company.manager ? ["Administrator", `${company.manager.age} ani, instalat din ${company.manager.installedAt}`] : null,
+              ["Company", `${company.name} (CUI ${company.cui})`],
+              ["Activity", `CAEN ${company.caen} · ${company.caenLabelRo}`],
+              ["Registered office", `${company.locality ? `${company.locality}, ` : ""}${company.county}`],
+              ["Employees", company.employees],
+              ["Turnover", company.turnoverEur != null ? `${eur(company.turnoverEur)} (${company.financialYear})` : "no balance sheet"],
+              ["Total assets", company.totalAssetsEur != null ? eur(company.totalAssetsEur) : "no balance sheet"],
+              ["SME status", <Tag key="sme" tone={company.smeStatus === "SME" ? "ok" : company.smeStatus === "NOT_SME" ? "bad" : "warn"}>{company.smeStatus}</Tag>],
+              company.manager ? ["Manager", `${company.manager.age} years old, set up since ${company.manager.installedAt}`] : null,
             ]}
           />
           <h3 className="sub-title">APIA</h3>
           <KeyValues
             rows={[
-              ["Suprafață", `${ha(farm.totalHa)} în ${parcels.features.length} parcele (${run.parcelIds.length} alese pentru investiție)`],
-              ["Culturi " + lastYear, farm.crops.filter((c) => c.year === lastYear).map((c) => `${c.crop} ${ha(c.ha)}`).join(", ")],
-              ["Irigare actuală", farm.currentIrrigation ?? "—"],
-              farm.apiaSubsidiesEur != null ? ["Subvenții APIA", eur(farm.apiaSubsidiesEur)] : null,
-              farm.livestock.length ? ["Animale", farm.livestock.map((l) => `${l.species} ${l.heads}`).join(", ")] : null,
+              ["Area", `${ha(farm.totalHa)} in ${parcels.features.length} parcels (${run.parcelIds.length} selected for the investment)`],
+              ["Crops " + lastYear, farm.crops.filter((c) => c.year === lastYear).map((c) => `${c.crop} ${ha(c.ha)}`).join(", ")],
+              ["Current irrigation", farm.currentIrrigation ?? "—"],
+              farm.apiaSubsidiesEur != null ? ["APIA subsidies", eur(farm.apiaSubsidiesEur)] : null,
+              farm.livestock.length ? ["Animals", farm.livestock.map((l) => `${l.species} ${l.heads}`).join(", ")] : null,
             ]}
           />
           <h3 className="sub-title">Open Banking</h3>
           <KeyValues
             rows={[
-              ["Cashflow net anual", eur(cashflow.annualNetEur)],
-              ["Luni cu încasări mari", cashflow.peakMonths.map((m) => MONTHS_RO[m]).join(", ")],
+              ["Annual net cash flow", eur(cashflow.annualNetEur)],
+              ["Months with high income", cashflow.peakMonths.map((m) => MONTHS_RO[m]).join(", ")],
             ]}
           />
-          <h3 className="sub-title">Documente încărcate</h3>
+          <h3 className="sub-title">Uploaded documents</h3>
           <ul className="plain-list small">
             {run.documents.map((d) => (
               <li key={d.documentId}>
@@ -73,19 +73,19 @@ export function CompanyPanel({ run }) {
             selected={selected}
             risk
             height={230}
-            caption="Parcelele alese sunt galbene; conturul punctat = zonă Natura 2000. Harta e desenată local, fără internet."
+            caption="Selected parcels are yellow; dotted outline = Natura 2000 area. The map is drawn locally, without internet."
           />
           <table className="table table--tight">
             <thead>
               <tr>
-                <th>Parcelă</th>
-                <th>Cultură</th>
+                <th>Parcel</th>
+                <th>Crop</th>
                 <th className="num">ha</th>
-                <th>Secetă</th>
-                <th>Stres hidric</th>
-                <th>Grindină</th>
+                <th>Drought</th>
+                <th>Water stress</th>
+                <th>Hail</th>
                 <th>Natura 2000</th>
-                <th>Nitrați</th>
+                <th>Nitrates</th>
               </tr>
             </thead>
             <tbody>
@@ -105,8 +105,8 @@ export function CompanyPanel({ run }) {
                     <td>
                       <Tag tone={riskTone(p.hailRisk)}>{RISK_RO[p.hailRisk]}</Tag>
                     </td>
-                    <td>{p.natura2000 ? <Tag tone="bad">da</Tag> : "nu"}</td>
-                    <td>{p.nitrateVulnerable ? <Tag tone="warn">da</Tag> : "nu"}</td>
+                    <td>{p.natura2000 ? <Tag tone="bad">yes</Tag> : "no"}</td>
+                    <td>{p.nitrateVulnerable ? <Tag tone="warn">yes</Tag> : "no"}</td>
                   </tr>
                 );
               })}

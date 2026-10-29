@@ -18,8 +18,8 @@ export function Changes() {
 
   if (!runId) {
     return (
-      <Missing href="#/verde/agro/documente" label="Încarcă oferta">
-        Nu ai încă o analiză.
+      <Missing href="#/verde/agro/documente" label="Upload the offer">
+        You do not have an analysis yet.
       </Missing>
     );
   }
@@ -34,52 +34,52 @@ export function Changes() {
   return (
     <>
       <header className="intro">
-        <h1 className="page-title">Ce să schimbi</h1>
-        <p className="small muted">Ce propunem la investiția ta ca să devină verde, cât costă în plus și în cât timp se recuperează.</p>
+        <h1 className="page-title">What to change</h1>
+        <p className="small muted">What we propose for your investment so it becomes green, how much extra it costs and how quickly it pays back.</p>
       </header>
 
-      {loading ? <Loading label="Încarc propunerea…" /> : null}
+      {loading ? <Loading label="Loading the proposal…" /> : null}
       <ErrorCard error={error} onRetry={reload} />
       {run && !tech ? (
-        <Missing href="#/verde/agro/analiza" label="Înapoi la analiză">
-          Analiza nu s-a terminat încă.
+        <Missing href="#/verde/agro/analiza" label="Back to the analysis">
+          The analysis has not finished yet.
         </Missing>
       ) : null}
 
       {tech && initial ? (
         <>
           <ul className="card rows">
-            <ValueRow icon="file" name="Ce ai cerut" note={initial.components.map((c) => c.nameRo).join(" · ")} value={<span className="num">{disp(run, initial.totalCostCalcId)}</span>} />
+            <ValueRow icon="file" name="What you asked for" note={initial.components.map((c) => c.nameRo).join(" · ")} value={<span className="num">{disp(run, initial.totalCostCalcId)}</span>} />
             {upgraded ? (
-              <ValueRow icon="leaf" name="Ce propunem" note={recommended.components.map((c) => c.nameRo).join(" · ")} value={<span className="num">{disp(run, recommended.totalCostCalcId)}</span>} />
+              <ValueRow icon="leaf" name="What we propose" note={recommended.components.map((c) => c.nameRo).join(" · ")} value={<span className="num">{disp(run, recommended.totalCostCalcId)}</span>} />
             ) : null}
           </ul>
 
-          <Group label="Indicatorul verde">
+          <Group label="The green indicator">
             <ul className="card facts">
               <li>
-                <span className="fact-label">Investiția cerută</span>
+                <span className="fact-label">Requested investment</span>
                 <span className="fact-value num">{disp(run, initial.indicatorCalcId)}</span>
-                <span className={initial.thresholdResult === "PASS" ? "status is-on" : "status status--warn"}>{initial.thresholdResult === "PASS" ? "peste prag" : "sub prag"}</span>
+                <span className={initial.thresholdResult === "PASS" ? "status is-on" : "status status--warn"}>{initial.thresholdResult === "PASS" ? "above the threshold" : "below the threshold"}</span>
               </li>
               {upgraded ? (
                 <li>
-                  <span className="fact-label">Cu schimbările propuse</span>
+                  <span className="fact-label">With the proposed changes</span>
                   <span className="fact-value num">{disp(run, recommended.indicatorCalcId)}</span>
                   <span className={recommended.thresholdResult === "PASS" ? "status is-on" : "status status--warn"}>
-                    {recommended.thresholdResult === "PASS" ? "peste prag" : "sub prag"}
+                    {recommended.thresholdResult === "PASS" ? "above the threshold" : "below the threshold"}
                   </span>
                 </li>
               ) : null}
               <li>
-                <span className="fact-label">Pragul pentru creditul verde</span>
+                <span className="fact-label">Threshold for the green credit</span>
                 <span className="fact-value num">{disp(run, tech.threshold.thresholdCalcId)}</span>
               </li>
             </ul>
           </Group>
 
           {upgraded ? (
-            <Group label="Ce se adaugă">
+            <Group label="What is added">
               <ul className="card rows">
                 {recommended.components
                   .filter((c) => c.source === "CATALOG_UPGRADE")
@@ -88,31 +88,31 @@ export function Changes() {
                       <IconTile icon="leaf" tone="sand" />
                       <div className="row-main">
                         <span className="row-name">{c.nameRo}</span>
-                        <span className="row-note">adăugat, preț estimat din catalog</span>
+                        <span className="row-note">added, estimated price from the catalogue</span>
                       </div>
                       <span className="row-value num">{disp(run, c.costCalcId)}</span>
                     </li>
                   ))}
                 <li className="row row--total">
-                  <span className="row-name">Cost în plus față de oferta ta</span>
+                  <span className="row-name">Extra cost compared with your offer</span>
                   <span className="row-value num">{disp(run, recommended.upgradeCostCalcId)}</span>
                 </li>
               </ul>
               {funding ? (
                 <ul className="card facts">
                   <li>
-                    <span className="fact-label">Se recuperează din economii în</span>
+                    <span className="fact-label">Paid back from savings in</span>
                     <span className="fact-value num">{disp(run, funding.comparison.upgradePaybackCalcId)}</span>
                   </li>
                 </ul>
               ) : null}
             </Group>
           ) : (
-            <NoteCard icon="check">Investiția cerută atinge deja pragul verde, deci nu e nevoie să schimbi nimic.</NoteCard>
+            <NoteCard icon="check">The requested investment already reaches the green threshold, so you do not need to change anything.</NoteCard>
           )}
 
           {impacts.length ? (
-            <Group label="Ce câștigi pe an">
+            <Group label="What you gain per year">
               <ul className="card facts">
                 {impacts.map((impact) => (
                   <li key={impact.calcId}>
@@ -131,14 +131,14 @@ export function Changes() {
           ) : null}
           <p className="small muted">{tech.farmerMessageRo}</p>
           {upgraded ? (
-            <NoteCard icon="clock">Prețul schimbărilor e estimat. Înainte de semnare, banca cere oferta actualizată de la furnizor, iar suma creditului se ajustează după ea.</NoteCard>
+            <NoteCard icon="clock">The price of the changes is estimated. Before signing, the bank asks the supplier for an updated offer, and the credit amount is adjusted to it.</NoteCard>
           ) : null}
         </>
       ) : null}
 
       <Actions>
         <NextButton href="#/verde/agro/cerere" disabled={!tech}>
-          Pregătește cererea
+          Prepare the application
         </NextButton>
       </Actions>
     </>

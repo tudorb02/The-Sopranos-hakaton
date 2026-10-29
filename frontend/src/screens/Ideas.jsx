@@ -34,7 +34,7 @@ export default function Ideas() {
           ))}
         </ul>
         <details className="why">
-          <summary>De ce îți propun asta</summary>
+          <summary>Why I suggest this</summary>
           <p>{featured.why}</p>
         </details>
         <div className="btn-row">

@@ -1308,7 +1308,7 @@ main {
 }
 
 .src-said::before {
-  content: "„";
+  content: "“";
 }
 
 .src-agreed::before {
@@ -1932,10 +1932,10 @@ main {
 :root {
   --cat-1: #2a78d6; /* Alimente */
   --cat-2: #eb6834; /* Cafenele */
-  --cat-3: #1baf7a; /* Livrări */
+  --cat-3: #1baf7a; /* Deliveries */
   --cat-4: #6250d6; /* Restaurante */
   --cat-5: #e87ba4; /* Taxi */
-  --cat-grey: #a8a59f; /* Fără categorie */
+  --cat-grey: #a8a59f; /* Uncategorised */
 }
 
 .cat-1 { --cat: var(--cat-1); }

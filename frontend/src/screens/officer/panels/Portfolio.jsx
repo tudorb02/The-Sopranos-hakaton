@@ -7,15 +7,15 @@ import { dec, eur } from "../../../lib/format.js";
 import { useAsync } from "../../../lib/hooks.js";
 import { TIER_OFFICER } from "../../../lib/labels.js";
 
-const MODULE_NAMES = { irigatii: "Irigații", energie: "Energie la fermă", utilaje: "Utilaje și precizie", zootehnie: "Zootehnie și biogaz", post_recolta: "Post-recoltă", ecologic: "Ecologic" };
+const MODULE_NAMES = { irigatii: "Irrigation", energie: "Farm energy", utilaje: "Machinery and precision", zootehnie: "Livestock and biogas", post_recolta: "Post-harvest", ecologic: "Organic" };
 
 const IMPACT = [
-  ["co2AvoidedT", "CO₂ evitat", "t"],
-  ["energyMwh", "Energie regenerabilă / economisită", "MWh"],
-  ["waterM3", "Apă economisită", "m³"],
-  ["fuelL", "Motorină economisită", "l"],
-  ["nitrogenKg", "Azot economisit", "kg"],
-  ["certifiedAreaHa", "Suprafață certificată", "ha"],
+  ["co2AvoidedT", "CO₂ avoided", "t"],
+  ["energyMwh", "Renewable / saved energy", "MWh"],
+  ["waterM3", "Water saved", "m³"],
+  ["fuelL", "Diesel saved", "l"],
+  ["nitrogenKg", "Nitrogen saved", "kg"],
+  ["certifiedAreaHa", "Certified area", "ha"],
 ];
 
 export function PortfolioPanel({ reloadKey }) {
@@ -23,13 +23,13 @@ export function PortfolioPanel({ reloadKey }) {
   return (
     <Panel
       n={7}
-      title="Portofoliu verde"
+      title="Green portfolio"
       wide
       aside={
         <span className="panel-aside">
-          {data?.parametersDemo ? <Tag tone="warn">parametri demo</Tag> : null}
+          {data?.parametersDemo ? <Tag tone="warn">demo parameters</Tag> : null}
           <button type="button" className="btn btn--text btn--small" onClick={reload}>
-            Reîncarcă
+            Reload
           </button>
         </span>
       }
@@ -38,11 +38,11 @@ export function PortfolioPanel({ reloadKey }) {
       <ErrorCard error={error} onRetry={reload} />
       {data ? (
         data.loanCount === 0 ? (
-          <p className="small muted">Niciun credit verde aprobat încă. Aprobă un dosar și apoi „Simulează 12 luni”.</p>
+          <p className="small muted">No green credit approved yet. Approve a dossier and then “Simulate 12 months”.</p>
         ) : (
           <div className="grid-3">
             <div>
-              <h3 className="sub-title">Credite verzi</h3>
+              <h3 className="sub-title">Green credits</h3>
               <p className="big num">
                 {data.loanCount} · {eur(data.totalAmountEur)}
               </p>
@@ -58,11 +58,11 @@ export function PortfolioPanel({ reloadKey }) {
                 </tbody>
               </table>
               <p className="small muted">
-                Niveluri: {data.byTier.map((t) => `${TIER_OFFICER[t.tier] ?? t.tier} ${t.count}`).join(" · ")}
+                Tiers: {data.byTier.map((t) => `${TIER_OFFICER[t.tier] ?? t.tier} ${t.count}`).join(" · ")}
               </p>
             </div>
             <div>
-              <h3 className="sub-title">Pe fonduri</h3>
+              <h3 className="sub-title">By fund</h3>
               <table className="table">
                 <tbody>
                   {data.byFund.map((f) => (
@@ -77,11 +77,11 @@ export function PortfolioPanel({ reloadKey }) {
                 </tbody>
               </table>
               <p className="small muted">
-                Monitorizate: {data.monitoring.monitoredCount}, impact confirmat: {data.monitoring.confirmedCount}
+                Monitored: {data.monitoring.monitoredCount}, impact confirmed: {data.monitoring.confirmedCount}
               </p>
             </div>
             <div>
-              <h3 className="sub-title">Impact total (estimat)</h3>
+              <h3 className="sub-title">Total impact (estimated)</h3>
               <table className="table">
                 <tbody>
                   {IMPACT.filter(([key]) => data.impact[key] > 0).map(([key, label, unit]) => (

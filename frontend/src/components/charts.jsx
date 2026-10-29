@@ -6,7 +6,7 @@ export function WeekStrip({ week }) {
   const summary = spentDays.map((day) => `${day.name} ${lei(day.lei)}`).join(", ");
   return (
     <figure className="week">
-      <div className="week-plot" role="img" aria-label={`${summary}. Limita recomandată: ${lei(week.guidePerDay)} pe zi.`}>
+      <div className="week-plot" role="img" aria-label={`${summary}. Recommended limit: ${lei(week.guidePerDay)} a day.`}>
         <span className="week-guide" style={{ "--p": pct(week.guidePerDay, week.scaleMax) }} />
         {week.days.map((day) => {
           const classes = ["day", day.today ? "is-today" : "", day.lei === undefined ? "is-future" : ""].filter(Boolean).join(" ");
@@ -25,7 +25,7 @@ export function WeekStrip({ week }) {
           </li>
         ))}
       </ol>
-      <figcaption className="small muted">Linia punctată: limita recomandată de {lei(week.guidePerDay)} pe zi</figcaption>
+      <figcaption className="small muted">Dotted line: recommended limit of {lei(week.guidePerDay)} a day</figcaption>
     </figure>
   );
 }
@@ -34,7 +34,7 @@ export function WeekStrip({ week }) {
 export function Allocation({ parts, total }) {
   const label = parts.map((part) => `${part.label} ${lei(part.lei)}`).join(", ");
   return (
-    <div className="alloc" role="img" aria-label={`Din ${lei(total)}: ${label}.`}>
+    <div className="alloc" role="img" aria-label={`Of ${lei(total)}: ${label}.`}>
       {parts.map((part) => (
         <span key={part.id} className={`is-${part.tone}`} style={{ flex: `${part.lei} 1 0` }} />
       ))}
@@ -60,9 +60,9 @@ export function Legend({ parts }) {
 
 // Savings plan per month; each bar shows the running total towards the goal.
 export function PlanChart({ plan, total }) {
-  const label = plan.map((month) => `${month.month} ${month.add ? `+${lei(month.add)}` : "0 lei"}`).join(", ");
+  const label = plan.map((month) => `${month.month} ${month.add ? `+${lei(month.add)}` : "0 RON"}`).join(", ");
   return (
-    <figure className="plan" role="img" aria-label={`Plan pe luni: ${label}. Total ${lei(total)}.`}>
+    <figure className="plan" role="img" aria-label={`Monthly plan: ${label}. Total ${lei(total)}.`}>
       {plan.map((month) => (
         <div key={month.month} className="plan-col" aria-hidden="true">
           <div className="plan-bar">

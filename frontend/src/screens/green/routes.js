@@ -1,5 +1,5 @@
 // The green-credit flow of one area: one entry per hash route (#/verde/<area>/...), like the coach activation.
-// The steps follow the GreenStruct README §7. back: the "Înapoi" link; step: position in the progress bar;
+// The steps follow the GreenStruct README §7. back: the "Back" link; step: position in the progress bar;
 // footer: static actions at the bottom (the welcome screen). `actions: true` = the screen renders its own actions in the
 // footer slot (components/live.jsx Actions), because they depend on what the API returned.
 
@@ -14,7 +14,7 @@ import { Questions } from "./agro/Questions.jsx";
 import { Request } from "./agro/Request.jsx";
 import { Intro } from "./Intro.jsx";
 
-export const GREEN_STEPS = ["Firma", "Locul", "Documente", "Întrebări", "Ofertele", "Ce schimbi", "Cererea"];
+export const GREEN_STEPS = ["Company", "Location", "Documents", "Questions", "Offers", "Changes", "Application"];
 
 export function greenRoutes(sector) {
   const base = `#/verde/${sector}`;
@@ -23,7 +23,7 @@ export function greenRoutes(sector) {
     [key()]: {
       Screen: Intro,
       back: "#/verde",
-      footer: { next: `${base}/firma`, nextLabel: "Începe", skip: "#/firma", skipLabel: "Nu acum" },
+      footer: { next: `${base}/firma`, nextLabel: "Start", skip: "#/firma", skipLabel: "Not now" },
     },
     [key("firma")]: { Screen: Company, back: base, step: 1, actions: true },
     [key("unde")]: { Screen: Location, back: `${base}/firma`, step: 2, actions: true },
@@ -33,6 +33,6 @@ export function greenRoutes(sector) {
     [key("oferte")]: { Screen: Offers, back: `${base}/intrebari`, step: 5, actions: true },
     [key("schimbari")]: { Screen: Changes, back: `${base}/oferte`, step: 6, actions: true },
     [key("cerere")]: { Screen: Request, back: `${base}/schimbari`, step: 7, actions: true },
-    [key("dosar")]: { Screen: Dossier, back: "#/firma", title: "Dosarul tău", footer: { next: "#/firma", nextLabel: "Înapoi la Produse" } },
+    [key("dosar")]: { Screen: Dossier, back: "#/firma", title: "Your dossier", footer: { next: "#/firma", nextLabel: "Back to Products" } },
   };
 }

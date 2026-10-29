@@ -128,7 +128,7 @@ function Screens({ route }) {
 
   if (route === "extrase") {
     return (
-      <FlowFrame title="Extrase de cont" titleAs="p" closeHref="#/profil" footer={<FlowActions next="#/profil" nextLabel="Gata" />}>
+      <FlowFrame title="Account statements" titleAs="p" closeHref="#/profil" footer={<FlowActions next="#/profil" nextLabel="Done" />}>
         <Statements />
       </FlowFrame>
     );
@@ -138,11 +138,11 @@ function Screens({ route }) {
     return (
       <FlowFrame
         key={route}
-        title="Detalii tranzacție"
+        title="Transaction details"
         titleAs="p"
         backHref="#/cheltuieli"
         closeHref="#/cheltuieli"
-        footer={<FlowActions next="#/cheltuieli" nextLabel="Salvează" skip="#/cheltuieli" skipLabel="Anulează" />}
+        footer={<FlowActions next="#/cheltuieli" nextLabel="Save" skip="#/cheltuieli" skipLabel="Cancel" />}
       >
         <TransactionDetail id={route.slice(PAYMENT_PREFIX.length)} />
       </FlowFrame>
@@ -151,7 +151,7 @@ function Screens({ route }) {
 
   if (route === "informare") {
     return (
-      <FlowFrame title="Informare" closeHref="#/rezumat">
+      <FlowFrame title="Notice" closeHref="#/rezumat">
         <Legal />
       </FlowFrame>
     );
@@ -159,7 +159,7 @@ function Screens({ route }) {
 
   if (route === "verde/informare") {
     return (
-      <FlowFrame title="Informare" closeHref="#/verde">
+      <FlowFrame title="Notice" closeHref="#/verde">
         <Legal legal={greenLegal} />
       </FlowFrame>
     );
@@ -172,12 +172,12 @@ function Screens({ route }) {
     // The area picker, also for an area that is not available yet.
     if (!(route in steps)) {
       return (
-        <FlowFrame title="Credit sustenabil" titleAs="p" backHref="#/firma" closeHref="#/firma" footer={strip}>
+        <FlowFrame title="Sustainable credit" titleAs="p" backHref="#/firma" closeHref="#/firma" footer={strip}>
           <Sectors />
         </FlowFrame>
       );
     }
-    const { Screen, back, step, footer, actions, title = "Credit sustenabil" } = steps[route];
+    const { Screen, back, step, footer, actions, title = "Sustainable credit" } = steps[route];
     return (
       <FlowFrame
         key={route}
@@ -206,7 +206,7 @@ function Screens({ route }) {
     return (
       <FlowFrame
         key={key}
-        title="Coach financiar"
+        title="Financial coach"
         titleAs="p"
         closeHref="#/produse"
         backHref={back}

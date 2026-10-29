@@ -10,8 +10,8 @@ export function CreditPanel({ run }) {
   const funding = run.agents.fundingRecommendation;
   if (!funding) {
     return (
-      <Panel n={4} title="Structurarea creditului">
-        <p className="small muted">Agentul 2 nu a terminat încă.</p>
+      <Panel n={4} title="Credit structuring">
+        <p className="small muted">Agent 2 has not finished yet.</p>
       </Panel>
     );
   }
@@ -24,21 +24,21 @@ export function CreditPanel({ run }) {
 
   const cell = (option, loan, pick) => (option ? pick(option, loan) : "—");
   const rows = [
-    ["Investiția", (o) => disp(run, o.investmentCalcId)],
-    ["Suma creditului", (o, l) => disp(run, l.amountCalcId)],
-    ["Dobânda", (o, l) => disp(run, l.rateCalcId)],
-    ["Durata", (o, l) => disp(run, l.termCalcId)],
-    ["Rambursare", (o, l) => SCHEDULE_TYPE_RO[l.repayment.scheduleType]],
-    ["Rata", (o, l) => `${disp(run, l.repayment.installmentCalcId)}${l.repayment.paymentMonths ? ` (${monthsText(l.repayment.paymentMonths)})` : ""}`],
-    ["Grație", (o, l) => (l.repayment.graceCalcId ? disp(run, l.repayment.graceCalcId) : "—")],
-    ["Garanții", (o) => o.collateral.map((c) => COLLATERAL_OFFICER[c] ?? c).join(", ")],
-    ["Total plătit", (o) => disp(run, o.totals.totalPaymentsCalcId)],
-    ["Dobânzi plătite", (o) => disp(run, o.totals.totalInterestCalcId)],
-    ["Costul ipotecii", (o) => (o.totals.collateralCostsCalcId ? disp(run, o.totals.collateralCostsCalcId) : "—")],
-    ["Economii pe perioadă", (o) => disp(run, o.totals.savingsOverHorizonCalcId)],
-    ["Cost net", (o) => disp(run, o.totals.netCostCalcId)],
+    ["Investment", (o) => disp(run, o.investmentCalcId)],
+    ["Credit amount", (o, l) => disp(run, l.amountCalcId)],
+    ["Interest rate", (o, l) => disp(run, l.rateCalcId)],
+    ["Term", (o, l) => disp(run, l.termCalcId)],
+    ["Repayment", (o, l) => SCHEDULE_TYPE_RO[l.repayment.scheduleType]],
+    ["Instalment", (o, l) => `${disp(run, l.repayment.installmentCalcId)}${l.repayment.paymentMonths ? ` (${monthsText(l.repayment.paymentMonths)})` : ""}`],
+    ["Grace period", (o, l) => (l.repayment.graceCalcId ? disp(run, l.repayment.graceCalcId) : "—")],
+    ["Collateral", (o) => o.collateral.map((c) => COLLATERAL_OFFICER[c] ?? c).join(", ")],
+    ["Total paid", (o) => disp(run, o.totals.totalPaymentsCalcId)],
+    ["Interest paid", (o) => disp(run, o.totals.totalInterestCalcId)],
+    ["Mortgage cost", (o) => (o.totals.collateralCostsCalcId ? disp(run, o.totals.collateralCostsCalcId) : "—")],
+    ["Savings over the term", (o) => disp(run, o.totals.savingsOverHorizonCalcId)],
+    ["Net cost", (o) => disp(run, o.totals.netCostCalcId)],
     ["DSCR", (o) => disp(run, o.affordability.dscrCalcId)],
-    ["Capacitate de plată", (o) => `${AFFORDABILITY_RO[o.affordability.status]}: ${o.affordability.noteRo}`],
+    ["Affordability", (o) => `${AFFORDABILITY_RO[o.affordability.status]}: ${o.affordability.noteRo}`],
   ];
 
   const decomposition = (green?.rateBreakdown.components ?? []).map((g) => {
@@ -56,18 +56,18 @@ export function CreditPanel({ run }) {
   return (
     <Panel
       n={4}
-      title="Structurarea creditului"
+      title="Credit structuring"
       wide
       aside={
         <span className="panel-aside">
-          <Tag tone="warn">parametri demo</Tag>
+          <Tag tone="warn">demo parameters</Tag>
         </span>
       }
     >
       <div className="advantage">
-        <span className="small muted">Avantajul net al creditului verde</span>
+        <span className="small muted">Net advantage of the green credit</span>
         <b className="big num">{disp(run, cmp.netAdvantageCalcId)}</b>
-        <span className="small muted">pe {disp(run, cmp.horizonCalcId)}</span>
+        <span className="small muted">over {disp(run, cmp.horizonCalcId)}</span>
         <span className="drivers small">
           {cmp.drivers.map((d) => (
             <span key={d.driver}>
@@ -79,13 +79,13 @@ export function CreditPanel({ run }) {
 
       <div className="grid-2">
         <div>
-          <h3 className="sub-title">Clasic vs. verde</h3>
+          <h3 className="sub-title">Classic vs. green</h3>
           <table className="table">
             <thead>
               <tr>
                 <th />
-                <th>Clasic (A)</th>
-                <th>Verde ({green?.optionId ?? "—"})</th>
+                <th>Classic (A)</th>
+                <th>Green ({green?.optionId ?? "—"})</th>
               </tr>
             </thead>
             <tbody>
@@ -100,25 +100,25 @@ export function CreditPanel({ run }) {
           </table>
           {guarantee ? (
             <p className="small">
-              Garanție: <b className="num">{disp(run, guarantee.amountCalcId)}</b>, acoperire <b className="num">{disp(run, guarantee.coverageCalcId)}</b> ({guarantee.productId})
+              Guarantee: <b className="num">{disp(run, guarantee.amountCalcId)}</b>, coverage <b className="num">{disp(run, guarantee.coverageCalcId)}</b> ({guarantee.productId})
             </p>
           ) : null}
         </div>
 
         <div>
-          <h3 className="sub-title">De ce e mai mică dobânda verde</h3>
+          <h3 className="sub-title">Why the green interest rate is lower</h3>
           <table className="table">
             <thead>
               <tr>
-                <th>Componentă</th>
-                <th>Clasic</th>
-                <th>Verde</th>
-                <th>Diferență</th>
+                <th>Component</th>
+                <th>Classic</th>
+                <th>Green</th>
+                <th>Difference</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Indice (EURIBOR 3M)</td>
+                <td>Index (EURIBOR 3M)</td>
                 <td className="num">{disp(run, classic?.rateBreakdown.indexCalcId)}</td>
                 <td className="num">{disp(run, green?.rateBreakdown.indexCalcId)}</td>
                 <td />
@@ -134,14 +134,14 @@ export function CreditPanel({ run }) {
                 </tr>
               ))}
               <tr>
-                <td>Marjă</td>
+                <td>Margin</td>
                 <td className="num">{disp(run, classic?.rateBreakdown.marginCalcId)}</td>
                 <td className="num">{disp(run, green?.rateBreakdown.marginCalcId)}</td>
                 <td />
               </tr>
               <tr className="row-total">
                 <td>
-                  <b>Dobânda</b>
+                  <b>Interest rate</b>
                 </td>
                 <td className="num">
                   <b>{disp(run, classic?.rateBreakdown.rateCalcId)}</b>
@@ -162,19 +162,19 @@ export function CreditPanel({ run }) {
 
       {gl && calcOf(run, gl.repayment.scheduleCalcId)?.series ? (
         <>
-          <h3 className="sub-title">Calendarul ratelor, creditul verde (primele 12 luni)</h3>
+          <h3 className="sub-title">Repayment calendar, green credit (first 12 months)</h3>
           <RepaymentChart
             green={calcOf(run, gl.repayment.scheduleCalcId).series}
             classic={cl ? calcOf(run, cl.repayment.scheduleCalcId)?.series : null}
-            ariaLabel="Calendarul ratelor: creditul verde pe luni; linia punctată e rata creditului clasic"
+            ariaLabel="Repayment calendar: the green credit by month; the dotted line is the classic credit instalment"
           />
           <p className="small muted">
-            Barele: rata creditului verde pe lună; linia punctată: rata egală a creditului clasic. Total plătit: {disp(run, green.totals.totalPaymentsCalcId)}.
+            Bars: the green credit instalment per month; dotted line: the equal instalment of the classic credit. Total paid: {disp(run, green.totals.totalPaymentsCalcId)}.
           </p>
         </>
       ) : null}
 
-      <h3 className="sub-title">Programe verificate</h3>
+      <h3 className="sub-title">Programmes checked</h3>
       <table className="table table--tight">
         <tbody>
           {funding.programChecks.map((p) => (
@@ -185,14 +185,14 @@ export function CreditPanel({ run }) {
               <td>
                 <Tag tone={p.result === "ELIGIBLE" ? "ok" : p.result === "NOT_ELIGIBLE" ? "bad" : "warn"}>{p.result}</Tag>
               </td>
-              <td>sesiune {p.session}</td>
+              <td>session {p.session}</td>
               <td className="small">{p.noteRo}</td>
             </tr>
           ))}
         </tbody>
       </table>
       <p className="small muted">{funding.grantOutlook.messageRo}</p>
-      {funding.officerNotesRo ? <p className="small">Note pentru bancă: {funding.officerNotesRo}</p> : null}
+      {funding.officerNotesRo ? <p className="small">Notes for the bank: {funding.officerNotesRo}</p> : null}
     </Panel>
   );
 }

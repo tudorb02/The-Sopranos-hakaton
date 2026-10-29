@@ -16,7 +16,7 @@ export function ExternalLink({ link }) {
     <a className="ext-link" href={link.href} target="_blank" rel="noopener noreferrer">
       <span>{link.label}</span>
       <Icon name="external" />
-      <span className="sr-only"> (se deschide într-o filă nouă)</span>
+      <span className="sr-only"> (opens in a new tab)</span>
     </a>
   );
 }
@@ -37,7 +37,7 @@ function Details({ service }) {
   );
 }
 
-// compact: the costs and the reason fold under "Costuri și detalii" (Profil, chat).
+// compact: the costs and the reason fold under "Costs and details" (Profile, chat).
 export function ServiceCard({ service, compact = false }) {
   const id = useId();
   return (
@@ -56,16 +56,16 @@ export function ServiceCard({ service, compact = false }) {
       <p className="small">{service.description}</p>
 
       <div className="service-helps">
-        <p className="service-helps-label">Cum te ajută</p>
+        <p className="service-helps-label">How it helps you</p>
         <p>{service.helps}</p>
       </div>
 
       {compact ? (
         <details className="why">
-          <summary>Costuri și detalii</summary>
+          <summary>Costs and details</summary>
           <div className="service-more">
             <p>
-              <b>{service.whyLabel ?? "De ce îți propun asta"}:</b> {service.why}
+              <b>{service.whyLabel ?? "Why I suggest this"}:</b> {service.why}
             </p>
             <Details service={service} />
           </div>
@@ -74,7 +74,7 @@ export function ServiceCard({ service, compact = false }) {
         <>
           <Details service={service} />
           <details className="why">
-            <summary>{service.whyLabel ?? "De ce îți propun asta"}</summary>
+            <summary>{service.whyLabel ?? "Why I suggest this"}</summary>
             <p>{service.why}</p>
           </details>
         </>
@@ -82,7 +82,7 @@ export function ServiceCard({ service, compact = false }) {
 
       <div className="service-foot">
         <ExternalLink link={service.link} />
-        <p className="small muted">Sursa: {service.source}</p>
+        <p className="small muted">Source: {service.source}</p>
       </div>
 
       {service.actions ? (

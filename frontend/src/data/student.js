@@ -10,45 +10,45 @@ import { filters } from "./tracking.js";
 
 export { filters, intro };
 
-export const today = { label: "Joi, 12 noiembrie" };
+export const today = { label: "Thursday, 12 November" };
 
-export const client = { firstName: "Matei", name: "Matei Popescu", initial: "M", segment: "persoană fizică · student", card: "Card Visa •••• 5678" };
+export const client = { firstName: "Matei", name: "Matei Popescu", initial: "M", segment: "individual · student", card: "Visa card •••• 5678" };
 
 // No payday: the period ends the day before the next certain income (money from family, on the 1st).
 // The scholarship is estimated, so it counts only once it arrives. `pace` appears when, at the current
 // pace, the money runs out before the end of the period.
 export const cycle = {
-  label: "1 – 30 nov.",
-  endsOn: "30 noiembrie",
-  basis: "Banii de la familie intră pe 1 decembrie.",
-  pace: "La ritmul de până acum, circa 55 lei pe zi, banii îți ajung până pe 23 noiembrie.",
+  label: "1 – 30 Nov",
+  endsOn: "30 November",
+  basis: "Money from your family comes in on 1 December.",
+  pace: "At your pace so far, about 55 RON a day, your money lasts until 23 November.",
   total: 1861,
-  totalNote: "Din 1.861 lei: 1.500 lei încasați în noiembrie și 361 lei rămași din octombrie. Bursa nu e inclusă.",
+  totalNote: "Out of 1,861 RON: 1,500 RON received in November and 361 RON left from October. The scholarship is not included.",
   spendable: 1711,
   spent: 1071,
   left: 640,
   perDay: 34,
-  daysLeftLabel: "19 zile",
+  daysLeftLabel: "19 days",
 };
 
 export const allocation = [
-  { id: "needs", label: "Necesare", lei: 1200, tone: "fixed" },
-  { id: "aside", label: "Fond de siguranță", lei: 150, tone: "aside" },
-  { id: "spend", label: "Opționale", lei: 511, tone: "spend" },
+  { id: "needs", label: "Essentials", lei: 1200, tone: "fixed" },
+  { id: "aside", label: "Safety fund", lei: 150, tone: "aside" },
+  { id: "spend", label: "Optional", lei: 511, tone: "spend" },
 ];
 
 // What must still be paid until the end of the period, before any optional spending.
 export const essentials = {
-  title: "Necesare până pe 30 noiembrie",
+  title: "Essentials until 30 November",
   total: 503,
   items: [
-    { name: "Cămin și transport", icon: "home", note: "400 lei, plătite pe 2 noiembrie", status: "Plătite" },
-    { name: "Alimente", icon: "cart", note: "Circa 21 lei pe zi", lei: 403 },
-    { name: "Studii", icon: "book", note: "Cărți și imprimări", lei: 75 },
-    { name: "Telefon și internet", icon: "phone", note: "Pe 20 noiembrie", lei: 25 },
+    { name: "Dorm and transport", icon: "home", note: "400 RON, paid on 2 November", status: "Paid" },
+    { name: "Groceries", icon: "cart", note: "About 21 RON a day", lei: 403 },
+    { name: "Studies", icon: "book", note: "Books and printing", lei: 75 },
+    { name: "Phone and internet", icon: "phone", note: "On 20 November", lei: 25 },
   ],
-  rest: { label: "Rămân pentru opționale", lei: 137 },
-  pending: "Bursa nu e inclusă: circa 700 lei, în jur de 15 noiembrie. O adaug în buget când intră în cont.",
+  rest: { label: "Left for optional spending", lei: 137 },
+  pending: "The scholarship is not included: about 700 RON, around 15 November. I'll add it to the budget once it reaches your account.",
 };
 
 export const week = {
@@ -57,88 +57,88 @@ export const week = {
   guidePerDay: 34,
   scaleMax: 120,
   days: [
-    { d: "L", name: "luni", lei: 26 },
-    { d: "Ma", name: "marți", lei: 107 },
-    { d: "Mi", name: "miercuri", lei: 42 },
-    { d: "J", name: "joi", lei: 8, today: true },
-    { d: "V", name: "vineri" },
-    { d: "S", name: "sâmbătă" },
-    { d: "D", name: "duminică" },
+    { d: "M", name: "Monday", lei: 26 },
+    { d: "Tu", name: "Tuesday", lei: 107 },
+    { d: "W", name: "Wednesday", lei: 42 },
+    { d: "Th", name: "Thursday", lei: 8, today: true },
+    { d: "F", name: "Friday" },
+    { d: "Sa", name: "Saturday" },
+    { d: "Su", name: "Sunday" },
   ],
 };
 
 export const lastMessage = {
   icon: "wallet",
-  meta: "Ieri, 19:32 · Fond de siguranță",
-  title: "Ai pus 15 lei deoparte",
-  text: "10% din cei 150 lei de la meditații, cum am stabilit. Fondul de siguranță are acum 650 din 1.200 lei.",
+  meta: "Yesterday, 19:32 · Safety fund",
+  title: "You set aside 15 RON",
+  text: "10% of the 150 RON from tutoring, as agreed. The safety fund now has 650 of 1,200 RON.",
 };
 
 export const insight = {
-  figure: "6 zile",
-  text: "Atât ți-au lipsit în medie până la 1 în lunile fără bursă, din iulie până în septembrie. În octombrie, cu bursa, ai încheiat luna cu 361 lei în cont.",
+  figure: "6 days",
+  text: "That's how many days you were short, on average, before the 1st in the months without a scholarship, July to September. In October, with the scholarship, you ended the month with 361 RON in your account.",
 };
 
 export const budgetGroups = [
-  { id: "necesare", title: "Necesare", src: "agreed", note: "stabilite de tine" },
-  { id: "optionale", title: "Opționale", note: "mai ai 137 lei" },
+  { id: "necesare", title: "Essentials", src: "agreed", note: "set by you" },
+  { id: "optionale", title: "Optional", note: "137 RON left" },
 ];
 
 export const budgets = [
-  { id: "camin", group: "necesare", name: "Cămin", icon: "home", kind: "paid", spent: 350, note: "Plătit pe 2 noiembrie" },
-  { id: "transport", group: "necesare", name: "Transport", icon: "bus", kind: "paid", spent: 50, note: "Abonament de student, plătit pe 2 noiembrie" },
-  { id: "alimente", group: "necesare", name: "Alimente", icon: "cart", kind: "amount", spent: 297, limit: 700, note: "Circa 21 lei pe zi până pe 30 noiembrie" },
-  { id: "studii", group: "necesare", name: "Studii", icon: "book", kind: "amount", spent: 0, limit: 75, note: "Cărți și imprimări" },
-  { id: "telefon", group: "necesare", name: "Telefon și internet", icon: "phone", kind: "amount", spent: 0, limit: 25, note: "Se plătește pe 20 noiembrie" },
-  { id: "iesiri", group: "optionale", name: "Restaurante", icon: "utensils", kind: "amount", spent: 120, limit: 120, warn: true, note: "Limita lunii atinsă", onHome: true },
-  { id: "livrari", group: "optionale", name: "Livrări de mâncare", icon: "bag", kind: "amount", spent: 86, limit: 120, note: "2 comenzi luna aceasta", onHome: true },
-  { id: "cafenele", group: "optionale", name: "Cafenele", icon: "cup", kind: "amount", spent: 40, limit: 60, note: "5 cafele luna aceasta", onHome: true },
-  { id: "taxi", group: "optionale", name: "Taxi", icon: "car", kind: "amount", spent: 40, limit: 60, note: "Doar seara târziu, cum am stabilit" },
+  { id: "camin", group: "necesare", name: "Dorm", icon: "home", kind: "paid", spent: 350, note: "Paid on 2 November" },
+  { id: "transport", group: "necesare", name: "Transport", icon: "bus", kind: "paid", spent: 50, note: "Student pass, paid on 2 November" },
+  { id: "alimente", group: "necesare", name: "Groceries", icon: "cart", kind: "amount", spent: 297, limit: 700, note: "About 21 RON a day until 30 November" },
+  { id: "studii", group: "necesare", name: "Studies", icon: "book", kind: "amount", spent: 0, limit: 75, note: "Books and printing" },
+  { id: "telefon", group: "necesare", name: "Phone and internet", icon: "phone", kind: "amount", spent: 0, limit: 25, note: "Paid on 20 November" },
+  { id: "iesiri", group: "optionale", name: "Restaurants", icon: "utensils", kind: "amount", spent: 120, limit: 120, warn: true, note: "Monthly limit reached", onHome: true },
+  { id: "livrari", group: "optionale", name: "Food delivery", icon: "bag", kind: "amount", spent: 86, limit: 120, note: "2 orders this month", onHome: true },
+  { id: "cafenele", group: "optionale", name: "Cafés", icon: "cup", kind: "amount", spent: 40, limit: 60, note: "5 coffees this month", onHome: true },
+  { id: "taxi", group: "optionale", name: "Taxi", icon: "car", kind: "amount", spent: 40, limit: 60, note: "Only late at night, as agreed" },
 ];
 
 export const unbudgeted = {
   total: 88,
   items: [
-    { name: "Abonamente", icon: "repeat", lei: 60, note: "LinguaPlus și MuzicaPlus Student" },
-    { name: "Fără categorie", icon: "help", lei: 28, note: "O plată de clarificat" },
+    { name: "Subscriptions", icon: "repeat", lei: 60, note: "LinguaPlus and MuzicaPlus Student" },
+    { name: "Uncategorised", icon: "help", lei: 28, note: "One payment to clarify" },
   ],
 };
 
 export const question = {
   amount: 28,
   merchant: "PLAYNET*STORE",
-  date: "7 noiembrie",
-  options: ["Un joc", "Un abonament", "Altceva"],
+  date: "7 November",
+  options: ["A game", "A subscription", "Something else"],
   txId: "m13",
 };
 
 export const agenda = [
-  { day: "15", month: "nov.", title: "Bursa, circa 700 lei", note: "Estimat: o adaug în buget când intră" },
-  { day: "20", month: "nov.", title: "Telefon", note: "25 lei, din necesare" },
-  { day: "1", month: "dec.", title: "Bani de la familie", note: "1.200 lei · 120 lei în fondul de siguranță" },
+  { day: "15", month: "Nov", title: "Scholarship, about 700 RON", note: "Estimated: I'll add it to the budget when it arrives" },
+  { day: "20", month: "Nov", title: "Phone", note: "25 RON, from essentials" },
+  { day: "1", month: "Dec", title: "Money from family", note: "1,200 RON · 120 RON to the safety fund" },
 ];
 
 // The plan counts only certain money: 10% of the family money and of the smallest tutoring month.
 export const goal = {
-  name: "Fond de siguranță",
+  name: "Safety fund",
   icon: "shield",
-  note: "O lună de cheltuieli necesare",
+  note: "One month of essential spending",
   saved: 650,
   amount: 1200,
-  due: { label: "Obiectiv atins în", date: "martie 2027", note: "10% din fiecare încasare" },
+  due: { label: "Goal reached in", date: "March 2027", note: "10% of every income" },
   plan: [
-    { month: "oct.", add: 500, total: 500 },
-    { month: "nov.", add: 165, total: 665 },
-    { month: "dec.", add: 135, total: 800 },
-    { month: "ian.", add: 135, total: 935 },
-    { month: "feb.", add: 135, total: 1070 },
-    { month: "mar.", add: 130, total: 1200 },
+    { month: "Oct", add: 500, total: 500 },
+    { month: "Nov", add: 165, total: 665 },
+    { month: "Dec", add: 135, total: 800 },
+    { month: "Jan", add: 135, total: 935 },
+    { month: "Feb", add: 135, total: 1070 },
+    { month: "Mar", add: 130, total: 1200 },
   ],
-  reason: "Am pornit de la cei 500 lei rămași din jobul de vară. Planific doar cu banii siguri, de la familie și din meditații. Dacă intră bursa, termenul se apropie.",
-  fundingLabel: "estimat, pe lună",
+  reason: "We started from the 500 RON left from your summer job. I plan only with certain money, from family and tutoring. If the scholarship comes in, the date moves closer.",
+  fundingLabel: "estimated, per month",
   funding: [
-    { name: "10% din banii de la familie", lei: 120 },
-    { name: "10% din meditații, cel puțin", lei: 15 },
+    { name: "10% of the money from family", lei: 120 },
+    { name: "10% of tutoring, at least", lei: 15 },
   ],
   storage: "savings",
   suggestion: "savingbox",
@@ -148,12 +148,12 @@ export const pots = [];
 
 export const nextGoals = [
   {
-    name: "Curs de UX design",
+    name: "UX design course",
     icon: "book",
     amount: 900,
-    when: "Începe în martie 2027",
-    text: "Cu planul de acum, începi să economisești pentru curs după fondul de siguranță. Cu ideea săptămânii, banii sunt gata în februarie.",
-    action: "Vezi ideea",
+    when: "Starts in March 2027",
+    text: "With the current plan, you start saving for the course after the safety fund. With this week's idea, the money is ready in February.",
+    action: "See the idea",
     href: "#/idei",
   },
 ];
@@ -162,195 +162,195 @@ export const reserve = null;
 
 // Development ideas (design/coach-students.md §6): at most one new idea a week, each from a stated goal or interest.
 export const ideas = {
-  title: "Idei pentru tine",
-  lead: "Pornesc de la ce mi-ai spus: vrei fondul de siguranță complet și cursul de UX design din martie. Primești cel mult o idee nouă pe săptămână.",
+  title: "Ideas for you",
+  lead: "I start from what you told me: you want a full safety fund and the UX design course in March. You get at most one new idea a week.",
   featured: {
     icon: "wallet",
-    eyebrow: "Ideea săptămânii · Venituri",
-    title: "2 ore de meditații în plus pe săptămână",
-    text: "La 50 lei ora, câștigi circa 400 lei în plus pe lună.",
-    effects: ["Fondul de siguranță e complet în decembrie, nu în martie.", "Banii pentru cursul de UX design sunt gata în februarie."],
-    why: "Pe 28 octombrie ai spus că dai meditații la matematică și că marțea și joia ai după-amiezile libere.",
-    actions: ["Adaugă în plan", "Nu mă interesează"],
+    eyebrow: "Idea of the week · Income",
+    title: "2 more hours of tutoring a week",
+    text: "At 50 RON an hour, you earn about 400 RON more a month.",
+    effects: ["The safety fund is full in December, not March.", "The money for the UX design course is ready in February."],
+    why: "On 28 October you said you tutor maths and have Tuesday and Thursday afternoons free.",
+    actions: ["Add to plan", "Not interested"],
   },
   groups: [
     {
-      title: "Venituri",
+      title: "Income",
       items: [
         {
           icon: "calendar",
-          title: "Jobul de vară din 2027",
-          text: "Vara aceasta ai câștigat 2.400 lei, iar în octombrie mai aveai 500. Dacă împarți suma pe cele 9 luni de cursuri, ai circa 270 lei în plus în fiecare lună.",
-          status: "Revin cu un plan în mai",
+          title: "Your 2027 summer job",
+          text: "This summer you earned 2,400 RON, and in October you still had 500. If you spread the amount over the 9 months of classes, you get about 270 RON more each month.",
+          status: "I'll come back with a plan in May",
         },
       ],
     },
     {
-      title: "Educație financiară gratuită",
-      note: "de la Raiffeisen Bank",
+      title: "Free financial education",
+      note: "from Raiffeisen Bank",
       items: [
         {
           icon: "book",
-          title: "5 sfaturi financiare pentru cei care se întrețin singuri",
-          text: "Articol din ghidul „Despre bani 1:1” al băncii, despre bugetul celor care se descurcă pe cont propriu.",
-          link: { href: bankPages.selfSupport, label: "Citește pe raiffeisen.ro" },
+          title: "5 money tips for people who support themselves",
+          text: "An article from the bank's “Despre bani 1:1” guide, about budgeting when you get by on your own.",
+          link: { href: bankPages.selfSupport, label: "Read on raiffeisen.ro" },
         },
         {
           icon: "shield",
-          title: "Fondul de urgență",
-          text: "De ce contează o rezervă și cum o construiești treptat. Se potrivește cu obiectivul tău de acum.",
-          link: { href: bankPages.emergencyFund, label: "Citește pe raiffeisen.ro" },
+          title: "The emergency fund",
+          text: "Why a reserve matters and how to build it step by step. It fits your current goal.",
+          link: { href: bankPages.emergencyFund, label: "Read on raiffeisen.ro" },
         },
         {
           icon: "target",
           title: "Money Strike",
-          text: "Hartă de joc gratuită pentru educație financiară. Modul de învățare are 10 runde și îți arată la final dacă ești Econom, Impulsiv sau Echilibrat.",
-          link: { href: bankPages.moneyStrike, label: "Despre joc pe raiffeisen.ro" },
+          text: "A free game map for financial education. The learning mode has 10 rounds and shows you at the end whether you are a Saver, Impulsive or Balanced.",
+          link: { href: bankPages.moneyStrike, label: "About the game on raiffeisen.ro" },
         },
         {
           icon: "lock",
           title: "Start în Investiții",
-          text: "5 cursuri interactive în aplicație despre cum funcționează investițiile. Ți-l arăt după ce completezi fondul de siguranță și nu îți recomand fonduri.",
-          link: { href: bankPages.startInvestitii, label: "Despre program pe raiffeisen.ro" },
-          status: "După fondul de siguranță",
+          text: "5 interactive in-app courses on how investing works. I'll show it to you once your safety fund is full, and I don't recommend funds.",
+          link: { href: bankPages.startInvestitii, label: "About the programme on raiffeisen.ro" },
+          status: "After the safety fund",
         },
       ],
     },
     {
-      title: "Oportunități",
+      title: "Opportunities",
       items: [
         {
           icon: "calendar",
-          title: "Bursa pentru semestrul al II-lea",
-          text: "Termenul pentru dosar e pe 20 februarie, din calendarul tău. Îți amintesc cu o săptămână înainte.",
-          status: "Memento pe 13 februarie",
+          title: "Scholarship for the second semester",
+          text: "The application deadline is 20 February, from your calendar. I'll remind you a week before.",
+          status: "Reminder on 13 February",
         },
       ],
     },
   ],
-  rules: "Ideile sunt orientative și le poți ascunde oricând. Nu îți promit venituri și nu îți propun pariuri, cripto sau scheme de câștig rapid.",
+  rules: "Ideas are indicative and you can hide them any time. I don't promise income and I never suggest betting, crypto or get-rich-quick schemes.",
 };
 
 // type: "divider", "coach", "me", "proposal" or "service" (a card from `services`, by id).
 export const chat = [
-  { type: "divider", text: "28 octombrie" },
+  { type: "divider", text: "28 October" },
   {
     type: "coach",
-    text: "În iulie, august și septembrie, banii s-au terminat cu 5–8 zile înainte de 1. În octombrie, cu bursa, mai ai 380 lei în cont cu 3 zile înainte de 1. Bursa vine sigur în fiecare lună de cursuri?",
+    text: "In July, August and September, your money ran out 5–8 days before the 1st. In October, with the scholarship, you still had 380 RON in your account 3 days before the 1st. Does the scholarship come every month of classes for sure?",
   },
-  { type: "me", text: "Doar dacă am media peste 9. Nu e sigur." },
-  { type: "coach", text: "Atunci fac planul fără ea și o adaug doar după ce intră. Banii de la familie și meditațiile acoperă necesarele, de circa 1.200 lei pe lună." },
+  { type: "me", text: "Only if my average is above 9. It's not certain." },
+  { type: "coach", text: "Then I'll make the plan without it and add it only once it comes in. The money from family and tutoring covers the essentials, about 1,200 RON a month." },
   {
     type: "proposal",
-    title: "Regulă nouă: 10% deoparte",
-    lines: ["La fiecare încasare de peste 100 lei îți propun să muți 10% în fondul de siguranță.", "Muți banii doar după ce confirmi.", "Ținta: 1.200 lei, adică o lună de necesare."],
-    done: "Aprobat pe 28 octombrie",
+    title: "New rule: 10% aside",
+    lines: ["For every income over 100 RON, I'll suggest moving 10% to the safety fund.", "The money moves only after you confirm.", "Target: 1,200 RON, i.e. one month of essentials."],
+    done: "Approved on 28 October",
   },
-  { type: "me", text: "Pot să economisesc și automat, din sume mici?" },
+  { type: "me", text: "Can I also save automatically, in small amounts?" },
   {
     type: "coach",
-    text: "Da. Banca are un serviciu care pune deoparte un procent din fiecare plată cu cardul. Cât timp banii nu îți ajung până la 1, ți-l propun la 1%.",
+    text: "Yes. The bank has a service that sets aside a percentage of every card payment. As long as your money doesn't last until the 1st, I suggest 1%.",
   },
   { type: "service", id: "savingbox" },
-  { type: "divider", text: "Azi" },
-  { type: "me", text: "Mai pot comanda mâncare diseară?" },
+  { type: "divider", text: "Today" },
+  { type: "me", text: "Can I still order food tonight?" },
   {
     type: "coach",
-    text: "La Livrări de mâncare mai ai 34 lei din 120. O comandă obișnuită, de circa 40 lei, trece puțin peste limită. Decizia e a ta.",
+    text: "You have 34 RON of 120 left for Food delivery. A usual order, about 40 RON, goes slightly over the limit. It's your call.",
   },
 ];
 
 // src: "obs" (observat), "said" (spus), "agreed" (stabilit), "est" (estimat).
 export const profile = {
-  statements: [{ icon: "card", name: "Cont curent RON", note: "nov. 2025 – oct. 2026, importat din aplicație · se actualizează lunar", status: "Importat" }],
+  statements: [{ icon: "card", name: "RON current account", note: "Nov 2025 – Oct 2026, imported from the app · updated monthly", status: "Imported" }],
   about: [
-    { label: "Prenume", value: "Matei", src: "obs" },
-    { label: "Vârstă", value: "18–24 ani", src: "obs" },
-    { label: "Ocupație", value: "Student, anul II", src: "said" },
-    { label: "Locuință", value: "Cămin studențesc", src: "obs" },
-    { label: "Istoric analizat", value: "12 luni, nov. 2025 – oct. 2026", src: "obs" },
+    { label: "First name", value: "Matei", src: "obs" },
+    { label: "Age", value: "18–24 years", src: "obs" },
+    { label: "Occupation", value: "Student, 2nd year", src: "said" },
+    { label: "Housing", value: "Student dorm", src: "obs" },
+    { label: "History analysed", value: "12 months, Nov 2025 – Oct 2026", src: "obs" },
   ],
   money: [
-    { label: "Bani de la familie", value: "1.200 lei, pe 1 ale lunii", src: "obs" },
-    { label: "Bursă", value: "circa 700 lei în lunile de cursuri, doar cu media peste 9", src: "said" },
-    { label: "Meditații", value: "150–450 lei pe lună", src: "said" },
-    { label: "Minimul lunar", value: "1.200 lei: cămin, alimente, transport, telefon, studii", src: "est" },
-    { label: "Perioada de buget", value: "Din 1 până la sfârșitul lunii, după banii de la familie", src: "agreed" },
-    { label: "Regula de economisire", value: "10% din fiecare încasare de peste 100 lei", src: "agreed" },
+    { label: "Money from family", value: "1,200 RON, on the 1st of the month", src: "obs" },
+    { label: "Scholarship", value: "about 700 RON in months with classes, only with an average above 9", src: "said" },
+    { label: "Tutoring", value: "150–450 RON a month", src: "said" },
+    { label: "Monthly minimum", value: "1,200 RON: dorm, groceries, transport, phone, studies", src: "est" },
+    { label: "Budget period", value: "From the 1st to the end of the month, following the money from family", src: "agreed" },
+    { label: "Saving rule", value: "10% of every income over 100 RON", src: "agreed" },
   ],
   income: 1500,
   spending: [
-    { name: "Alimente", lei: 720 },
-    { name: "Cămin", lei: 350 },
-    { name: "Livrări de mâncare", lei: 210 },
-    { name: "Restaurante", lei: 190 },
-    { name: "Cafenele", lei: 90 },
+    { name: "Groceries", lei: 720 },
+    { name: "Dorm", lei: 350 },
+    { name: "Food delivery", lei: 210 },
+    { name: "Restaurants", lei: 190 },
+    { name: "Cafés", lei: 90 },
     { name: "Taxi", lei: 70 },
-    { name: "Abonamente", lei: 60 },
-    { name: "Studii", lei: 60 },
+    { name: "Subscriptions", lei: 60 },
+    { name: "Studies", lei: 60 },
     { name: "Transport", lei: 50 },
-    { name: "Telefon și internet", lei: 25 },
+    { name: "Phone and internet", lei: 25 },
   ],
   observed: [
-    { text: "În iulie, august și septembrie, fără bursă, banii s-au terminat cu 5–8 zile înainte de 1", src: "obs" },
-    { text: "Bursa a intrat în martie–iunie și în octombrie, în jur de 15 ale lunii", src: "obs" },
-    { text: "Meditații: 2–3 plăți pe lună, de la aceleași persoane", quote: "dau meditații la matematică", src: "said" },
+    { text: "In July, August and September, without a scholarship, the money ran out 5–8 days before the 1st", src: "obs" },
+    { text: "The scholarship came in March–June and in October, around the 15th of the month", src: "obs" },
+    { text: "Tutoring: 2–3 payments a month, from the same people", quote: "I tutor maths", src: "said" },
   ],
   subscriptions: [
-    { name: "LinguaPlus", lei: 45, note: "Aplicația deschisă de 2 ori în octombrie · 135 lei plătiți din septembrie", status: "O păstrezi până la examenul din ianuarie" },
+    { name: "LinguaPlus", lei: 45, note: "App opened twice in October · 135 RON paid since September", status: "You keep it until the January exam" },
     { name: "MuzicaPlus Student", lei: 15 },
   ],
   talk: [
-    { label: "Ton", value: "Prietenos, fără predici" },
-    { label: "Notificări", value: "Cel mult una pe zi" },
-    { label: "Fără notificări", value: "23:00 – 09:00" },
-    { label: "Rezumat săptămânal", value: "Duminică, la 20:00" },
+    { label: "Tone", value: "Friendly, no lecturing" },
+    { label: "Notifications", value: "At most one a day" },
+    { label: "No notifications", value: "23:00 – 09:00" },
+    { label: "Weekly summary", value: "Sunday, at 20:00" },
   ],
   permissions: [
-    { id: "tx", label: "Extrase de cont", hint: "Contul curent · 12 luni", on: true },
-    { id: "live", label: "Plăți cu cardul, în timp real", hint: "Pentru mesajele despre bugete", on: true },
-    { id: "screen", label: "Screen Time", hint: "Doar aplicația LinguaPlus", on: true },
-    { id: "calendar", label: "Google Calendar", hint: "Doar zilele de naștere și termenele marcate de tine", on: true },
-    { id: "contacts", label: "Contacte", hint: "Nu e folosit", on: false },
-    { id: "health", label: "Health", hint: "Nu e folosit", on: false },
+    { id: "tx", label: "Account statements", hint: "Current account · 12 months", on: true },
+    { id: "live", label: "Card payments, in real time", hint: "For messages about budgets", on: true },
+    { id: "screen", label: "Screen Time", hint: "Only the LinguaPlus app", on: true },
+    { id: "calendar", label: "Google Calendar", hint: "Only birthdays and the deadlines you mark", on: true },
+    { id: "contacts", label: "Contacts", hint: "Not used", on: false },
+    { id: "health", label: "Health", hint: "Not used", on: false },
   ],
-  unknown: ["Cât costă anul următor", "Planuri pentru vară", "Datorii la prieteni"],
+  unknown: ["What next year costs", "Summer plans", "Debts to friends"],
 };
 
 // Service cards (components/services.jsx): facts from data/bank.js plus why each one appears for Matei.
 // No credit for this profile: no overdraft, credit card or instalments (design/coach-students.md §7).
 export const services = {
   on: true,
-  hint: "Cel mult una pe săptămână, doar pentru nevoi pe care le-ai spus sau confirmat. Fără credite.",
+  hint: "At most one a week, only for needs you have mentioned or confirmed. No loans.",
   items: [
     {
       ...bankServices.savingbox,
       id: "savingbox",
       state: "proposed",
-      status: "Propunere",
+      status: "Proposal",
       helps:
-        "La 1%, din circa 1.500 lei plătiți lunar cu cardul, pui deoparte automat circa 15 lei pe lună. Până pe 30 noiembrie înseamnă circa 6 lei, deci nu simți diferența.",
-      why: "Pe 28 octombrie ai întrebat cum poți economisi automat, din sume mici. Îți propun 1% cât timp banii nu îți ajung până la 1.",
-      without: "Fără serviciu rămâne regula ta de 10% la fiecare încasare, pe care o confirmi de fiecare dată.",
-      actions: ["Setez în aplicație", "Nu acum", "Nu-mi mai propune"],
+        "At 1%, out of about 1,500 RON paid by card each month, you automatically set aside about 15 RON a month. Until 30 November that's about 6 RON, so you won't feel the difference.",
+      why: "On 28 October you asked how you could save automatically, in small amounts. I suggest 1% as long as your money doesn't last until the 1st.",
+      without: "Without the service, your 10% rule on every income stays, and you confirm it each time.",
+      actions: ["Set it up in the app", "Not now", "Don't suggest it again"],
     },
     {
       ...bankServices.savings,
       id: "savings",
       state: "active",
-      status: "Activ",
-      helps: "Aici stă fondul de siguranță: 650 din 1.200 lei. Banii sunt separați de cei de cheltuit, dar îi ai la îndemână dacă apare o urgență.",
-      why: "Pe 28 octombrie ai spus că vrei un fond pentru situații neprevăzute.",
-      without: "Fără cont de economii, fondul ar sta în contul curent, amestecat cu banii de cheltuit.",
+      status: "Active",
+      helps: "This is where the safety fund lives: 650 of 1,200 RON. The money is kept apart from your spending money, but it's at hand if an emergency comes up.",
+      why: "On 28 October you said you want a fund for unexpected situations.",
+      without: "Without a savings account, the fund would sit in the current account, mixed with your spending money.",
     },
     {
       ...bankServices.zeroSimplu,
       id: "zero-simplu",
       state: "active",
-      status: "Pachetul tău",
-      helps: "Între 18 și 24 de ani nu plătești nimic lunar pentru cont și card, fără condiții. Banii de la familie și din meditații rămân întregi pentru tine.",
-      whyLabel: "De ce îți arăt asta",
-      why: "Îl ai deja. Îți arăt ce include, ca să nu plătești pentru ceva ce primești gratuit.",
+      status: "Your package",
+      helps: "From age 18 to 24 you pay nothing monthly for the account and card, with no conditions. The money from family and tutoring stays whole for you.",
+      whyLabel: "Why I'm showing you this",
+      why: "You already have it. I'm showing what it includes, so you don't pay for something you get for free.",
     },
   ],
 };
@@ -360,12 +360,12 @@ export const services = {
 export const pickerCategories = ["alimente", "cafenele", "livrari", "iesiri", "taxi", "cumparaturi", "abonamente", "studii", "transport", "telefon", "locuinta"];
 
 export const spending = {
-  period: "1 – 12 noiembrie",
-  title: "Cheltuieli variabile din 1 noiembrie",
+  period: "1 – 12 November",
+  title: "Variable spending since 1 November",
   total: 611,
   fixed: 460,
-  fixedNote: "căminul, transportul și abonamentele",
-  compare: "Cu 85 lei mai mult față de aceeași perioadă din octombrie",
+  fixedNote: "dorm, transport and subscriptions",
+  compare: "85 RON more than the same period in October",
   parts: [
     { id: "alimente", lei: 297 },
     { id: "cafenele", lei: 40 },
@@ -376,28 +376,28 @@ export const spending = {
   ],
 };
 
-export const review = { id: "m13", title: "1 plată de verificat", text: "PLAYNET*STORE · 28 lei · sâmbătă, 7 nov." };
+export const review = { id: "m13", title: "1 payment to check", text: "PLAYNET*STORE · 28 RON · Sat, 7 Nov" };
 
-const CANTINA = { merchant: "Cantina Studențească", raw: "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA", name: "Prânz la cantină", category: "alimente", lei: -18, renamed: true, rule: true, status: "Finalizată", history: "Ultimele 3 luni: 41 de plăți, 738 lei" };
-const COFFEE = { merchant: "Cafeteria Campus", raw: "CAFETERIA CAMPUS SRL CLUJ-NAPOCA", name: "Cafea", category: "cafenele", lei: -8, renamed: true, rule: true, tags: ["facultate"], status: "Finalizată", history: "Ultimele 3 luni: 24 de plăți, 192 lei" };
-const MARKET = { merchant: "Market Express", raw: "MARKET EXPRESS 0217 CLUJ-NAPOCA", name: "Market Express", category: "alimente", status: "Finalizată" };
-const FUND = { merchant: "Către Super Acces Plus", raw: "TRANSFER CONT PROPRIU · FOND SIGURANTA", name: "Fond de siguranță", category: "economii", renamed: true, status: "Finalizată" };
-const TUTORING = { merchant: "Transfer de la o persoană", raw: "TRANSFER PRIMIT · MEDITATII", name: "Meditații", category: "venit", lei: 150, renamed: true, status: "Finalizată" };
+const CANTINA = { merchant: "Cantina Studențească", raw: "CANTINA STUDENTEASCA 2 CLUJ-NAPOCA", name: "Lunch at the canteen", category: "alimente", lei: -18, renamed: true, rule: true, status: "Completed", history: "Last 3 months: 41 payments, 738 RON" };
+const COFFEE = { merchant: "Cafeteria Campus", raw: "CAFETERIA CAMPUS SRL CLUJ-NAPOCA", name: "Coffee", category: "cafenele", lei: -8, renamed: true, rule: true, tags: ["uni"], status: "Completed", history: "Last 3 months: 24 payments, 192 RON" };
+const MARKET = { merchant: "Market Express", raw: "MARKET EXPRESS 0217 CLUJ-NAPOCA", name: "Market Express", category: "alimente", status: "Completed" };
+const FUND = { merchant: "To Super Acces Plus", raw: "TRANSFER CONT PROPRIU · FOND SIGURANTA", name: "Safety fund", category: "economii", renamed: true, status: "Completed" };
+const TUTORING = { merchant: "Transfer from a person", raw: "TRANSFER PRIMIT · MEDITATII", name: "Tutoring", category: "venit", lei: 150, renamed: true, status: "Completed" };
 
 // Each day lists its payments newest first; `total` is that day's spending without savings and income.
 export const days = [
   {
-    label: "Azi",
-    date: "joi, 12 nov.",
+    label: "Today",
+    date: "Thu, 12 Nov",
     total: 8,
-    items: [{ ...COFFEE, id: "m1", time: "08:45", note: "Înainte de cursul de la 9", status: "În așteptare" }],
+    items: [{ ...COFFEE, id: "m1", time: "08:45", note: "Before the 9 o'clock class", status: "Pending" }],
   },
   {
-    label: "Ieri",
-    date: "miercuri, 11 nov.",
+    label: "Yesterday",
+    date: "Wed, 11 Nov",
     total: 42,
     items: [
-      { id: "m2", time: "22:40", merchant: "TaxiGo", raw: "TAXIGO RIDE CLUJ-NAPOCA", name: "TaxiGo", category: "taxi", lei: -16, status: "Finalizată" },
+      { id: "m2", time: "22:40", merchant: "TaxiGo", raw: "TAXIGO RIDE CLUJ-NAPOCA", name: "TaxiGo", category: "taxi", lei: -16, status: "Completed" },
       { ...FUND, id: "m3", time: "19:32", lei: -15 },
       { ...TUTORING, id: "m4", time: "19:30" },
       { ...CANTINA, id: "m5", time: "13:00" },
@@ -405,18 +405,18 @@ export const days = [
     ],
   },
   {
-    label: "Marți",
-    date: "10 nov.",
+    label: "Tuesday",
+    date: "10 Nov",
     total: 107,
     items: [
-      { id: "m7", time: "21:30", merchant: "Pizzeria Napoca", raw: "PIZZERIA NAPOCA SRL CLUJ-NAPOCA", name: "Pizza cu colegii", category: "iesiri", lei: -52, renamed: true, tags: ["prieteni"], status: "Finalizată" },
+      { id: "m7", time: "21:30", merchant: "Pizzeria Napoca", raw: "PIZZERIA NAPOCA SRL CLUJ-NAPOCA", name: "Pizza with classmates", category: "iesiri", lei: -52, renamed: true, tags: ["friends"], status: "Completed" },
       { ...MARKET, id: "m8", time: "19:15", lei: -37 },
       { ...CANTINA, id: "m9", time: "13:00" },
     ],
   },
   {
-    label: "Luni",
-    date: "9 nov.",
+    label: "Monday",
+    date: "9 Nov",
     total: 26,
     items: [
       { ...CANTINA, id: "m10", time: "13:05" },
@@ -424,33 +424,33 @@ export const days = [
     ],
   },
   {
-    label: "Duminică",
-    date: "8 nov.",
+    label: "Sunday",
+    date: "8 Nov",
     total: 41,
-    items: [{ id: "m12", time: "20:40", merchant: "LivrareRapidă", raw: "LIVRARERAPIDA*COMANDA 90544", name: "LivrareRapidă", category: "livrari", lei: -41, status: "Finalizată" }],
+    items: [{ id: "m12", time: "20:40", merchant: "LivrareRapidă", raw: "LIVRARERAPIDA*COMANDA 90544", name: "LivrareRapidă", category: "livrari", lei: -41, status: "Completed" }],
   },
   {
-    label: "Sâmbătă",
-    date: "7 nov.",
+    label: "Saturday",
+    date: "7 Nov",
     total: 80,
     items: [
-      { id: "m13", time: "16:20", merchant: "PLAYNET*STORE", raw: "PLAYNET*STORE 7781 ONLINE", name: "", category: "nesortat", lei: -28, needsReview: true, suggestion: "cumparaturi", status: "Finalizată" },
+      { id: "m13", time: "16:20", merchant: "PLAYNET*STORE", raw: "PLAYNET*STORE 7781 ONLINE", name: "", category: "nesortat", lei: -28, needsReview: true, suggestion: "cumparaturi", status: "Completed" },
       { ...MARKET, id: "m14", time: "12:00", lei: -52 },
     ],
   },
   {
-    label: "Vineri",
-    date: "6 nov.",
+    label: "Friday",
+    date: "6 Nov",
     total: 110,
     items: [
-      { id: "m15", time: "23:50", merchant: "TaxiGo", raw: "TAXIGO RIDE CLUJ-NAPOCA", name: "TaxiGo", category: "taxi", lei: -24, status: "Finalizată" },
-      { id: "m16", time: "22:00", merchant: "Studio Pub", raw: "STUDIO PUB SRL CLUJ-NAPOCA", name: "Ieșire cu prietenii", category: "iesiri", lei: -68, renamed: true, tags: ["prieteni"], status: "Finalizată" },
+      { id: "m15", time: "23:50", merchant: "TaxiGo", raw: "TAXIGO RIDE CLUJ-NAPOCA", name: "TaxiGo", category: "taxi", lei: -24, status: "Completed" },
+      { id: "m16", time: "22:00", merchant: "Studio Pub", raw: "STUDIO PUB SRL CLUJ-NAPOCA", name: "Night out with friends", category: "iesiri", lei: -68, renamed: true, tags: ["friends"], status: "Completed" },
       { ...CANTINA, id: "m17", time: "13:00" },
     ],
   },
   {
-    label: "Joi",
-    date: "5 nov.",
+    label: "Thursday",
+    date: "5 Nov",
     total: 26,
     items: [
       { ...CANTINA, id: "m18", time: "13:00" },
@@ -458,95 +458,95 @@ export const days = [
     ],
   },
   {
-    label: "Miercuri",
-    date: "4 nov.",
+    label: "Wednesday",
+    date: "4 Nov",
     total: 63,
     items: [
-      { id: "m20", time: "21:10", merchant: "LivrareRapidă", raw: "LIVRARERAPIDA*COMANDA 89917", name: "LivrareRapidă", category: "livrari", lei: -45, status: "Finalizată" },
+      { id: "m20", time: "21:10", merchant: "LivrareRapidă", raw: "LIVRARERAPIDA*COMANDA 89917", name: "LivrareRapidă", category: "livrari", lei: -45, status: "Completed" },
       { ...FUND, id: "m21", time: "19:02", lei: -15 },
       { ...TUTORING, id: "m22", time: "19:00" },
       { ...CANTINA, id: "m23", time: "13:00" },
     ],
   },
   {
-    label: "Marți",
-    date: "3 nov.",
+    label: "Tuesday",
+    date: "3 Nov",
     total: 86,
     items: [
       { ...CANTINA, id: "m24", time: "13:05" },
       { ...COFFEE, id: "m25", time: "08:40" },
-      { id: "m26", time: "06:00", merchant: "LinguaPlus", raw: "LINGUAPLUS.COM SUBSCRIPTION", name: "LinguaPlus", category: "abonamente", lei: -45, recurring: true, status: "Finalizată" },
-      { id: "m27", time: "06:00", merchant: "MuzicaPlus", raw: "MUZICAPLUS STUDENT", name: "MuzicaPlus Student", category: "abonamente", lei: -15, recurring: true, status: "Finalizată" },
+      { id: "m26", time: "06:00", merchant: "LinguaPlus", raw: "LINGUAPLUS.COM SUBSCRIPTION", name: "LinguaPlus", category: "abonamente", lei: -45, recurring: true, status: "Completed" },
+      { id: "m27", time: "06:00", merchant: "MuzicaPlus", raw: "MUZICAPLUS STUDENT", name: "MuzicaPlus Student", category: "abonamente", lei: -15, recurring: true, status: "Completed" },
     ],
   },
   {
-    label: "Luni",
-    date: "2 nov.",
+    label: "Monday",
+    date: "2 Nov",
     total: 418,
     items: [
       { ...CANTINA, id: "m28", time: "13:10" },
-      { id: "m29", time: "09:20", merchant: "TransUrban", raw: "TRANSURBAN ABONAMENT STUDENT", name: "Abonament transport", category: "transport", lei: -50, recurring: true, renamed: true, status: "Finalizată" },
-      { id: "m30", time: "09:00", merchant: "Cămin studențesc", raw: "CAMIN STUDENTESC C4 · TAXA NOIEMBRIE", name: "Cămin", category: "locuinta", lei: -350, recurring: true, renamed: true, status: "Finalizată" },
+      { id: "m29", time: "09:20", merchant: "TransUrban", raw: "TRANSURBAN ABONAMENT STUDENT", name: "Transport pass", category: "transport", lei: -50, recurring: true, renamed: true, status: "Completed" },
+      { id: "m30", time: "09:00", merchant: "Student dorm", raw: "CAMIN STUDENTESC C4 · TAXA NOIEMBRIE", name: "Dorm", category: "locuinta", lei: -350, recurring: true, renamed: true, status: "Completed" },
     ],
   },
   {
-    label: "Duminică",
-    date: "1 nov.",
+    label: "Sunday",
+    date: "1 Nov",
     total: 64,
     items: [
       { ...MARKET, id: "m31", time: "18:30", lei: -64 },
       { ...FUND, id: "m32", time: "10:05", lei: -120 },
-      { id: "m33", time: "10:02", merchant: "Transfer de la o persoană", raw: "TRANSFER PRIMIT · BANI NOIEMBRIE", name: "Bani de la familie", category: "venit", lei: 1200, recurring: true, renamed: true, status: "Finalizată" },
+      { id: "m33", time: "10:02", merchant: "Transfer from a person", raw: "TRANSFER PRIMIT · BANI NOIEMBRIE", name: "Money from family", category: "venit", lei: 1200, recurring: true, renamed: true, status: "Completed" },
     ],
   },
 ];
 
-export const tagSuggestions = ["facultate", "prieteni", "weekend", "cămin"];
+export const tagSuggestions = ["uni", "friends", "weekend", "dorm"];
 
 // What the coach adds under the category picker, per category.
 export const categoryNotes = {
-  alimente: "Necesar: intră în minimul lunar, înaintea cheltuielilor opționale.",
-  cafenele: "Opțional: intră la bugetul Cafenele, 60 lei pe lună.",
-  nesortat: "Nu recunosc comerciantul. Pare o plată online: alege categoria, ca plata să fie inclusă în bugetul potrivit.",
-  locuinta: "Necesar: căminul, plătit o dată pe lună.",
-  transport: "Necesar: abonamentul de student.",
-  abonamente: "Opțional: se plătește lunar.",
-  economii: "Economii: nu se adună la cheltuieli.",
-  venit: "Încasare: nu se adună la cheltuieli.",
+  alimente: "Essential: part of the monthly minimum, before optional spending.",
+  cafenele: "Optional: counts towards the Cafés budget, 60 RON a month.",
+  nesortat: "I don't recognise the merchant. It looks like an online payment: pick the category so the payment goes into the right budget.",
+  locuinta: "Essential: the dorm, paid once a month.",
+  transport: "Essential: the student pass.",
+  abonamente: "Optional: paid monthly.",
+  economii: "Savings: not added to spending.",
+  venit: "Income: not added to spending.",
 };
 
 // ---------- activation (shapes as in activation.js) ----------
 
 export const statements = {
   ...dariaStatements,
-  account: { name: "Cont curent RON", iban: "RO45 RZBR •••• 5678" },
-  imported: { title: "12 extrase lunare importate", meta: "nov. 2025 – oct. 2026 · 1.104 plăți · se actualizează lunar" },
+  account: { name: "RON current account", iban: "RO45 RZBR •••• 5678" },
+  imported: { title: "12 monthly statements imported", meta: "Nov 2025 – Oct 2026 · 1,104 payments · updated monthly" },
   files: [],
 };
 
 export const calendar = {
   ...dariaCalendar,
   found: [
-    { day: "dec.", month: "2026", title: "3 zile de naștere", note: "Din contactele tale Google" },
-    { day: "18", month: "ian.", title: "Sesiunea de iarnă", note: "Eveniment marcat de tine" },
-    { day: "20", month: "feb.", title: "Termen pentru dosarul de bursă", note: "Eveniment marcat de tine" },
+    { day: "Dec", month: "2026", title: "3 birthdays", note: "From your Google contacts" },
+    { day: "18", month: "Jan", title: "Winter exam session", note: "Event you marked" },
+    { day: "20", month: "Feb", title: "Scholarship application deadline", note: "Event you marked" },
   ],
   gift: {
-    question: "Cât vrei să dai de obicei pe un cadou?",
+    question: "How much do you usually spend on a gift?",
     groups: [
-      { label: "Pentru prieteni", options: ["30 lei", "50 lei", "100 lei", "Altă sumă"], selected: "50 lei" },
-      { label: "Pentru familie", options: ["50 lei", "100 lei", "150 lei", "Altă sumă"], selected: "50 lei" },
+      { label: "For friends", options: ["30 RON", "50 RON", "100 RON", "Other amount"], selected: "50 RON" },
+      { label: "For family", options: ["50 RON", "100 RON", "150 RON", "Other amount"], selected: "50 RON" },
     ],
-    result: "Pentru cele 3 zile de naștere din decembrie: aproximativ 150 lei.",
+    result: "For the 3 birthdays in December: about 150 RON.",
   },
 };
 
 export const apps = {
   ...dariaApps,
-  found: "Am găsit 2 abonamente în extrase.",
+  found: "I found 2 subscriptions in your statements.",
   items: [
-    { name: "LinguaPlus", lei: 45, note: "Plătit lunar din septembrie", on: true },
-    { name: "MuzicaPlus Student", lei: 15, note: "Plătit lunar", on: false },
+    { name: "LinguaPlus", lei: 45, note: "Paid monthly since September", on: true },
+    { name: "MuzicaPlus Student", lei: 15, note: "Paid monthly", on: false },
   ],
 };
 
@@ -554,104 +554,104 @@ export const apps = {
 export const questions = [
   {
     id: "venituri",
-    title: "Din ce surse primești bani?",
-    hint: "Poți alege mai multe. Așa știu pe ce bani te poți baza.",
+    title: "Where does your money come from?",
+    hint: "You can choose several. This way I know which money you can count on.",
     options: [
-      { label: "Bani de la familie", selected: true },
-      { label: "Bursă", selected: true },
-      { label: "Meditații sau proiecte", selected: true },
-      { label: "Job part-time" },
-      { label: "Job de vară", selected: true },
-      { label: "Altceva" },
+      { label: "Money from family", selected: true },
+      { label: "Scholarship", selected: true },
+      { label: "Tutoring or projects", selected: true },
+      { label: "Part-time job" },
+      { label: "Summer job", selected: true },
+      { label: "Something else" },
     ],
     fields: [
-      { label: "Bani de la familie pe lună", value: "1200", suffix: "lei", numeric: true },
-      { label: "Bursa e sigură?", type: "select", value: "Nu, depinde de medie", options: ["Da", "Nu, depinde de medie", "Nu primesc bursă"] },
-      { label: "Meditații pe lună, aproximativ", value: "300", suffix: "lei", numeric: true },
-      { label: "Rămas din jobul de vară", value: "500", suffix: "lei", numeric: true },
+      { label: "Money from family per month", value: "1200", suffix: "RON", numeric: true },
+      { label: "Is the scholarship certain?", type: "select", value: "No, it depends on my grades", options: ["Yes", "No, it depends on my grades", "I don't get a scholarship"] },
+      { label: "Tutoring per month, roughly", value: "300", suffix: "RON", numeric: true },
+      { label: "Left from the summer job", value: "500", suffix: "RON", numeric: true },
     ],
   },
   {
     id: "necesare",
-    title: "Ce cheltuieli trebuie acoperite în fiecare lună?",
-    hint: "Din ele calculez minimul lunar. Restul sunt cheltuieli opționale.",
+    title: "Which costs must be covered every month?",
+    hint: "From these I calculate the monthly minimum. The rest is optional spending.",
     options: [
-      { label: "Cămin sau chirie", selected: true },
-      { label: "Alimente", selected: true },
+      { label: "Dorm or rent", selected: true },
+      { label: "Groceries", selected: true },
       { label: "Transport", selected: true },
-      { label: "Telefon și internet", selected: true },
-      { label: "Taxe și materiale de studiu", selected: true },
-      { label: "Sănătate" },
+      { label: "Phone and internet", selected: true },
+      { label: "Fees and study materials", selected: true },
+      { label: "Health" },
     ],
-    fields: [{ label: "Cămin pe lună", value: "350", suffix: "lei", numeric: true }],
+    fields: [{ label: "Dorm per month", value: "350", suffix: "RON", numeric: true }],
   },
   {
     id: "obiective",
-    title: "Pentru ce ai vrea să economisești?",
-    hint: "Poți alege mai multe.",
+    title: "What would you like to save for?",
+    hint: "You can choose several.",
     options: [
-      { label: "Un fond de siguranță", selected: true },
-      { label: "Un curs", selected: true },
-      { label: "Echipament pentru facultate" },
-      { label: "Erasmus sau o călătorie" },
-      { label: "Nimic anume acum" },
+      { label: "A safety fund", selected: true },
+      { label: "A course", selected: true },
+      { label: "Equipment for uni" },
+      { label: "Erasmus or a trip" },
+      { label: "Nothing in particular right now" },
     ],
     fields: [
-      { label: "Ce curs?", value: "UX design" },
-      { label: "Cât costă?", value: "900", suffix: "lei", numeric: true },
-      { label: "Când începe?", type: "select", value: "Martie 2027", options: ["Ianuarie 2027", "Martie 2027", "Octombrie 2027", "Nu știu încă"] },
+      { label: "Which course?", value: "UX design" },
+      { label: "How much does it cost?", value: "900", suffix: "RON", numeric: true },
+      { label: "When does it start?", type: "select", value: "March 2027", options: ["January 2027", "March 2027", "October 2027", "I don't know yet"] },
     ],
   },
   {
     id: "idei",
-    title: "Te interesează idei de dezvoltare?",
-    hint: "Cel mult una pe săptămână. Le poți opri oricând din Profil.",
+    title: "Are you interested in ideas to grow?",
+    hint: "At most one a week. You can turn them off any time in Profile.",
     options: [
-      { label: "Venituri suplimentare", selected: true },
-      { label: "Cursuri și educație financiară", selected: true },
-      { label: "Burse și oportunități", selected: true },
-      { label: "Nu acum" },
+      { label: "Extra income", selected: true },
+      { label: "Courses and financial education", selected: true },
+      { label: "Scholarships and opportunities", selected: true },
+      { label: "Not now" },
     ],
-    fields: [{ label: "Ce ai putea face contra cost?", type: "textarea", value: "Meditații la matematică, marțea și joia după-amiaza." }],
+    fields: [{ label: "What could you do for pay?", type: "textarea", value: "Maths tutoring, on Tuesday and Thursday afternoons." }],
   },
   {
     id: "notificari",
-    title: "Cât de des vrei să-ți scriu și când să nu te deranjez?",
-    options: [{ label: "Doar când e important" }, { label: "Cel mult o dată pe zi", selected: true }, { label: "Doar rezumatul săptămânal" }],
+    title: "How often should I write to you, and when should I not disturb you?",
+    options: [{ label: "Only when it's important" }, { label: "At most once a day", selected: true }, { label: "Only the weekly summary" }],
     fields: [
-      { label: "Fără notificări de la", value: "23:00" },
-      { label: "până la", value: "09:00" },
-      { label: "Rezumatul săptămânal", type: "select", value: "Duminică, la 20:00", options: ["Duminică, la 20:00", "Luni, la 08:00", "Vineri, la 18:00", "Fără rezumat"] },
+      { label: "No notifications from", value: "23:00" },
+      { label: "until", value: "09:00" },
+      { label: "Weekly summary", type: "select", value: "Sunday, at 20:00", options: ["Sunday, at 20:00", "Monday, at 08:00", "Friday, at 18:00", "No summary"] },
     ],
   },
   dariaQuestions.find((question) => question.id === "servicii"),
 ];
 
 export const analysis = {
-  title: "Analizez ultimele 12 luni",
-  lead: "12 luni importate din contul curent. Durează circa un minut.",
+  title: "Analysing the last 12 months",
+  lead: "12 months imported from the current account. Takes about a minute.",
   items: [
-    { label: "Venituri și cât de sigure sunt", state: "done", note: "Bani de la familie pe 1, în 12 din 12 luni" },
-    { label: "Plăți recurente și abonamente", state: "done", note: "4 plăți recurente, dintre care 2 abonamente" },
-    { label: "Categorii pentru 1.104 plăți", state: "running", note: "773 din 1.104", progress: 70 },
-    { label: "Necesare și opționale", state: "waiting", note: "Urmează" },
+    { label: "Income and how certain it is", state: "done", note: "Money from family on the 1st, in 12 of 12 months" },
+    { label: "Recurring payments and subscriptions", state: "done", note: "4 recurring payments, 2 of them subscriptions" },
+    { label: "Categories for 1,104 payments", state: "running", note: "773 of 1,104", progress: 70 },
+    { label: "Essential and optional", state: "waiting", note: "Next" },
   ],
-  note: "Poți închide aplicația. Îți scriu când e gata.",
+  note: "You can close the app. I'll write to you when it's ready.",
 };
 
 export const findings = {
-  lead: "Din 12 luni de extrase, din calendar și din răspunsurile tale.",
+  lead: "From 12 months of statements, your calendar and your answers.",
   items: [
-    { text: "În iulie, august și septembrie, fără bursă, banii s-au terminat cu 5–8 zile înainte de 1.", src: "obs" },
-    { text: "Necesarele tale costă circa 1.200 lei pe lună, cât primești de la familie.", src: "est" },
-    { text: "LinguaPlus: 45 lei pe lună, iar aplicația a fost deschisă de 2 ori în octombrie.", note: "Te întreb despre asta în discuție.", src: "obs" },
-    { text: "Pe 20 februarie ai termenul pentru dosarul de bursă.", src: "obs", label: "din calendar" },
+    { text: "In July, August and September, without a scholarship, your money ran out 5–8 days before the 1st.", src: "obs" },
+    { text: "Your essentials cost about 1,200 RON a month, as much as you get from your family.", src: "est" },
+    { text: "LinguaPlus: 45 RON a month, and the app was opened twice in October.", note: "I'll ask you about it in our chat.", src: "obs" },
+    { text: "Your scholarship application deadline is 20 February.", src: "obs", label: "from the calendar" },
   ],
   firstStep: {
     icon: "wallet",
-    title: "Primul pas pe care ți-l propun",
-    text: "La fiecare încasare de peste 100 lei, pune 10% în fondul de siguranță. Pe 1 noiembrie, din cei 1.200 lei de la familie, înseamnă 120 lei.",
-    action: "Vezi propunerea",
+    title: "The first step I suggest",
+    text: "For every income over 100 RON, put 10% into the safety fund. On 1 November, out of the 1,200 RON from your family, that's 120 RON.",
+    action: "See the proposal",
     href: "#/chat",
   },
 };

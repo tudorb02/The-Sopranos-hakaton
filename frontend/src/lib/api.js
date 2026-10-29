@@ -1,6 +1,6 @@
 // Client of the GreenStruct Agro API (contracts/openapi.yaml). Plain fetch, no dependencies; it also runs in Node
 // (scripts/smoke.mjs). Errors are always ApiError: `code` is the stable code of the contract ({error:{code,message}}) or
-// NETWORK / UNAVAILABLE when the backend cannot be reached, and `message` is Romanian, ready to show.
+// NETWORK / UNAVAILABLE when the backend cannot be reached, and `message` is ready to show.
 
 let base = (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_BASE) || "";
 
@@ -21,8 +21,8 @@ export class ApiError extends Error {
   }
 }
 
-const NETWORK_MESSAGE = "Nu mă pot conecta la server. Verifică dacă aplicația pornește (backend-ul) și încearcă din nou.";
-const UNAVAILABLE_MESSAGE = "Serverul nu răspunde acum. Încearcă din nou în câteva clipe.";
+const NETWORK_MESSAGE = "Cannot connect to the server. Check that the app (the backend) is running and try again.";
+const UNAVAILABLE_MESSAGE = "The server is not responding right now. Try again in a few moments.";
 
 // The ApiError for a response that is not 2xx.
 export async function errorFromResponse(res) {
@@ -36,7 +36,7 @@ export async function errorFromResponse(res) {
     return new ApiError(body.error.code, body.error.message, { status: res.status, details: body.error.details });
   }
   if (res.status >= 500) return new ApiError("UNAVAILABLE", UNAVAILABLE_MESSAGE, { status: res.status });
-  return new ApiError("INTERNAL", "A apărut o eroare. Reîncearcă.", { status: res.status });
+  return new ApiError("INTERNAL", "Something went wrong. Try again.", { status: res.status });
 }
 
 async function request(path, { method = "GET", json, form, signal } = {}) {

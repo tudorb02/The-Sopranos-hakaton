@@ -10,11 +10,11 @@ export function Statements() {
   return (
     <>
       <header className="intro">
-        <h1 className="page-title">Extrasele tale de cont</h1>
+        <h1 className="page-title">Your account statements</h1>
         <p className="small muted">{statements.lead}</p>
       </header>
 
-      <Group label="Din contul curent">
+      <Group label="From your current account">
         <div className="card stack">
           <div className="row row--flush">
             <IconTile icon="card" tone="yellow" />
@@ -22,11 +22,11 @@ export function Statements() {
               <span className="row-name">{statements.account.name}</span>
               <span className="row-note num">{statements.account.iban}</span>
             </div>
-            <span className="status is-on">Selectat</span>
+            <span className="status is-on">Selected</span>
           </div>
-          <Field field={{ label: "Perioada", type: "select", value: statements.periods[0], options: statements.periods }} />
+          <Field field={{ label: "Period", type: "select", value: statements.periods[0], options: statements.periods }} />
           <button type="button" className="btn btn--block">
-            Importă extrasele
+            Import statements
           </button>
           <div className="row row--flush done-row">
             <span className="state state--done" aria-hidden="true">
@@ -40,11 +40,11 @@ export function Statements() {
         </div>
       </Group>
 
-      <Group label="Atașează extrase anterioare">
+      <Group label="Attach earlier statements">
         <p className="small muted group-hint">{statements.attachHint}</p>
         <label className="dropzone">
           <IconTile icon="upload" tone="yellow" />
-          <span className="row-name">Alege fișierele</span>
+          <span className="row-name">Choose files</span>
           <span className="small muted">{statements.formats}</span>
           <input type="file" className="sr-only" accept=".pdf,.xls,.xlsx,.csv" multiple />
         </label>
@@ -57,7 +57,7 @@ export function Statements() {
                   <span className="row-name file-name">{file.name}</span>
                   <span className="row-note">{file.meta}</span>
                 </div>
-                <span className={file.state === "done" ? "status is-on" : "status"}>{file.state === "done" ? "Procesat" : "Se procesează"}</span>
+                <span className={file.state === "done" ? "status is-on" : "status"}>{file.state === "done" ? "Processed" : "Processing"}</span>
                 {file.state === "reading" ? <Meter value={file.progress} max={100} /> : null}
               </li>
             ))}
@@ -65,7 +65,7 @@ export function Statements() {
         ) : null}
       </Group>
 
-      <Group label="Cum exporți un extras de la altă bancă">
+      <Group label="How to export a statement from another bank">
         <ol className="card steps">
           {statements.howTo.map((step, i) => (
             <li key={step}>

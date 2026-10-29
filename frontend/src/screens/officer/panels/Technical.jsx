@@ -9,8 +9,8 @@ export function TechnicalPanel({ run }) {
   const tech = run.agents.technicalAssessment;
   if (!tech) {
     return (
-      <Panel n={3} title="Analiza tehnică">
-        <p className="small muted">Agentul 1 nu a terminat încă.</p>
+      <Panel n={3} title="Technical analysis">
+        <p className="small muted">Agent 1 has not finished yet.</p>
       </Panel>
     );
   }
@@ -21,22 +21,22 @@ export function TechnicalPanel({ run }) {
   const of = (config, metric) => config.impacts.find((i) => i.metric === metric)?.calcId;
 
   return (
-    <Panel n={3} title="Analiza tehnică" wide aside={<Tag>{RECOMMENDATION_TYPE_RO[tech.recommendationType]}</Tag>}>
+    <Panel n={3} title="Technical analysis" wide aside={<Tag>{RECOMMENDATION_TYPE_RO[tech.recommendationType]}</Tag>}>
       <p className="small">{tech.summaryRo}</p>
       <div className="grid-2">
         <div>
-          <h3 className="sub-title">Indicatorul verde ({tech.indicator})</h3>
+          <h3 className="sub-title">Green indicator ({tech.indicator})</h3>
           <table className="table">
             <thead>
               <tr>
                 <th />
-                <th>Investiția cerută</th>
-                <th>{same ? "—" : "Configurația verde"}</th>
+                <th>Requested investment</th>
+                <th>{same ? "—" : "Green configuration"}</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Componente</td>
+                <td>Components</td>
                 <td>
                   {initial.components.map((c) => (
                     <div key={c.componentId}>{c.nameRo}</div>
@@ -44,7 +44,7 @@ export function TechnicalPanel({ run }) {
                 </td>
                 <td>
                   {same
-                    ? "aceleași"
+                    ? "the same"
                     : recommended.components.map((c) => (
                         <div key={c.componentId}>
                           {c.nameRo} {c.source === "CATALOG_UPGRADE" ? <Tag tone="ok">upgrade</Tag> : null}
@@ -53,13 +53,13 @@ export function TechnicalPanel({ run }) {
                 </td>
               </tr>
               <tr>
-                <td>Cost total</td>
+                <td>Total cost</td>
                 <td className="num">{disp(run, initial.totalCostCalcId)}</td>
                 <td className="num">{same ? "—" : disp(run, recommended.totalCostCalcId)}</td>
               </tr>
               {!same ? (
                 <tr>
-                  <td>Cost upgrade</td>
+                  <td>Upgrade cost</td>
                   <td>—</td>
                   <td className="num">{disp(run, recommended.upgradeCostCalcId)}</td>
                 </tr>
@@ -74,17 +74,17 @@ export function TechnicalPanel({ run }) {
                 </td>
               </tr>
               <tr>
-                <td>Prag</td>
+                <td>Threshold</td>
                 <td colSpan={2} className="num">
                   {disp(run, tech.threshold.thresholdCalcId)}
                 </td>
               </tr>
               <tr>
-                <td>Rezultat</td>
+                <td>Result</td>
                 <td>
-                  <Tag tone={initial.thresholdResult === "PASS" ? "ok" : "bad"}>{initial.thresholdResult === "PASS" ? "trece" : "nu trece"}</Tag>
+                  <Tag tone={initial.thresholdResult === "PASS" ? "ok" : "bad"}>{initial.thresholdResult === "PASS" ? "passes" : "fails"}</Tag>
                 </td>
-                <td>{same ? "—" : <Tag tone={recommended.thresholdResult === "PASS" ? "ok" : "bad"}>{recommended.thresholdResult === "PASS" ? "trece" : "nu trece"}</Tag>}</td>
+                <td>{same ? "—" : <Tag tone={recommended.thresholdResult === "PASS" ? "ok" : "bad"}>{recommended.thresholdResult === "PASS" ? "passes" : "fails"}</Tag>}</td>
               </tr>
             </tbody>
           </table>
@@ -92,13 +92,13 @@ export function TechnicalPanel({ run }) {
           <p className="small muted">{tech.threshold.sourceRo}</p>
         </div>
         <div>
-          <h3 className="sub-title">Impact pe an</h3>
+          <h3 className="sub-title">Impact per year</h3>
           <table className="table">
             <thead>
               <tr>
-                <th>Metrică</th>
-                <th>Cerută</th>
-                <th>{same ? "" : "Verde"}</th>
+                <th>Metric</th>
+                <th>Requested</th>
+                <th>{same ? "" : "Green"}</th>
               </tr>
             </thead>
             <tbody>
@@ -114,11 +114,11 @@ export function TechnicalPanel({ run }) {
               })}
             </tbody>
           </table>
-          <h3 className="sub-title">Situația actuală</h3>
+          <h3 className="sub-title">Current situation</h3>
           {tech.baseline.metrics.map((m) => (
             <CalcLine key={m.calcId} calc={calcOf(run, m.calcId)} />
           ))}
-          <h3 className="sub-title">Verificări DNSH (din documente)</h3>
+          <h3 className="sub-title">DNSH checks (from the documents)</h3>
           <ul className="plain-list small">
             {tech.dnshChecks.map((d) => (
               <li key={d.objective}>
@@ -126,16 +126,16 @@ export function TechnicalPanel({ run }) {
               </li>
             ))}
           </ul>
-          {tech.missingFields.length ? <p className="small field-error">Date lipsă: {tech.missingFields.join(", ")}</p> : null}
+          {tech.missingFields.length ? <p className="small field-error">Missing data: {tech.missingFields.join(", ")}</p> : null}
         </div>
       </div>
       {run.agents.extractions.length ? (
         <>
-          <h3 className="sub-title">Documente citite</h3>
+          <h3 className="sub-title">Documents read</h3>
           <ul className="plain-list small">
             {run.agents.extractions.map((x) => (
               <li key={x.documentId}>
-                {x.documentType} · {x.supplierName ?? "—"} · {x.documentFields.length} câmpuri
+                {x.documentType} · {x.supplierName ?? "—"} · {x.documentFields.length} fields
                 {x.warnings?.length ? <span className="muted"> · {x.warnings.join("; ")}</span> : null}
               </li>
             ))}

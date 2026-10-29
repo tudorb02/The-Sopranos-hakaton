@@ -21,10 +21,10 @@ export default function Goals() {
           </div>
           <Src kind="agreed" />
         </div>
-        <p className="hero-label">Economisit până acum</p>
+        <p className="hero-label">Saved so far</p>
         <p className="amount-line">
           <Amount value={goal.saved} size="lg" />
-          <span className="muted"> din {lei(goal.amount)}</span>
+          <span className="muted"> of {lei(goal.amount)}</span>
         </p>
         <Meter value={goal.saved} max={goal.amount} />
         <p className="hero-sub">
@@ -32,23 +32,23 @@ export default function Goals() {
         </p>
       </section>
 
-      <Section title="Planul lunar">
+      <Section title="Monthly plan">
         <div className="card stack">
           <PlanChart plan={goal.plan} total={goal.amount} />
           <p className="small muted">{goal.reason}</p>
         </div>
       </Section>
 
-      <Section title="Din ce economisești" aside={<Src kind="est" label={goal.fundingLabel} />}>
+      <Section title="Where the savings come from" aside={<Src kind="est" label={goal.fundingLabel} />}>
         <ul className="card rows">
           {goal.funding.map((item) => (
-            <ValueRow key={item.name} name={item.name} value={`aprox. ${lei(item.lei)}`} />
+            <ValueRow key={item.name} name={item.name} value={`approx. ${lei(item.lei)}`} />
           ))}
         </ul>
       </Section>
 
       {nextGoals.length ? (
-        <Section title="Următorul obiectiv">
+        <Section title="Next goal">
           {nextGoals.map((item) => (
             <div key={item.name} className="card stack">
               <div className="goal-head goal-head--flush">
@@ -68,18 +68,18 @@ export default function Goals() {
         </Section>
       ) : null}
 
-      <Section title="Unde păstrezi banii">
+      <Section title="Where you keep the money">
         <ServiceCard service={serviceById(goal.storage)} />
       </Section>
 
       {suggestion ? (
-        <Section title="Sugestie din serviciile băncii" aside={<span className="small muted">cel mult una pe săptămână</span>}>
+        <Section title="A suggestion from the bank's services" aside={<span className="small muted">at most one a week</span>}>
           <ServiceCard service={suggestion} />
         </Section>
       ) : null}
 
       {pots.length ? (
-        <Section title="Bani puși deoparte">
+        <Section title="Money set aside">
           <ul className="card rows">
             {pots.map((pot) => (
               <ValueRow key={pot.name} icon={pot.icon} name={pot.name} note={pot.note} value={lei(pot.lei)} />

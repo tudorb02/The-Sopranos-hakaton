@@ -1,7 +1,5 @@
-// Romanian wording for the enums of the contract. Static copy only: figures never come from here, they come from
+// English wording for the enums of the contract. Static copy only: figures never come from here, they come from
 // RunView.calcs. The `sme` maps are plain farmer language; the `officer` maps may use the bank's vocabulary.
-
-export const MODULE_ORDER = ["irigatii", "energie", "utilaje", "zootehnie", "post_recolta", "ecologic"];
 
 // One line per module for the cards that need an icon of the existing set.
 export const MODULE_ICONS = { irigatii: "drop", energie: "sun", utilaje: "tractor", zootehnie: "flame", post_recolta: "snow", ecologic: "leaf" };
@@ -16,26 +14,15 @@ export const DEMO_FARMS = [
   { cui: "41629307", name: "Ferma Bio Mureș Demo SRL", moduleId: "ecologic" },
 ];
 
-// What makes an investment green, in farmer words, per indicator. {v} = the threshold value from the module config.
-export const CRITERION_COPY = {
-  WATER_SAVING_PCT: "O investiție în irigații e verde dacă economisește cel puțin {v}% din apa folosită acum.",
-  FUEL_SAVING_PCT: "O investiție în utilaje e verde dacă reduce motorina folosită cu cel puțin {v}%.",
-  ENERGY_SAVING_PCT: "O investiție e verde dacă reduce energia folosită cu cel puțin {v}%.",
-  EMISSION_REDUCTION_PCT: "O investiție la fermă e verde dacă reduce emisiile cu cel puțin {v}%.",
-  RENEWABLE_GENERATION: "Energia produsă din surse regenerabile e verde prin natura ei; verificăm doar locul montajului și echipamentele.",
-  CERTIFIED_AREA_HA: "Terenul certificat ecologic sau în conversie este verde; verificăm certificarea și planul de conversie.",
-  FERTILIZER_SAVING_PCT: "O investiție e verde dacă reduce îngrășămintele folosite cu cel puțin {v}%.",
-};
-
-export const MONTHS_RO = { JAN: "ian", FEB: "feb", MAR: "mar", APR: "apr", MAY: "mai", JUN: "iun", JUL: "iul", AUG: "aug", SEP: "sep", OCT: "oct", NOV: "nov", DEC: "dec" };
+export const MONTHS_RO = { JAN: "Jan", FEB: "Feb", MAR: "Mar", APR: "Apr", MAY: "May", JUN: "Jun", JUL: "Jul", AUG: "Aug", SEP: "Sep", OCT: "Oct", NOV: "Nov", DEC: "Dec" };
 export const MONTH_LIST = Object.keys(MONTHS_RO);
 
-export const RISK_RO = { LOW: "mic", MEDIUM: "mediu", HIGH: "mare" };
+export const RISK_RO = { LOW: "low", MEDIUM: "medium", HIGH: "high" };
 
 export const SME_STATUS_RO = {
-  SME: "Firma ta este IMM, deci poate primi creditul verde.",
-  NOT_SME: "Datele din registre arată că firma nu se încadrează ca IMM. Creditul verde se acordă doar IMM-urilor.",
-  UNKNOWN: "Nu am găsit bilanțul firmei, deci nu putem confirma statutul de IMM. Poți continua, banca verifică la final.",
+  SME: "Your company is an SME, so it can get the green credit.",
+  NOT_SME: "The registry data shows the company does not qualify as an SME. The green credit is granted to SMEs only.",
+  UNKNOWN: "We could not find the company's balance sheet, so we cannot confirm its SME status. You can continue; the bank checks at the end.",
 };
 
 export const SOURCE_RO = {
@@ -43,138 +30,131 @@ export const SOURCE_RO = {
   APIA: "APIA",
   ANSVSA: "ANSVSA",
   OPEN_BANKING: "Open Banking",
-  COPERNICUS: "harta de secetă",
-  NATURA_2000: "harta Natura 2000",
-  NITRATES: "harta zonelor cu nitrați",
+  COPERNICUS: "drought map",
+  NATURA_2000: "Natura 2000 map",
+  NITRATES: "nitrate zones map",
 };
 
-// Source mode badges: the SME sees a calm word, the officer the technical one.
-export const MODE_SME = { LIVE: "date reale", MOCK: "date de test", CACHE: "date salvate" };
+// Source mode badges for the officer.
 export const MODE_OFFICER = { LIVE: "LIVE", MOCK: "MOCK", CACHE: "CACHE", GOLDEN: "GOLDEN", HYBRID: "HYBRID", REPLAY: "REPLAY" };
 
 export const STATE_RO = {
-  CREAT: "Dosar creat",
-  DATE_FIRMA: "Date firmă preluate",
-  AGENT_1: "Analiza tehnică",
-  AGENT_2: "Structurarea creditului",
-  AGENT_3: "Raportul verde",
-  GATA: "Gata, netrimis",
-  TRIMIS: "Trimis la bancă",
-  APROBAT: "Aprobat",
-  MONITORIZARE: "În monitorizare",
-  ESUAT: "Eșuat",
+  CREAT: "Dossier created",
+  DATE_FIRMA: "Company data loaded",
+  AGENT_1: "Technical analysis",
+  AGENT_2: "Credit structuring",
+  AGENT_3: "Green report",
+  GATA: "Ready, not sent",
+  TRIMIS: "Sent to the bank",
+  APROBAT: "Approved",
+  MONITORIZARE: "Under monitoring",
+  ESUAT: "Failed",
 };
 
-// The three agents with farmer-friendly names (the SME never sees "underwriter" or "optimizator").
-export const AGENTS_SME = [
-  { id: "TECHNICAL_AUDITOR", name: "Verific investiția", note: "Citesc documentele și calculez cât economisești" },
-  { id: "FUNDING_OPTIMIZER", name: "Compar creditele", note: "Pun alături creditul clasic și creditul verde" },
-  { id: "GREEN_UNDERWRITER", name: "Pregătesc dosarul pentru bancă", note: "Strâng dovezile și condițiile" },
-];
 export const AGENTS_OFFICER = {
-  TECHNICAL_AUDITOR: "Agent 1 · Auditor tehnic",
-  FUNDING_OPTIMIZER: "Agent 2 · Structurare credit",
-  GREEN_UNDERWRITER: "Agent 3 · Underwriter verde",
+  TECHNICAL_AUDITOR: "Agent 1 · Technical auditor",
+  FUNDING_OPTIMIZER: "Agent 2 · Credit structuring",
+  GREEN_UNDERWRITER: "Agent 3 · Green underwriter",
 };
 
 // Plain lines for the tool calls, as the SME sees them. Anything not listed shows a neutral line, so internal names
 // (funds, pricing, DSCR) never reach the SME even if the event text mentions them.
 export const TOOL_LINES_SME = {
-  get_module_rules: "Încarc regulile categoriei tale",
-  extract_document: null, // the event message names the file ("Citesc documentul oferta.pdf")
-  compute_baseline: "Calculez situația de acum",
-  compute_indicator: "Verific dacă investiția cerută atinge pragul verde",
-  search_upgrades: "Caut cea mai ieftină schimbare care duce investiția peste prag",
-  simulate_upgrade_package: "Încerc schimbarea găsită, cu aceleași calcule",
-  check_dnsh_inputs: "Verific dacă investiția nu strică mediul",
-  list_financing_lines: "Văd ce credite se potrivesc",
-  check_program_eligibility: "Verific ce condiții îndeplinești",
-  build_funding_stack: "Construiesc ofertele",
-  determine_green_tier: "Stabilesc nivelul verde",
-  price_loan: "Calculez dobânda pentru fiecare credit",
-  build_scenario: "Calculez ratele",
-  check_affordability: "Verific dacă ratele încap în încasările tale",
-  compute_dscr: "Verific dacă ratele încap în încasările tale",
-  compare_scenarios: "Compar creditul clasic cu cel verde",
-  get_labeling_rules: "Verific ce parte din investiție e verde",
-  get_dnsh_criteria: "Verific condițiile de mediu",
-  select_fund: "Pregătesc dosarul pentru bancă",
-  check_fund_requirements: "Pregătesc dosarul pentru bancă",
-  calculate_impact: "Calculez cât economisești pe an",
-  get_bond_category: "Pregătesc dosarul pentru bancă",
+  get_module_rules: "Loading the rules of your category",
+  extract_document: null, // the event message names the file ("Reading the document oferta.pdf")
+  compute_baseline: "Working out where you stand today",
+  compute_indicator: "Checking whether the requested investment reaches the green threshold",
+  search_upgrades: "Looking for the cheapest change that takes the investment over the threshold",
+  simulate_upgrade_package: "Trying the change found, with the same calculations",
+  check_dnsh_inputs: "Checking that the investment does not harm the environment",
+  list_financing_lines: "Seeing which credits fit",
+  check_program_eligibility: "Checking which conditions you meet",
+  build_funding_stack: "Building the offers",
+  determine_green_tier: "Setting the green level",
+  price_loan: "Working out the interest rate for each credit",
+  build_scenario: "Working out the instalments",
+  check_affordability: "Checking that the instalments fit your income",
+  compute_dscr: "Checking that the instalments fit your income",
+  compare_scenarios: "Comparing the classic credit with the green one",
+  get_labeling_rules: "Checking which part of the investment is green",
+  get_dnsh_criteria: "Checking the environmental conditions",
+  select_fund: "Preparing the dossier for the bank",
+  check_fund_requirements: "Preparing the dossier for the bank",
+  calculate_impact: "Working out how much you save per year",
+  get_bond_category: "Preparing the dossier for the bank",
 };
-export const NEUTRAL_TOOL_LINE = "Lucrez la dosarul tău";
+export const NEUTRAL_TOOL_LINE = "Working on your dossier";
 
 // Words that must not reach the SME zone (README §13: the SME does not see the funds).
-export const SME_HIDDEN = /\bF[1-6]\b|\bFEI\b|InvestEU|DSCR|obliga[țt]iun|BERD|\bIFC\b|garan[țt]ia FEI/i;
+export const SME_HIDDEN = /\bF[1-6]\b|\bEIF\b|\bFEI\b|InvestEU|DSCR|\bbonds?\b|\bguarantees?\b|\bfunds?\b|\bEBRD\b|\bBERD\b|\bIFC\b|Open Banking consent/i;
 
 export const TIER_SME = {
-  VERDE_PLUS: { name: "Verde Plus", text: "Investiția ta depășește mult pragul verde, deci primești cea mai mare reducere de dobândă." },
-  VERDE: { name: "Verde", text: "Investiția ta atinge pragul verde și primești reducerea de dobândă standard." },
-  VERDE_CU_UPGRADE: { name: "Verde cu schimbări", text: "Investiția cerută era sub prag. Cu schimbările propuse devine verde și primești reducerea standard." },
-  CLASIC: { name: "Clasic", text: "Investiția nu atinge pragul verde, deci acum e posibil doar creditul clasic. Vezi ce poți schimba ca să devină verde." },
+  VERDE_PLUS: { name: "Green Plus", text: "Your investment goes well beyond the green threshold, so you get the biggest interest rate discount." },
+  VERDE: { name: "Green", text: "Your investment reaches the green threshold and you get the standard interest rate discount." },
+  VERDE_CU_UPGRADE: { name: "Green with changes", text: "The requested investment was below the threshold. With the proposed changes it becomes green and you get the standard discount." },
+  CLASIC: { name: "Classic", text: "The investment does not reach the green threshold, so for now only the classic credit is possible. See what you can change to make it green." },
 };
 
-export const TIER_OFFICER = { VERDE_PLUS: "Verde Plus", VERDE: "Verde", VERDE_CU_UPGRADE: "Verde cu upgrade", CLASIC: "Clasic" };
+export const TIER_OFFICER = { VERDE_PLUS: "Green Plus", VERDE: "Green", VERDE_CU_UPGRADE: "Green with upgrade", CLASIC: "Classic" };
 
 export const DECISION_RO = {
-  ELIGIBLE_GREEN: "Eligibil verde",
-  ELIGIBLE_WITH_CONDITIONS: "Eligibil, cu condiții",
-  NOT_ELIGIBLE: "Neeligibil",
+  ELIGIBLE_GREEN: "Eligible green",
+  ELIGIBLE_WITH_CONDITIONS: "Eligible, with conditions",
+  NOT_ELIGIBLE: "Not eligible",
 };
 
 export const CONDITION_TIMING_RO = {
-  BEFORE_SIGNING: "înainte de semnare",
-  BEFORE_FIRST_DISBURSEMENT: "înainte de prima tragere",
-  BEFORE_FINAL_DISBURSEMENT: "înainte de tragerea finală",
-  AFTER_INSTALLATION: "după instalare",
+  BEFORE_SIGNING: "before signing",
+  BEFORE_FIRST_DISBURSEMENT: "before the first drawdown",
+  BEFORE_FINAL_DISBURSEMENT: "before the final drawdown",
+  AFTER_INSTALLATION: "after installation",
 };
 
-export const KPI_FREQUENCY_RO = { ONCE: "o dată", QUARTERLY: "trimestrial", SEMIANNUAL: "semestrial", ANNUAL: "anual" };
-export const KPI_FIRST_DUE_RO = { AT_DISBURSEMENT: "la tragere", AFTER_INSTALLATION: "după instalare", MONTH_6: "la 6 luni", MONTH_12: "la 12 luni", MONTH_24: "la 24 de luni" };
+export const KPI_FREQUENCY_RO = { ONCE: "once", QUARTERLY: "quarterly", SEMIANNUAL: "half-yearly", ANNUAL: "annually" };
+export const KPI_FIRST_DUE_RO = { AT_DISBURSEMENT: "at drawdown", AFTER_INSTALLATION: "after installation", MONTH_6: "at 6 months", MONTH_12: "at 12 months", MONTH_24: "at 24 months" };
 export const KPI_SOURCE_RO = {
-  SMART_METER: "contor inteligent",
-  WATER_METER: "contor de apă",
-  INVOICES: "facturi",
+  SMART_METER: "smart meter",
+  WATER_METER: "water meter",
+  INVOICES: "invoices",
   OPEN_BANKING: "Open Banking",
-  SATELLITE: "satelit",
-  COMMISSIONING_REPORT: "proces-verbal de punere în funcțiune",
-  GEOTAGGED_PHOTOS: "poze geolocalizate",
+  SATELLITE: "satellite",
+  COMMISSIONING_REPORT: "commissioning report",
+  GEOTAGGED_PHOTOS: "geotagged photos",
   APIA: "APIA",
-  TELEMATICS: "telematică",
+  TELEMATICS: "telematics",
 };
 
 export const DNSH_OBJECTIVE_RO = {
-  CLIMATE_MITIGATION: "Reducerea schimbărilor climatice",
-  CLIMATE_ADAPTATION: "Adaptarea la schimbările climatice",
-  WATER_MARINE_RESOURCES: "Apa și resursele marine",
-  CIRCULAR_ECONOMY: "Economia circulară",
-  POLLUTION_PREVENTION: "Prevenirea poluării",
-  BIODIVERSITY: "Biodiversitatea",
+  CLIMATE_MITIGATION: "Climate change mitigation",
+  CLIMATE_ADAPTATION: "Climate change adaptation",
+  WATER_MARINE_RESOURCES: "Water and marine resources",
+  CIRCULAR_ECONOMY: "Circular economy",
+  POLLUTION_PREVENTION: "Pollution prevention",
+  BIODIVERSITY: "Biodiversity",
 };
-export const DNSH_STATUS_RO = { PASS: "Trece", PASS_WITH_CONDITIONS: "Trece cu condiții", FAIL: "Nu trece", MISSING_DATA: "Date lipsă" };
+export const DNSH_STATUS_RO = { PASS: "Passes", PASS_WITH_CONDITIONS: "Passes with conditions", FAIL: "Fails", MISSING_DATA: "Missing data" };
 
 export const REQUIREMENT_RO = {
-  SME_STATUS: "Firma e IMM",
-  ELIGIBLE_CATEGORY: "Categorie de investiție eligibilă",
-  TECHNICAL_THRESHOLD: "Pragul tehnic atins, cu dovezi",
-  DNSH: "Nu face rău semnificativ mediului (DNSH)",
-  IMPACT_QUANTIFIED: "Impact cuantificat",
-  CLIENT_BENEFIT: "Beneficiul ajunge la client",
-  PERIODIC_REPORTING: "Raportare periodică",
+  SME_STATUS: "The company is an SME",
+  ELIGIBLE_CATEGORY: "Eligible investment category",
+  TECHNICAL_THRESHOLD: "Technical threshold met, with evidence",
+  DNSH: "Does no significant harm to the environment (DNSH)",
+  IMPACT_QUANTIFIED: "Impact quantified",
+  CLIENT_BENEFIT: "Benefit passed on to the client",
+  PERIODIC_REPORTING: "Periodic reporting",
 };
-export const REQUIREMENT_STATUS_RO = { MET: "Îndeplinită", TO_CONFIRM: "De confirmat", NOT_MET: "Neîndeplinită" };
-export const FUND_STATUS_RO = { AVAILABLE: "Disponibil", TO_CONFIRM: "De confirmat", NOT_AVAILABLE: "Indisponibil" };
-export const FUND_ROLE_RO = { PRIMARY: "Fond propus", ALTERNATIVE: "Alternativă" };
+export const REQUIREMENT_STATUS_RO = { MET: "Met", TO_CONFIRM: "To be confirmed", NOT_MET: "Not met" };
+export const FUND_STATUS_RO = { AVAILABLE: "Available", TO_CONFIRM: "To be confirmed", NOT_AVAILABLE: "Not available" };
+export const FUND_ROLE_RO = { PRIMARY: "Proposed fund", ALTERNATIVE: "Alternative" };
 
 // Names of the funds (README §3.1; the figures and terms live in config/funds.json). The report carries only the code.
 export const FUND_NAMES = {
-  F1: "Garanția FEI InvestEU de sustenabilitate",
-  F2: "Obligațiunile verzi și sustenabile Raiffeisen",
-  F3: "Credit BIO",
-  F4: "Finanțare pentru irigații cu FEI",
-  F5: "Prefinanțarea subvențiilor APIA",
-  F6: "Granturi AFIR / PNS",
+  F1: "EIF InvestEU sustainability guarantee",
+  F2: "Raiffeisen green and sustainable bonds",
+  F3: "BIO credit",
+  F4: "Irrigation financing with the EIF",
+  F5: "APIA subsidy pre-financing",
+  F6: "AFIR / PNS grants",
 };
 
 export const BOND_CATEGORY_RO = {
@@ -183,81 +163,67 @@ export const BOND_CATEGORY_RO = {
   ENERGY_EFFICIENCY: "Energy efficiency",
   CLEAN_TRANSPORTATION: "Clean transportation",
   POLLUTION_PREVENTION_CONTROL: "Pollution prevention and control",
-  NONE: "Nicio categorie",
+  NONE: "No category",
 };
 
-export const LABEL_RO = { TAXONOMY_ALIGNED: "Aliniat taxonomiei UE", MARKET_GREEN: "Verde de piață (LMA)", TRANSITION: "Tranziție", NONE: "Fără etichetă" };
-export const SEVERITY_RO = { LOW: "mică", MEDIUM: "medie", HIGH: "mare" };
+export const LABEL_RO = { TAXONOMY_ALIGNED: "EU Taxonomy aligned", MARKET_GREEN: "Market green (LMA)", TRANSITION: "Transition", NONE: "No label" };
+export const SEVERITY_RO = { LOW: "low", MEDIUM: "medium", HIGH: "high" };
 
 export const RATE_COMPONENT_RO = {
-  FUNDING_COST: "Cost de finanțare",
-  RISK_COST: "Cost de risc",
-  CAPITAL_COST: "Cost de capital",
-  OPERATIONAL_COST: "Cost operațional",
-  TARGET_PROFIT: "Profit țintă",
-  PROGRAM_SUBSIDY: "Subvenție / comision redus pe program",
-  TIER_ADJUSTMENT: "Ajustare pe nivelul verde",
+  FUNDING_COST: "Funding cost",
+  RISK_COST: "Risk cost",
+  CAPITAL_COST: "Cost of capital",
+  OPERATIONAL_COST: "Operating cost",
+  TARGET_PROFIT: "Target profit",
+  PROGRAM_SUBSIDY: "Subsidy / reduced programme fee",
+  TIER_ADJUSTMENT: "Green tier adjustment",
 };
 
-export const COLLATERAL_OFFICER = { MORTGAGE: "Ipotecă", GUARANTEE_INVESTEU_FEI: "Garanție FEI InvestEU" };
+export const COLLATERAL_OFFICER = { MORTGAGE: "Mortgage", GUARANTEE_INVESTEU_FEI: "EIF InvestEU guarantee" };
 
 export const DRIVER_RO = {
   GRANT: "Grant",
-  INVESTMENT_DELTA: "Investiția suplimentară",
-  INTEREST: "Dobânzi",
-  OPERATING_SAVINGS: "Economii de exploatare",
-  COLLATERAL_COSTS: "Costul ipotecii",
-  BRIDGE_COST: "Cost de punte",
+  INVESTMENT_DELTA: "Additional investment",
+  INTEREST: "Interest",
+  OPERATING_SAVINGS: "Operating savings",
+  COLLATERAL_COSTS: "Mortgage cost",
+  BRIDGE_COST: "Bridge cost",
 };
 
 export const DOC_TYPE_RO = {
-  OFFER: "Oferta / proforma",
-  TECHNICAL_SHEET: "Fișa tehnică",
-  CURRENT_EQUIPMENT: "Echipamentul actual",
-  WATER_PERMIT_ANAR: "Autorizația de gospodărire a apelor",
-  WATER_CONSUMPTION: "Consumul de apă",
-  ENERGY_INVOICES: "Facturi de energie",
-  FUEL_INVOICES: "Facturi de motorină",
-  FERTILIZER_INVOICES: "Facturi de îngrășăminte",
-  BUSINESS_PLAN: "Plan de afaceri",
-  ENVIRONMENTAL_PERMIT: "Autorizație de mediu",
-  CERTIFICATION_CONTRACT: "Contract / certificat de certificare",
-  FINAL_INVOICE: "Factura finală",
-  COMMISSIONING_REPORT: "Proces-verbal de punere în funcțiune",
-  GEOTAGGED_PHOTOS: "Poze geolocalizate",
-  AFIR_APPLICATION: "Cerere AFIR",
-  AFIR_FINANCING_CONTRACT: "Contract de finanțare AFIR",
-  GUARANTEE_APPROVAL: "Aprobarea garanției",
-  CROP_INSURANCE: "Asigurarea culturilor",
-  SCRAPPING_CERTIFICATE: "Certificat de casare",
-  WATER_METER_CERTIFICATE: "Certificat contor de apă",
-  OTHER: "Alt document",
+  OFFER: "Offer / pro forma",
+  TECHNICAL_SHEET: "Technical data sheet",
+  CURRENT_EQUIPMENT: "Current equipment",
+  WATER_PERMIT_ANAR: "Water management permit",
+  WATER_CONSUMPTION: "Water consumption",
+  ENERGY_INVOICES: "Energy invoices",
+  FUEL_INVOICES: "Diesel invoices",
+  FERTILIZER_INVOICES: "Fertiliser invoices",
+  BUSINESS_PLAN: "Business plan",
+  ENVIRONMENTAL_PERMIT: "Environmental permit",
+  CERTIFICATION_CONTRACT: "Certification contract / certificate",
+  FINAL_INVOICE: "Final invoice",
+  COMMISSIONING_REPORT: "Commissioning report",
+  GEOTAGGED_PHOTOS: "Geotagged photos",
+  AFIR_APPLICATION: "AFIR application",
+  AFIR_FINANCING_CONTRACT: "AFIR financing contract",
+  GUARANTEE_APPROVAL: "Guarantee approval",
+  CROP_INSURANCE: "Crop insurance",
+  SCRAPPING_CERTIFICATE: "Scrapping certificate",
+  WATER_METER_CERTIFICATE: "Water meter certificate",
+  OTHER: "Other document",
 };
 
-export const EXTRACTION_FIELD_RO = {};
-
-export const UNIT_RO = { KG_N_PER_HA: "kg N/ha", T_PER_HA: "t/ha", HA: "ha", HOURS: "ore", EUR: "EUR", M: "m" };
+export const UNIT_RO = { KG_N_PER_HA: "kg N/ha", T_PER_HA: "t/ha", HA: "ha", HOURS: "hours", EUR: "EUR", M: "m" };
 
 export const RECOMMENDATION_TYPE_RO = {
-  KEEP_INITIAL: "Investiția cerută rămâne așa cum e",
-  UPGRADE_TO_PASS: "Investiția cerută + upgrade, ca să treacă pragul",
-  UPGRADE_BEYOND_REQUEST: "Investiția cerută + upgrade peste prag",
-  NO_FEASIBLE_UPGRADE: "Nu există upgrade fezabil",
+  KEEP_INITIAL: "The requested investment stays as it is",
+  UPGRADE_TO_PASS: "Requested investment + upgrade, to pass the threshold",
+  UPGRADE_BEYOND_REQUEST: "Requested investment + upgrade beyond the threshold",
+  NO_FEASIBLE_UPGRADE: "No feasible upgrade",
 };
 
-export const SCHEDULE_TYPE_RO = { EQUAL_MONTHLY: "Rate lunare egale", SEASONAL: "Rate după calendarul încasărilor" };
-export const AFFORDABILITY_RO = { PASS: "Trece", PASS_WITH_WARNING: "Trece, cu avertisment", FAIL: "Nu trece" };
+export const SCHEDULE_TYPE_RO = { EQUAL_MONTHLY: "Equal monthly instalments", SEASONAL: "Instalments following the income calendar" };
+export const AFFORDABILITY_RO = { PASS: "Passes", PASS_WITH_WARNING: "Passes, with a warning", FAIL: "Fails" };
 
-export const SOURCE_BADGE = { LIVE: "LIVE", CACHE: "CACHE", GOLDEN: "GOLDEN", RETRY: "RETRY", FALLBACK: "FALLBACK" };
-
-export const ERROR_HINTS = {
-  NETWORK: "Verifică dacă backend-ul rulează pe portul 8080.",
-};
-
-// "2027-02" -> "feb 2027"
-export function periodLabel(period) {
-  const [year, month] = period.split("-");
-  const name = Object.values(MONTHS_RO)[Number(month) - 1];
-  return `${name} ${year}`;
-}
 export const periodMonth = (period) => Object.values(MONTHS_RO)[Number(period.split("-")[1]) - 1];

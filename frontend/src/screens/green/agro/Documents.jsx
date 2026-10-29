@@ -23,11 +23,11 @@ function DocRow({ doc, file, onPick, onRemove }) {
     e.target.value = "";
     if (!chosen) return;
     if (chosen.size > MAX_BYTES) {
-      setProblem("Fișierul e prea mare. Încarcă unul de cel mult 5 MB.");
+      setProblem("The file is too large. Upload one of at most 5 MB.");
       return;
     }
     if (!/\.(pdf|jpe?g|png)$/i.test(chosen.name)) {
-      setProblem("Acceptăm doar PDF, JPG sau PNG.");
+      setProblem("We accept only PDF, JPG or PNG.");
       return;
     }
     setProblem(null);
@@ -39,7 +39,7 @@ function DocRow({ doc, file, onPick, onRemove }) {
       <div className="row-main">
         <span className="row-name">{doc.labelRo}</span>
         {file ? <span className="row-note">{file.name}</span> : null}
-        <span className={file ? "status is-on" : doc.required ? "status status--warn" : "status"}>{file ? "Încărcat" : doc.required ? "Lipsește" : "Opțional"}</span>
+        <span className={file ? "status is-on" : doc.required ? "status status--warn" : "status"}>{file ? "Uploaded" : doc.required ? "Missing" : "Optional"}</span>
         {problem ? (
           <span className="small field-error" role="alert">
             {problem}
@@ -49,11 +49,11 @@ function DocRow({ doc, file, onPick, onRemove }) {
       <input ref={input} type="file" accept={ACCEPT} hidden onChange={pick} />
       {file ? (
         <button type="button" className="btn btn--text btn--small" onClick={onRemove}>
-          Șterge
+          Remove
         </button>
       ) : (
         <button type="button" className="btn btn--outline btn--small" onClick={() => input.current?.click()}>
-          Încarcă
+          Upload
         </button>
       )}
     </li>
@@ -111,22 +111,22 @@ export function Documents() {
   };
 
   const missingRequired = module?.requiredDocs.filter((d) => d.required && !fileOf(d.docType)) ?? [];
-  const offerDoc = { docType: "OFFER", labelRo: "Oferta sau factura proformă, cu fișa tehnică", required: true };
+  const offerDoc = { docType: "OFFER", labelRo: "The offer or pro forma invoice, with the technical data sheet", required: true };
 
   return (
     <>
       <header className="intro">
-        <h1 className="page-title">Documente</h1>
+        <h1 className="page-title">Documents</h1>
         <p className="small muted">
-          Începe cu oferta: din ea recunoaștem ce investiție vrei să faci. Ce lipsește poți trimite și după: devine o condiție înainte de tragere, nu un motiv de respingere.
+          Start with the offer: from it we recognise the investment you want to make. You can send anything missing later: it becomes a condition precedent to drawdown, not a reason for rejection.
         </p>
       </header>
 
-      {modules.loading ? <Loading label="Încarc lista de documente…" /> : null}
+      {modules.loading ? <Loading label="Loading the list of documents…" /> : null}
       <ErrorCard error={modules.error} onRetry={modules.reload} />
       <ErrorCard error={error} />
 
-      <Group label={module ? `Recunoscut: ${module.nameRo}` : "Oferta"}>
+      <Group label={module ? `Recognised: ${module.nameRo}` : "Offer"}>
         <ul className="card rows">
           {(module ? module.requiredDocs : [offerDoc]).map((doc) => (
             <DocRow
@@ -140,20 +140,20 @@ export function Documents() {
         </ul>
       </Group>
 
-      {busy === "classify" ? <Loading label="Recunoaștem investiția…" /> : null}
-      {unknown ? <NoteCard icon="help">Nu am putut recunoaște investiția din ofertă. Încarcă oferta completă, cu descrierea și fișa tehnică a echipamentului.</NoteCard> : null}
+      {busy === "classify" ? <Loading label="Recognising the investment…" /> : null}
+      {unknown ? <NoteCard icon="help">We could not recognise the investment from the offer. Upload the full offer, with the description and the technical data sheet of the equipment.</NoteCard> : null}
       {offer && module && missingRequired.length ? (
-        <NoteCard icon="clock">Mai lipsesc {missingRequired.length} documente esențiale. Le poți trimite și după: banca le cere înainte de tragere.</NoteCard>
+        <NoteCard icon="clock">{missingRequired.length} essential documents are still missing. You can send them later: the bank asks for them before drawdown.</NoteCard>
       ) : null}
-      <NoteCard icon="lock">Documentele sunt criptate, nu devin publice și sunt folosite doar pentru acest dosar. Citim din ele doar datele tehnice.</NoteCard>
+      <NoteCard icon="lock">The documents are encrypted, do not become public and are used only for this dossier. We read only the technical data from them.</NoteCard>
 
-      <Group label="Sau pornește un dosar demo">
-        <p className="small muted">Firma și documentele lui sunt fictive; treci direct la oferte.</p>
+      <Group label="Or start a demo dossier">
+        <p className="small muted">Its company and documents are fictional; you go straight to the offers.</p>
         <div className="demo-buttons">
           {DEMO_FARMS.map((farm) => (
             <button key={farm.moduleId} type="button" className="btn btn--outline btn--small" disabled={busy !== null} onClick={() => demo(farm.moduleId)}>
               <Icon name="upload" />
-              {busy === farm.moduleId ? "Se pornește…" : farm.name}
+              {busy === farm.moduleId ? "Starting…" : farm.name}
             </button>
           ))}
         </div>
@@ -161,9 +161,9 @@ export function Documents() {
 
       <Actions>
         <NextButton href="#/verde/agro/intrebari" disabled={!offer || !module}>
-          Continuă
+          Continue
         </NextButton>
-        {!offer ? <p className="small muted">Încarcă oferta sau factura proformă ca să continui.</p> : null}
+        {!offer ? <p className="small muted">Upload the offer or pro forma invoice to continue.</p> : null}
       </Actions>
     </>
   );

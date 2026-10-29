@@ -13,7 +13,7 @@ export function SectorCard({ sector }) {
         <span className="row-name">{sector.name}</span>
         <span className="row-note">{sector.text}</span>
       </span>
-      {available ? <Icon name="chevron" className="chevron" /> : <span className="status">În curând</span>}
+      {available ? <Icon name="chevron" className="chevron" /> : <span className="status">Coming soon</span>}
     </>
   );
   return available ? (

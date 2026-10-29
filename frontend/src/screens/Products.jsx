@@ -21,15 +21,15 @@ export default function Products() {
         <p className="small">{entry.text}</p>
         <div className="btn-row">
           <a className="btn btn--ink btn--small" href="#/activare">
-            Activează
+            Activate
           </a>
           <a className="btn btn--text btn--small btn--on-yellow" href="#/rezumat">
-            Vezi un exemplu
+            See an example
           </a>
         </div>
       </section>
 
-      <Group label="Produsele tale">
+      <Group label="Your products">
         <ul className="card rows">
           {products.map((product) => (
             <li key={product.name} className="row">

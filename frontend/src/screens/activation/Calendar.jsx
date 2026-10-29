@@ -6,9 +6,9 @@ export function Calendar() {
   return (
     <>
       <header className="intro">
-        <p className="eyebrow">Opțional</p>
-        <h1 className="page-title">Ce urmează în calendarul tău</h1>
-        <p className="small muted">Zilele de naștere și evenimentele mari intră în buget. Îți spun din timp când vine o lună încărcată.</p>
+        <p className="eyebrow">Optional</p>
+        <h1 className="page-title">What's coming up in your calendar</h1>
+        <p className="small muted">Birthdays and big events go into the budget. I'll tell you early when a busy month is coming.</p>
       </header>
 
       <ul className="options">
@@ -32,33 +32,34 @@ export function Calendar() {
         ))}
       </ul>
 
-      <Group label="Ce citesc și ce nu">
+      <Group label="What I read and what I don't">
         <Ticks yes={calendar.reads} no={calendar.doesNotRead} />
       </Group>
 
-      <NoteCard icon="lock">Acces doar pentru citire. Poți deconecta oricând din Profil → Permisiuni.</NoteCard>
+      <NoteCard icon="lock">Read-only access. You can disconnect any time from Profile → Permissions.</NoteCard>
     </>
   );
 }
 
 export function CalendarConnected() {
+  const { calendar } = usePersona();
   const { gift } = calendar;
   return (
     <>
       <header className="intro">
-        <h1 className="page-title">Calendarul e conectat</h1>
+        <h1 className="page-title">Calendar connected</h1>
       </header>
 
       <div className="card row">
         <IconTile icon="calendar" tone="yellow" />
         <div className="row-main">
           <span className="row-name">Google Calendar</span>
-          <span className="row-note">Doar citire · zilele de naștere și evenimentele marcate</span>
+          <span className="row-note">Read-only · birthdays and marked events</span>
         </div>
-        <span className="status is-on">Conectat</span>
+        <span className="status is-on">Connected</span>
       </div>
 
-      <Section title="Ce am găsit în lunile următoare">
+      <Section title="What I found in the coming months">
         <div className="card">
           <Agenda items={calendar.found} />
         </div>

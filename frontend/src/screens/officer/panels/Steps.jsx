@@ -14,15 +14,15 @@ function ToolStep({ call, result }) {
       <summary>
         <span className="step-tool">{call.data.tool}</span>
         <span className="step-msg">{result?.message ?? call.message}</span>
-        {result ? <span className="small muted num">{result.data.durationMs} ms</span> : <Tag>în lucru</Tag>}
-        {failed ? <Tag tone="bad">eroare</Tag> : null}
+        {result ? <span className="small muted num">{result.data.durationMs} ms</span> : <Tag>in progress</Tag>}
+        {failed ? <Tag tone="bad">error</Tag> : null}
       </summary>
       <div className="step-body">
-        <p className="small muted">Intrare</p>
+        <p className="small muted">Input</p>
         <pre className="code">{json(call.data.input)}</pre>
         {result?.data.calcs?.length ? (
           <>
-            <p className="small muted">Cifre calculate de motor</p>
+            <p className="small muted">Figures calculated by the engine</p>
             {result.data.calcs.map((c) => (
               <CalcLine key={c.calcId} calc={c} />
             ))}
@@ -30,7 +30,7 @@ function ToolStep({ call, result }) {
         ) : null}
         {result && Object.keys(result.data.result ?? {}).length ? (
           <>
-            <p className="small muted">Rezultat</p>
+            <p className="small muted">Result</p>
             <pre className="code">{json(result.data.result)}</pre>
           </>
         ) : null}
@@ -55,18 +55,18 @@ export function StepsPanel({ run, events, status }) {
   return (
     <Panel
       n={2}
-      title="Pașii agenților"
+      title="Agent steps"
       wide
       aside={
         <span className="panel-aside">
-          <Tag tone={live ? "warn" : "ok"}>{live ? `● live (${status.state})` : "încheiat"}</Tag>
+          <Tag tone={live ? "warn" : "ok"}>{live ? `● live (${status.state})` : "finished"}</Tag>
           <span className="small muted">
-            {events.length} evenimente · {eventCalcs} cifre
+            {events.length} events · {eventCalcs} figures
           </span>
         </span>
       }
     >
-      {status.state === "error" ? <p className="small field-error">Fluxul live nu a putut fi citit: {status.error?.message}</p> : null}
+      {status.state === "error" ? <p className="small field-error">The live stream could not be read: {status.error?.message}</p> : null}
       <div className="agents">
         {Object.entries(AGENTS_OFFICER).map(([agent, name]) => {
           const mine = events.filter((e) => e.agent === agent);
@@ -80,7 +80,7 @@ export function StepsPanel({ run, events, status }) {
                 key: e.seq,
                 node: (
                   <p className="degraded">
-                    <Tag tone="warn">degradat · {e.data.level}</Tag> {e.data.detailRo ?? e.message}
+                    <Tag tone="warn">degraded · {e.data.level}</Tag> {e.data.detailRo ?? e.message}
                   </p>
                 ),
               });
@@ -94,14 +94,14 @@ export function StepsPanel({ run, events, status }) {
                   <SourceTag mode={st?.source} />
                 </span>
               </div>
-              {items.length ? items.map((i) => <div key={i.key}>{i.node}</div>) : <p className="small muted">Fără pași încă.</p>}
+              {items.length ? items.map((i) => <div key={i.key}>{i.node}</div>) : <p className="small muted">No steps yet.</p>}
             </section>
           );
         })}
       </div>
       {run.error ? (
         <p className="small field-error">
-          Dosarul a eșuat la {run.error.failedStep}: {run.error.message}
+          The dossier failed at {run.error.failedStep}: {run.error.message}
         </p>
       ) : null}
     </Panel>

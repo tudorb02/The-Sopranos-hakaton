@@ -21,42 +21,42 @@ export function offerRows(run, classic, green) {
       amount: disp(run, loan.amountCalcId),
       rate: disp(run, loan.rateCalcId),
       term: disp(run, loan.termCalcId),
-      installment: seasonal ? `${disp(run, loan.repayment.installmentCalcId)} în ${monthsText(loan.repayment.paymentMonths)}` : `${disp(run, loan.repayment.installmentCalcId)} pe lună`,
-      grace: loan.repayment.graceCalcId ? disp(run, loan.repayment.graceCalcId) : "Fără",
-      collateral: option.collateral.includes("GUARANTEE_INVESTEU_FEI") ? "Fără ipotecă, datorită unei garanții europene" : option.collateral.includes("MORTGAGE") ? "Ipotecă" : "—",
+      installment: seasonal ? `${disp(run, loan.repayment.installmentCalcId)} in ${monthsText(loan.repayment.paymentMonths)}` : `${disp(run, loan.repayment.installmentCalcId)} per month`,
+      grace: loan.repayment.graceCalcId ? disp(run, loan.repayment.graceCalcId) : "None",
+      collateral: option.collateral.includes("GUARANTEE_INVESTEU_FEI") ? "No mortgage, thanks to a European guarantee" : option.collateral.includes("MORTGAGE") ? "Mortgage" : "—",
       interest: disp(run, totals.totalInterestCalcId),
       savings: disp(run, totals.savingsOverHorizonCalcId),
-      savingsLabel: calcOf(run, totals.savingsOverHorizonCalcId)?.labelRo ?? "Economii în perioada creditului",
+      savingsLabel: calcOf(run, totals.savingsOverHorizonCalcId)?.labelRo ?? "Savings over the credit term",
       affordability: option.affordability.noteRo,
     };
   };
   const a = cell(classic);
   const b = cell(green);
   const rows = [
-    ["Suma creditului", a?.amount, b?.amount],
-    ["Dobânda pe an", a?.rate, b?.rate],
-    ["Durata", a?.term, b?.term],
-    ["Rata", a?.installment, b?.installment],
-    ["Perioadă fără rate", a?.grace, b?.grace],
-    ["Garanția", a?.collateral, b?.collateral],
-    ["Dobânzi plătite în total", a?.interest, b?.interest],
-    [a?.savingsLabel ?? b?.savingsLabel ?? "Economii", a?.savings, b?.savings],
-    ["Ratele față de încasările tale", a?.affordability, b?.affordability],
+    ["Credit amount", a?.amount, b?.amount],
+    ["Interest rate per year", a?.rate, b?.rate],
+    ["Term", a?.term, b?.term],
+    ["Instalment", a?.installment, b?.installment],
+    ["Period without instalments", a?.grace, b?.grace],
+    ["Collateral", a?.collateral, b?.collateral],
+    ["Total interest paid", a?.interest, b?.interest],
+    [a?.savingsLabel ?? b?.savingsLabel ?? "Savings", a?.savings, b?.savings],
+    ["Instalments compared with your income", a?.affordability, b?.affordability],
   ];
-  return rows.map(([label, x, y]) => ({ label, a: x ?? "—", b: y ?? "Nu e disponibil acum" }));
+  return rows.map(([label, x, y]) => ({ label, a: x ?? "—", b: y ?? "Not available now" }));
 }
 
 function Compare({ rows }) {
   return (
-    <div className="card compare" role="table" aria-label="Creditul clasic și creditul verde">
+    <div className="card compare" role="table" aria-label="The classic credit and the green credit">
       <div className="compare-head" role="row">
         <span className="sr-only" role="columnheader">
-          Ce compari
+          What you compare
         </span>
-        <span role="columnheader">Credit clasic</span>
+        <span role="columnheader">Classic credit</span>
         <span role="columnheader" className="is-green">
           <Icon name="leaf" />
-          Credit verde
+          Green credit
         </span>
       </div>
       {rows.map((row) => (
@@ -80,8 +80,8 @@ export function Offers() {
 
   if (!runId) {
     return (
-      <Missing href="#/verde/agro/documente" label="Încarcă oferta">
-        Nu ai încă o analiză. Încarcă oferta și trimite dosarul, sau pornește un dosar demo.
+      <Missing href="#/verde/agro/documente" label="Upload the offer">
+        You do not have an analysis yet. Upload the offer and send the dossier, or start a demo dossier.
       </Missing>
     );
   }
@@ -100,26 +100,26 @@ export function Offers() {
 
   return (
     <>
-      {loading ? <Loading label="Încarc ofertele…" /> : null}
+      {loading ? <Loading label="Loading the offers…" /> : null}
       <ErrorCard error={error} onRetry={reload} />
       {run && !ready ? (
-        <Missing href="#/verde/agro/analiza" label="Înapoi la analiză">
-          Analiza nu s-a terminat încă.
+        <Missing href="#/verde/agro/analiza" label="Back to the analysis">
+          The analysis has not finished yet.
         </Missing>
       ) : null}
-      {run?.state === "ESUAT" ? <ErrorCard error={{ code: "ANALYSIS_FAILED", message: run.error?.message ?? "Analiza s-a oprit." }} /> : null}
+      {run?.state === "ESUAT" ? <ErrorCard error={{ code: "ANALYSIS_FAILED", message: run.error?.message ?? "The analysis stopped." }} /> : null}
 
       {ready ? (
         <>
           <section className="card card--yellow hero-card" aria-labelledby="offer-title">
-            <p className="eyebrow">Ofertele tale</p>
+            <p className="eyebrow">Your offers</p>
             <h1 id="offer-title" className="hero-label">
-              {wins ? "Câștigi" : "Creditul clasic e varianta potrivită acum"}
+              {wins ? "You gain" : "The classic credit is the right option for now"}
             </h1>
             {wins ? (
               <p className="hero-big num">
                 {disp(run, funding.comparison.netAdvantageCalcId)}
-                <span className="hero-big-sub"> alegând creditul verde</span>
+                <span className="hero-big-sub"> by choosing the green credit</span>
               </p>
             ) : (
               <p className="hero-sub">{funding.farmerExplanationRo}</p>
@@ -132,40 +132,40 @@ export function Offers() {
             </p>
           </section>
 
-          <Section title="Creditul clasic și creditul verde">
+          <Section title="The classic credit and the green credit">
             <Compare rows={offerRows(run, classic, green)} />
             <p className="small muted">
-              Dobânda și ratele sunt calculate de bancă pe baza unor parametri demonstrativi. Oferta finală o confirmă banca la aprobare.
+              The bank calculates the interest rate and instalments from demo parameters. The bank confirms the final offer at approval.
             </p>
           </Section>
 
           {seasonalSchedule ? (
-            <Section title="Ratele creditului verde, într-un an">
+            <Section title="The green credit instalments over one year">
               <div className="card">
                 <RepaymentChart
                   green={seasonalSchedule}
                   classic={classicSchedule}
-                  ariaLabel={`Creditul verde: ${disp(run, greenLoan.repayment.installmentCalcId)} în lunile ${monthsText(greenLoan.repayment.paymentMonths)}. Creditul clasic: ${disp(run, loanOf(classic).repayment.installmentCalcId)} pe lună.`}
+                  ariaLabel={`The green credit: ${disp(run, greenLoan.repayment.installmentCalcId)} in ${monthsText(greenLoan.repayment.paymentMonths)}. The classic credit: ${disp(run, loanOf(classic).repayment.installmentCalcId)} per month.`}
                 />
                 <p className="small muted">
-                  Barele: creditul verde, {disp(run, greenLoan.repayment.installmentCalcId)} doar în lunile cu încasări ({monthsText(greenLoan.repayment.paymentMonths)}), după{" "}
-                  {disp(run, greenLoan.repayment.graceCalcId)} fără rate. Linia punctată: creditul clasic, {disp(run, loanOf(classic).repayment.installmentCalcId)} în fiecare lună.
+                  Bars: the green credit, {disp(run, greenLoan.repayment.installmentCalcId)} only in the months with income ({monthsText(greenLoan.repayment.paymentMonths)}), after{" "}
+                  {disp(run, greenLoan.repayment.graceCalcId)} without instalments. Dotted line: the classic credit, {disp(run, loanOf(classic).repayment.installmentCalcId)} every month.
                 </p>
               </div>
             </Section>
           ) : null}
 
           {green?.collateral.includes("GUARANTEE_INVESTEU_FEI") ? (
-            <NoteCard icon="shield">Creditul verde se acordă fără ipotecă, datorită unei garanții europene.</NoteCard>
+            <NoteCard icon="shield">The green credit is granted without a mortgage, thanks to a European guarantee.</NoteCard>
           ) : null}
 
-          <NoteCard icon="lock">Oferta nu e o promisiune de aprobare. Banca verifică dosarul și dă aprobarea finală.</NoteCard>
+          <NoteCard icon="lock">The offer is not a promise of approval. The bank checks the dossier and gives the final approval.</NoteCard>
         </>
       ) : null}
 
       <Actions>
         <NextButton href="#/verde/agro/schimbari" disabled={!ready}>
-          Vezi ce să schimbi
+          See what to change
         </NextButton>
       </Actions>
     </>

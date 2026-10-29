@@ -3,7 +3,7 @@ import { useId } from "react";
 import { lei, num, pct } from "../lib/format.js";
 import { Icon } from "./icons.jsx";
 
-const SOURCE_LABELS = { obs: "observat", said: "spus", agreed: "stabilit", est: "estimat" };
+const SOURCE_LABELS = { obs: "observed", said: "said", agreed: "agreed", est: "estimated" };
 
 // Where a line comes from: observed in transactions, said by the client, agreed together, or estimated.
 export function Src({ kind, label }) {
@@ -26,12 +26,12 @@ export function Section({ title, aside, children }) {
   );
 }
 
-// Amount in the app's style: the integer large, ",00 lei" (or ",00 EUR") small.
-export function Amount({ value, size = "lg", currency = "lei" }) {
+// Amount in the app's style: the integer large, ".00 RON" (or ".00 EUR") small.
+export function Amount({ value, size = "lg", currency = "RON" }) {
   return (
     <span className={`amount amount--${size}`}>
       <span className="amount-int">{num(value)}</span>
-      <span className="amount-dec">,00 {currency}</span>
+      <span className="amount-dec">.00 {currency}</span>
     </span>
   );
 }
@@ -86,7 +86,7 @@ export function Meter({ value, max, tone }) {
 
 export function Dots({ used, max }) {
   return (
-    <span className="dots" role="img" aria-label={`${used} din ${max}`}>
+    <span className="dots" role="img" aria-label={`${used} of ${max}`}>
       {Array.from({ length: max }, (_, i) => (
         <i key={i} className={i < used ? undefined : "is-empty"} />
       ))}
@@ -113,7 +113,7 @@ export function BudgetRow({ budget }) {
         </span>
       ) : null}
       {kind === "protected" || kind === "paid" ? <span className="row-value">{lei(budget.spent)}</span> : null}
-      {kind === "pause" ? <span className="row-value">0 lei</span> : null}
+      {kind === "pause" ? <span className="row-value">0 RON</span> : null}
       {kind === "amount" ? <Meter value={budget.spent} max={budget.limit} tone={warn ? "warn" : undefined} /> : null}
     </li>
   );
@@ -133,7 +133,7 @@ export function ValueRow({ icon, name, note, value }) {
   );
 }
 
-// Uppercase label above a card, like the app's form groups ("CONT SURSĂ").
+// Uppercase label above a card, like the app's form groups ("SOURCE ACCOUNT").
 export function Group({ label, action, children }) {
   const id = useId();
   return (
@@ -157,7 +157,7 @@ export function Facts({ items }) {
           {item.label ? <span className="fact-label">{item.label}</span> : null}
           <span className="fact-value">
             {item.value ?? item.text}
-            {item.quote ? <span className="quote"> „{item.quote}”</span> : null}
+            {item.quote ? <span className="quote"> “{item.quote}”</span> : null}
           </span>
           {item.src ? <Src kind={item.src} /> : null}
         </li>
@@ -242,7 +242,7 @@ export function Disclaimer({ legal, link = false, href = "#/informare" }) {
       </ul>
       {link ? (
         <a className="link" href={href}>
-          Citește informarea completă
+          Read the full notice
         </a>
       ) : null}
     </section>
@@ -256,7 +256,7 @@ export function DisclaimerStrip({ legal, className, href = "#/informare" }) {
       <Icon name="lock" />
       <span>{legal.strip}</span>
       <a className="link" href={href}>
-        Detalii
+        Details
       </a>
     </p>
   );

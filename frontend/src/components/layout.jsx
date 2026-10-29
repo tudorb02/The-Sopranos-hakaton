@@ -3,20 +3,20 @@ import { Icon } from "./icons.jsx";
 import { DisclaimerStrip } from "./ui.jsx";
 
 const COACH_PAGES = [
-  { id: "rezumat", label: "Rezumat" },
-  { id: "cheltuieli", label: "Cheltuieli" },
-  { id: "bugete", label: "Bugete" },
-  { id: "obiective", label: "Obiective" },
-  { id: "idei", label: "Idei" },
-  { id: "profil", label: "Profil" },
+  { id: "rezumat", label: "Summary" },
+  { id: "cheltuieli", label: "Spending" },
+  { id: "bugete", label: "Budgets" },
+  { id: "obiective", label: "Goals" },
+  { id: "idei", label: "Ideas" },
+  { id: "profil", label: "Profile" },
 ];
 
 // Tabs of the existing app. The Coach is an optional feature inside Produse; the other tabs are placeholders.
 const APP_TABS = [
-  { id: "acasa", label: "Acasă", icon: "home" },
-  { id: "plati", label: "Plăți", icon: "transfer" },
-  { id: "carduri", label: "Carduri", icon: "card" },
-  { id: "produse", label: "Produse", icon: "grid" },
+  { id: "acasa", label: "Home", icon: "home" },
+  { id: "plati", label: "Payments", icon: "transfer" },
+  { id: "carduri", label: "Cards", icon: "card" },
+  { id: "produse", label: "Products", icon: "grid" },
 ];
 
 // The phone-width column; on desktop it sits in a frame.
@@ -30,7 +30,7 @@ function Stage({ children }) {
 
 function TabBar({ productsHref }) {
   return (
-    <nav className="tabbar" aria-label="Aplicație">
+    <nav className="tabbar" aria-label="App">
       <ul>
         {APP_TABS.map((tab) => (
           <li key={tab.id}>
@@ -42,7 +42,7 @@ function TabBar({ productsHref }) {
                 <span>{tab.label}</span>
               </a>
             ) : (
-              <span className="tab-inert" title="Secțiune existentă în aplicație">
+              <span className="tab-inert" title="Existing section of the app">
                 <span className="tab-icon">
                   <Icon name={tab.icon} />
                 </span>
@@ -66,7 +66,7 @@ export function BareFrame({ children }) {
 }
 
 // The Produse tab of the app: the personal one offers the Coach, the business one shows what is coming.
-export function ProductsFrame({ title = "Produse", subtitle, productsHref = "#/produse", children }) {
+export function ProductsFrame({ title = "Products", subtitle, productsHref = "#/produse", children }) {
   return (
     <Stage>
       <header className="app-header">
@@ -75,13 +75,13 @@ export function ProductsFrame({ title = "Produse", subtitle, productsHref = "#/p
           {subtitle ? <p className="small muted">{subtitle}</p> : null}
         </div>
         <div className="header-actions">
-          <button type="button" className="icon-btn" aria-label="Mesaje, 1 necitit">
+          <button type="button" className="icon-btn" aria-label="Messages, 1 unread">
             <Icon name="mail" />
             <span className="badge" aria-hidden="true">
               1
             </span>
           </button>
-          <a className="icon-btn" href="#/login" aria-label="Ieși din cont" title="Ieși din cont">
+          <a className="icon-btn" href="#/login" aria-label="Sign out" title="Sign out">
             <Icon name="logout" />
           </a>
         </div>
@@ -98,14 +98,14 @@ export function SectionFrame({ current, client, pages, children }) {
   return (
     <Stage>
       <header className="app-header coach-header">
-        <a className="back-link" href="#/produse" aria-label="Înapoi la Produse">
+        <a className="back-link" href="#/produse" aria-label="Back to Products">
           <Icon name="back" />
         </a>
         <p className="coach-title">
           <Icon name="compass" />
-          Coach financiar
+          Financial coach
         </p>
-        <a className="avatar" href="#/profil" aria-label="Profilul tău">
+        <a className="avatar" href="#/profil" aria-label="Your profile">
           {client.initial}
         </a>
       </header>
@@ -134,7 +134,7 @@ export function SectionFrame({ current, client, pages, children }) {
 // Segmented progress under the flow header, like the steps of a payment in the app.
 function Progress({ steps, current, note }) {
   const done = current > steps.length;
-  const label = done ? "Gata" : `Pasul ${current} din ${steps.length} · ${steps[current - 1]}`;
+  const label = done ? "Done" : `Step ${current} of ${steps.length} · ${steps[current - 1]}`;
   return (
     <div className="progress">
       <ol aria-hidden="true">
@@ -168,7 +168,7 @@ export function FlowActions({ next, nextLabel, skip, skipLabel }) {
   );
 }
 
-// A full-screen flow (activation, chat, statements, notice): centred title, "Înapoi" and "Închide",
+// A full-screen flow (activation, chat, statements, notice): centred title, "Back" and "Close",
 // like the app's payment flow. When the screen has its own h1, pass titleAs="p".
 export function FlowFrame({ title, titleAs: TitleTag = "h1", closeHref, backHref, progress, footer, children }) {
   return (
@@ -176,14 +176,14 @@ export function FlowFrame({ title, titleAs: TitleTag = "h1", closeHref, backHref
       <header className="flow-header">
         {backHref ? (
           <a className="link" href={backHref}>
-            Înapoi
+            Back
           </a>
         ) : (
           <span aria-hidden="true" />
         )}
         <TitleTag className="flow-title">{title}</TitleTag>
         <a className="link" href={closeHref}>
-          Închide
+          Close
         </a>
       </header>
       {progress ? <Progress {...progress} /> : null}

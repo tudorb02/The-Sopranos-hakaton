@@ -21,7 +21,7 @@ export function Intro({ pack }) {
         </p>
       </section>
 
-      <Section title="Cum decurge">
+      <Section title="How it works">
         <ol className="card steps">
           {intro.steps.map((step, i) => (
             <li key={step}>
@@ -32,11 +32,11 @@ export function Intro({ pack }) {
         </ol>
       </Section>
 
-      <Section title="Ce face aplicația">
+      <Section title="What the app does">
         <Ticks yes={intro.does} no={intro.doesNot} />
       </Section>
 
-      <Section title="Ce să ai la îndemână">
+      <Section title="What to have at hand">
         <Ticks yes={intro.bring} />
       </Section>
 

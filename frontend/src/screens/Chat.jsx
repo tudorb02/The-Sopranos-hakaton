@@ -7,7 +7,7 @@ import { usePersona } from "../persona.js";
 function Proposal({ item }) {
   return (
     <div className="proposal">
-      <p className="eyebrow">Propunere</p>
+      <p className="eyebrow">Proposal</p>
       <p className="row-name">{item.title}</p>
       <ul className="proposal-lines">
         {item.lines.map((line) => (
@@ -60,17 +60,17 @@ export default function Chat() {
   return (
     <>
       <DisclaimerStrip legal={legal} className="disclaimer-strip--card" />
-      <div className="thread" role="log" aria-label="Mesaje">
+      <div className="thread" role="log" aria-label="Messages">
         {chat.map((item, i) => (
           <Message key={i} item={item} services={services} />
         ))}
       </div>
       <div className="composer">
         <label htmlFor="composer-input" className="sr-only">
-          Mesajul tău
+          Your message
         </label>
-        <input id="composer-input" type="text" placeholder="Scrie un mesaj…" autoComplete="off" />
-        <button type="button" className="send" aria-label="Trimite">
+        <input id="composer-input" type="text" placeholder="Write a message…" autoComplete="off" />
+        <button type="button" className="send" aria-label="Send">
           <Icon name="send" />
         </button>
       </div>

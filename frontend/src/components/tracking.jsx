@@ -13,7 +13,7 @@ export function CategoryTile({ id, size }) {
   );
 }
 
-// Signed amount in the app's style: "−30" large, ",00 lei" small.
+// Signed amount in the app's style: "−30" large, ".00 RON" small.
 export function TxAmount({ value, size = "md" }) {
   const sign = value < 0 ? "−" : "+";
   return (
@@ -22,7 +22,7 @@ export function TxAmount({ value, size = "md" }) {
         {sign}
         {num(Math.abs(value))}
       </span>
-      <span className="amount-dec">,00 lei</span>
+      <span className="amount-dec">.00 RON</span>
     </span>
   );
 }
@@ -70,20 +70,20 @@ export function TxRow({ tx }) {
         <span className="tx-main">
           <span className="tx-name">{title}</span>
           <span className="tx-meta">{meta}</span>
-          {tx.needsReview || tx.renamed || tx.recurring || tx.status === "În așteptare" ? (
+          {tx.needsReview || tx.renamed || tx.recurring || tx.status === "Pending" ? (
             <span className="tx-flags">
-              {tx.needsReview ? <span className="flag flag--review">De verificat</span> : null}
-              {tx.status === "În așteptare" ? <span className="flag">În așteptare</span> : null}
+              {tx.needsReview ? <span className="flag flag--review">To review</span> : null}
+              {tx.status === "Pending" ? <span className="flag">Pending</span> : null}
               {tx.recurring ? (
                 <span className="flag">
                   <Icon name="repeat" />
-                  Recurentă
+                  Recurring
                 </span>
               ) : null}
               {tx.renamed && !tx.recurring ? (
                 <span className="flag">
                   <Icon name="pencil" />
-                  Redenumită
+                  Renamed
                 </span>
               ) : null}
             </span>
@@ -98,19 +98,19 @@ export function TxRow({ tx }) {
 // Categories as tiles; `selected` is chosen, `suggested` is the coach's proposal for an unsorted payment.
 export function CategoryPicker({ ids, selected, suggested }) {
   return (
-    <div className="cat-picker" role="group" aria-label="Categorie">
+    <div className="cat-picker" role="group" aria-label="Category">
       {ids.map((id) => (
         <button key={id} type="button" className="cat-option" aria-pressed={id === selected ? "true" : "false"}>
           <CategoryTile id={id} />
           <span>{categories[id].label}</span>
-          {id === suggested ? <span className="flag flag--review">Sugestie</span> : null}
+          {id === suggested ? <span className="flag flag--review">Suggested</span> : null}
         </button>
       ))}
       <button type="button" className="cat-option cat-option--new">
         <span className="cat-tile cat-fixed" aria-hidden="true">
           <Icon name="tag" />
         </span>
-        <span>Categorie nouă</span>
+        <span>New category</span>
       </button>
     </div>
   );

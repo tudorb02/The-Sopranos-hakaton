@@ -23,7 +23,7 @@ function ConsentSwitch({ label, hint, checked, onChange }) {
   );
 }
 
-const fromSource = (source) => <Src kind="obs" label={`din ${source}`} />;
+const fromSource = (source) => <Src kind="obs" label={`from ${source}`} />;
 
 export function Company() {
   const flow = useFlow();
@@ -46,8 +46,8 @@ export function Company() {
   return (
     <>
       <header className="intro">
-        <h1 className="page-title">Firma ta</h1>
-        <p className="small muted">Luăm datele din registrele publice și, cu acordul tău, de la APIA și din conturi. Tu doar confirmi.</p>
+        <h1 className="page-title">Your company</h1>
+        <p className="small muted">We take the data from the public registries and, with your consent, from APIA and your accounts. You only confirm it.</p>
       </header>
 
       <form
@@ -58,18 +58,18 @@ export function Company() {
         }}
       >
         <div className="field">
-          <label htmlFor={inputId}>Codul de identificare fiscală (CUI)</label>
+          <label htmlFor={inputId}>Tax identification code (CUI)</label>
           <div className="input">
-            <input id={inputId} inputMode="numeric" autoComplete="off" placeholder="de exemplu 45871203" value={input} onChange={(e) => setInput(e.target.value)} />
+            <input id={inputId} inputMode="numeric" autoComplete="off" placeholder="for example 45871203" value={input} onChange={(e) => setInput(e.target.value)} />
           </div>
         </div>
         <button type="submit" className="btn btn--small" disabled={!input.trim() || farm.loading}>
-          Caută firma
+          Find the company
         </button>
       </form>
 
-      <Group label="Ferme demo (date fictive)">
-        <div className="chips" role="group" aria-label="Ferme demo">
+      <Group label="Demo farms (fictional data)">
+        <div className="chips" role="group" aria-label="Demo farms">
           {DEMO_FARMS.map((demo) => (
             <button key={demo.cui} type="button" className="chip" aria-pressed={flow.cui === demo.cui ? "true" : "false"} onClick={() => lookup(demo.cui)}>
               {demo.name}
@@ -78,12 +78,12 @@ export function Company() {
         </div>
       </Group>
 
-      {farm.loading && flow.cui ? <Loading label="Caut firma în registre…" /> : null}
+      {farm.loading && flow.cui ? <Loading label="Looking up the company in the registries…" /> : null}
       <ErrorCard error={farm.error} onRetry={farm.reload} />
 
       {profile ? (
         <>
-          <section className="card" aria-label="Firma">
+          <section className="card" aria-label="Company">
             <div className="row row--flush">
               <IconTile icon="bank" tone="yellow" />
               <div className="row-main">
@@ -98,62 +98,62 @@ export function Company() {
 
           <NoteCard icon={profile.company.smeStatus === "NOT_SME" ? "shield" : "check"}>{SME_STATUS_RO[profile.company.smeStatus]}</NoteCard>
 
-          <Group label="Acordurile tale">
+          <Group label="Your consents">
             <div className="card switches">
               <div className="switch-row">
                 <p className="consent-fixed">
-                  <span>Date publice (ANAF)</span>
-                  <span className="small muted">Datele firmei și bilanțul, din registrele publice.</span>
+                  <span>Public data (ANAF)</span>
+                  <span className="small muted">The company data and balance sheet, from the public registries.</span>
                 </p>
                 <span className="status">Public</span>
               </div>
               <ConsentSwitch
-                label="APIA: parcelele și culturile"
-                hint="Necesar: parcelele tale vin de la APIA."
+                label="APIA: parcels and crops"
+                hint="Required: your parcels come from APIA."
                 checked={consents.apia}
                 onChange={(apia) => patchFlow({ consents: { ...consents, apia } })}
               />
               <ConsentSwitch
-                label="Open Banking: încasările firmei"
-                hint="Din ele potrivim ratele cu lunile în care încasezi."
+                label="Open Banking: the company income"
+                hint="We use it to match the instalments to the months when you get paid."
                 checked={consents.openBanking}
                 onChange={(openBanking) => patchFlow({ consents: { ...consents, openBanking } })}
               />
             </div>
-            <p className="small muted group-hint">Fără Open Banking, poți răspunde tu la întrebarea despre lunile cu încasări.</p>
+            <p className="small muted group-hint">Without Open Banking, you can answer the question about your income months yourself.</p>
           </Group>
 
           <PrivacyPromise legal={greenLegal} href="#/verde/informare" />
 
-          <Group label="Ce am găsit">
+          <Group label="What we found">
             <ul className="card facts">
               <li>
-                <span className="fact-label">Activitate</span>
+                <span className="fact-label">Activity</span>
                 <span className="fact-value">{profile.company.caenLabelRo}</span>
                 {fromSource("ANAF")}
               </li>
               <li>
-                <span className="fact-label">Angajați</span>
+                <span className="fact-label">Employees</span>
                 <span className="fact-value num">{profile.company.employees}</span>
                 {fromSource("ANAF")}
               </li>
               {profile.company.turnoverEur != null ? (
                 <li>
-                  <span className="fact-label">Cifra de afaceri ({profile.company.financialYear})</span>
+                  <span className="fact-label">Turnover ({profile.company.financialYear})</span>
                   <span className="fact-value num">{eur(profile.company.turnoverEur)}</span>
                   {fromSource("ANAF")}
                 </li>
               ) : null}
               <li>
-                <span className="fact-label">Suprafața fermei</span>
+                <span className="fact-label">Farm area</span>
                 <span className="fact-value num">
-                  {ha(profile.farm.totalHa)}, {profile.parcels.features.length} parcele
+                  {ha(profile.farm.totalHa)}, {profile.parcels.features.length} parcels
                 </span>
                 {fromSource("APIA")}
               </li>
               {profile.cashflow.peakMonths.length ? (
                 <li>
-                  <span className="fact-label">Luni cu încasări mari</span>
+                  <span className="fact-label">Months with high income</span>
                   <span className="fact-value">{profile.cashflow.peakMonths.map((m) => MONTHS_RO[m]).join(", ")}</span>
                   {fromSource("Open Banking")}
                 </li>
@@ -165,9 +165,9 @@ export function Company() {
 
       <Actions>
         <NextButton href="#/verde/agro/unde" disabled={!canContinue}>
-          Confirm datele
+          Confirm the data
         </NextButton>
-        {profile && !consents.apia ? <p className="small muted">Bifează acordul APIA ca să continui.</p> : null}
+        {profile && !consents.apia ? <p className="small muted">Tick the APIA consent to continue.</p> : null}
       </Actions>
     </>
   );

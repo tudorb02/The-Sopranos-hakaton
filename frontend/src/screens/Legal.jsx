@@ -61,7 +61,7 @@ export default function Legal({ legal = coachLegal }) {
         <InfoRows items={legal.incident.items} />
       </Group>
 
-      <Group label="Cum îți ștergi datele">
+      <Group label="How to delete your data">
         <div className="card">
           <p className="small">{legal.erase}</p>
         </div>

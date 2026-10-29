@@ -1,78 +1,78 @@
 // The notice of the green-credit flow, same shape as data/legal.js. The wording is a proposal for the bank's
-// legal team; "criptate" must hold in the real implementation, in transit and at rest.
+// legal team; "encrypted" must hold in the real implementation, in transit and at rest.
 
 export const greenLegal = {
-  eyebrow: "Informare",
-  title: "Analiza și datele firmei",
+  eyebrow: "Notice",
+  title: "The analysis and the company data",
   items: [
-    { icon: "compass", text: "Dosarul îl pregătești în aplicație, cu ajutorul agenților AI. Banca dă doar aprobarea finală." },
-    { icon: "chat", text: "Cifrele sunt calculate de bancă, după reguli fixe. AI-ul citește documentele și scrie explicațiile, dar nu face calcule." },
-    { icon: "lock", text: "Datele și documentele firmei sunt criptate, atât la transmitere, cât și la stocare, și sunt folosite doar pentru acest dosar." },
-    { icon: "shield", text: "Ce lipsește din dosar devine o condiție înainte de tragere, nu un motiv de respingere." },
+    { icon: "compass", text: "You prepare the dossier in the app, with the help of AI agents. The bank only gives the final approval." },
+    { icon: "chat", text: "The bank calculates the figures with fixed rules. The AI reads the documents and writes the explanations, but does no calculations." },
+    { icon: "lock", text: "The company data and documents are encrypted, both in transit and at rest, and are used only for this dossier." },
+    { icon: "shield", text: "Anything missing from the dossier becomes a condition precedent to drawdown, not a reason for rejection." },
   ],
-  strip: "Date criptate · Aprobarea finală o dă banca",
+  strip: "Encrypted data · The bank gives the final approval",
   // Who can see the dossier. A proposal for the legal team: every line must hold in the real implementation.
   access: {
-    title: "Cine vede dosarul",
+    title: "Who sees the dossier",
     items: [
-      { icon: "lock", title: "Tu", text: "Vezi tot dosarul și fiecare cifră din el, cu sursa ei." },
-      { icon: "bank", title: "Banca", text: "Primește dosarul gata pregătit doar după ce apeși „Trimite cererea la bancă”, pentru aprobarea finală. Până atunci, îl vezi doar tu." },
-      { icon: "shield", title: "Fondul European de Investiții", text: "Dacă alegi creditul verde cu garanție, primește doar datele cerute pentru garanție: firma, creditul și investiția." },
+      { icon: "lock", title: "You", text: "You see the whole dossier and every figure in it, with its source." },
+      { icon: "bank", title: "The bank", text: "Receives the prepared dossier only after you press “Send the application to the bank”, for the final approval. Until then, only you see it." },
+      { icon: "shield", title: "European Investment Fund", text: "If you choose the green credit with a guarantee, it receives only the data needed for the guarantee: the company, the credit and the investment." },
     ],
   },
   never: {
-    title: "Ce nu facem niciodată",
+    title: "What we never do",
     items: [
-      "Nu trimitem datele firmei la ANAF sau la APIA: doar le citim, cu acordul tău",
-      "Nu folosim dosarul pentru reclame sau pentru alte produse",
-      "Nu îți cerem parole, PIN-uri sau coduri primite prin SMS",
-      "Nu trimitem datele în afara Uniunii Europene",
+      "We do not send the company data to ANAF or APIA: we only read it, with your consent",
+      "We do not use the dossier for advertising or for other products",
+      "We never ask for passwords, PINs or codes received by SMS",
+      "We do not send the data outside the European Union",
     ],
   },
   log: {
-    title: "Ultimele accesări",
+    title: "Recent access",
     items: [
-      { who: "Banca", what: "A primit dosarul, pentru aprobarea finală", when: "12 nov., 11:02" },
-      { who: "Tu", what: "Ai încărcat documentele", when: "12 nov., 10:15" },
+      { who: "The bank", what: "Received the dossier, for the final approval", when: "12 Nov, 11:02" },
+      { who: "You", what: "Uploaded the documents", when: "12 Nov, 10:15" },
     ],
   },
   security: {
-    title: "Cum protejăm datele firmei",
+    title: "How we protect the company data",
     items: [
-      { icon: "lock", title: "Criptate peste tot", text: "Documentele și datele firmei sunt criptate la transmitere și la stocare. Fără cheile de criptare ale băncii, un fișier copiat nu poate fi citit." },
-      { icon: "shield", title: "Doar din contul firmei", text: "Dosarul se deschide doar din aplicație, de utilizatorii firmei, după autentificare." },
-      { icon: "compass", title: "Agenții primesc doar ce le trebuie", text: "Oferta, fișele tehnice și cifrele fermei, fără date personale ale asociaților. Datele rămân în UE." },
+      { icon: "lock", title: "Encrypted everywhere", text: "The company documents and data are encrypted in transit and at rest. Without the bank's encryption keys, a copied file cannot be read." },
+      { icon: "shield", title: "Only from the company account", text: "The dossier opens only in the app, for the company's users, after sign-in." },
+      { icon: "compass", title: "The agents get only what they need", text: "The offer, the technical data sheets and the farm figures, with no personal data of the shareholders. The data stays in the EU." },
     ],
   },
   privacy: {
-    title: "Dosarul rămâne privat",
+    title: "The dossier stays private",
     items: [
-      "Dosarul nu devine public. Doar datele din ANAF erau publice și înainte",
-      "Nu dăm dosarul altor firme, furnizorilor din ofertă sau altor bănci",
-      "În rapoartele pentru investitorii în obligațiuni verzi apar doar totaluri pe categorii, fără numele firmei",
+      "The dossier does not become public. Only the ANAF data was public before",
+      "We do not give the dossier to other companies, to the suppliers in the offer or to other banks",
+      "Reports for green bond investors show only totals per category, without the company name",
     ],
   },
   incident: {
-    title: "Dacă se întâmplă ceva",
+    title: "If something happens",
     items: [
-      { icon: "bell", title: "Un incident de securitate", text: "Dacă ar exista vreodată un incident care afectează datele firmei, te anunțăm direct și anunțăm autoritățile, cum cere legea." },
-      { icon: "help", title: "O bănuială", text: "Verifică ultimele accesări de mai sus și scrie-ne din Chat 1:1 sau la *2000." },
+      { icon: "bell", title: "A security incident", text: "If there is ever an incident affecting the company data, we tell you directly and notify the authorities, as the law requires." },
+      { icon: "help", title: "A suspicion", text: "Check the recent access above and write to us in Chat 1:1 or call *2000." },
     ],
   },
   // The short version, shown at the step where the company gives its consents.
   promise: {
-    title: "Dosarul rămâne privat",
-    items: ["Criptat, la transmitere și la stocare", "Nu devine public și nu ajunge la alte firme", "Banca îl primește doar când îl trimiți, pentru aprobare"],
-    link: "Cine vede dosarul și cum îl protejăm",
+    title: "The dossier stays private",
+    items: ["Encrypted, in transit and at rest", "It does not become public and does not reach other companies", "The bank receives it only when you send it, for approval"],
+    link: "Who sees the dossier and how we protect it",
   },
-  dataTitle: "Ce date folosim",
+  dataTitle: "What data we use",
   data: [
-    { name: "ANAF și ONRC", note: "Date publice: denumire, CAEN, angajați, cifră de afaceri, bilanț" },
-    { name: "APIA", note: "Cu acordul tău: parcelele, culturile pe 3 ani și subvențiile" },
-    { name: "ANSVSA", note: "Cu acordul tău, doar dacă ai animale" },
-    { name: "Open Banking", note: "Cu acordul tău: încasările și plățile pe 12–24 de luni" },
-    { name: "Documentele încărcate", note: "Oferta, fișele tehnice, autorizațiile și facturile" },
+    { name: "ANAF and ONRC", note: "Public data: name, CAEN code, employees, turnover, balance sheet" },
+    { name: "APIA", note: "With your consent: the parcels, 3 years of crops and the subsidies" },
+    { name: "ANSVSA", note: "With your consent, only if you keep animals" },
+    { name: "Open Banking", note: "With your consent: income and payments over 12–24 months" },
+    { name: "Uploaded documents", note: "The offer, the technical data sheets, the permits and the invoices" },
   ],
-  erase: "Din Dosarul tău → Retrage cererea. Documentele încărcate și răspunsurile tale se șterg. Datele publice despre firmă rămân publice.",
-  contact: "Ai o întrebare? Scrie-ne din Chat 1:1 în aplicație sau sună la *2000.",
+  erase: "From Your dossier → Withdraw the application. Your uploaded documents and answers are deleted. Public data about the company stays public.",
+  contact: "Have a question? Write to us in Chat 1:1 in the app or call *2000.",
 };

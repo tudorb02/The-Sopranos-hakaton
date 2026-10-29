@@ -19,7 +19,7 @@ export function Intro() {
         </p>
       </section>
 
-      <Section title="Ce fac">
+      <Section title="What I do">
         <Ticks yes={intro.does} />
       </Section>
 
@@ -36,7 +36,7 @@ export function Done() {
   return (
     <>
       <header className="intro">
-        <h1 className="page-title">Ce am găsit</h1>
+        <h1 className="page-title">What I found</h1>
         <p className="small muted">{findings.lead}</p>
       </header>
 

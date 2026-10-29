@@ -10,7 +10,7 @@ export default function TransactionDetail({ id }) {
   const { categoryNotes, client, days, pickerCategories, tagSuggestions } = usePersona();
   const day = days.find((item) => item.items.some((payment) => payment.id === id));
   const tx = day ? { ...day.items.find((payment) => payment.id === id), day } : null;
-  if (!tx) return <p className="small muted">Plata nu există în datele demo.</p>;
+  if (!tx) return <p className="small muted">This payment is not in the demo data.</p>;
 
   const tags = [...new Set([...(tx.tags ?? []), ...tagSuggestions])].map((tag) => ({ label: `#${tag}`, selected: Boolean(tx.tags?.includes(tag)) }));
   const note = categoryNotes[tx.category];
@@ -26,50 +26,50 @@ export default function TransactionDetail({ id }) {
           {tx.day.label}, {tx.day.date} · {tx.time}
         </p>
         <p className="tx-hero-meta">
-          <span className={tx.status === "În așteptare" ? "status" : "status is-on"}>{tx.status}</span>
+          <span className={tx.status === "Pending" ? "status" : "status is-on"}>{tx.status}</span>
           <span className="small muted">{client.card}</span>
         </p>
       </section>
 
-      <Group label="Pe extras">
+      <Group label="On the statement">
         <div className="card raw-line">{tx.raw}</div>
       </Group>
 
-      <Group label="Cum vrei să apară">
-        <Field field={{ label: "Denumire", value: tx.name, placeholder: "Ce ai cumpărat?" }} />
-        <p className="small muted group-hint">Denumirea se schimbă doar în coach. Extrasul rămâne neschimbat.</p>
+      <Group label="How you want it to appear">
+        <Field field={{ label: "Name", value: tx.name, placeholder: "What did you buy?" }} />
+        <p className="small muted group-hint">The name changes only in the coach. The statement stays the same.</p>
       </Group>
 
-      <Group label="Categorie">
+      <Group label="Category">
         <CategoryPicker ids={pickerCategories} selected={tx.category} suggested={tx.suggestion} />
       </Group>
 
       {note ? <NoteCard icon={tx.category === "nesortat" ? "help" : "compass"}>{note}</NoteCard> : null}
 
-      <Group label="Notă și etichete">
-        <Field field={{ label: "Notă", type: "textarea", value: tx.note ?? "", placeholder: "De exemplu: cadou pentru Ana" }} />
-        <ChoiceChips label="Etichete" options={[...tags, { label: "+ Etichetă nouă" }]} />
+      <Group label="Note and tags">
+        <Field field={{ label: "Note", type: "textarea", value: tx.note ?? "", placeholder: "For example: gift for Ana" }} />
+        <ChoiceChips label="Tags" options={[...tags, { label: "+ New tag" }]} />
       </Group>
 
-      <Group label="Reguli">
+      <Group label="Rules">
         <div className="card switches">
           <Switch
-            label={`Aplică pentru toate plățile către ${tx.merchant}`}
-            hint={tx.history ?? "Plățile viitoare primesc același nume și aceeași categorie"}
+            label={`Apply to all payments to ${tx.merchant}`}
+            hint={tx.history ?? "Future payments get the same name and category"}
             defaultChecked={Boolean(tx.rule)}
           />
-          <Switch label="Exclude din cheltuieli" hint="De exemplu, dacă cineva îți returnează banii" defaultChecked={tx.category === "economii"} />
+          <Switch label="Exclude from spending" hint="For example, if someone pays you back" defaultChecked={tx.category === "economii"} />
         </div>
       </Group>
 
       <div className="btn-row tx-actions">
         <button type="button" className="btn btn--outline btn--small">
           <Icon name="split" />
-          Împarte plata
+          Split payment
         </button>
         <button type="button" className="btn btn--outline btn--small">
           <Icon name="receipt" />
-          Atașează bonul fiscal
+          Attach receipt
         </button>
       </div>
     </>

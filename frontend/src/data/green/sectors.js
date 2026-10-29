@@ -4,29 +4,29 @@
 
 // The client-facing voice of the three agents is one voice that helps prepare the credit application.
 export const greenEntry = {
-  title: "Credit sustenabil",
-  subtitle: "Începem cu agricultura",
-  badge: "Nou",
-  text: "Îți pregătești cererea de credit direct în aplicație: ce documente îți trebuie, cum devine investiția eligibilă pentru creditul verde și ce clauze să ceri. Banca mai dă doar aprobarea finală.",
+  title: "Sustainable credit",
+  subtitle: "Starting with agriculture",
+  badge: "New",
+  text: "Prepare your credit application right in the app: which documents you need, how the investment becomes eligible for the green credit and which clauses to ask for. The bank only gives the final approval.",
 };
 
 // status: "available" (opens the area's flow) or "soon".
 export const sectors = [
   {
     id: "agro",
-    name: "Agricultură",
+    name: "Agriculture",
     icon: "leaf",
     status: "available",
-    text: "6 tipuri de investiții: irigații, energie, utilaje, zootehnie, post-recoltă, ecologic",
+    text: "6 types of investment: irrigation, energy, machinery, livestock, post-harvest, organic",
     href: "#/verde/agro",
   },
-  { id: "alimentar", name: "Industria alimentară", icon: "factory", status: "soon", text: "Refrigerare eficientă, recuperarea căldurii, reutilizarea apei" },
-  { id: "silvicultura", name: "Silvicultură", icon: "tree", status: "soon", text: "Împăduriri și utilaje forestiere eficiente" },
-  { id: "pescuit", name: "Pescuit și acvacultură", icon: "fish", status: "soon", text: "Recircularea apei și energie solară la fermele piscicole" },
+  { id: "alimentar", name: "Food industry", icon: "factory", status: "soon", text: "Efficient refrigeration, heat recovery, water reuse" },
+  { id: "silvicultura", name: "Forestry", icon: "tree", status: "soon", text: "Afforestation and efficient forestry machinery" },
+  { id: "pescuit", name: "Fisheries and aquaculture", icon: "fish", status: "soon", text: "Water recirculation and solar energy at fish farms" },
 ];
 
 export const sectorsIntro = {
-  title: "În ce domeniu e investiția?",
-  lead: "Începem cu agricultura. Celelalte domenii vin pe aceeași platformă, cu aceiași pași și aceeași analiză.",
-  more: "Urmează și alte domenii: energie, clădiri și transport, pentru orice firmă.",
+  title: "Which area is the investment in?",
+  lead: "We start with agriculture. The other areas come to the same platform, with the same steps and the same analysis.",
+  more: "More areas are coming: energy, buildings and transport, for any company.",
 };

@@ -20,7 +20,7 @@ export function useAsync(fn, key) {
       .then((data) => setState({ data, error: null, loading: false }))
       .catch((error) => {
         if (error?.name === "AbortError") return;
-        setState({ data: null, error: error instanceof ApiError ? error : new ApiError("INTERNAL", "A apărut o eroare. Reîncearcă."), loading: false });
+        setState({ data: null, error: error instanceof ApiError ? error : new ApiError("INTERNAL", "Something went wrong. Try again."), loading: false });
       });
     return () => controller.abort();
   }, [key, tick]);

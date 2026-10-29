@@ -11,7 +11,7 @@ export default function Tracking() {
   return (
     <>
       <section className="card hero-card" aria-labelledby="tracking-title">
-        <p className="eyebrow">Cheltuieli · {spending.period}</p>
+        <p className="eyebrow">Spending · {spending.period}</p>
         <h1 id="tracking-title" className="hero-label">
           {spending.title}
         </h1>
@@ -22,7 +22,7 @@ export default function Tracking() {
         <div className="split">
           <ShareBar parts={spending.parts} total={spending.total} />
           <CategoryLegend parts={spending.parts} total={spending.total} />
-          <p className="small muted">Plus {lei(spending.fixed)} cheltuieli fixe: {spending.fixedNote}.</p>
+          <p className="small muted">Plus {lei(spending.fixed)} in fixed costs: {spending.fixedNote}.</p>
         </div>
       </section>
 
@@ -38,10 +38,10 @@ export default function Tracking() {
       <div className="search-row">
         <label className="search">
           <Icon name="search" />
-          <span className="sr-only">Caută în plăți</span>
-          <input type="search" placeholder="Caută comerciant, sumă sau etichetă" />
+          <span className="sr-only">Search payments</span>
+          <input type="search" placeholder="Search merchant, amount or tag" />
         </label>
-        <ChoiceChips label="Filtre" options={filters} />
+        <ChoiceChips label="Filters" options={filters} />
       </div>
 
       {days.map((day) => (

@@ -9,7 +9,7 @@ import { MONTHS_RO, periodMonth, RISK_RO } from "../lib/labels.js";
 import { currentRunId } from "../lib/session.js";
 import { Icon } from "./icons.jsx";
 
-export function Loading({ label = "Se încarcă…" }) {
+export function Loading({ label = "Loading…" }) {
   return (
     <p className="loading" role="status">
       <span className="state state--running" aria-hidden="true" />
@@ -18,15 +18,15 @@ export function Loading({ label = "Se încarcă…" }) {
   );
 }
 
-// An API error in Romanian, with the way out. `error` is an ApiError (lib/api.js).
-export function ErrorCard({ error, onRetry, retryLabel = "Reîncearcă", children }) {
+// An API error in plain words, with the way out. `error` is an ApiError (lib/api.js).
+export function ErrorCard({ error, onRetry, retryLabel = "Try again", children }) {
   if (!error) return null;
   const offline = error.code === "NETWORK" || error.code === "UNAVAILABLE";
   return (
     <div className="card error-card" role="alert">
       <Icon name="shield" />
       <div>
-        <p className="row-name">{offline ? "Serverul nu răspunde" : "Nu a mers"}</p>
+        <p className="row-name">{offline ? "The server is not responding" : "That did not work"}</p>
         <p className="small">{error.message}</p>
         {error.details?.length ? (
           <ul className="small error-details">
@@ -66,7 +66,7 @@ export function NextButton({ href, onClick, disabled, busy, children, variant })
   };
   return (
     <button type="button" className={`btn btn--block${variant ? ` btn--${variant}` : ""}`} disabled={disabled || busy} onClick={go}>
-      {busy ? "Se trimite…" : children}
+      {busy ? "Sending…" : children}
     </button>
   );
 }
@@ -77,12 +77,12 @@ export function RoleSwitch({ role }) {
   const imm = runId ? "#/verde/agro/dosar" : "#/verde/agro";
   const officer = runId ? `#/ofiter/dosar/${runId}` : "#/ofiter";
   return (
-    <nav className="role-switch" aria-label="Rolul tău în demo">
+    <nav className="role-switch" aria-label="Your role in the demo">
       <a href={imm} aria-current={role === "imm" ? "page" : undefined}>
-        IMM
+        SME
       </a>
       <a href={officer} aria-current={role === "officer" ? "page" : undefined}>
-        Ofițer
+        Officer
       </a>
       {runId ? <span className="small muted num">{runId}</span> : null}
     </nav>
@@ -96,11 +96,11 @@ const RISK_FILL = { LOW: "var(--sand)", MEDIUM: "var(--yellow-soft)", HIGH: "var
 export function GeoMap({ collection, selected, onToggle, risk = false, height = 190, caption }) {
   const parcels = projectParcels(collection, 320, height);
   const label = parcels
-    .map((p) => `${p.props.parcelId} ${p.props.crop}, ${p.props.areaHa} ha${selected?.has(p.id) ? ", aleasă" : ""}, risc de secetă ${RISK_RO[p.props.droughtRisk]}`)
+    .map((p) => `${p.props.parcelId} ${p.props.crop}, ${p.props.areaHa} ha${selected?.has(p.id) ? ", selected" : ""}, drought risk ${RISK_RO[p.props.droughtRisk]}`)
     .join("; ");
   return (
     <figure className="card parcel-map">
-      <svg viewBox={`0 0 320 ${height}`} role="img" aria-label={`Harta parcelelor: ${label}.`}>
+      <svg viewBox={`0 0 320 ${height}`} role="img" aria-label={`Parcel map: ${label}.`}>
         {parcels.map((p) => {
           const on = !selected || selected.has(p.id);
           const classes = ["parcel", on ? "is-selected" : "", p.props.natura2000 ? "is-natura" : "", onToggle ? "is-click" : ""].filter(Boolean).join(" ");

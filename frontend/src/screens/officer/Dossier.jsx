@@ -26,11 +26,11 @@ export function OfficerDossier({ runId }) {
 
   const subtitle = run ? `${run.farm.company.name} · ${run.moduleId} · ${run.runId}` : runId;
   return (
-    <OfficerFrame page="dossier" title="Dosar de credit verde" subtitle={subtitle}>
-      {loading && !run ? <Loading label="Încarc dosarul…" /> : null}
+    <OfficerFrame page="dossier" title="Green credit dossier" subtitle={subtitle}>
+      {loading && !run ? <Loading label="Loading the dossier…" /> : null}
       <ErrorCard error={error} onRetry={reload}>
         <a className="btn btn--outline btn--small" href="#/ofiter">
-          Alege alt dosar
+          Choose another dossier
         </a>
       </ErrorCard>
       {run ? (
@@ -38,7 +38,7 @@ export function OfficerDossier({ runId }) {
           <div className="state-bar">
             <Tag tone={run.state === "ESUAT" ? "bad" : "info"}>{STATE_RO[run.state] ?? run.state}</Tag>
             <Tag>{run.mode}</Tag>
-            {run.submission ? <Tag tone="ok">IMM a ales: {run.submission.variant === "VERDE" ? "credit verde" : "credit clasic"}</Tag> : <Tag tone="warn">IMM-ul nu a trimis cererea</Tag>}
+            {run.submission ? <Tag tone="ok">SME chose: {run.submission.variant === "VERDE" ? "green credit" : "classic credit"}</Tag> : <Tag tone="warn">The SME has not sent the application</Tag>}
           </div>
           <CompanyPanel run={run} />
           <StepsPanel run={run} events={events} status={status} />

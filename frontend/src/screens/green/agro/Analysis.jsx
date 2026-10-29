@@ -20,8 +20,8 @@ export function Analysis() {
 
   if (!runId) {
     return (
-      <Missing href="#/verde/agro/documente" label="Încarcă oferta">
-        Nu ai pornit încă un dosar. Încarcă oferta, sau pornește un dosar demo.
+      <Missing href="#/verde/agro/documente" label="Upload the offer">
+        You have not started a dossier yet. Upload the offer, or start a demo dossier.
       </Missing>
     );
   }
@@ -29,16 +29,16 @@ export function Analysis() {
   return (
     <>
       <header className="intro">
-        <h1 className="page-title">Pregătim ofertele</h1>
-        <p className="small muted">Durează câteva momente. Cifrele le calculează banca, după formule fixe.</p>
+        <h1 className="page-title">Preparing the offers</h1>
+        <p className="small muted">It takes a few moments. The bank calculates the figures with fixed formulas.</p>
       </header>
 
-      {!failed && status.state !== "error" ? <Loading label="Pregătim ofertele…" /> : null}
+      {!failed && status.state !== "error" ? <Loading label="Preparing the offers…" /> : null}
       <ErrorCard error={status.state === "error" ? status.error : null} />
       {failed ? (
         <ErrorCard error={{ message: failed.data.messageRo ?? failed.message, code: "ANALYSIS_FAILED" }}>
           <a className="btn btn--outline btn--small" href="#/verde/agro/documente">
-            Încearcă un dosar demo
+            Try a demo dossier
           </a>
         </ErrorCard>
       ) : null}

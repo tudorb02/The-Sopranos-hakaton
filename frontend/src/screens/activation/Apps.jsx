@@ -7,22 +7,22 @@ export function Apps() {
   return (
     <>
       <header className="intro">
-        <p className="eyebrow">Opțional</p>
-        <h1 className="page-title">Folosești ce plătești?</h1>
+        <p className="eyebrow">Optional</p>
+        <h1 className="page-title">Do you use what you pay for?</h1>
         <p className="small muted">
-          {apps.found} Dacă vrei, verific dacă deschizi aplicațiile lor, ca să-ți spun când plătești ceva ce nu folosești.
+          {apps.found} If you like, I can check whether you open their apps, so I can tell you when you pay for something you don't use.
         </p>
       </header>
 
-      <Group label="Alege ce urmăresc">
+      <Group label="Choose what I track">
         <div className="card switches">
           {apps.items.map((app) => (
-            <Switch key={app.name} label={`${app.name} · ${lei(app.lei)} pe lună`} hint={app.note} defaultChecked={app.on} />
+            <Switch key={app.name} label={`${app.name} · ${lei(app.lei)} a month`} hint={app.note} defaultChecked={app.on} />
           ))}
         </div>
       </Group>
 
-      <Group label="Ce aflu și ce nu">
+      <Group label="What I learn and what I don't">
         <Ticks yes={apps.learns} no={apps.doesNotLearn} />
       </Group>
 

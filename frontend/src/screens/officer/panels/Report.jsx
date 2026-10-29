@@ -30,8 +30,8 @@ export function ReportPanel({ run }) {
   const funding = run.agents.fundingRecommendation;
   if (!report || !funding) {
     return (
-      <Panel n={5} title="Raportul verde">
-        <p className="small muted">Agentul 3 nu a terminat încă.</p>
+      <Panel n={5} title="Green report">
+        <p className="small muted">Agent 3 has not finished yet.</p>
       </Panel>
     );
   }
@@ -39,7 +39,7 @@ export function ReportPanel({ run }) {
   return (
     <Panel
       n={5}
-      title="Raportul verde"
+      title="Green report"
       wide
       aside={
         <span className="panel-aside">
@@ -52,16 +52,16 @@ export function ReportPanel({ run }) {
 
       <div className="grid-2">
         <div>
-          <h3 className="sub-title">Criteriul și pragul</h3>
+          <h3 className="sub-title">Criterion and threshold</h3>
           <p className="small">
-            {crit.indicator}: <b className="num">{disp(run, crit.valueCalcId)}</b> față de prag <b className="num">{disp(run, crit.thresholdCalcId)}</b>{" "}
-            <Tag tone={crit.result === "PASS" ? "ok" : "bad"}>{crit.result === "PASS" ? "trece" : "nu trece"}</Tag>
+            {crit.indicator}: <b className="num">{disp(run, crit.valueCalcId)}</b> against the threshold <b className="num">{disp(run, crit.thresholdCalcId)}</b>{" "}
+            <Tag tone={crit.result === "PASS" ? "ok" : "bad"}>{crit.result === "PASS" ? "passes" : "fails"}</Tag>
           </p>
           <p className="small muted">{crit.sourceRo}</p>
           <p className="small muted">
-            Nivel verde: {TIER_OFFICER[funding.greenTier.tier]}
-            {funding.greenTier.verdePlusMinCalcId ? ` (Verde Plus de la ${disp(run, funding.greenTier.verdePlusMinCalcId)})` : ""} · indicator cerut{" "}
-            {disp(run, funding.greenTier.requestedIndicatorCalcId)}, finanțat {disp(run, funding.greenTier.financedIndicatorCalcId)}
+            Green tier: {TIER_OFFICER[funding.greenTier.tier]}
+            {funding.greenTier.verdePlusMinCalcId ? ` (Green Plus from ${disp(run, funding.greenTier.verdePlusMinCalcId)})` : ""} · requested indicator{" "}
+            {disp(run, funding.greenTier.requestedIndicatorCalcId)}, financed {disp(run, funding.greenTier.financedIndicatorCalcId)}
           </p>
 
           <h3 className="sub-title">DNSH</h3>
@@ -78,9 +78,9 @@ export function ReportPanel({ run }) {
               ))}
             </tbody>
           </table>
-          <p className="small muted">Contribuție substanțială: {DNSH_OBJECTIVE_RO[report.substantialContribution] ?? report.substantialContribution}</p>
+          <p className="small muted">Substantial contribution: {DNSH_OBJECTIVE_RO[report.substantialContribution] ?? report.substantialContribution}</p>
 
-          <h3 className="sub-title">Etichetarea componentelor</h3>
+          <h3 className="sub-title">Component labelling</h3>
           <table className="table table--tight">
             <tbody>
               {report.componentLabels.map((c) => (
@@ -95,12 +95,12 @@ export function ReportPanel({ run }) {
             </tbody>
           </table>
           <p className="small muted">
-            Parte verde: {disp(run, report.greenShare.greenSharePctCalcId)} ({disp(run, report.greenShare.greenAmountCalcId)} verde, {disp(run, report.greenShare.transitionAmountCalcId)} tranziție)
+            Green share: {disp(run, report.greenShare.greenSharePctCalcId)} ({disp(run, report.greenShare.greenAmountCalcId)} green, {disp(run, report.greenShare.transitionAmountCalcId)} transition)
           </p>
         </div>
 
         <div>
-          <h3 className="sub-title">Fondul propus</h3>
+          <h3 className="sub-title">Proposed fund</h3>
           <p>
             <Tag tone="ok">{report.fund.fundId}</Tag> <b>{FUND_NAMES[report.fund.fundId] ?? report.fund.fundId}</b> <span className="muted small">({FUND_ROLE_RO[report.fund.role]})</span>
           </p>
@@ -111,7 +111,7 @@ export function ReportPanel({ run }) {
                   {GLYPH[r.status]}
                 </span>
                 <span>
-                  <b>{REQUIREMENT_RO[r.requirementId]}</b> <span className="muted small">({r.level === "REQUIRED" ? "cerută" : "probabilă"})</span>
+                  <b>{REQUIREMENT_RO[r.requirementId]}</b> <span className="muted small">({r.level === "REQUIRED" ? "required" : "likely"})</span>
                   <br />
                   <span className="small">{r.noteRo}</span>
                 </span>
@@ -120,7 +120,7 @@ export function ReportPanel({ run }) {
           </ul>
           {report.fund.alternatives?.length ? (
             <>
-              <h3 className="sub-title">Alternative</h3>
+              <h3 className="sub-title">Alternatives</h3>
               <ul className="plain-list small">
                 {report.fund.alternatives.map((a) => (
                   <li key={a.fundId}>
@@ -130,9 +130,9 @@ export function ReportPanel({ run }) {
               </ul>
             </>
           ) : null}
-          <h3 className="sub-title">Categoria din cadrul obligațiunilor verzi (F2)</h3>
+          <h3 className="sub-title">Green bond category (F2)</h3>
           <p className="small">
-            <b>{BOND_CATEGORY_RO[report.greenBond.category]}</b> · <Tag tone={report.greenBond.status === "ELIGIBLE" ? "ok" : "warn"}>{report.greenBond.status === "TO_CONFIRM" ? "de confirmat" : report.greenBond.status}</Tag>
+            <b>{BOND_CATEGORY_RO[report.greenBond.category]}</b> · <Tag tone={report.greenBond.status === "ELIGIBLE" ? "ok" : "warn"}>{report.greenBond.status === "TO_CONFIRM" ? "to be confirmed" : report.greenBond.status}</Tag>
           </p>
           <p className="small muted">{report.greenBond.noteRo}</p>
         </div>
@@ -140,33 +140,33 @@ export function ReportPanel({ run }) {
 
       <div className="grid-2">
         <div>
-          <h3 className="sub-title">Condiții înainte de tragere</h3>
+          <h3 className="sub-title">Conditions precedent to drawdown</h3>
           <ul className="plain-list small">
             {report.conditionsPrecedent.map((c) => (
               <li key={c.conditionId}>
-                <Tag tone={c.blocking ? "warn" : "info"}>{c.blocking ? "blocantă" : "informativă"}</Tag> {c.descriptionRo} <span className="muted">({CONDITION_TIMING_RO[c.timing]})</span>
+                <Tag tone={c.blocking ? "warn" : "info"}>{c.blocking ? "blocking" : "informative"}</Tag> {c.descriptionRo} <span className="muted">({CONDITION_TIMING_RO[c.timing]})</span>
               </li>
             ))}
           </ul>
-          <h3 className="sub-title">Riscuri</h3>
+          <h3 className="sub-title">Risks</h3>
           <ul className="plain-list small">
             {report.risks.map((r) => (
               <li key={r.category}>
                 <Tag tone={r.severity === "HIGH" ? "bad" : r.severity === "MEDIUM" ? "warn" : "info"}>{SEVERITY_RO[r.severity]}</Tag> {r.descriptionRo}
                 <br />
-                <span className="muted">Atenuare: {r.mitigationRo}</span>
+                <span className="muted">Mitigation: {r.mitigationRo}</span>
               </li>
             ))}
           </ul>
         </div>
         <div>
-          <h3 className="sub-title">KPI de monitorizare</h3>
+          <h3 className="sub-title">Monitoring KPIs</h3>
           <table className="table table--tight">
             <tbody>
               {report.monitoringKpis.map((k) => (
                 <tr key={k.kpiId}>
                   <td>{calcOf(run, k.targetCalcId)?.labelRo ?? k.metric}</td>
-                  <td className="num">țintă {disp(run, k.targetCalcId)}</td>
+                  <td className="num">target {disp(run, k.targetCalcId)}</td>
                   <td>
                     {KPI_FREQUENCY_RO[k.frequency]}, {KPI_FIRST_DUE_RO[k.firstDue]}
                   </td>
@@ -175,14 +175,14 @@ export function ReportPanel({ run }) {
               ))}
             </tbody>
           </table>
-          <h3 className="sub-title">Impact estimat</h3>
+          <h3 className="sub-title">Estimated impact</h3>
           <table className="table table--tight">
             <tbody>
               {report.impact.map((i) => (
                 <tr key={`${i.metric}-${i.calcId}`}>
                   <td>{calcOf(run, i.calcId)?.labelRo ?? i.metric}</td>
                   <td className="num">{disp(run, i.calcId)}</td>
-                  <td className="muted small">{i.period === "ANNUAL" ? "pe an" : "pe durata creditului"}</td>
+                  <td className="muted small">{i.period === "ANNUAL" ? "per year" : "over the credit term"}</td>
                 </tr>
               ))}
             </tbody>

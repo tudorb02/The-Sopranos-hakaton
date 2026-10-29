@@ -1,20 +1,20 @@
-const integer = new Intl.NumberFormat("ro-RO", { maximumFractionDigits: 0 });
-const decimal = new Intl.NumberFormat("ro-RO", { maximumFractionDigits: 1 });
+const integer = new Intl.NumberFormat("en-GB", { maximumFractionDigits: 0 });
+const decimal = new Intl.NumberFormat("en-GB", { maximumFractionDigits: 1 });
 
-// 1241 -> "1.241"
+// 1241 -> "1,241"
 export const num = (x) => integer.format(x);
 
-// 1241 -> "1.241 lei"
-export const lei = (x) => `${integer.format(x)} lei`;
+// 1241 -> "1,241 RON"
+export const lei = (x) => `${integer.format(x)} RON`;
 
-// 85000 -> "85.000 EUR"
+// 85000 -> "85,000 EUR"
 export const eur = (x) => `${integer.format(x)} EUR`;
 
-// 8.5 -> "8,5 ha"
+// 8.5 -> "8.5 ha"
 export const ha = (x) => `${decimal.format(x)} ha`;
 
-// 4.90002 -> "4,9" (portfolio totals come as plain numbers from the API, without a display text)
-const decimal2 = new Intl.NumberFormat("ro-RO", { maximumFractionDigits: 2 });
+// 4.90002 -> "4.9" (portfolio totals come as plain numbers from the API, without a display text)
+const decimal2 = new Intl.NumberFormat("en-GB", { maximumFractionDigits: 2 });
 export const dec = (x) => decimal2.format(x);
 
 // Share of a whole as a CSS percentage, clamped to 0–100%.
