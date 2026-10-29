@@ -76,24 +76,18 @@
     "45871203": [
       {
         "parcelId": "ct_0412_01",
-        "osm": "https://www.openstreetmap.org/way/1043504752",
-        "landuse": "farmland",
-        "osmAreaHa": 13.66,
-        "scaledToAreaHa": false
+        "drawnByHand": "on Esri World Imagery, in the open fields north of Valu lui Traian (2026-10-29): separate fields, no buildings, ct_0412_01 irregular",
+        "areaHa": 16
       },
       {
         "parcelId": "ct_0412_02",
-        "osm": "https://www.openstreetmap.org/way/87308165",
-        "landuse": "farmland",
-        "osmAreaHa": 11.63,
-        "scaledToAreaHa": false
+        "drawnByHand": "on Esri World Imagery, in the open fields north of Valu lui Traian (2026-10-29): separate fields, no buildings, ct_0412_01 irregular",
+        "areaHa": 14
       },
       {
         "parcelId": "ct_0412_03",
-        "osm": "https://www.openstreetmap.org/way/1379941956",
-        "landuse": "farmland",
-        "osmAreaHa": 8.49,
-        "scaledToAreaHa": false
+        "drawnByHand": "on Esri World Imagery, in the open fields north of Valu lui Traian (2026-10-29): separate fields, no buildings, ct_0412_01 irregular",
+        "areaHa": 10
       }
     ],
     "47209135": [
